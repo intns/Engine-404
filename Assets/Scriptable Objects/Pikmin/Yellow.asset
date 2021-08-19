@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9d007b198750614889af8a205d5ab02, type: 3}
+  m_Name: Yellow
+  m_EditorClassIdentifier: 
+  _PikminColour: 1
+  _DeathSpiritPikminColour: {r: 1, g: 1, b: 1, a: 1}
+  _Leaf: {fileID: 8440573494992231151, guid: 820ffa9989a69394ab36de143cbb0e2a, type: 3}
+  _Bud: {fileID: 6009009235213959189, guid: 57cf96bd92a4f864a9857a1f5ba2ac72, type: 3}
+  _Flower: {fileID: 595203086311389770, guid: c219d3fe4361acc4abd94f4cb22e6b70, type: 3}
+  _MaxMovementSpeed: 5
+  _AccelerationSpeed: 8
+  _RotationSpeed: 10
+  _SearchRadius: 6
+  _AttackDistToJump: 1
+  _AttackJumpPower: 3.5
+  _AttackJumpTimer: 5
+  _AttackDamage: 5
+  _AttackDelay: 1
+  _AudioVolume: 1
+  _DeathNoise: {fileID: 0}
