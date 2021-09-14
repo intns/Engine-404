@@ -56,32 +56,34 @@ public class PikminCarry : MonoBehaviour, IPikminCarry
 
 	private void Update()
 	{
-		if (_IsBeingCarried)
+		if (!_IsBeingCarried)
 		{
-			CalculatePikminPositions();
+			return;
+		}
 
-			if (MathUtil.DistanceTo(transform.position, _EndPoint.position) <= 1)
+		CalculatePikminPositions();
+
+		if (MathUtil.DistanceTo(transform.position, _EndPoint.position) <= 1)
+		{
+			_Agent.enabled = false;
+
+			// Make every pikmin stop carrying
+			while (_CarryingPikmin.Count > 0)
 			{
-				_Agent.enabled = false;
-
-				// Make every pikmin stop carrying
-				while (_CarryingPikmin.Count > 0)
-				{
-					_CarryingPikmin[0].ChangeState(PikminStates.Idle);
-				}
-
-				if (!_HasMatchingColour || _DebugOnion._PikminColour == _MatchColour)
-				{
-					_DebugOnion.EnterOnion(_MatchPikminToProduce);
-				}
-				else
-				{
-					_DebugOnion.EnterOnion(_NonMatchPikminToProduce);
-				}
-
-				Destroy(_Text.gameObject);
-				Destroy(gameObject);
+				_CarryingPikmin[0].ChangeState(PikminStates.Idle);
 			}
+
+			if (!_HasMatchingColour || _DebugOnion._PikminColour == _MatchColour)
+			{
+				_DebugOnion.EnterOnion(_MatchPikminToProduce);
+			}
+			else
+			{
+				_DebugOnion.EnterOnion(_NonMatchPikminToProduce);
+			}
+
+			Destroy(_Text.gameObject);
+			Destroy(gameObject);
 		}
 	}
 
@@ -112,7 +114,7 @@ public class PikminCarry : MonoBehaviour, IPikminCarry
 			_IsBeingCarried = false;
 		}
 
-		_Text.SetText(_CarryingPikmin.Count, _MaxAmountRequired);
+		_Text.SetText(_CarryingPikmin.Count, _MinAmountRequired);
 		if (_CarryingPikmin.Count == 0)
 		{
 			_Text.FadeOut();

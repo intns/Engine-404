@@ -117,17 +117,6 @@ public class PlayerPikminController : MonoBehaviour
 				_PikminInHand = null;
 			}
 		}
-
-		// (test) Killing the Pikmin
-		if (Input.GetKeyDown(KeyCode.B) && PikminStatsManager.GetTotalOnField() > 0)
-		{
-			GameObject closestPikmin = GetClosestPikmin();
-			if (closestPikmin != null)
-			{
-				PikminAI pikminComponent = closestPikmin.GetComponent<PikminAI>();
-				pikminComponent.ChangeState(PikminStates.Dead);
-			}
-		}
 	}
 
 	public Vector3 GetPositionAt(int index)
