@@ -1,75 +1,75 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-[RequireComponent(typeof(EnemyDamageScript))]
-public class Bulborb : MonoBehaviour, IPikminAttack
-{
-	enum States
-	{
-		Sleeping,
-		Wake,
-		Attack,
-	};
+[RequireComponent (typeof (EnemyDamageScript))]
+public class Bulborb : MonoBehaviour, IPikminAttack {
+  enum States {
+    Sleeping, // Sleeping
+    Wake, // Waking up
+    MoveTowards, // Moving towards a target
+    Attack, // Attacking an object
+    Death, // Dying
+    Dead // Dead
+  }
 
-	[Header("Settings")]
-	[SerializeField] float _DetectionRadius = 5.0f;
+  [Header ("Settings")]
+  [SerializeField] float _DetectionRadius = 5.0f;
 
-	[Header("Debug")]
-	[SerializeField] Transform _Target = null;
-	[SerializeField] States _CurrentState = States.Sleeping;
+  [Header ("Debug")]
+  [SerializeField] Transform _Target = null;
+  [SerializeField] States _CurrentState = States.Sleeping;
 
-	private Animator _Animator = null;
-	private EnemyDamageScript _DamageScript = null;
+  private Animator _Animator = null;
+  private EnemyDamageScript _DamageScript = null;
 
-	private void Awake()
-	{
-		_Animator = GetComponent<Animator>();
-		_DamageScript = GetComponent<EnemyDamageScript>();
-		_CurrentState = States.Sleeping;
-	}
+  private void Awake () {
+    _Animator = GetComponent<Animator> ();
+    _DamageScript = GetComponent<EnemyDamageScript> ();
+    _CurrentState = States.Sleeping;
+  }
 
-	private void Update()
-	{
-		if (GameManager._IsPaused)
-		{
-			return;
-		}
+  private void Update () {
+    if (GameManager._IsPaused) {
+      return;
+    }
 
-		switch (_CurrentState)
-		{
-			case States.Sleeping:
-				break;
-			case States.Wake:
-				break;
-			case States.Attack:
-				break;
-			default:
-				break;
-		}
-	}
+    switch (_CurrentState) {
+      case States.Sleeping:
+        HandleSleeping ();
+        break;
+      case States.Wake:
+        break;
+      case States.Attack:
+        break;
+      default:
+        break;
+    }
+  }
 
-	private void OnDrawGizmosSelected()
-	{
-		Gizmos.DrawSphere(transform.position + transform.forward, _DetectionRadius);
-	}
+  private void OnDrawGizmosSelected () {
+    Gizmos.DrawSphere (transform.position + transform.forward, _DetectionRadius);
+  }
 
-	#region Pikmin Attacking Implementation
-	public PikminIntention IntentionType => PikminIntention.Attack;
+  private void HandleSleeping () {
+    Collider[] colls = Physics.OverlapSphere (transform.position + transform.forward, _DetectionRadius);
+    foreach (var coll in colls) {
+      //eif (coll.GetComponent<>)
+    }
+  }
 
+  #region Pikmin Attacking Implementation
+  public PikminIntention IntentionType => PikminIntention.Attack;
 
-	public void OnAttackEnd(PikminAI pikmin)
-	{
-		_DamageScript._AttachedPikmin.Remove(pikmin);
-	}
+  public void OnAttackEnd (PikminAI pikmin) {
+    _DamageScript._AttachedPikmin.Remove (pikmin);
+  }
 
-	public void OnAttackStart(PikminAI pikmin)
-	{
-		_DamageScript._AttachedPikmin.Add(pikmin);
-	}
+  public void OnAttackStart (PikminAI pikmin) {
+    _DamageScript._AttachedPikmin.Add (pikmin);
+  }
 
-	public void OnAttackRecieve(float damage)
-	{
-		_DamageScript.SubtractHealth(damage);
-		_DamageScript._HWScript._CurrentHealth = _DamageScript.GetCurrentHealth();
-	}
-	#endregion
+  public void OnAttackRecieve (float damage) {
+    _DamageScript.SubtractHealth (damage);
+    _DamageScript._HWScript._CurrentHealth = _DamageScript.GetCurrentHealth ();
+  }
+  #endregion
 }

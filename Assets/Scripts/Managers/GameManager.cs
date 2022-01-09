@@ -6,24 +6,21 @@
 
 using UnityEngine;
 
-public enum Language
-{
-	English,
-	French,
+public enum Language {
+  English,
+  French,
 }
 
-public static class GameManager
-{
-	public static bool _IsPaused = false; // Used in checks to see if the game is paused
-	public static bool TogglePause()
-	{
-		_IsPaused = !_IsPaused;
-		Time.timeScale = _IsPaused ? 0 : 1;
+public static class GameManager {
+  public static bool _IsPaused = false; // Used in checks to see if the game is paused
+  public static bool TogglePause () {
+    _IsPaused = !_IsPaused;
+    Time.timeScale = _IsPaused ? 0 : 1;
 
-		return _IsPaused;
-	}
+    return _IsPaused;
+  }
 
-	public static bool _DebugGui = Application.isEditor; // Used for debugging
+  public static bool _DebugGui = Application.isEditor; // Used for debugging
 
-	public static Language _Language = Language.English; // Used for alternate texts
+  public static Language _Language = Language.English; // Used for alternate texts
 }

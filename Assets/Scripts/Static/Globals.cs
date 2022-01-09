@@ -5,9 +5,8 @@
  * Created for: needing an object to access globals across the game
  */
 
-public static class Globals
-{
-	public static Player _Player;
+public static class Globals {
+  public static Player _Player;
 
-	public static FadeManager _FadeManager;
+  public static FadeManager _FadeManager;
 }
