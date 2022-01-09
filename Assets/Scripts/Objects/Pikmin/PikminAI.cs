@@ -623,7 +623,9 @@ public class PikminAI : MonoBehaviour, IHealth
 
 	public void WaterEnter()
 	{
-		Debug.Log("Entered water");
+		if (_Data._PikminColour != PikminColour.Blue) { 
+			Die(0.5f);
+		}
 	}
 
 	public void WaterLeave()
