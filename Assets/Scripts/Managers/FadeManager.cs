@@ -48,11 +48,6 @@ public class FadeManager : MonoBehaviour
 	}
 
 	// Note: midFade must have no parameters
-	public void FadeInOut(float time, Action midFade)
-	{
-		StartCoroutine(FadeInOut_Coroutine(time, time, midFade));
-	}
-
 	public void FadeInOut(float fadeIn, float fadeOut, Action midFade)
 	{
 		StartCoroutine(FadeInOut_Coroutine(fadeIn, fadeOut, midFade));
@@ -112,6 +107,7 @@ public class FadeManager : MonoBehaviour
 
 	private IEnumerator FadeInOut_Coroutine(float fadeIn, float fadeOut, Action midFade)
 	{
+		// Fade in
 		Image blackImg = GetBlackImage();
 		blackImg.enabled = true;
 
@@ -133,10 +129,12 @@ public class FadeManager : MonoBehaviour
 
 		yield return null;
 
+		// Black screen at point of invoke
 		midFade.Invoke();
 
 		yield return null;
 
+		// Fade out
 		blackImg = GetBlackImage();
 		blackImg.enabled = true;
 
