@@ -3,6 +3,20 @@
 [RequireComponent(typeof(EnemyDamageScript))]
 public class Bulborb : MonoBehaviour, IPikminAttack
 {
+	enum States
+	{
+		Sleeping,
+		Wake,
+		Attack,
+	};
+
+	[Header("Settings")]
+	[SerializeField] float _DetectionRadius = 5.0f;
+
+	[Header("Debug")]
+	[SerializeField] Transform _Target = null;
+	[SerializeField] States _CurrentState = States.Sleeping;
+
 	private Animator _Animator = null;
 	private EnemyDamageScript _DamageScript = null;
 
@@ -10,6 +24,32 @@ public class Bulborb : MonoBehaviour, IPikminAttack
 	{
 		_Animator = GetComponent<Animator>();
 		_DamageScript = GetComponent<EnemyDamageScript>();
+		_CurrentState = States.Sleeping;
+	}
+
+	private void Update()
+	{
+		if (GameManager._IsPaused)
+		{
+			return;
+		}
+
+		switch (_CurrentState)
+		{
+			case States.Sleeping:
+				break;
+			case States.Wake:
+				break;
+			case States.Attack:
+				break;
+			default:
+				break;
+		}
+	}
+
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.DrawSphere(transform.position + transform.forward, _DetectionRadius);
 	}
 
 	#region Pikmin Attacking Implementation
