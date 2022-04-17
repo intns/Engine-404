@@ -39,6 +39,12 @@ public class PlayerPikminController : MonoBehaviour
 		{
 			HandleThrowing();
 		}
+		else if (_PikminInHand != null)
+		{
+			_PikminInHand.GetComponent<PikminAI>().EndThrowHold();
+			_PikminInHand = null;
+		}
+
 		HandleFormation();
 
 		// Disbanding
@@ -217,10 +223,5 @@ public class PlayerPikminController : MonoBehaviour
 		}
 
 		return closestPikmin;
-	}
-
-	private void OnGUI()
-	{
-		GUI.Label(new Rect(50, 50, 500, 500), $"{PikminStatsManager.GetTotalInSquad()} / {PikminStatsManager.GetTotalOnField()} / {PikminStatsManager.GetTotalInOnion()}");
 	}
 }

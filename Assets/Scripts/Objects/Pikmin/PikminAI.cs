@@ -399,10 +399,13 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		AudioSource.PlayClipAtPoint(_Data._DeathNoise, transform.position, _Data._AudioVolume);
 
 		// Create the soul gameobject, and play the death noise
-		ParticleSystem soul = Instantiate(_DeathParticle, transform.position, Quaternion.Euler(-90, 0, 0)).GetComponent<ParticleSystem>();
-		ParticleSystem.MainModule soulEffect = soul.main;
-		soulEffect.startColor = _Data._DeathSpiritPikminColour;
-		Destroy(soul.gameObject, 5);
+		if (_DeathParticle != null)
+		{
+			ParticleSystem soul = Instantiate(_DeathParticle, transform.position, Quaternion.Euler(-90, 0, 0)).GetComponent<ParticleSystem>();
+			ParticleSystem.MainModule soulEffect = soul.main;
+			soulEffect.startColor = _Data._DeathSpiritPikminColour;
+			Destroy(soul.gameObject, 5);
+		}
 
 		// Remove the object
 		Destroy(gameObject);
