@@ -7,83 +7,100 @@
 
 using UnityEngine;
 
-[RequireComponent (typeof (PlayerPikminController),
-  typeof (PlayerMovementController),
-  typeof (PlayerUIController))]
-public class Player : MonoBehaviour, IHealth, IEntityInfo {
-  //[Header("Components")]
-  [HideInInspector] public PlayerMovementController _MovementController = null;
-  [HideInInspector] public PlayerPikminController _PikminController = null;
-  [HideInInspector] public PlayerUIController _UIController = null;
+[RequireComponent(typeof(PlayerPikminController),
+	typeof(PlayerMovementController))]
+public class Player : MonoBehaviour, IHealth, IEntityInfo
+{
+	public static Player _Instance;
+	[HideInInspector] public PlayerMovementController _MovementController = null;
+	[HideInInspector] public PlayerPikminController _PikminController = null;
 
-  [Header ("Settings")]
-  [SerializeField] private float _MaxHealth = 100;
-  [SerializeField] private float _CurrentHealth = 100;
+	[Header("Settings")]
+	[SerializeField] private float _MaxHealth = 100;
+	[SerializeField] private float _CurrentHealth = 100;
 
-  private void OnEnable () {
-    Globals._Player = this;
-  }
+	private void OnEnable()
+	{
+		_Instance = this;
+	}
 
-  private void Awake () {
-    _MovementController = GetComponent<PlayerMovementController> ();
-    _PikminController = GetComponent<PlayerPikminController> ();
-    _UIController = GetComponent<PlayerUIController> ();
+	private void Awake()
+	{
+		_MovementController = GetComponent<PlayerMovementController>();
+		_PikminController = GetComponent<PlayerPikminController>();
 
-    // Resets the health back to the max if changed in the editor
-    _CurrentHealth = _MaxHealth;
-  }
+		// Resets the health back to the max if changed in the editor
+		_CurrentHealth = _MaxHealth;
+	}
 
-  private void Update () {
-    if (Input.GetKeyDown (KeyCode.Alpha8)) {
-      PikminStatsManager.Print ();
-    }
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Alpha8))
+		{
+			PikminStatsManager.Print();
+		}
 
-    // Handle health-related functions
-    if (_CurrentHealth <= 0) {
-      Die ();
-    }
+		// Handle health-related functions
+		if (_CurrentHealth <= 0)
+		{
+			Die();
+		}
 
-    // Handle exiting the game/program
-    if (Input.GetButtonDown ("Start Button")) {
-      Debug.Break ();
-      Application.Quit ();
-    }
-  }
+		// Handle exiting the game/program
+		if (Input.GetButtonDown("Start Button"))
+		{
+			Debug.Break();
+			Application.Quit();
+		}
+	}
 
-  private void Die () {
-    Debug.Log ("Player is dead!");
-    Debug.Break ();
-  }
+	private void Die()
+	{
+		Debug.Log("Player is dead!");
+		Debug.Break();
+	}
 
-  #region Health Implementation
+	public void Pause(bool toPause)
+	{
+		// Time.timeScale = toPause ? 0 : 1;
+		_MovementController._Paralysed = toPause;
+	}
 
-  // 'Getter' functions
-  public float GetCurrentHealth () {
-    return _CurrentHealth;
-  }
+	#region Health Implementation
 
-  public float GetMaxHealth () {
-    return _MaxHealth;
-  }
+	// 'Getter' functions
+	public float GetCurrentHealth()
+	{
+		return _CurrentHealth;
+	}
 
-  // 'Setter' functions
-  public float AddHealth (float give) {
-    return _CurrentHealth += give;
-  }
+	public float GetMaxHealth()
+	{
+		return _MaxHealth;
+	}
 
-  public float SubtractHealth (float take) {
-    return _CurrentHealth -= take;
-  }
+	// 'Setter' functions
+	public float AddHealth(float give)
+	{
+		return _CurrentHealth += give;
+	}
 
-  public void SetHealth (float set) {
-    _CurrentHealth = set;
-  }
+	public float SubtractHealth(float take)
+	{
+		return _CurrentHealth -= take;
+	}
 
-  #endregion
+	public void SetHealth(float set)
+	{
+		_CurrentHealth = set;
+	}
 
-  #region Entity Implementations
-  public EntityInfo GetEntityInfo () {
-    return EntityInfo.Player;
-  }
-  #endregion
+	#endregion
+
+	#region Entity Implementations
+	public EntityInfo GetEntityInfo()
+	{
+		return EntityInfo.Player;
+	}
+	#endregion
 }

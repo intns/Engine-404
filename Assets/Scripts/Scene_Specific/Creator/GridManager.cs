@@ -213,7 +213,7 @@ public class GridManager : MonoBehaviour {
         _UICompiling.SetActive (true);
         break;
       case GM_Stage.Play:
-        Globals._FadeManager.FadeInOut (1, 1, new Action (() => {
+        FadeManager._Instance.FadeInOut (1, 1, new Action (() => {
           for (int i = 0; i < _DeleteOnPlay.Length; i++) {
             Destroy (_DeleteOnPlay[i]);
           }

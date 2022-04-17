@@ -13,76 +13,103 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenuUI : BaseUIController {
-  [Header ("Components")]
-  [SerializeField] private Transform _Canvas = null;
-  [SerializeField] private Transform _TemplateButton = null;
+public class MainMenuUI : MonoBehaviour
+{
+	[Header("Components")]
+	[SerializeField] private Transform _Canvas = null;
+	[SerializeField] private CanvasGroup _CanvasGroup = null;
+	[SerializeField] private Transform _TemplateButton = null;
 
-  private void Awake () {
-    Globals._FadeManager.FadeIn (1, new Action (() => {
-      if (Application.isEditor || Debug.isDebugBuild) {
-        bool skippedCurrent = false;
-        List<Transform> objects = new List<Transform> ();
-        // Generate options for every scene
-        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++) {
-          // Don't generate an option for the current scene
-          if (SceneUtility.GetScenePathByBuildIndex (i) == SceneManager.GetActiveScene ().path) {
-            skippedCurrent = true;
-            continue;
-          }
+	private IEnumerator FadeInCanvas()
+	{
+		float t = 0;
+		float time = 0.5f;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
+			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / time);
+			yield return null;
+		}
+	}
 
-          string sceneName = Path.GetFileNameWithoutExtension (SceneUtility.GetScenePathByBuildIndex (i));
+	private void Awake()
+	{
+		_CanvasGroup.alpha = 0;
 
-          Transform obj = Instantiate (_TemplateButton, _Canvas);
-          obj.GetComponentInChildren<Text> ().text = sceneName;
-          obj.GetComponent<Button> ().onClick.AddListener (() => Globals._FadeManager.FadeInOut (1, 1, () => SceneManager.LoadScene (sceneName)));
-          obj.GetComponent<RectTransform> ().localPosition = new Vector3 (-450, 300 - ((skippedCurrent ? i - 1 : i) * 100));
-          obj.gameObject.SetActive (true);
-          objects.Add (obj);
-        }
+		FadeManager._Instance.FadeIn(3.25f, new Action(() =>
+		{
+			if (Application.isEditor || Debug.isDebugBuild)
+			{
+				bool skippedCurrent = false;
+				List<Transform> objects = new List<Transform>();
+				// Generate options for every scene
+				for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+				{
+					// Don't generate an option for the current scene
+					if (SceneUtility.GetScenePathByBuildIndex(i) == SceneManager.GetActiveScene().path)
+					{
+						skippedCurrent = true;
+						continue;
+					}
 
-        StartCoroutine (FadeInDebugControls (objects));
-      }
-    }));
-  }
+					string sceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
 
-  public void PressPlay () {
-    Globals._FadeManager.FadeInOut (1, 1, () => SceneManager.LoadScene ("scn_demo_level"));
-  }
+					Transform obj = Instantiate(_TemplateButton, _Canvas);
+					obj.GetComponentInChildren<Text>().text = sceneName;
+					obj.GetComponent<Button>().onClick.AddListener(() => FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene(sceneName)));
+					obj.GetComponent<RectTransform>().localPosition = new Vector3(-450, 300 - ((skippedCurrent ? i - 1 : i) * 100));
+					obj.gameObject.SetActive(true);
+					objects.Add(obj);
+				}
 
-  public void PressExit () {
-    Application.Quit ();
-    Debug.Break ();
-  }
+				StartCoroutine(FadeInDebugControls(objects));
+			}
 
-  public IEnumerator FadeInDebugControls (List<Transform> objects) {
-    List<Image> imageComponents = new List<Image> ();
-    List<Text> textComponents = new List<Text> ();
-    for (int i = 0; i < objects.Count; i++) {
-      imageComponents.Add (objects[i].GetComponent<Image> ());
-      textComponents.Add (objects[i].GetComponentInChildren<Text> ());
-    }
+			StartCoroutine(FadeInCanvas());
+		}));
+	}
 
-    float t = 0;
-    float time = 0.5f;
-    while (t <= time) {
-      t += Time.deltaTime;
+	public void PressPlay()
+	{
+		FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene("scn_demo_level"));
+	}
 
-      foreach (Image item in imageComponents) {
-        item.color = Color.Lerp (Color.clear, Color.white, t / time);
-      }
+	public void PressExit()
+	{
+		Application.Quit();
+		Debug.Break();
+	}
 
-      foreach (Text item in textComponents) {
-        item.color = Color.Lerp (Color.clear, Color.white, t / time);
-      }
+	public IEnumerator FadeInDebugControls(List<Transform> objects)
+	{
+		List<Image> imageComponents = new List<Image>();
+		List<Text> textComponents = new List<Text>();
+		for (int i = 0; i < objects.Count; i++)
+		{
+			imageComponents.Add(objects[i].GetComponent<Image>());
+			textComponents.Add(objects[i].GetComponentInChildren<Text>());
+		}
 
-      yield return null;
-    }
+		float t = 0;
+		float time = 0.5f;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
 
-    // Reparent because we want it to overlay everything
-    _FadePanel.transform.SetParent (null, false);
-    _FadePanel.transform.SetParent (_Canvas, false);
-    _FadePanel.enabled = false;
-    yield return null;
-  }
+			foreach (Image item in imageComponents)
+			{
+				item.color = Color.Lerp(Color.clear, Color.white, t / time);
+			}
+
+			foreach (Text item in textComponents)
+			{
+				item.color = Color.Lerp(Color.clear, Color.white, t / time);
+			}
+
+			yield return null;
+		}
+
+		// Reparent because we want it to overlay everything
+		yield return null;
+	}
 }

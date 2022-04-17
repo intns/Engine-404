@@ -167,6 +167,18 @@ public static class PikminStatsManager {
     }
   }
 
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static PikminTypeStats GetStats(PikminColour colour)
+	{
+		return colour switch
+		{
+			PikminColour.Red => _RedStats,
+			PikminColour.Yellow => _YellowStats,
+			PikminColour.Blue => _BlueStats,
+			_ => default,
+		};
+	}
+
   // Adds a Pikmin to the squad, and handles adding to the stats
   [MethodImpl (MethodImplOptions.AggressiveInlining)]
   public static void AddToSquad (PikminAI pikmin, PikminColour colour, PikminMaturity maturity) {
@@ -226,7 +238,7 @@ public static class PikminStatsManager {
   //Sets up formations for the pikmin to use
   public static void ReassignFormation () {
     for (int i = 0; i < _InSquad.Count; i++) {
-      _InSquad[i]._FormationPosition.position = Globals._Player._PikminController.GetPositionAt (i);
+      _InSquad[i]._FormationPosition.position = Player._Instance._PikminController.GetPositionAt (i);
     }
   }
 
@@ -277,6 +289,13 @@ public static class PikminStatsManager {
   [MethodImpl (MethodImplOptions.AggressiveInlining)]
   public static int GetTotalOnField () {
     return _RedStats.GetTotalOnField () + _YellowStats.GetTotalOnField () + _BlueStats.GetTotalOnField ();
+  }
+
+
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public static int GetTotalInOnion()
+  {
+    return _RedStats.GetTotalInOnion() + _YellowStats.GetTotalInOnion() + _BlueStats.GetTotalInOnion();
   }
   #endregion
 }

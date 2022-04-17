@@ -68,10 +68,10 @@ public class PikminCarry : MonoBehaviour, IPikminCarry {
       }
 
       if (!_HasMatchingColour || _DebugOnion._PikminColour == _MatchColour) {
-        _DebugOnion.EnterOnion (_MatchPikminToProduce);
+        _DebugOnion.EnterOnion (_MatchPikminToProduce, _MatchColour);
       }
       else {
-        _DebugOnion.EnterOnion (_NonMatchPikminToProduce);
+        _DebugOnion.EnterOnion (_NonMatchPikminToProduce, _MatchColour);
       }
 
       Destroy (_Text.gameObject);

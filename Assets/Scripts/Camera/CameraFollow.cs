@@ -84,7 +84,7 @@ public class CameraFollow : MonoBehaviour {
 
   private void Start () {
     _MainCamera = Camera.main;
-    _PlayerPosition = Globals._Player.transform;
+    _PlayerPosition = Player._Instance.transform;
     _AudioSource = GetComponent<AudioSource> ();
 
     if (_DefaultHolders.Length != _TopViewHolders.Length) {
@@ -100,6 +100,11 @@ public class CameraFollow : MonoBehaviour {
   }
 
   private void Update () {
+    if (Player._Instance._MovementController._Paralysed)
+    {
+      return;
+    }
+
     // Rotate the camera to look at the Player
     transform.rotation = Quaternion.Lerp (transform.rotation,
       Quaternion.LookRotation (_PlayerPosition.position - transform.position),
@@ -177,7 +182,7 @@ public class CameraFollow : MonoBehaviour {
     if (Input.GetButtonDown ("Left Bumper") &&
       _ResetCooldownTimer <= 0 &&
       _Apply) {
-      float yDif = transform.eulerAngles.y - Globals._Player._MovementController._RotationBeforeIdle.eulerAngles.y;
+      float yDif = transform.eulerAngles.y - Player._Instance._MovementController._RotationBeforeIdle.eulerAngles.y;
       if (Mathf.Abs (yDif) >= 0.5f) {
         StartCoroutine (ResetCamOverTime (_CameraResetLength));
       }
@@ -212,7 +217,7 @@ public class CameraFollow : MonoBehaviour {
   }
 
   private IEnumerator ResetCamOverTime (float length) {
-    Vector3 resultPos = Globals._Player._MovementController._RotationBeforeIdle * (Vector3.back * (_OrbitRadius - (_HolderIndex + 1.6f)));
+    Vector3 resultPos = Player._Instance._MovementController._RotationBeforeIdle * (Vector3.back * (_OrbitRadius - (_HolderIndex + 1.6f)));
 
     float oldRot = _LookAtRotationSpeed;
     _LookAtRotationSpeed = 10;

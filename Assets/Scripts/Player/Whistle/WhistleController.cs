@@ -71,10 +71,15 @@ public class WhistleController : MonoBehaviour {
   }
 
   private void Start () {
-    _PlayerTransform = Globals._Player.transform;
+    _PlayerTransform = Player._Instance.transform;
   }
 
   private void Update () {
+    if (Player._Instance._MovementController._Paralysed)
+    {
+      return;
+    }
+
     // Check if there is a controller attached
     string[] names = Input.GetJoystickNames ();
     if (names.Length > 0 && names[0].Length > 0) {

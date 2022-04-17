@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CreatorUIController : BaseUIController {
+public class CreatorUIController : MonoBehaviour {
   // for actual UI go to Scripts/Scene_Specific/Creator/GridManager.cs
 
   [SerializeField] private GameObject _Canvas = null;
