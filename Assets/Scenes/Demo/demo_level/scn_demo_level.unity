@@ -205,15 +205,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 447001606}
     m_Modifications:
-    - target: {fileID: 384720796, guid: 9d4b74980fb6805418b455da620332ec, type: 3}
-      propertyPath: _OnionCanvas
-      value: 
-      objectReference: {fileID: 602108115}
-    - target: {fileID: 4965161099554057597, guid: 9d4b74980fb6805418b455da620332ec,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8067516413408633971, guid: 9d4b74980fb6805418b455da620332ec,
         type: 3}
       propertyPath: m_RootOrder
@@ -729,12 +720,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 10
   m_TargetDisplay: 0
---- !u!223 &602108115 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 4583903312056656717, guid: 9d4b74980fb6805418b455da620332ec,
-    type: 3}
-  m_PrefabInstance: {fileID: 84682179}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &641327849
 GameObject:
   m_ObjectHideFlags: 0

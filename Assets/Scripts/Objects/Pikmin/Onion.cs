@@ -21,7 +21,10 @@ public class Onion : MonoBehaviour
 
 	[Header("References")]
 	[SerializeField] private Canvas _OnionCanvas = null;
-	[SerializeField] private TextMeshProUGUI _AmountText;
+	[SerializeField] private TextMeshProUGUI _InOnionText;
+	[SerializeField] private TextMeshProUGUI _InSquadText;
+	[SerializeField] private TextMeshProUGUI _InFieldText;
+	[SerializeField] private CanvasGroup _CanvasGroup = null;
 
 	[Header("Debug")]
 	[SerializeField] private GameObject _Pikmin = null;
@@ -51,6 +54,32 @@ public class Onion : MonoBehaviour
 	private PikminAmount _CurPikminAmounts;
 	private PikminAmount _OldPikminAmounts;
 
+	private float _InputTimer = 0;
+
+	private IEnumerator FadeInCanvas()
+	{
+		float t = 0;
+		float time = 0.5f;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
+			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / time);
+			yield return null;
+		}
+	}
+
+	private IEnumerator FadeOutCanvas()
+	{
+		float t = 0;
+		float time = 0.2f;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
+			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / time);
+			yield return null;
+		}
+	}
+
 	private void Awake()
 	{
 		_OnionCanvas.gameObject.SetActive(false);
@@ -63,7 +92,7 @@ public class Onion : MonoBehaviour
 			if (Input.GetButtonDown("A Button") && !_InMenu)
 			{
 				Player._Instance.Pause(true);
-				FadeManager._Instance.FadeInOut(0.25f, 0.25f, new Action(() =>
+				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 				{
 					_OnionCanvas.gameObject.SetActive(true);
 
@@ -80,15 +109,19 @@ public class Onion : MonoBehaviour
 					};
 
 					_InMenu = true;
+
+					StartCoroutine(FadeInCanvas());
 				}));
 			}
 			else if (Input.GetButtonDown("B Button") && _InMenu)
 			{
-				FadeManager._Instance.FadeInOut(0.25f, 0.25f, new Action(() =>
+				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 				{
 					_OnionCanvas.gameObject.SetActive(false);
 					Player._Instance.Pause(false);
 					_InMenu = false;
+
+					StartCoroutine(FadeOutCanvas());
 				}));
 			}
 		}
@@ -96,31 +129,63 @@ public class Onion : MonoBehaviour
 		// Handle in-menu input processing
 		if (_InMenu)
 		{
-			float vInput = Input.GetAxis("Vertical") * 5;
-			// Up on the stick / W
-			if (vInput > 0.75f)
+			float vInput = Input.GetAxis("Vertical");
+			if (_InputTimer <= 0)
 			{
-				if (_CurPikminAmounts._InSquad > 0)
+				// Up on the stick / W
+				switch (vInput)
 				{
-					_CurPikminAmounts._InSquad--;
-					_CurPikminAmounts._InOnion++;
+					case > 0.25f:
+						if (_CurPikminAmounts._InSquad > 0)
+						{
+							if (vInput > 0.8f)
+							{
+								_InputTimer = 0.05f;
+							}
+							else
+							{
+								_InputTimer = 0.1f;
+							}
+
+							_CurPikminAmounts._InSquad--;
+							_CurPikminAmounts._InOnion++;
+						}
+						break;
+					case < -0.25f:
+						if (_CurPikminAmounts._InOnion > 0)
+						{
+							if (vInput < -0.8f)
+							{
+								_InputTimer = 0.05f;
+							}
+							else
+							{
+								_InputTimer = 0.1f;
+							}
+
+							int totalAdd = _CurPikminAmounts._InSquad - _OldPikminAmounts._InSquad;
+							if (_CurPikminAmounts._InSquad + 1 <= 100
+								&& totalAdd + PikminStatsManager.GetTotalOnField() < 100)
+							{
+								_CurPikminAmounts._InOnion--;
+								_CurPikminAmounts._InSquad++;
+							}
+						}
+						break;
+					default:
+						break;
 				}
 			}
-			// Down on the stick / S
-			else if (vInput < -0.75f)
+			else
 			{
-				if (_CurPikminAmounts._InOnion > 0)
-				{
-					_CurPikminAmounts._InOnion--;
-					_CurPikminAmounts._InSquad++;
-				}
+				_InputTimer -= Time.deltaTime;
 			}
 
 			if (Input.GetButtonDown("A Button")
 				&& (_CurPikminAmounts._InSquad != _OldPikminAmounts._InSquad
 					|| _CurPikminAmounts._InOnion != _OldPikminAmounts._InOnion))
 			{
-				FadeManager._Instance.FadeInOut(0.25f, 0.25f, new Action(() =>
+				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 				{
 					_OnionCanvas.gameObject.SetActive(false);
 					Player._Instance.Pause(false);
@@ -152,15 +217,20 @@ public class Onion : MonoBehaviour
 							}
 						}
 					}
+
+					StartCoroutine(FadeOutCanvas());
 				}));
 			}
 
-			_AmountText.text = $"{_CurPikminAmounts._InSquad} / {_CurPikminAmounts._InOnion}";
+			_InOnionText.text = $"{_CurPikminAmounts._InOnion}";
+			_InSquadText.text = $"{_CurPikminAmounts._InSquad}";
+			_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
 		}
 	}
 
 	private IEnumerator IE_SpawnPikmin(int amount)
 	{
+		_CanUse = false;
 		yield return new WaitForSeconds(0.25f);
 
 		PikminTypeStats stats = PikminStatsManager.GetStats(_PikminColour);
@@ -189,13 +259,13 @@ public class Onion : MonoBehaviour
 		{
 			for (int i = 0; i < amount; i++)
 			{
-				GameObject pikminObj = Instantiate(_Pikmin, hit.point + GetRandomPikminSpawnPosition(), Quaternion.identity);
-				PikminAI ai = pikminObj.GetComponent<PikminAI>();
-				ai._Data._PikminColour = _PikminColour;
-				ai.SetMaturity(toSpawn[i]);
+				_CanUse = false;
+				TryCreatePikmin(hit.point + GetRandomPikminSpawnPosition(), _PikminColour, toSpawn[i]);
 				yield return new WaitForSeconds(0.02f);
 			}
 		}
+
+		_CanUse = true;
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -240,8 +310,23 @@ public class Onion : MonoBehaviour
 		{
 			for (int i = 0; i < toProduce; i++)
 			{
-				Instantiate(_Pikmin, hit.point + GetRandomPikminSpawnPosition(), Quaternion.identity);
+				TryCreatePikmin(hit.point + GetRandomPikminSpawnPosition(), colour, PikminMaturity.Leaf);
 			}
+		}
+	}
+
+	private void TryCreatePikmin(Vector3 position, PikminColour colour, PikminMaturity maturity)
+	{
+		if (PikminStatsManager.GetTotalOnField() == 100)
+		{
+			PikminStatsManager.Add(colour, maturity, PikminStatSpecifier.InOnion);
+		}
+		else
+		{
+			GameObject pikmin = Instantiate(_Pikmin, position, Quaternion.identity);
+			PikminAI ai = pikmin.GetComponent<PikminAI>();
+			ai._Data._PikminColour = colour;
+			ai.SetMaturity(maturity);
 		}
 	}
 }
