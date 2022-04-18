@@ -209,6 +209,11 @@ PrefabInstance:
       propertyPath: _OnionCanvas
       value: 
       objectReference: {fileID: 602108115}
+    - target: {fileID: 4965161099554057597, guid: 9d4b74980fb6805418b455da620332ec,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8067516413408633971, guid: 9d4b74980fb6805418b455da620332ec,
         type: 3}
       propertyPath: m_RootOrder
@@ -1222,68 +1227,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Player_Set
       objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762115, guid: a4e570be87d7aca479ee34c405cc44de,
+    - target: {fileID: 6727951351443153435, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
-      propertyPath: m_Version
-      value: 8
+      propertyPath: m_Parameters.colorGradient.key0.a
+      value: 0.6666667
       objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+    - target: {fileID: 6727951351443153435, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
-      propertyPath: _DefaultHolders.Array.data[1]._FOV
-      value: 65
+      propertyPath: m_Parameters.colorGradient.key1.a
+      value: 0.6666667
       objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+    - target: {fileID: 6727951351443153435, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
-      propertyPath: _DefaultHolders.Array.data[2]._FOV
-      value: 70
+      propertyPath: m_Parameters.colorGradient.key2.a
+      value: 0.78431374
       objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+    - target: {fileID: 6727951351443153435, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
-      propertyPath: _DefaultHolders.Array.data[0]._Offset.x
-      value: 11.25
+      propertyPath: m_Parameters.colorGradient.key2.b
+      value: 0.015245676
       objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+    - target: {fileID: 6727951351443153435, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
-      propertyPath: _DefaultHolders.Array.data[0]._Offset.y
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _DefaultHolders.Array.data[1]._Offset.x
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _DefaultHolders.Array.data[1]._Offset.y
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _DefaultHolders.Array.data[2]._Offset.x
-      value: 18.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _DefaultHolders.Array.data[2]._Offset.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393339214141954, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _CanThrowPikmin
+      propertyPath: m_Parameters.colorGradient.key2.g
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7354393339214141954, guid: a4e570be87d7aca479ee34c405cc44de,
+    - target: {fileID: 6727951351443153435, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
-      propertyPath: _ThrowingGravity
-      value: -16
+      propertyPath: m_Parameters.colorGradient.key2.r
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7354393339214141954, guid: a4e570be87d7aca479ee34c405cc44de,
+    - target: {fileID: 6727951351443153435, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
-      propertyPath: _PikminLayer.m_Bits
-      value: 1024
+      propertyPath: m_Parameters.colorGradient.m_Mode
+      value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 19898295894470324, guid: a4e570be87d7aca479ee34c405cc44de, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4e570be87d7aca479ee34c405cc44de, type: 3}
 --- !u!1001 &1243911459
 PrefabInstance:
@@ -2786,6 +2765,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 447001606}
     m_Modifications:
+    - target: {fileID: 1023579018677027718, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder

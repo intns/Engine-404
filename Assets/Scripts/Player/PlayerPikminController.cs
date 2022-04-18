@@ -12,12 +12,14 @@ public class PlayerPikminController : MonoBehaviour
 	[Header("Components")]
 	public Transform _FormationCenter;
 	[SerializeField] private LayerMask _PikminLayer;
+	[SerializeField] LineRenderer _LineRenderer;
 
 	[Header("Throwing")]
+	[SerializeField] private float _PikminThrowRadius = 17.5f;
+	[SerializeField] private float _PikminThrowHeight = 5;
+
 	[SerializeField] private float _PikminGrabRadius = 5;
 	[SerializeField] private float _VerticalMaxGrabRadius = 1.5f;
-	[SerializeField] private float _ThrowingGravity = Physics.gravity.y;
-	[SerializeField] private float _LaunchAngle = 50.0f;
 	[SerializeField] private Transform _WhistleTransform = null;
 
 	[Header("Formation")]
@@ -25,8 +27,17 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] private float _StartingDistance = 2;
 	[SerializeField] private float _DistancePerPikmin = 0.05f; // How much is added to the offset for each pikmin
 
-	public bool _CanThrowPikmin = true;
+	[HideInInspector] public bool _CanThrowPikmin = true;
 	private GameObject _PikminInHand;
+
+	Vector3[] _LinePositions = new Vector3[50];
+	Vector3 _ThrownVelocity = Vector3.zero;
+
+	private void Awake()
+	{
+		_LineRenderer.positionCount = _LinePositions.Length;
+		_ThrownVelocity = transform.forward;
+	}
 
 	private void Update()
 	{
@@ -43,6 +54,7 @@ public class PlayerPikminController : MonoBehaviour
 		{
 			_PikminInHand.GetComponent<PikminAI>().EndThrowHold();
 			_PikminInHand = null;
+			_LineRenderer.enabled = false;
 		}
 
 		HandleFormation();
@@ -64,6 +76,57 @@ public class PlayerPikminController : MonoBehaviour
 		Gizmos.DrawWireSphere(_FormationCenter.position, 1);
 	}
 
+	private Vector3 CalculateVelocity(Vector3 destination, float vd)
+	{
+		Vector3 displacementXZ = MathUtil.XZToXYZ(new Vector2(destination.x - _PikminInHand.transform.position.x,
+			destination.z - _PikminInHand.transform.position.z));
+
+		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + _PikminThrowHeight) / Physics.gravity.y) + Mathf.Sqrt(2 * (vd - _PikminThrowHeight) / Physics.gravity.y);
+
+		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * _PikminThrowHeight);
+		Vector3 velocityXZ = (displacementXZ / time) * 1.01f;
+
+		return velocityXZ + (velocityY * -Mathf.Sign(Physics.gravity.y));
+	}
+
+	private void SetLineRenderer()
+	{
+		transform.LookAt(new Vector3(_WhistleTransform.position.x, transform.position.y, _WhistleTransform.position.z));
+		_PikminInHand.transform.LookAt(new Vector3(_WhistleTransform.position.x, _PikminInHand.transform.position.y, _WhistleTransform.position.z));
+
+		Vector3 offs = (_WhistleTransform.position - _PikminInHand.transform.position) * 1.025f;
+		// TODO: Fix clamp magnitude not working as intended!
+		Vector3 destination = _PikminInHand.transform.position + Vector3.ClampMagnitude(offs, _PikminThrowRadius);
+		float vd = destination.y - _PikminInHand.transform.position.y;
+
+		if (vd < _PikminThrowHeight)
+		{
+			_ThrownVelocity = CalculateVelocity(destination, vd);
+		}
+
+		Vector3 velocity = _ThrownVelocity * 1.02f;
+		Vector3 pos = _PikminInHand.transform.position;
+		Vector3 oldPos = pos;
+		int i = 0;
+		for (; i < _LinePositions.Length; i++)
+		{
+			velocity += Physics.gravity * Time.fixedDeltaTime;
+			pos += velocity * Time.fixedDeltaTime;
+
+			Vector3 heading = pos - oldPos;
+			if (Physics.Raycast(oldPos, heading.normalized, heading.magnitude))
+			{
+				break;
+			}
+
+			oldPos = pos;
+			_LinePositions[i] = pos;
+		}
+
+		_LineRenderer.positionCount = i;
+		_LineRenderer.SetPositions(_LinePositions);
+	}
+
 	/// <summary>
 	/// Handles throwing the Pikmin including arc calculation
 	/// </summary>
@@ -80,6 +143,7 @@ public class PlayerPikminController : MonoBehaviour
 			{
 				_PikminInHand = closestPikmin;
 				_PikminInHand.GetComponent<PikminAI>().StartThrowHold();
+				_LineRenderer.enabled = true;
 			}
 		}
 
@@ -89,47 +153,27 @@ public class PlayerPikminController : MonoBehaviour
 			bool aButtonAction = false;
 			if (Input.GetButton("A Button"))
 			{
+				SetLineRenderer();
 				// Move the Pikmin's model to in front of the player
 				_PikminInHand.transform.position = transform.position + (transform.forward / 2);
 				aButtonAction = true;
 			}
+
 			if (Input.GetButtonUp("A Button"))
 			{
-				/*
-         * TODO: convert to Quadratic Bezier curve
-         */
 				_PikminInHand.GetComponent<PikminAI>().EndThrowHold();
 
-				// Cache the Rigidbody component
-				Rigidbody rigidbody = _PikminInHand.GetComponent<Rigidbody>();
-
-				// Use X and Z coordinates to calculate distance between Pikmin and whistle                
 				Vector3 whistlePos = new Vector3(_WhistleTransform.position.x, 0, _WhistleTransform.position.z);
-				Vector3 pikiPos = new Vector3(_PikminInHand.transform.position.x, 0, _PikminInHand.transform.position.z);
-
-				// Calculate vertical and horizontal distance between Pikmin and whistle
-				float vd = _WhistleTransform.position.y - _PikminInHand.transform.position.y;
-				float d = Vector3.Distance(pikiPos, whistlePos);
-
-				// Plug the variables into the equation...
-				float g = _ThrowingGravity;
-				float angle = Mathf.Deg2Rad * _LaunchAngle;
-
-				// Calculate horizontal and vertical velocity
-				float velX = Mathf.Sqrt(g * d * d / (2.0f * (vd - (d * Mathf.Tan(angle)))));
-				float velY = velX * Mathf.Tan(angle);
-
-				// Face whistle and convert local velocity to global, and apply it
 				transform.LookAt(new Vector3(whistlePos.x, transform.position.y, whistlePos.z));
 				_PikminInHand.transform.LookAt(new Vector3(whistlePos.x, _PikminInHand.transform.position.y, whistlePos.z));
-				Vector3 finalVel = _PikminInHand.transform.TransformDirection(new Vector3(0.0f, velY, velX));
-				if (finalVel != Vector3.zero)
+
+				Rigidbody rigidbody = _PikminInHand.GetComponent<Rigidbody>();
+				if (_ThrownVelocity != Vector3.zero)
 				{
-					rigidbody.velocity = finalVel;
+					rigidbody.velocity = _ThrownVelocity;
 				}
 
-				// TODO: Adjust targeting to be more accurate to whistle position/avoid having Pikmin
-				// be thrown directly in front of Olimar rather than onto the whistle.
+				_LineRenderer.enabled = false;
 
 				// As the Pikmin has been thrown, remove it from the hand variable
 				_PikminInHand = null;
@@ -140,6 +184,7 @@ public class PlayerPikminController : MonoBehaviour
 			{
 				_PikminInHand.GetComponent<PikminAI>().EndThrowHold();
 				_PikminInHand = null;
+				_LineRenderer.enabled = false;
 			}
 		}
 	}

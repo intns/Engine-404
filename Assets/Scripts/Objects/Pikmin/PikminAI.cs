@@ -165,9 +165,9 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				break;
 
 			case PikminStates.Carrying:
+			case PikminStates.Thrown:
 			case PikminStates.RunningTowards:
 			case PikminStates.BeingHeld:
-			case PikminStates.Thrown:
 			case PikminStates.Waiting:
 				break;
 			default:
@@ -300,11 +300,11 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			}
 			else if (!collision.gameObject.CompareTag("Player"))
 			{
+				Debug.Log(collision.gameObject.name);
 				ChangeState(PikminStates.Idle);
 			}
 		}
-
-		if (!_InSquad && collision.transform.CompareTag("Player"))
+		else if (!_InSquad && collision.transform.CompareTag("Player"))
 		{
 			AddToSquad();
 		}
