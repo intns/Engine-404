@@ -276,8 +276,9 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	{
 		if (_LatchedTransform != null)
 		{
+			Vector3 finalPos = ClosestPointOnTarget(_LatchedTransform, _LatchedTransform.GetComponent<Collider>()) + transform.forward;
 			transform.SetPositionAndRotation(_LatchedTransform.position + _LatchedOffset,
-				Quaternion.LookRotation(ClosestPointOnTarget(_LatchedTransform, _LatchedTransform.GetComponent<Collider>()) - transform.position));
+				Quaternion.LookRotation(finalPos - transform.position));
 		}
 	}
 
