@@ -1536,7 +1536,7 @@ MonoBehaviour:
     m_Bits: 1024
   _MaxDistFromPlayer: 6
   _MoveSpeed: 2.5
-  _MaxDistance: Infinity
+  _MaxDistance: 500
   _MapMask:
     serializedVersion: 2
     m_Bits: 12800
@@ -2108,6 +2108,7 @@ MonoBehaviour:
   _SquadText: {fileID: 5962230567137733079}
   _AreaText: {fileID: 2476761787977775653}
   _CanvasGroup: {fileID: 711430542}
+  _DisplayValues: 0
 --- !u!1 &8317884609185741642
 GameObject:
   m_ObjectHideFlags: 0

@@ -1485,7 +1485,7 @@ PrefabInstance:
     - target: {fileID: 7354393338239934354, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
       propertyPath: _MaxDistance
-      value: 80
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7354393338239934354, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
@@ -3168,21 +3168,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 447001606}
     m_Modifications:
-    - target: {fileID: 1023579018677027712, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1023579018677027719, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1023579018677027719, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder

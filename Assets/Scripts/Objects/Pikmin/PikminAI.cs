@@ -37,6 +37,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	// Holds everything that makes a Pikmin unique
 	public PikminObject _Data = null;
 	[SerializeField] private LayerMask _PikminInteractableMask = 0;
+	[SerializeField] private TrailRenderer _ThrowTrailRenderer = null;
 
 	[Header("VFX")]
 	[SerializeField] private GameObject _DeathParticle = null;
@@ -518,31 +519,40 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			return;
 		}
 
-		if (_CurrentState == PikminStates.RunningTowards || _CurrentState == PikminStates.Idle && _TargetObject != null)
+		switch (_CurrentState)
 		{
-			_TargetObject = null;
-			_TargetObjectCollider = null;
-		}
-		else if (_CurrentState == PikminStates.Attacking)
-		{
-			// Reset latching variables
-			transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-			LatchOnto(null);
+			case PikminStates.RunningTowards:
+			case PikminStates.Idle when _TargetObject != null:
+				_TargetObject = null;
+				_TargetObjectCollider = null;
+				break;
+			case PikminStates.Attacking:
+				// Reset latching variables
+				transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+				LatchOnto(null);
 
-			_MovementVector = !Physics.Raycast(transform.position, Vector3.down, 0.5f) ? Vector3.down * 5 : Vector3.zero;
-			_Animator.SetBool("Attacking", false);
+				_MovementVector = !Physics.Raycast(transform.position, Vector3.down, 0.5f) ? Vector3.down * 5 : Vector3.zero;
+				_Animator.SetBool("Attacking", false);
 
-			_AttackingTransform = null;
+				_AttackingTransform = null;
 
-			_Attacking?.OnAttackEnd(this);
-		}
-		else if (_CurrentState == PikminStates.Carrying)
-		{
-			LatchOnto(null);
-			_Carrying?.OnCarryLeave(this);
+				_Attacking?.OnAttackEnd(this);
+				break;
+			case PikminStates.Carrying:
+				LatchOnto(null);
+				_Carrying?.OnCarryLeave(this);
+				break;
+			case PikminStates.Thrown:
+				_ThrowTrailRenderer.enabled = false;
+				break;
 		}
 
 		_CurrentState = newState;
+
+		if (newState == PikminStates.Thrown)
+		{
+			_ThrowTrailRenderer.enabled = true;
+		}
 	}
 
 	public void StartThrowHold()
