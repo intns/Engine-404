@@ -287,10 +287,8 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		if (_CurrentState == PikminStates.Thrown
 			|| (_CurrentState == PikminStates.RunningTowards && !_InSquad))
 		{
-			Debug.Log($"Colliding with {collision.gameObject.name}", this);
 			if (collision.gameObject.CompareTag("PikminInteract"))
 			{
-				Debug.Log("ah");
 				_TargetObject = collision.transform;
 				_TargetObjectCollider = collision.collider;
 				_Intention = collision.gameObject.GetComponentInParent<IPikminInteractable>().IntentionType;
@@ -438,9 +436,13 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	#region Misc
 	private void MoveTowards(Vector3 position, bool stopEarly = true)
 	{
-		// We need to be atleast somewhat close to a surface before we can start moving again
-		if (Physics.Raycast(transform.position - transform.up, Vector3.down, 1.5f))
+		// If we're on top of something we should be interacting with, we'll slide off it
+		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.5f, _PikminInteractableMask))
 		{
+			Vector3 direction = transform.position - hit.transform.position;
+			direction.y = 0;
+
+			_MovementVector += 75 * Time.deltaTime * direction;
 			return;
 		}
 
