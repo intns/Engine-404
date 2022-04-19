@@ -209,7 +209,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				Vector3 directionToObj = ClosestPointOnTarget() - transform.position;
 				if (Mathf.Abs(directionToObj.y) < 0.25f)
 				{
-					if (Physics.Raycast(transform.position, directionToObj.normalized, out RaycastHit hit, 2.5f) 
+					if (Physics.Raycast(transform.position, directionToObj.normalized, out RaycastHit hit, 2.5f)
 						&& hit.collider != _TargetObjectCollider
 						&& hit.collider.CompareTag("Pikmin"))
 					{
@@ -285,9 +285,13 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			Vector2 horizonalVelocity = new Vector2(_Rigidbody.velocity.x, _Rigidbody.velocity.z);
 			_Animator.SetBool("Walking", horizonalVelocity.magnitude >= 1.5f);
 		}
+		else if (_CurrentState == PikminStates.Carrying)
+		{
+			_Animator.SetBool("Walking", true);
+		}
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnCollisionHandle(Collision collision)
 	{
 		if (_CurrentState == PikminStates.Thrown || (_CurrentState == PikminStates.RunningTowards && !_InSquad))
 		{
@@ -309,6 +313,9 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			AddToSquad();
 		}
 	}
+
+	private void OnCollisionEnter(Collision collision) => OnCollisionHandle(collision);
+	private void OnCollisionStay(Collision collision) => OnCollisionHandle(collision);
 
 	#endregion
 
