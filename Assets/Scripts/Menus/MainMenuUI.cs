@@ -21,6 +21,11 @@ public class MainMenuUI : MonoBehaviour
 	[SerializeField] private CanvasGroup _CanvasGroup = null;
 	[SerializeField] private Transform _TemplateButton = null;
 
+	[Header("Settings")]
+	[SerializeField] private float _FadeinBlackTime = 2; 
+	[SerializeField] private float _FadeinUITime = 2; 
+	[SerializeField] private float _FadeoutTime = 2; 
+
 	[Header("Audio")]
 	[SerializeField] private AudioClip _HoverAudio;
 	[SerializeField] private AudioClip _SelectAudio;
@@ -28,7 +33,7 @@ public class MainMenuUI : MonoBehaviour
 	private IEnumerator FadeInCanvas()
 	{
 		float t = 0;
-		float time = 0.5f;
+		float time = _FadeinUITime;
 		while (t <= time)
 		{
 			t += Time.deltaTime;
@@ -41,7 +46,7 @@ public class MainMenuUI : MonoBehaviour
 	{
 		_CanvasGroup.alpha = 0;
 
-		FadeManager._Instance.FadeIn(3.25f, new Action(() =>
+		FadeManager._Instance.FadeIn(_FadeinBlackTime, new Action(() =>
 		{
 			if (Application.isEditor || Debug.isDebugBuild)
 			{
@@ -77,13 +82,13 @@ public class MainMenuUI : MonoBehaviour
 	public void PressPlay()
 	{
 		AudioSource.PlayClipAtPoint(_SelectAudio, Camera.main.transform.position, 0.25f);
-		FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene("scn_demo_level"));
+		FadeManager._Instance.FadeInOut(_FadeoutTime, _FadeoutTime, () => SceneManager.LoadScene("scn_demo_level"));
 	}
 
 	public void PressExit()
 	{
 		AudioSource.PlayClipAtPoint(_SelectAudio, Camera.main.transform.position, 0.25f);
-		FadeManager._Instance.FadeOut(1, () => { Application.Quit(); Debug.Break(); });
+		FadeManager._Instance.FadeOut(_FadeoutTime, () => { Application.Quit(); Debug.Break(); });
 	}
 
 	public void OnPointerEnter(BaseEventData ev)
@@ -102,7 +107,7 @@ public class MainMenuUI : MonoBehaviour
 		}
 
 		float t = 0;
-		float time = 0.5f;
+		float time = _FadeinUITime;
 		while (t <= time)
 		{
 			t += Time.deltaTime;

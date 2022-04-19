@@ -154,9 +154,9 @@ public class PlayerPikminController : MonoBehaviour
 			bool aButtonAction = false;
 			if (Input.GetButton("A Button"))
 			{
-				SetLineRenderer();
 				// Move the Pikmin's model to in front of the player
 				_PikminInHand.transform.position = transform.position + (transform.forward / 2);
+				SetLineRenderer();
 				aButtonAction = true;
 			}
 

@@ -68,7 +68,7 @@ public class FadeManager : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			_FadeImage.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, t / time));
+			_FadeImage.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, MathUtil.EaseOut3(t / time)));
 
 			yield return null;
 		}
