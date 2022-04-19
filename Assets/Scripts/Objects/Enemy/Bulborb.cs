@@ -35,8 +35,7 @@ public class Bulborb : MonoBehaviour, IPikminAttack, IHealth
 	[SerializeField] BulborbIntention _CurrentIntention = BulborbIntention.Sleep;
 	[SerializeField] float _CurrentMoveSpeed = 0;
 	[SerializeField] Vector3 _MovementVector;
-	[SerializeField] Vector3 _SpawnPosition;
-	[SerializeField] Quaternion _SpawnRotation;
+	[SerializeField] GameObject _SpawnObj;
 
 	[SerializeField] private Transform _TargetObject;
 	[SerializeField] private Collider _TargetObjectCollider;
@@ -51,9 +50,8 @@ public class Bulborb : MonoBehaviour, IPikminAttack, IHealth
 		_Rigidbody = GetComponent<Rigidbody>();
 		_DamageScript = GetComponent<EnemyDamageScript>();
 
-		_SpawnPosition = transform.position;
-		_SpawnRotation = transform.rotation;
-
+		_SpawnObj = new GameObject(name + " Spawn Point");
+		_SpawnObj.transform.SetPositionAndRotation(transform.position, transform.rotation);
 		_CurrentState = BulborbStates.Sleeping;
 	}
 
@@ -98,11 +96,11 @@ public class Bulborb : MonoBehaviour, IPikminAttack, IHealth
 		if (_TargetObject == null)
 		{
 			// Return back to spawn position
-			MoveTowards(_SpawnPosition);
+			MoveTowards(_SpawnObj.transform.position);
 
-			if (MathUtil.DistanceTo(transform.position, _SpawnPosition, false) < 0.25f)
+			if (MathUtil.DistanceTo(transform.position, _SpawnObj.transform.position, false) < 0.25f)
 			{
-				transform.rotation = _SpawnRotation;
+				transform.rotation = _SpawnObj.transform.rotation;
 				ChangeState(BulborbStates.Sleeping);
 			}
 		}
@@ -111,10 +109,16 @@ public class Bulborb : MonoBehaviour, IPikminAttack, IHealth
 			Vector3 closestPoint = ClosestPointOnTarget(_TargetObject, _TargetObjectCollider);
 			MoveTowards(closestPoint);
 
-			if (MathUtil.DistanceTo(transform.position, closestPoint, true) < 0.25f)
+			float dist = MathUtil.DistanceTo(transform.position, closestPoint, false);
+			if (dist < 0.5f)
 			{
 				Debug.Log("Attempting attack", this);
 				ChangeState(BulborbStates.Attack);
+			}
+
+			if (MathUtil.DistanceTo(transform.position, _SpawnObj.transform.position, false) > 25)
+			{
+				_TargetObject = null;
 			}
 		}
 
