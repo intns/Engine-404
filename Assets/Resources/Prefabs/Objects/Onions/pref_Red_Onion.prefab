@@ -637,8 +637,6 @@ MonoBehaviour:
   _InFieldText: {fileID: 8317071074415917742}
   _CanvasGroup: {fileID: 3082391488115674717}
   _Pikmin: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
-  _Type: 0
-  _PikminColour: 0
   _MapMask:
     serializedVersion: 2
     m_Bits: 512
@@ -1388,7 +1386,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2886905622570042016
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1930,7 +1928,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8067516413269037334}
   - component: {fileID: 8067516413269037332}
-  - component: {fileID: 8067516413269037335}
   m_Layer: 0
   m_Name: shape1
   m_TagString: Untagged
@@ -2018,20 +2015,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.019727468, y: -3.893569, z: -2.1692042}
     m_Extent: {x: 7.8176622, y: 4.378045, z: 6.782676}
   m_DirtyAABB: 0
---- !u!64 &8067516413269037335
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8067516413269037329}
-  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1057767229849474467, guid: 19eed1259990c08448a5c023520eae58, type: 3}
 --- !u!1 &8067516413328070138
 GameObject:
   m_ObjectHideFlags: 0

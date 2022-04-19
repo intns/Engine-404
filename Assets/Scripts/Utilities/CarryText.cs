@@ -77,7 +77,7 @@ public class CarryText : MonoBehaviour {
     Color fromCol = fadeIn ? Color.clear : _TextColor;
     Color toCol = fadeIn ? _TextColor : Color.clear;
     while (time <= t) {
-      _TMP.color = Color.Lerp (fromCol, toCol, time / t);
+      _TMP.color = Color.Lerp (fromCol, toCol, MathUtil.EaseOut2(time / t));
       time += Time.deltaTime;
       yield return null;
     }

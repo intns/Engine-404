@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,6 +20,10 @@ public class MainMenuUI : MonoBehaviour
 	[SerializeField] private Transform _Canvas = null;
 	[SerializeField] private CanvasGroup _CanvasGroup = null;
 	[SerializeField] private Transform _TemplateButton = null;
+
+	[Header("Audio")]
+	[SerializeField] private AudioClip _HoverAudio;
+	[SerializeField] private AudioClip _SelectAudio;
 
 	private IEnumerator FadeInCanvas()
 	{
@@ -71,16 +76,22 @@ public class MainMenuUI : MonoBehaviour
 
 	public void PressPlay()
 	{
+		AudioSource.PlayClipAtPoint(_SelectAudio, Camera.main.transform.position, 0.25f);
 		FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene("scn_demo_level"));
 	}
 
 	public void PressExit()
 	{
-		Application.Quit();
-		Debug.Break();
+		AudioSource.PlayClipAtPoint(_SelectAudio, Camera.main.transform.position, 0.25f);
+		FadeManager._Instance.FadeOut(1, () => { Application.Quit(); Debug.Break(); });
 	}
 
-	public IEnumerator FadeInDebugControls(List<Transform> objects)
+	public void OnPointerEnter(BaseEventData ev)
+	{
+		AudioSource.PlayClipAtPoint(_HoverAudio, Camera.main.transform.position, 0.25f);
+	}
+
+	private IEnumerator FadeInDebugControls(List<Transform> objects)
 	{
 		List<Image> imageComponents = new List<Image>();
 		List<Text> textComponents = new List<Text>();

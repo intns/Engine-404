@@ -81,7 +81,8 @@ public class PlayerPikminController : MonoBehaviour
 		Vector3 displacementXZ = MathUtil.XZToXYZ(new Vector2(destination.x - _PikminInHand.transform.position.x,
 			destination.z - _PikminInHand.transform.position.z));
 
-		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + _PikminThrowHeight) / Physics.gravity.y) + Mathf.Sqrt(2 * (vd - _PikminThrowHeight) / Physics.gravity.y);
+		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + _PikminThrowHeight) / Physics.gravity.y) 
+			+ Mathf.Sqrt(2 * (vd - _PikminThrowHeight) / Physics.gravity.y);
 
 		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * _PikminThrowHeight);
 		Vector3 velocityXZ = (displacementXZ / time) * 1.01f;

@@ -13,12 +13,6 @@ using UnityEngine;
 
 public class Onion : MonoBehaviour
 {
-	public enum OnionType
-	{
-		Classic, // When first finding an onion, it will be this
-		Master // Main onion that has the combination of other onions
-	}
-
 	[Header("References")]
 	[SerializeField] private Canvas _OnionCanvas = null;
 	[SerializeField] private TextMeshProUGUI _InOnionText;
@@ -30,10 +24,9 @@ public class Onion : MonoBehaviour
 	[SerializeField] private GameObject _Pikmin = null;
 
 	[Header("Settings")]
-	[SerializeField] private OnionType _Type = OnionType.Classic;
-	public PikminColour _PikminColour = PikminColour.Red;
 	[SerializeField] private LayerMask _MapMask = 0;
 	[SerializeField] private LayerMask _PikminMask = 0;
+	public PikminColour _PikminColour { get; private set; } = PikminColour.Red;
 
 	[Header("Dispersal")]
 	[SerializeField] private float _DisperseRadius = 2;
@@ -71,11 +64,11 @@ public class Onion : MonoBehaviour
 	private IEnumerator FadeOutCanvas()
 	{
 		float t = 0;
-		float time = 0.2f;
+		float time = 0.5f;
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / time);
+			_CanvasGroup.alpha = Mathf.Lerp(1, 0, t / time);
 			yield return null;
 		}
 	}
