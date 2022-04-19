@@ -153,10 +153,15 @@ MonoBehaviour:
   _CarryCircleRadius: 0.95
   _CarryCircleOffset: {x: -0.06, y: 0.23, z: 0.06}
   _AccelerationSpeed: 8
-  _MaxSpeed: 2
-  _AmountToCreate: 1
+  _BaseSpeed: 2
+  _SpeedAddedPerPikmin: 0.5
+  _MaxSpeed: 4
+  _ColourToGenerateFor: 0
+  _PikminToProduceMatchColour: 2
+  _PikminToProduceNonMatchColour: 1
   _CurrentMoveSpeed: 0
   _MoveVector: {x: 0, y: 0, z: 0}
+  _NextDestination: {x: 0, y: 0, z: 0}
 --- !u!54 &756053896
 Rigidbody:
   m_ObjectHideFlags: 0

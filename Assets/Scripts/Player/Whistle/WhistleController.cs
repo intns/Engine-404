@@ -75,7 +75,7 @@ public class WhistleController : MonoBehaviour {
   }
 
   private void Update () {
-    if (Player._Instance._MovementController._Paralysed)
+    if (GameManager._IsPaused || Player._Instance._MovementController._Paralysed)
     {
       return;
     }

@@ -691,7 +691,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 3
+  m_CollisionDetection: 2
 --- !u!136 &1023579018677027719
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -751,7 +751,6 @@ MonoBehaviour:
   _TargetObject: {fileID: 0}
   _TargetObjectCollider: {fileID: 0}
   _AttackingTransform: {fileID: 0}
-  _AttackTimer: 0
   _AttackJumpTimer: 0
   _CurrentStatSpecifier: 0
   _CurrentMoveSpeed: 0
@@ -762,4 +761,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1152
   _PlayerPushScale: 200
-  _PikminPushScale: 5
+  _PikminPushScale: 45
+  _LatchedTransform: {fileID: 0}
+  _LatchedOffset: {x: 0, y: 0, z: 0}

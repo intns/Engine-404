@@ -10,7 +10,7 @@ public class PlayerUIController : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _AreaText;
 	[SerializeField] private CanvasGroup _CanvasGroup;
 
-	bool _DisplayValues = false;
+	[SerializeField] bool _DisplayValues = false;
 	int _InSquadAmount = 0;
 	int _InFieldAmount = 0;
 
@@ -18,6 +18,8 @@ public class PlayerUIController : MonoBehaviour
 	{
 		float t = 0;
 		float time = 1;
+		_DisplayValues = false;
+
 		while (t <= time)
 		{
 			t += Time.deltaTime;
@@ -36,6 +38,8 @@ public class PlayerUIController : MonoBehaviour
 	{
 		float t = 0;
 		float time = 1;
+		_DisplayValues = true;
+
 		while (t <= time)
 		{
 			t += Time.deltaTime;

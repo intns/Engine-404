@@ -44,7 +44,6 @@ public class PikminObject : ScriptableObject {
   public float _AttackJumpTimer = 5;
 
   public float _AttackDamage = 2.5f;
-  public float _AttackDelay = 1;
 
   [Header ("Audio")]
   public float _AudioVolume = 1;

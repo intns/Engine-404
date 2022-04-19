@@ -18,20 +18,26 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	[Space()]
 	[SerializeField] private float _AccelerationSpeed = 2;
-	[SerializeField] private float _MaxSpeed = 2;
+	[SerializeField] private float _BaseSpeed = 2;
+	[SerializeField] private float _SpeedAddedPerPikmin = 0.5f;
+	[SerializeField] private float _MaxSpeed = 3;
 
 	[Space()]
-	[SerializeField] private int _AmountToCreate = 1;
+	[SerializeField] private PikminColour _ColourToGenerateFor = PikminColour.Size;
+	[SerializeField] private int _PikminToProduceMatchColour = 2;
+	[SerializeField] private int _PikminToProduceNonMatchColour = 1;
 
 	[Header("Debugging")]
 	[SerializeField] private float _CurrentMoveSpeed = 0;
 	[SerializeField] private Vector3 _MoveVector = Vector3.zero;
-	private Vector3 _NextDestination = Vector3.zero;
+	[SerializeField] private Vector3 _NextDestination = Vector3.zero;
 
 	private CarryText _CarryText = null;
 	private Onion _MainOnion = null;
 	private Rigidbody _Rigidbody = null;
 	private Seeker _Pathfinder = null;
+
+	private float _CurrentSpeedTarget = 0;
 
 	private Path _CurrentPath = null;
 	private int _CurrentPathPosIdx = 0;
@@ -45,6 +51,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		_Rigidbody = GetComponent<Rigidbody>();
 		_Pathfinder = GetComponent<Seeker>();
+
+		_CurrentSpeedTarget = _BaseSpeed;
 
 		GameObject carryText = Instantiate(_CarryTextPrefab, transform.position, Quaternion.identity);
 		_CarryText = carryText.GetComponent<CarryText>();
@@ -77,23 +85,38 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 				_CarryingPikmin[0].ChangeState(PikminStates.Idle);
 			}
 
-			_MainOnion.EnterOnion(_AmountToCreate, PikminColour.Red);
+			if (_MainOnion._PikminColour == _ColourToGenerateFor
+				|| _ColourToGenerateFor == PikminColour.Size)
+			{
+				_MainOnion.EnterOnion(_PikminToProduceMatchColour, _ColourToGenerateFor);
+			}
+			else
+			{
+				_MainOnion.EnterOnion(_PikminToProduceNonMatchColour, _ColourToGenerateFor);
+			}
 
 			Destroy(_CarryText.gameObject);
 			Destroy(gameObject);
 		}
-		else if (MathUtil.DistanceTo(transform.position, _CurrentPath.vectorPath[_CurrentPathPosIdx], false) < 0.24f)
+		else if (_CurrentPath != null && _CurrentPath.vectorPath.Count != 0)
 		{
-			_CurrentPathPosIdx++;
-			if (_CurrentPathPosIdx >= _CurrentPath.vectorPath.Count)
+			if (MathUtil.DistanceTo(transform.position, _CurrentPath.vectorPath[_CurrentPathPosIdx], false) < 0.24f)
 			{
-				// we've reached the final point and yet still not at the onion, recalculate!
-				_Pathfinder.StartPath(transform.position, _MainOnion._CarryEndpoint.position, OnPathCalculated);
+				_CurrentPathPosIdx++;
+				if (_CurrentPathPosIdx >= _CurrentPath.vectorPath.Count)
+				{
+					// we've reached the final point and yet still not at the onion, recalculate!
+					_Pathfinder.StartPath(transform.position, _MainOnion._CarryEndpoint.position, OnPathCalculated);
+				}
+				else
+				{
+					_NextDestination = _CurrentPath.vectorPath[_CurrentPathPosIdx];
+				}
 			}
-			else
-			{
-				_NextDestination = _CurrentPath.vectorPath[_CurrentPathPosIdx];
-			}
+		}
+		else
+		{
+			_NextDestination = transform.position - _MainOnion._CarryEndpoint.position;
 		}
 	}
 
@@ -102,19 +125,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		if (GameManager._IsPaused)
 		{
 			return;
-		}
-
-		// Set the position and rotations of the Pikmin
-		for (int i = 0; i < _CarryingPikmin.Count; i++)
-		{
-			PikminAI pikminAi = _CarryingPikmin[i];
-			Vector3 delta = transform.position - pikminAi.transform.position;
-			delta.y = 0;
-			delta.Normalize();
-
-			pikminAi.transform.SetPositionAndRotation(
-				GetPikminPosition(_CarryingPikmin.Count, i),
-				Quaternion.LookRotation(delta));
 		}
 
 		if (_IsBeingCarried)
@@ -153,7 +163,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		delta.y = 0;
 		delta.Normalize();
 
-		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _MaxSpeed, _AccelerationSpeed * Time.fixedDeltaTime);
+		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.fixedDeltaTime);
 
 		Vector3 newVelocity = delta * _CurrentMoveSpeed;
 		newVelocity.y = _Rigidbody.velocity.y;
@@ -204,8 +214,20 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		{
 			// Enable AI
 			Path path = _Pathfinder.StartPath(transform.position, _MainOnion._CarryEndpoint.position, OnPathCalculated);
-			path.BlockUntilCalculated();
 			_IsBeingCarried = true;
+
+			_CurrentSpeedTarget += _SpeedAddedPerPikmin;
+			if (_CurrentSpeedTarget > _MaxSpeed)
+			{
+				_CurrentSpeedTarget = _MaxSpeed;
+			}
+
+			// Set the position and rotations of the Pikmin
+			for (int i = 0; i < _CarryingPikmin.Count; i++)
+			{
+				PikminAI pikminAi = _CarryingPikmin[i];
+				pikminAi._LatchedOffset = _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryingPikmin.Count, i)) * _CarryCircleRadius;
+			}
 		}
 
 		UpdateText();
@@ -221,6 +243,20 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		{
 			// Disable AI
 			_IsBeingCarried = false;
+
+			_CurrentSpeedTarget -= _SpeedAddedPerPikmin;
+			if (_CurrentSpeedTarget < _BaseSpeed)
+			{
+				// SHOULDN'T be needed, but just in case
+				_CurrentSpeedTarget = _BaseSpeed;
+			}
+
+			// Set the position and rotations of the Pikmin
+			for (int i = 0; i < _CarryingPikmin.Count; i++)
+			{
+				PikminAI pikminAi = _CarryingPikmin[i];
+				pikminAi._LatchedOffset = transform.position - GetPikminPosition(_CarryingPikmin.Count, i);
+			}
 		}
 
 		UpdateText();

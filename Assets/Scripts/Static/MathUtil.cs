@@ -81,6 +81,11 @@ public static class MathUtil
 		return xD * xD + yD * yD + zD * zD;
 	}
 
+	/// <summary>
+	/// A basic square function to allow for an Ease-In LERP
+	/// </summary>
+	/// <param name="t">The time input to LERP</param>
+	/// <returns>The eased time</returns>
 	public static float EaseIn2(float t) => t * t;
 	public static float EaseIn3(float t) => t * t * t;
 	public static float EaseIn4(float t) => t * t * t * t;
