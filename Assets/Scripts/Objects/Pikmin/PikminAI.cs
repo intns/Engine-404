@@ -36,8 +36,13 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	[Header("Components")]
 	// Holds everything that makes a Pikmin unique
 	public PikminObject _Data = null;
+
+	[SerializeField] private float _PlayerPushScale = 30;
+	[SerializeField] private float _PikminPushScale = 15;
+
 	[SerializeField] private LayerMask _PikminInteractableMask = 0;
 	[SerializeField] private TrailRenderer _ThrowTrailRenderer = null;
+	[SerializeField] private LayerMask _PlayerAndPikminLayer = 0;
 
 	[Header("VFX")]
 	[SerializeField] private GameObject _DeathParticle = null;
@@ -51,35 +56,33 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 
 	#region Debugging Variables
 
-	[Header("Debugging")]
+	[Space, Header("Debugging")]
 	[SerializeField] private PikminStates _CurrentState = PikminStates.Idle;
 
-	[Header("Idle")]
-	[SerializeField] private PikminIntention _Intention = PikminIntention.Idle;
+	[Space, Header("Idle")]
 	[SerializeField] private Transform _TargetObject = null;
 	[SerializeField] private Collider _TargetObjectCollider = null;
+	[SerializeField] private PikminIntention _Intention = PikminIntention.Idle;
 
-	[Header("Attacking")]
+	[Space, Header("Attacking")]
 	[SerializeField] private IPikminAttack _Attacking = null;
 	[SerializeField] private Transform _AttackingTransform = null;
 	[SerializeField] private float _AttackJumpTimer = 0;
 
-	[Header("Carrying")]
+	[Space, Header("Carrying")]
 	[SerializeField] private IPikminCarry _Carrying = null;
 
-	[Header("Stats")]
+	[Space, Header("Stats")]
 	[SerializeField] private PikminStatSpecifier _CurrentStatSpecifier = default;
 	[SerializeField] private float _CurrentMoveSpeed = 0;
 
-	[Header("Misc")]
+	[Space, Header("Misc")]
 	public bool _InSquad = false;
 	[SerializeField] private float _RagdollTime = 0;
 	[SerializeField] private Vector3 _MovementVector = Vector3.zero;
-	[SerializeField] private LayerMask _PlayerAndPikminLayer = 0;
-	[SerializeField] private float _PlayerPushScale = 30;
-	[SerializeField] private float _PikminPushScale = 15;
 
 	[SerializeField] private Transform _LatchedTransform = null;
+	[SerializeField] private Collider[] _Colliders = new Collider[10];
 	public Vector3 _LatchedOffset = Vector3.zero;
 	#endregion
 
@@ -176,6 +179,12 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				break;
 			default:
 				break;
+		}
+
+		int amt = Physics.OverlapSphereNonAlloc(transform.position, 0.5f, _Colliders, _PikminInteractableMask);
+		for (int i = 0; i < amt; i++)
+		{
+			OnCollisionHandle(_Colliders[i]);
 		}
 	}
 
@@ -283,20 +292,20 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		}
 	}
 
-	private void OnCollisionHandle(Collision collision)
+	private void OnCollisionHandle(Collider collision)
 	{
 		if (_CurrentState == PikminStates.Thrown
 			|| (_CurrentState == PikminStates.RunningTowards && !_InSquad))
 		{
-			if (collision.gameObject.CompareTag("PikminInteract"))
+			if (collision.CompareTag("PikminInteract"))
 			{
 				_TargetObject = collision.transform;
-				_TargetObjectCollider = collision.collider;
+				_TargetObjectCollider = collision;
 				_Intention = collision.gameObject.GetComponentInParent<IPikminInteractable>().IntentionType;
 				CarryoutIntention();
 				return;
 			}
-			else if (!collision.gameObject.CompareTag("Player"))
+			else if (!collision.CompareTag("Player"))
 			{
 				ChangeState(PikminStates.Idle);
 			}
@@ -307,8 +316,10 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		}
 	}
 
-	private void OnCollisionEnter(Collision collision) => OnCollisionHandle(collision);
-	private void OnCollisionStay(Collision collision) => OnCollisionHandle(collision);
+	private void OnCollisionEnter(Collision collision)
+	{
+		OnCollisionHandle(collision.collider);
+	}
 
 	#endregion
 
@@ -331,7 +342,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				ChangeState(PikminStates.Attacking);
 				break;
 			case PikminIntention.Carry:
-				_Carrying = _TargetObject.GetComponent<IPikminCarry>();
+				_Carrying = _TargetObject.GetComponentInParent<IPikminCarry>();
 				_Carrying.OnCarryStart(this);
 				break;
 			case PikminIntention.PullWeeds:
@@ -416,7 +427,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	private void HandleAttacking()
 	{
 		// The object we were attacking has died, so we can go back to being idle
-		if (_Attacking == null)
+		if (_Attacking == null || _AttackingTransform == null)
 		{
 			ChangeState(PikminStates.Idle);
 			return;
