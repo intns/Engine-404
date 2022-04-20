@@ -65,7 +65,7 @@ public class Player : MonoBehaviour, IHealth, IEntityInfo
 	public void Pause(bool toPause)
 	{
 		// Time.timeScale = toPause ? 0 : 1;
-		GameManager._IsPaused = true;
+		GameManager._IsPaused = toPause;
 		_MovementController._Paralysed = toPause;
 	}
 
