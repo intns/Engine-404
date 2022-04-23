@@ -37,6 +37,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	// Holds everything that makes a Pikmin unique
 	public PikminObject _Data = null;
 
+	[Header("Pushing away things")]
 	[SerializeField] private float _PlayerPushScale = 30;
 	[SerializeField] private float _PikminPushScale = 15;
 
@@ -82,7 +83,6 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	[SerializeField] private Vector3 _MovementVector = Vector3.zero;
 
 	[SerializeField] private Transform _LatchedTransform = null;
-	[SerializeField] private Collider[] _Colliders = new Collider[10];
 	public Vector3 _LatchedOffset = Vector3.zero;
 	#endregion
 
@@ -91,6 +91,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	private Animator _Animator = null;
 	private Rigidbody _Rigidbody = null;
 	private CapsuleCollider _Collider = null;
+	private Transform _Transform = null;
 
 	#region Interface Methods
 
@@ -126,6 +127,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	{
 		GameObject fObject = new GameObject($"{name}_formation_pos");
 		_FormationPosition = fObject.transform;
+		_Transform = transform;
 	}
 
 	private void Awake()
@@ -181,10 +183,10 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				break;
 		}
 
-		int amt = Physics.OverlapSphereNonAlloc(transform.position, 0.5f, _Colliders, _PikminInteractableMask);
-		for (int i = 0; i < amt; i++)
+		Collider[] colls = Physics.OverlapSphere(_Transform.position, 0.5f, _PikminInteractableMask);
+		foreach (Collider col in colls)
 		{
-			OnCollisionHandle(_Colliders[i]);
+			OnCollisionHandle(col);
 		}
 	}
 
@@ -222,7 +224,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 
 			if (_Intention == PikminIntention.Attack && _TargetObject != null)
 			{
-				Vector3 directionToObj = ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius) - transform.position;
+				Vector3 directionToObj = ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius) - _Transform.position;
 				if (Mathf.Abs(directionToObj.y) > 0.25f)
 				{
 					ChangeState(PikminStates.Idle);
@@ -230,19 +232,19 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			}
 		}
 
-		Collider[] objects = Physics.OverlapSphere(transform.position, 0.5f, _PlayerAndPikminLayer);
+		Collider[] objects = Physics.OverlapSphere(_Transform.position, 0.5f, _PlayerAndPikminLayer);
 		foreach (Collider collider in objects)
 		{
 			if (collider.CompareTag("Pikmin"))
 			{
-				Vector3 direction = transform.position - collider.transform.position;
+				Vector3 direction = _Transform.position - collider.transform.position;
 				direction.y = 0;
 
 				_MovementVector += _PikminPushScale * Time.deltaTime * direction.normalized;
 			}
 			else if (collider.CompareTag("Player"))
 			{
-				Vector3 direction = transform.position - collider.transform.position;
+				Vector3 direction = _Transform.position - collider.transform.position;
 				direction.y = 0;
 
 				_MovementVector += _PlayerPushScale * Time.deltaTime * direction.normalized;
@@ -271,24 +273,19 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		_Animator.SetBool("Thrown", _CurrentState == PikminStates.Thrown);
 		_Animator.SetBool("Attacking", _CurrentState == PikminStates.Attacking);
 
-		if (_CurrentState == PikminStates.Idle || _CurrentState == PikminStates.RunningTowards)
+		switch (_CurrentState)
 		{
-			Vector2 horizonalVelocity = new Vector2(_Rigidbody.velocity.x, _Rigidbody.velocity.z);
-			_Animator.SetBool("Walking", horizonalVelocity.magnitude >= 1.5f);
-		}
-		else if (_CurrentState == PikminStates.Carrying)
-		{
-			_Animator.SetBool("Walking", true);
-		}
-	}
+			case PikminStates.Idle:
+			case PikminStates.RunningTowards:
+				{
+					Vector2 horizonalVelocity = new Vector2(_Rigidbody.velocity.x, _Rigidbody.velocity.z);
+					_Animator.SetBool("Walking", horizonalVelocity.magnitude >= 1.5f);
+					break;
+				}
 
-	private void MaintainLatch()
-	{
-		if (_LatchedTransform != null)
-		{
-			Vector3 finalPos = ClosestPointOnTarget(_LatchedTransform, _LatchedTransform.GetComponent<Collider>()) + transform.forward;
-			transform.SetPositionAndRotation(_LatchedTransform.position + _LatchedOffset,
-				Quaternion.LookRotation(finalPos - transform.position));
+			case PikminStates.Carrying:
+				_Animator.SetBool("Walking", true);
+				break;
 		}
 	}
 
@@ -365,13 +362,13 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	private void HandleIdle()
 	{
 		// Look for a target object
-		Collider[] objects = Physics.OverlapSphere(transform.position, _Data._SearchRadius, _PikminInteractableMask);
+		Collider[] objects = Physics.OverlapSphere(_Transform.position, _Data._SearchRadius, _PikminInteractableMask);
 		foreach (Collider collider in objects)
 		{
 			// Determine if the collider is on the same level as us
-			Vector3 direction = collider.ClosestPoint(transform.position) - transform.position;
+			Vector3 direction = collider.ClosestPoint(_Transform.position) - _Transform.position;
 			direction.y = Mathf.Clamp(direction.y, -1.5f, 1.5f);
-			if (!Physics.Raycast(transform.position, direction, _Data._SearchRadius, _PikminInteractableMask))
+			if (!Physics.Raycast(_Transform.position, direction, _Data._SearchRadius, _PikminInteractableMask))
 			{
 				continue;
 			}
@@ -409,12 +406,12 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		}
 
 		PikminStatsManager.Remove(_Data._PikminColour, _CurrentMaturity, _CurrentStatSpecifier);
-		AudioSource.PlayClipAtPoint(_Data._DeathNoise, transform.position, _Data._AudioVolume);
+		AudioSource.PlayClipAtPoint(_Data._DeathNoise, _Transform.position, _Data._AudioVolume);
 
 		// Create the soul gameobject, and play the death noise
 		if (_DeathParticle != null)
 		{
-			ParticleSystem soul = Instantiate(_DeathParticle, transform.position, Quaternion.Euler(-90, 0, 0)).GetComponent<ParticleSystem>();
+			ParticleSystem soul = Instantiate(_DeathParticle, _Transform.position, Quaternion.Euler(-90, 0, 0)).GetComponent<ParticleSystem>();
 			ParticleSystem.MainModule soulEffect = soul.main;
 			soulEffect.startColor = _Data._DeathSpiritPikminColour;
 			Destroy(soul.gameObject, 5);
@@ -434,24 +431,15 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		}
 	}
 
-	// CALLED BY ANIMATION - PIKMIN HIT
-	public void HandleAttackingAnimationHit()
-	{
-		if (_Attacking != null)
-		{
-			_Attacking.OnAttackRecieve(_Data._AttackDamage);
-		}
-	}
-
 	#endregion
 
 	#region Misc
 	private void MoveTowards(Vector3 position, bool stopEarly = true)
 	{
 		// If we're on top of something we should be interacting with, we'll slide off it
-		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.5f, _PikminInteractableMask))
+		if (Physics.Raycast(_Transform.position, Vector3.down, out RaycastHit hit, 1.5f, _PikminInteractableMask))
 		{
-			Vector3 direction = transform.position - hit.transform.position;
+			Vector3 direction = _Transform.position - hit.transform.position;
 			direction.y = 0;
 
 			_MovementVector += 75 * Time.deltaTime * direction;
@@ -459,11 +447,11 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		}
 
 		// Rotate to look at the object we're moving towards
-		Vector3 delta = (position - transform.position).normalized;
+		Vector3 delta = (position - _Transform.position).normalized;
 		delta.y = 0;
-		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(delta), _Data._RotationSpeed * Time.deltaTime);
+		_Transform.rotation = Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(delta), _Data._RotationSpeed * Time.deltaTime);
 
-		if (stopEarly && MathUtil.DistanceTo(transform.position, position, false) < 0.5f)
+		if (stopEarly && MathUtil.DistanceTo(_Transform.position, position, false) < 0.5f)
 		{
 			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.25f);
 		}
@@ -488,19 +476,29 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		// Check if there is a collider for the target object we're running to
 		if (collider != null)
 		{
-			Vector3 direction = collider.ClosestPoint(transform.position) - transform.position;
+			Vector3 direction = collider.ClosestPoint(_Transform.position) - _Transform.position;
 			direction.y = 0;
-			if (Physics.Raycast(transform.position, direction, out RaycastHit hit, maxDistance))
+			if (Physics.Raycast(_Transform.position, direction, out RaycastHit hit, maxDistance))
 			{
 				return hit.point;
 			}
 			else
 			{
-				return collider.ClosestPoint(transform.position);
+				return collider.ClosestPoint(_Transform.position);
 			}
 		}
 
 		return target.position;
+	}
+
+	private void MaintainLatch()
+	{
+		if (_LatchedTransform != null)
+		{
+			Vector3 finalPos = ClosestPointOnTarget(_LatchedTransform, _LatchedTransform.GetComponent<Collider>()) + _Transform.forward;
+			_Transform.SetPositionAndRotation(_LatchedTransform.position + _LatchedOffset,
+				Quaternion.LookRotation(finalPos - _Transform.position));
+		}
 	}
 
 	#endregion
@@ -539,10 +537,10 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				break;
 			case PikminStates.Attacking:
 				// Reset latching variables
-				transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+				_Transform.rotation = Quaternion.Euler(0, _Transform.rotation.eulerAngles.y, 0);
 				LatchOnto(null);
 
-				_MovementVector = !Physics.Raycast(transform.position, Vector3.down, 0.5f) ? Vector3.down * 5 : Vector3.zero;
+				_MovementVector = !Physics.Raycast(_Transform.position, Vector3.down, 0.5f) ? Vector3.down * 5 : Vector3.zero;
 				_Animator.SetBool("Attacking", false);
 
 				_AttackingTransform = null;
@@ -605,9 +603,9 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			_Collider.isTrigger = true;
 
 			_TargetObjectCollider = obj.GetComponent<Collider>();
-			_LatchedOffset = transform.position - _LatchedTransform.position;
+			_LatchedOffset = _Transform.position - _LatchedTransform.position;
 			Vector3 finalPos = obj.position + _LatchedOffset;
-			transform.rotation = Quaternion.LookRotation(finalPos - transform.position);
+			_Transform.rotation = Quaternion.LookRotation(finalPos - _Transform.position);
 		}
 		else
 		{
@@ -658,6 +656,15 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	public void WaterLeave()
 	{
 		Debug.Log("Left water");
+	}
+
+	// CALLED BY ANIMATION - PIKMIN HIT
+	public void HandleAttackingAnimationHit()
+	{
+		if (_Attacking != null)
+		{
+			_Attacking.OnAttackRecieve(_Data._AttackDamage);
+		}
 	}
 
 	#endregion
