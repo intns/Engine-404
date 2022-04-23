@@ -45,7 +45,7 @@ public class PlayerMovementController : MonoBehaviour {
   }
 
   private void Update () {
-    if (_Paralysed) {
+    if (_Paralysed || GameManager._IsPaused) {
       return;
     }
 
@@ -96,7 +96,7 @@ public class PlayerMovementController : MonoBehaviour {
   }
 
   private void FixedUpdate () {
-    if (_Paralysed) {
+    if (_Paralysed || GameManager._IsPaused) {
       return;
     }
     // Calculate the velocity of the Player using the previous frame as a base point for the calculation

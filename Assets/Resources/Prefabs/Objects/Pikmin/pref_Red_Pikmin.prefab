@@ -844,9 +844,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.15
-  m_Height: 1
+  m_Height: 0.59549105
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 0.29774255, z: 0}
 --- !u!95 &1023579018677027712
 Animator:
   serializedVersion: 4
@@ -880,18 +880,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Data: {fileID: 11400000, guid: 88166cdec3d7d8b4abd1d7b065d99ec2, type: 2}
+  _PlayerPushScale: 200
+  _PikminPushScale: 45
+  _RejectionSphere:
+    position: {x: 0, y: 0.5, z: 0}
+    radius: 0.1
   _PikminInteractableMask:
     serializedVersion: 2
     m_Bits: 8192
   _ThrowTrailRenderer: {fileID: 6883210476010192704}
+  _PlayerAndPikminLayer:
+    serializedVersion: 2
+    m_Bits: 1152
   _DeathParticle: {fileID: 0}
   _FormationPosition: {fileID: 0}
   _LeafSpawn: {fileID: 7310664422868880664}
   _StartingMaturity: 0
   _CurrentState: 0
-  _Intention: 3
   _TargetObject: {fileID: 0}
   _TargetObjectCollider: {fileID: 0}
+  _Intention: 3
   _AttackingTransform: {fileID: 0}
   _AttackJumpTimer: 0
   _CurrentStatSpecifier: 0
@@ -899,10 +907,5 @@ MonoBehaviour:
   _InSquad: 0
   _RagdollTime: 0
   _MovementVector: {x: 0, y: 0, z: 0}
-  _PlayerAndPikminLayer:
-    serializedVersion: 2
-    m_Bits: 1152
-  _PlayerPushScale: 200
-  _PikminPushScale: 45
   _LatchedTransform: {fileID: 0}
   _LatchedOffset: {x: 0, y: 0, z: 0}

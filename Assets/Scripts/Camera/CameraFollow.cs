@@ -97,11 +97,44 @@ public class CameraFollow : MonoBehaviour
 			Debug.Break();
 		}
 
-		// Calculate the middle of the camera array, and access variables from the middle
-		_HolderIndex = Mathf.FloorToInt(_DefaultHolders.Length / 2);
+		_HolderIndex = 1;
 		_CurrentHolder = _DefaultHolders[_HolderIndex];
-		_OrbitRadius = _CurrentHolder._Offset.x;
-		_GroundOffset = _CurrentHolder._Offset.y;
+
+		// Iterate a few times to make sure we have a, generally speaking,
+		// estimate of where the camera will actually be when it unlocks
+		for (int i = 0; i < 3; i++)
+		{
+			// Calculate the offset from the ground using the players current position and our additional Y offset
+			float groundOffset = _CurrentHolder._Offset.y + _PlayerPosition.position.y;
+			// Store the orbit radius in case we need to alter it when moving onto a higher plane
+			float orbitRadius = _CurrentHolder._Offset.x;
+			if (Physics.SphereCast(transform.position + (Vector3.up * _EasingHeightOffset),
+					_HeightSphereRadius,
+					Vector3.down,
+					out RaycastHit hit,
+					_DistForHeightChange,
+					_MapLayer))
+			{
+				float offset = Mathf.Abs(_PlayerPosition.position.y - hit.point.y);
+				groundOffset += offset;
+				orbitRadius += offset / 1.5f;
+			}
+
+			// Smoothly change the OrbitRadius, GroundOffset and the Camera's field of view
+			_MainCamera.fieldOfView = _CurrentHolder._FOV;
+			_OrbitRadius = orbitRadius;
+			_GroundOffset = groundOffset;
+
+			// Calculates the position the Camera wants to be in, using Ground Offset and Orbit Radius
+			Vector3 targetPosition = (transform.position - _PlayerPosition.position).normalized *
+				Mathf.Abs(_OrbitRadius) +
+				_PlayerPosition.position;
+
+			targetPosition.y = _GroundOffset;
+
+			transform.position = targetPosition;
+			transform.LookAt(_PlayerPosition.position);
+		}
 	}
 
 	private void Update()
