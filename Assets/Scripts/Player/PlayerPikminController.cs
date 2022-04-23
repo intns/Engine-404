@@ -144,10 +144,6 @@ public class PlayerPikminController : MonoBehaviour
 			{
 				_PikminInHand = closestPikmin;
 
-				// Move the Pikmin before we start the hold, so that the
-				// throw line renderer doesn't glitch!
-				_PikminInHand.transform.position = transform.position + (transform.forward / 2);
-
 				_PikminInHand.GetComponent<PikminAI>().StartThrowHold();
 				_LineRenderer.enabled = true;
 			}

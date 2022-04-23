@@ -137,6 +137,8 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		_Animator = GetComponent<Animator>();
 		_Collider = GetComponent<CapsuleCollider>();
 
+		_ThrowTrailRenderer.enabled = false;
+
 		_CurrentStatSpecifier = PikminStatSpecifier.OnField;
 		PikminStatsManager.Add(_Data._PikminColour, _CurrentMaturity, _CurrentStatSpecifier);
 
