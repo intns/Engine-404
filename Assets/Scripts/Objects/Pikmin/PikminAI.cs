@@ -365,6 +365,8 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	{
 		// Look for a target object
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, _Data._SearchRadius, _PikminInteractableMask);
+		Collider closestCol = null;
+		float curClosestDist = float.PositiveInfinity;
 		foreach (Collider collider in objects)
 		{
 			// Determine if the collider is on the same level as us
@@ -387,10 +389,20 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				}
 			}
 
+			float distance = MathUtil.DistanceTo(transform.position, collider.transform.position);
+			if (distance < curClosestDist)
+			{
+				closestCol = collider;
+				curClosestDist = distance;
+			}
+		}
+
+		if (closestCol != null)
+		{
 			// We can move to the target object, and it is an interactable, so set our target object
 			ChangeState(PikminStates.RunningTowards);
-			_TargetObject = collider.transform;
-			_TargetObjectCollider = collider;
+			_TargetObject = closestCol.transform;
+			_TargetObjectCollider = closestCol;
 		}
 	}
 
