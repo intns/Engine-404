@@ -44,6 +44,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private List<PikminAI> _CarryingPikmin = new List<PikminAI>();
 	private bool _IsBeingCarried = false;
+	private bool _ShutdownInProgress = false;
 
 	private void Awake()
 	{
@@ -80,6 +81,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		if (MathUtil.DistanceTo(transform.position, _MainOnion._CarryEndpoint.position, false) < 0.25f)
 		{
+			_ShutdownInProgress = true;
 			while (_CarryingPikmin.Count > 0)
 			{
 				_CarryingPikmin[0].ChangeState(PikminStates.Idle);
@@ -172,6 +174,9 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void OnPathCalculated(Path p)
 	{
+		// If we're about to delete the object, no point in updating it
+		if (_ShutdownInProgress) { return; }
+
 		_CurrentPath = p;
 		_CurrentPathPosIdx = 0;
 		if (_CurrentPath.error)
@@ -182,6 +187,9 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void UpdateText()
 	{
+		// If we're about to delete the object, no point in updating it
+		if (_ShutdownInProgress) { return; }
+
 		_CarryText.HandleColor(_CarryingPikmin);
 		_CarryText.SetText(_CarryingPikmin.Count, _CarryMinMax.x);
 		if (_CarryingPikmin.Count == 0)
