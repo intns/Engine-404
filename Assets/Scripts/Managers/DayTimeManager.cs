@@ -64,7 +64,7 @@ public class DayTimeManager : MonoBehaviour {
 
     if (seconds >= _TotalDayTime) {
       // End of Day
-      FadeManager._Instance.FadeOut (2.5f, new Action (EndOfDayFadeoutAction));
+      FadeManager._Instance.FadeOut (2.5f, EndOfDayFadeoutAction);
     }
   }
 
