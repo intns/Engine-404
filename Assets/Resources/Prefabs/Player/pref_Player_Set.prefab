@@ -1520,6 +1520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _WhistleParticle: {fileID: 4933330165781303679, guid: d2edcde34a9f72e45ac144ae504089e9,
     type: 3}
+  _ParticleParent: {fileID: 781728743754191887}
   _BlowSound: {fileID: 8300000, guid: 416d585ccbeadbb44956266aab344f58, type: 3}
   _Reticle: {fileID: 1706413848}
   _ParticleDensity: 50
@@ -1903,7 +1904,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   _PikminThrowRadius: 20
-  _PikminThrowHeight: 5
   _PikminGrabRadius: 8
   _VerticalMaxGrabRadius: 2.5
   _WhistleTransform: {fileID: 7354393338239934355}

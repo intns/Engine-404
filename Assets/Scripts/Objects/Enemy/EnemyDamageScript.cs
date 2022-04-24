@@ -35,7 +35,7 @@ public class EnemyDamageScript : MonoBehaviour, IHealth {
   private void Start () {
     if (_Showcase == false) {
       // Find a health wheel that hasn't been claimed already
-      _HWScript = Instantiate (_HWObject, transform.position + _HWOffset, Quaternion.identity).GetComponentInChildren<HealthWheel> ();
+      _HWScript = Instantiate (_HWObject, transform.position + _HWOffset, Quaternion.identity, transform).GetComponentInChildren<HealthWheel> ();
       // Apply all of the required variables 
       _HWScript._Parent = transform;
       _HWScript._Offset = _HWOffset;

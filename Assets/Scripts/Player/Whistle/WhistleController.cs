@@ -15,6 +15,7 @@ public class WhistleController : MonoBehaviour
 
 	[Header("Components")]
 	[SerializeField] private GameObject _WhistleParticle = null;
+	[SerializeField] private Transform _ParticleParent = null;
 	[SerializeField] private AudioClip _BlowSound = null;
 	[SerializeField] private Transform _Reticle = null;
 
@@ -58,7 +59,7 @@ public class WhistleController : MonoBehaviour
 		_Particles = new GameObject[_ParticleDensity + 1];
 		for (int i = 0; i < _Particles.Length; i++)
 		{
-			_Particles[i] = Instantiate(_WhistleParticle);
+			_Particles[i] = Instantiate(_WhistleParticle, _ParticleParent);
 		}
 		AssignParticlePositions();
 		SetParticlesActive(false);
