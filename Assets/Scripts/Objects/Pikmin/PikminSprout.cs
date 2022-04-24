@@ -230,9 +230,10 @@ public class PikminSprout : MonoBehaviour
 		Vector3 nextPosition = _SpawnData._OriginPosition;
 		while (!path.IsFinished())
 		{
+			transform.up = transform.position - nextPosition;
 			transform.position = nextPosition;
 			nextPosition = path.GetPosition();
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 
 		transform.position = path.GetEndPosition();
