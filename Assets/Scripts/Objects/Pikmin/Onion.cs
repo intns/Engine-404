@@ -1,6 +1,6 @@
 /*
  * Onion.cs
- * Created by: Ambrosia
+ * Created by: Ambrosia & Helodity
  * Created on: 12/4/2020 (dd/mm/yy)
  * Created for: Needing an object to store our Pikmin in
  */
@@ -30,6 +30,7 @@ public class Onion : MonoBehaviour
 
 	[Header("Debug")]
 	[SerializeField] private GameObject _PikminSprout = null;
+	[SerializeField] private GameObject _PikminPrefab = null;
 
 	[Header("Settings")]
 	[SerializeField] private LayerMask _MapMask = 0;
@@ -39,6 +40,9 @@ public class Onion : MonoBehaviour
 
 	[Header("Dispersal")]
 	[SerializeField] private float _DisperseRadius = 2;
+	[SerializeField] private float _DisperseRate = 2;
+	private Vector3Int _SeedsToDisperse = Vector3Int.zero;
+	private float _TimeSinceLastDisperse = 0;
 
 	public Transform _CarryEndpoint = null;
 	private bool _CanUse = false;
@@ -228,6 +232,24 @@ public class Onion : MonoBehaviour
 			_InSquadText.text = $"{_CurPikminAmounts._InSquad}";
 			_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
 		}
+
+		int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
+		if(totalToDisperse > 0) {
+			_TimeSinceLastDisperse += Time.deltaTime;
+			if(_TimeSinceLastDisperse > 1 / totalToDisperse * _DisperseRate) {
+				_TimeSinceLastDisperse -= 1 / totalToDisperse * _DisperseRate;
+				if(_SeedsToDisperse.x > 0) {
+					TryCreateSprout(PikminColour.Red);
+					_SeedsToDisperse.x--;
+				} else if(_SeedsToDisperse.y > 0) {
+					TryCreateSprout(PikminColour.Yellow);
+					_SeedsToDisperse.y--;
+				} else if(_SeedsToDisperse.z > 0) {
+					TryCreateSprout(PikminColour.Blue);
+					_SeedsToDisperse.z--;
+				}
+			}
+		}
 	}
 
 	private IEnumerator IE_SpawnPikmin(int amount)
@@ -257,14 +279,11 @@ public class Onion : MonoBehaviour
 			}
 		}
 
-		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
+		for (int i = 0; i < amount; i++)
 		{
-			for (int i = 0; i < amount; i++)
-			{
-				_CanUse = false;
-				TryCreatePikmin(hit.point, _PikminColour, toSpawn[i]);
-				yield return new WaitForSeconds(0.02f);
-			}
+			_CanUse = false;
+			TryCreatePikmin(_PikminColour, toSpawn[i]);
+			yield return new WaitForSeconds(0.02f);
 		}
 
 		_CanUse = true;
@@ -316,42 +335,76 @@ public class Onion : MonoBehaviour
 		return MathUtil.XZToXYZ(MathUtil.PositionInUnit(100, idx));
 	}
 
-	public void EnterOnion(int toProduce, PikminColour colour)
+	public void AddSproutsToSpawn(int toProduce, PikminColour colour)
 	{
-		// Create seeds to pluck...
-		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
-		{
-			for (int i = 0; i < toProduce; i++)
-			{
-				TryCreatePikmin(hit.point, colour, PikminMaturity.Leaf);
+        _ = colour switch {
+            PikminColour.Red => _SeedsToDisperse.x += toProduce,
+            PikminColour.Yellow => _SeedsToDisperse.y += toProduce,
+            PikminColour.Blue => _SeedsToDisperse.z += toProduce
+		};
+	}
+
+
+	private void TryCreatePikmin(PikminColour colour, PikminMaturity maturity) {
+		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore)) {
+
+			if (PikminStatsManager.GetTotalOnField() == 100) {
+				PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
+			} else {
+				int pos = UnityEngine.Random.Range(0, 101);
+
+				// Get offset on a circle, converted to 3d coords
+				Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+
+				// Spawn the sprout just above the onion
+				GameObject pikmin = Instantiate(_PikminSprout, hit.point + basePos * _DisperseRadius, Quaternion.identity);
+				PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
+
+				PikminSpawnData data = new() {
+					_OriginPosition = pikmin.transform.position,
+					_EndPosition = hit.point + basePos * _DisperseRadius,
+					_Colour = colour,
+				};
+				sproutData.OnSpawn(data);
+				if(maturity == PikminMaturity.Bud) {
+					sproutData.PromoteMaturity();
+				} else if(maturity == PikminMaturity.Flower) {
+					sproutData.PromoteMaturity();
+					sproutData.PromoteMaturity();
+				}
+				sproutData.OnPluck();
+				Destroy(sproutData.gameObject);
 			}
 		}
 	}
 
-	private void TryCreatePikmin(Vector3 endPosition, PikminColour colour, PikminMaturity maturity)
+	private void TryCreateSprout(PikminColour colour)
 	{
-		if (PikminStatsManager.GetTotalOnField() == 100)
-		{
-			PikminStatsManager.Add(colour, maturity, PikminStatSpecifier.InOnion);
-		}
-		else
-		{
-			int pos = UnityEngine.Random.Range(0, 101);
+		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore)) {
 
-			// Get offset on a circle, converted to 3d coords
-			Vector3 basePos = GetRandomBaseSpawnPosition(pos);
-
-			// Spawn the sprout just above the onion
-			GameObject pikmin = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
-			PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
-
-			PikminSpawnData data = new()
+			if (PikminStatsManager.GetTotalOnField() == 100)
 			{
-				_OriginPosition = pikmin.transform.position,
-				_EndPosition = endPosition + basePos * _DisperseRadius,
-				_Colour = colour,
-			};
-			sproutData.OnSpawn(data);
+				PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
+			}
+			else
+			{
+				int pos = UnityEngine.Random.Range(0, 101);
+
+				// Get offset on a circle, converted to 3d coords
+				Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+
+				// Spawn the sprout just above the onion
+				GameObject pikmin = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
+				PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
+
+				PikminSpawnData data = new()
+				{
+					_OriginPosition = pikmin.transform.position,
+					_EndPosition = hit.point + basePos * _DisperseRadius,
+					_Colour = colour,
+				};
+				sproutData.OnSpawn(data);
+			}
 		}
 	}
 }

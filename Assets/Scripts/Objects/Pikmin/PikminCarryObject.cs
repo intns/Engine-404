@@ -90,11 +90,11 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			if (_MainOnion._PikminColour == _ColourToGenerateFor
 				|| _ColourToGenerateFor == PikminColour.Size)
 			{
-				_MainOnion.EnterOnion(_PikminToProduceMatchColour, _ColourToGenerateFor);
+				_MainOnion.AddSproutsToSpawn(_PikminToProduceMatchColour, _ColourToGenerateFor);
 			}
 			else
 			{
-				_MainOnion.EnterOnion(_PikminToProduceNonMatchColour, _ColourToGenerateFor);
+				_MainOnion.AddSproutsToSpawn(_PikminToProduceNonMatchColour, _ColourToGenerateFor);
 			}
 
 			Destroy(_CarryText.gameObject);
