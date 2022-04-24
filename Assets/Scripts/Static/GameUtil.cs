@@ -46,11 +46,11 @@ public static class GameUtil
 		else if (ylw > red && ylw > blu)
 		{
 			return PikminColour.Yellow;
-		} 
-		else if (pikmin.Count > 0) 
+		}
+		else if (pikmin.Count > 0)
 		{
 			return pikmin[0]._Data._PikminColour;
-        }
+		}
 
 		return PikminColour.Red;
 	}

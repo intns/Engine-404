@@ -137,9 +137,9 @@ public class Onion : MonoBehaviour
 			float vInput = Input.GetAxis("Vertical");
 			if (_InputTimer <= 0)
 			{
-				// Up on the stick / W
 				switch (vInput)
 				{
+					// Up on the stick / W
 					case > 0.25f:
 						if (_CurPikminAmounts._InSquad > 0)
 						{
@@ -156,6 +156,7 @@ public class Onion : MonoBehaviour
 							_CurPikminAmounts._InOnion++;
 						}
 						break;
+					// Down on the stick / S
 					case < -0.25f:
 						if (_CurPikminAmounts._InOnion > 0)
 						{
@@ -233,17 +234,24 @@ public class Onion : MonoBehaviour
 		}
 
 		int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
-		if(totalToDisperse > 0) {
+		if (totalToDisperse > 0)
+		{
 			_TimeSinceLastDisperse += Time.deltaTime;
-			if(_TimeSinceLastDisperse > 1 / (totalToDisperse * _DisperseRate)) {
+			if (_TimeSinceLastDisperse > 1 / (totalToDisperse * _DisperseRate))
+			{
 				_TimeSinceLastDisperse -= 1 / (totalToDisperse * _DisperseRate);
-				if(_SeedsToDisperse.x > 0) {
+				if (_SeedsToDisperse.x > 0)
+				{
 					TryCreateSprout(PikminColour.Red);
 					_SeedsToDisperse.x--;
-				} else if(_SeedsToDisperse.y > 0) {
+				}
+				else if (_SeedsToDisperse.y > 0)
+				{
 					TryCreateSprout(PikminColour.Yellow);
 					_SeedsToDisperse.y--;
-				} else if(_SeedsToDisperse.z > 0) {
+				}
+				else if (_SeedsToDisperse.z > 0)
+				{
 					TryCreateSprout(PikminColour.Blue);
 					_SeedsToDisperse.z--;
 				}
@@ -336,74 +344,88 @@ public class Onion : MonoBehaviour
 
 	public void AddSproutsToSpawn(int toProduce, PikminColour colour)
 	{
-        _ = colour switch {
-            PikminColour.Red => _SeedsToDisperse.x += toProduce,
-            PikminColour.Yellow => _SeedsToDisperse.y += toProduce,
-            PikminColour.Blue => _SeedsToDisperse.z += toProduce
+		_ = colour switch
+		{
+			PikminColour.Red => _SeedsToDisperse.x += toProduce,
+			PikminColour.Yellow => _SeedsToDisperse.y += toProduce,
+			PikminColour.Blue => _SeedsToDisperse.z += toProduce
 		};
 	}
 
+	/// <summary>
+	/// For spawning in Pikmin through the menu usage
+	/// </summary>
+	/// <param name="colour">Colour of the Pikmin to spawn</param>
+	/// <param name="maturity">Maturity of the Pikmin to spawn</param>
+	private void TryCreatePikmin(PikminColour colour, PikminMaturity maturity)
+	{
+		if (PikminStatsManager.GetTotalOnField() == 100)
+		{
+			PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
+		}
+		else if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
+		{
+			int pos = UnityEngine.Random.Range(0, 101);
 
-	private void TryCreatePikmin(PikminColour colour, PikminMaturity maturity) {
-		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore)) {
+			// Get offset on a circle, converted to 3d coords
+			Vector3 basePos = GetRandomBaseSpawnPosition(pos);
 
-			if (PikminStatsManager.GetTotalOnField() == 100) {
-				PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
-			} else {
-				int pos = UnityEngine.Random.Range(0, 101);
+			// Spawn the sprout just above the onion
+			GameObject pikmin = Instantiate(_PikminSprout, hit.point + basePos * _DisperseRadius, Quaternion.identity);
+			PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
 
-				// Get offset on a circle, converted to 3d coords
-				Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+			PikminSpawnData data = new()
+			{
+				_OriginPosition = pikmin.transform.position,
+				_EndPosition = hit.point + basePos * _DisperseRadius,
+				_Colour = colour,
+			};
 
-				// Spawn the sprout just above the onion
-				GameObject pikmin = Instantiate(_PikminSprout, hit.point + basePos * _DisperseRadius, Quaternion.identity);
-				PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
-
-				PikminSpawnData data = new() {
-					_OriginPosition = pikmin.transform.position,
-					_EndPosition = hit.point + basePos * _DisperseRadius,
-					_Colour = colour,
-				};
-				sproutData.OnSpawn(data);
-				if(maturity == PikminMaturity.Bud) {
-					sproutData.PromoteMaturity();
-				} else if(maturity == PikminMaturity.Flower) {
-					sproutData.PromoteMaturity();
-					sproutData.PromoteMaturity();
-				}
-				sproutData.OnPluck();
-				Destroy(sproutData.gameObject);
+			sproutData.OnSpawn(data);
+			if (maturity == PikminMaturity.Bud)
+			{
+				sproutData.PromoteMaturity();
 			}
+			else if (maturity == PikminMaturity.Flower)
+			{
+				sproutData.PromoteMaturity();
+				sproutData.PromoteMaturity();
+			}
+
+			sproutData.OnPluck();
+			Destroy(sproutData.gameObject);
 		}
 	}
 
+	/// <summary>
+	/// For spawning a Pikmin through a carried object
+	/// </summary>
+	/// <param name="colour">The colour of the Pikmin to spawn</param>
 	private void TryCreateSprout(PikminColour colour)
 	{
-		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore)) {
+		if (PikminStatsManager.GetTotalOnField() == 100)
+		{
+			PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
+		}
+		else if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
+		{
+			int pos = UnityEngine.Random.Range(0, 101);
 
-			if (PikminStatsManager.GetTotalOnField() == 100)
+			// Get offset on a circle, converted to 3d coords
+			Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+
+			// Spawn the sprout just above the onion
+			GameObject pikmin = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
+			PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
+
+			PikminSpawnData data = new()
 			{
-				PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
-			}
-			else
-			{
-				int pos = UnityEngine.Random.Range(0, 101);
+				_OriginPosition = pikmin.transform.position,
+				_EndPosition = hit.point + basePos * _DisperseRadius,
+				_Colour = colour,
+			};
 
-				// Get offset on a circle, converted to 3d coords
-				Vector3 basePos = GetRandomBaseSpawnPosition(pos);
-
-				// Spawn the sprout just above the onion
-				GameObject pikmin = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
-				PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
-
-				PikminSpawnData data = new()
-				{
-					_OriginPosition = pikmin.transform.position,
-					_EndPosition = hit.point + basePos * _DisperseRadius,
-					_Colour = colour,
-				};
-				sproutData.OnSpawn(data);
-			}
+			sproutData.OnSpawn(data);
 		}
 	}
 }

@@ -104,6 +104,7 @@ public class PikminSprout : MonoBehaviour
 	PikminMaturity _Maturity = PikminMaturity.Leaf;
 	GameObject[] _MaturityObjects = new GameObject[3];
 
+	ParticleSystem _ParticleSystem = null;
 	MeshRenderer _MeshRenderer = null;
 
 	Vector3 _OldPosition = Vector3.zero;
@@ -128,6 +129,7 @@ public class PikminSprout : MonoBehaviour
 		}
 
 		_MeshRenderer = GetComponent<MeshRenderer>();
+		_ParticleSystem = GetComponent<ParticleSystem>();
 	}
 
 	private void Update()
@@ -209,6 +211,10 @@ public class PikminSprout : MonoBehaviour
 	{
 		_SpawnData = data;
 		_MeshRenderer.material.color = GameUtil.PikminColorToColor(data._Colour);
+
+		ParticleSystem.MainModule settings = _ParticleSystem.main;
+		settings.startColor = _MeshRenderer.material.color;
+
 		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
 		StartCoroutine(IE_DropAnimation());
 	}
@@ -237,9 +243,6 @@ public class PikminSprout : MonoBehaviour
 		}
 
 		transform.position = path.GetEndPosition();
-		Vector3 direction = (_SpawnData._OriginPosition - transform.position);
-		direction.y = 0;
-		transform.rotation = Quaternion.LookRotation(direction);
 		_CurrentState = PikminSproutState.Planted;
 
 		yield return null;
