@@ -43,6 +43,9 @@ public class Onion : MonoBehaviour
 	private Vector3Int _SeedsToDisperse = Vector3Int.zero;
 	private float _TimeSinceLastDisperse = 0;
 
+	private int _CurrentSeedIdx = 0;
+	Dictionary<int, GameObject> _SpawnedSprouts = new Dictionary<int, GameObject>();
+
 	public Transform _CarryEndpoint = null;
 	private bool _CanUse = false;
 	private bool _InMenu = false;
@@ -88,6 +91,12 @@ public class Onion : MonoBehaviour
 	private void Awake()
 	{
 		_OnionCanvas.gameObject.SetActive(false);
+
+		_SpawnedSprouts.Clear();
+		for (int i = 0; i < 100; i++)
+		{
+			_SpawnedSprouts.Add(i, null);
+		}
 	}
 
 	private void Update()
@@ -233,6 +242,7 @@ public class Onion : MonoBehaviour
 			_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
 		}
 
+		// X is red, Y is yellow, Z is blue
 		int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
 		if (totalToDisperse > 0)
 		{
@@ -348,7 +358,8 @@ public class Onion : MonoBehaviour
 		{
 			PikminColour.Red => _SeedsToDisperse.x += toProduce,
 			PikminColour.Yellow => _SeedsToDisperse.y += toProduce,
-			PikminColour.Blue => _SeedsToDisperse.z += toProduce
+			PikminColour.Blue => _SeedsToDisperse.z += toProduce,
+			PikminColour.Size and _ => throw new NotImplementedException()
 		};
 	}
 
@@ -409,18 +420,22 @@ public class Onion : MonoBehaviour
 		}
 		else if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
 		{
-			int pos = UnityEngine.Random.Range(0, 101);
+			while (_SpawnedSprouts[_CurrentSeedIdx] != null)
+			{
+				_CurrentSeedIdx += UnityEngine.Random.Range(1, 15);
+				_CurrentSeedIdx %= 100;
+			}
 
 			// Get offset on a circle, converted to 3d coords
-			Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+			Vector3 basePos = GetRandomBaseSpawnPosition(_CurrentSeedIdx);
 
 			// Spawn the sprout just above the onion
-			GameObject pikmin = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
-			PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
+			GameObject newPikmin = _SpawnedSprouts[_CurrentSeedIdx] = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
+			PikminSprout sproutData = newPikmin.GetComponent<PikminSprout>();
 
 			PikminSpawnData data = new()
 			{
-				_OriginPosition = pikmin.transform.position,
+				_OriginPosition = newPikmin.transform.position,
 				_EndPosition = hit.point + basePos * _DisperseRadius,
 				_Colour = colour,
 			};
