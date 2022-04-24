@@ -1,6 +1,6 @@
 /*
  * Onion.cs
- * Created by: Ambrosia & Helodity
+ * Created by: Ambrosia, Helodity
  * Created on: 12/4/2020 (dd/mm/yy)
  * Created for: Needing an object to store our Pikmin in
  */

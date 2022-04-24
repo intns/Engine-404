@@ -1,6 +1,6 @@
 /*
  * WhistleController.cs
- * Created by: Ambrosia & Kaelan
+ * Created by: Ambrosia, Helodity
  * Created on: 9/2/2020, overhaul on 31/3/2020 (dd/mm/yy)
  * Created for: Controlling the whistle
  */

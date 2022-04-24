@@ -1,6 +1,6 @@
 /*
  * PikminAI.cs
- * Created by: Ambrosia, Kman
+ * Created by: Ambrosia, Helodity
  * Created on: 30/4/2020 (dd/mm/yy)
  */
 

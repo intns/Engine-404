@@ -1,6 +1,6 @@
 /*
  * Plant.cs
- * Created by: Ambrosia & Kman
+ * Created by: Ambrosia, Helodity
  * Created on: 10/4/2020 (dd/mm/yy)
  * Created for: needing plants to be animated
  */
