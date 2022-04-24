@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public static class GameUtil
 {
 	/// <summary>
-	/// Computes the majority colour in a list of Pikmin, if they all match, defaults to red
+	/// Computes the majority colour in a list of Pikmin, if they all match, defaults to first pikmin added
 	/// </summary>
 	/// <param name="pikmin">List of Pikmin to check</param>
 	/// <returns>The majority colour of the Pikmin in the list</returns>
@@ -46,9 +46,11 @@ public static class GameUtil
 		else if (ylw > red && ylw > blu)
 		{
 			return PikminColour.Yellow;
-		}
+		} else if (pikmin.Count > 0) {
+			return pikmin[0]._Data._PikminColour;
+        }
 
-		return PikminColour.Red;
+		return PikminColour.Size;
 	}
 
 

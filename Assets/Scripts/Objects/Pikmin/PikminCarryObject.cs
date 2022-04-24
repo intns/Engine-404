@@ -189,16 +189,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		// If we're about to delete the object, no point in updating it
 		if (_ShutdownInProgress) { return; }
 
-		_CarryText.HandleColor(_CarryingPikmin);
+		_CarryText.UpdateColor(_CarryingPikmin);
 		_CarryText.SetText(_CarryingPikmin.Count, _CarryMinMax.x);
-		if (_CarryingPikmin.Count == 0)
-		{
-			_CarryText.FadeOut();
-		}
-		else if (_CarryingPikmin.Count == 1)
-		{
-			_CarryText.FadeIn();
-		}
 	}
 
 	#region Pikmin Carry Implementation
