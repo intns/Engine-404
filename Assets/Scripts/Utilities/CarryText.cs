@@ -38,8 +38,8 @@ public class CarryText : MonoBehaviour
 		{
 			PikminColour.Red => Color.red,
 			PikminColour.Yellow => Color.yellow,
-			PikminColour.Blue => Color.blue,
-			_ => Color.red,
+			PikminColour.Blue => new Color(0,.06f, 1),
+			_ => Color.white,
 		};
 	}
 
