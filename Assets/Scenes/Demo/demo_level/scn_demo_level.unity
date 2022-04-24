@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.19285297, g: 0.27304173, b: 0.16543126, a: 1}
+  m_IndirectSpecularColor: {r: 0.19252235, g: 0.27254224, b: 0.16514516, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2443,6 +2443,76 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Player_Set
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewHolders.Array.data[1]._FOV
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewHolders.Array.data[2]._FOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultHolders.Array.data[0]._Offset.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultHolders.Array.data[0]._Offset.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultHolders.Array.data[1]._Offset.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultHolders.Array.data[1]._Offset.y
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultHolders.Array.data[2]._Offset.x
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultHolders.Array.data[2]._Offset.y
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewHolders.Array.data[0]._Offset.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewHolders.Array.data[0]._Offset.y
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewHolders.Array.data[1]._Offset.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewHolders.Array.data[1]._Offset.y
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewHolders.Array.data[2]._Offset.x
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7354393338080762127, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewHolders.Array.data[2]._Offset.y
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4e570be87d7aca479ee34c405cc44de, type: 3}
@@ -5378,7 +5448,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 50d0d7962081c044491802d995a13892, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0037d2c1149ff2243ada8e963daa6d24, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.497
   m_Pitch: 1
