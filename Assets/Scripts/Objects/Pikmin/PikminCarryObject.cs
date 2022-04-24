@@ -82,19 +82,20 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		if (MathUtil.DistanceTo(transform.position, _MainOnion._CarryEndpoint.position, false) < 0.25f)
 		{
 			_ShutdownInProgress = true;
+			PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
 			while (_CarryingPikmin.Count > 0)
 			{
 				_CarryingPikmin[0].ChangeState(PikminStates.Idle);
 			}
 
-			if (_MainOnion._PikminColour == _ColourToGenerateFor
+			if (targetColour == _ColourToGenerateFor
 				|| _ColourToGenerateFor == PikminColour.Size)
 			{
-				_MainOnion.AddSproutsToSpawn(_PikminToProduceMatchColour, _ColourToGenerateFor);
+				_MainOnion.AddSproutsToSpawn(_PikminToProduceMatchColour, targetColour);
 			}
 			else
 			{
-				_MainOnion.AddSproutsToSpawn(_PikminToProduceNonMatchColour, _ColourToGenerateFor);
+				_MainOnion.AddSproutsToSpawn(_PikminToProduceNonMatchColour, targetColour);
 			}
 
 			Destroy(_CarryText.gameObject);

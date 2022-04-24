@@ -235,8 +235,8 @@ public class Onion : MonoBehaviour
 		int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
 		if(totalToDisperse > 0) {
 			_TimeSinceLastDisperse += Time.deltaTime;
-			if(_TimeSinceLastDisperse > 1 / totalToDisperse * _DisperseRate) {
-				_TimeSinceLastDisperse -= 1 / totalToDisperse * _DisperseRate;
+			if(_TimeSinceLastDisperse > 1 / (totalToDisperse * _DisperseRate)) {
+				_TimeSinceLastDisperse -= 1 / (totalToDisperse * _DisperseRate);
 				if(_SeedsToDisperse.x > 0) {
 					TryCreateSprout(PikminColour.Red);
 					_SeedsToDisperse.x--;
