@@ -34,6 +34,7 @@ public class PikminObject : ScriptableObject {
   public float[] _MaxSpeedPerMaturity = new float[3];
   public float[] _MaxAccelPerMaturity = new float[3];
   public float _RotationSpeed = 10;
+  public float _ThrowingHeight = 5;
 
   [Header ("Idle")]
   public float _SearchRadius = 5;

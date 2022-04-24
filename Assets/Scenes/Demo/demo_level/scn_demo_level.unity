@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.19285297, g: 0.27304173, b: 0.16543126, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2468,31 +2468,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Player_Set
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393339214141954, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _PikminGrabRadius
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393339214141954, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _PikminPluckDistance
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393339214141954, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _VerticalMaxGrabRadius
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393339214141954, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _PikminPluckLayer.m_Bits
-      value: 16384
-      objectReference: {fileID: 0}
-    - target: {fileID: 7354393339214141959, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _MovementSpeed
-      value: 6.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4e570be87d7aca479ee34c405cc44de, type: 3}

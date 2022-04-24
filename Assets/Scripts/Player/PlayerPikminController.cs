@@ -20,8 +20,8 @@ public class PlayerPikminController : MonoBehaviour
 
 	[Header("Throwing")]
 	[SerializeField] private float _PikminThrowRadius = 17.5f;
-	[SerializeField] private float _PikminThrowHeight = 5;
 
+	[Header("Grabbing")]
 	[SerializeField] private float _PikminGrabRadius = 5;
 	[SerializeField] private float _VerticalMaxGrabRadius = 1.5f;
 	[SerializeField] private Transform _WhistleTransform = null;
@@ -32,7 +32,7 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] private float _DistancePerPikmin = 0.05f; // How much is added to the offset for each pikmin
 
 	[HideInInspector] public bool _CanThrowPikmin = true;
-	private GameObject _PikminInHand;
+	private PikminAI _PikminInHand;
 
 	Vector3[] _LinePositions = new Vector3[50];
 	Vector3 _ThrownVelocity = Vector3.zero;
@@ -78,15 +78,18 @@ public class PlayerPikminController : MonoBehaviour
 			}
 		}
 
-		if (_CanThrowPikmin && !canPluck)
+		if (_CanThrowPikmin)
 		{
-			HandleThrowing();
+			HandleThrowing(canPluck);
 		}
-		else if (_PikminInHand != null)
+		else
 		{
-			_PikminInHand.GetComponent<PikminAI>().EndThrowHold();
-			_PikminInHand = null;
-			_LineRenderer.enabled = false;
+			if (_PikminInHand != null)
+			{
+				_PikminInHand.EndThrowHold();
+				_PikminInHand = null;
+				_LineRenderer.enabled = false;
+			}
 		}
 
 		HandleFormation();
@@ -116,10 +119,12 @@ public class PlayerPikminController : MonoBehaviour
 		Vector3 displacementXZ = MathUtil.XZToXYZ(new Vector2(destination.x - _PikminInHand.transform.position.x,
 			destination.z - _PikminInHand.transform.position.z));
 
-		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + _PikminThrowHeight) / Physics.gravity.y)
-			+ Mathf.Sqrt(2 * (vd - _PikminThrowHeight) / Physics.gravity.y);
+		float throwHeight = _PikminInHand._Data._ThrowingHeight;
 
-		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * _PikminThrowHeight);
+		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + throwHeight) / Physics.gravity.y)
+			+ Mathf.Sqrt(2 * (vd - throwHeight) / Physics.gravity.y);
+
+		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * throwHeight);
 		Vector3 velocityXZ = (displacementXZ / time) * 1.01f;
 
 		return velocityXZ + (velocityY * -Mathf.Sign(Physics.gravity.y));
@@ -135,7 +140,8 @@ public class PlayerPikminController : MonoBehaviour
 		Vector3 destination = _PikminInHand.transform.position + Vector3.ClampMagnitude(offs, _PikminThrowRadius);
 		float vd = destination.y - _PikminInHand.transform.position.y;
 
-		if (vd < _PikminThrowHeight)
+		float throwHeight = _PikminInHand._Data._ThrowingHeight;
+		if (vd < throwHeight)
 		{
 			_ThrownVelocity = CalculateVelocity(destination, vd);
 		}
@@ -166,20 +172,20 @@ public class PlayerPikminController : MonoBehaviour
 	/// <summary>
 	/// Handles throwing the Pikmin including arc calculation
 	/// </summary>
-	private void HandleThrowing()
+	private void HandleThrowing(bool canPluck)
 	{
 		// Check if we've got more than 0 Pikmin in
 		// our squad and we press the Throw key (currently Space)
 
-		if (Input.GetButtonDown("A Button") && PikminStatsManager.GetTotalOnField() > 0 && _PikminInHand == null)
+		if (!canPluck && Input.GetButtonDown("A Button") && PikminStatsManager.GetTotalOnField() > 0 && _PikminInHand == null)
 		{
 			GameObject closestPikmin = GetClosestPikmin();
 			// Check if we've even gotten a Pikmin
 			if (closestPikmin != null)
 			{
-				_PikminInHand = closestPikmin;
+				_PikminInHand = closestPikmin.GetComponent<PikminAI>();
 
-				_PikminInHand.GetComponent<PikminAI>().StartThrowHold();
+				_PikminInHand.StartThrowHold();
 				_LineRenderer.enabled = true;
 			}
 		}
@@ -198,7 +204,7 @@ public class PlayerPikminController : MonoBehaviour
 
 			if (Input.GetButtonUp("A Button"))
 			{
-				_PikminInHand.GetComponent<PikminAI>().EndThrowHold();
+				_PikminInHand.EndThrowHold();
 
 				Vector3 whistlePos = new Vector3(_WhistleTransform.position.x, 0, _WhistleTransform.position.z);
 				transform.LookAt(new Vector3(whistlePos.x, transform.position.y, whistlePos.z));
@@ -219,7 +225,7 @@ public class PlayerPikminController : MonoBehaviour
 
 			if (!aButtonAction)
 			{
-				_PikminInHand.GetComponent<PikminAI>().EndThrowHold();
+				_PikminInHand.EndThrowHold();
 				_PikminInHand = null;
 				_LineRenderer.enabled = false;
 			}

@@ -99,12 +99,15 @@ public class PikminSprout : MonoBehaviour
 
 	[Header("Debug")]
 	[SerializeField] PikminSproutState _CurrentState;
-
 	[SerializeField] PikminSpawnData _SpawnData;
-	Vector3 _OldPosition = Vector3.zero;
-	GameObject[] _MaturityObjects = new GameObject[3];
-	float _Timer = 0;
+
 	PikminMaturity _Maturity = PikminMaturity.Leaf;
+	GameObject[] _MaturityObjects = new GameObject[3];
+
+	MeshRenderer _MeshRenderer = null;
+
+	Vector3 _OldPosition = Vector3.zero;
+	float _Timer = 0;
 
 	private void OnEnable()
 	{
@@ -120,9 +123,11 @@ public class PikminSprout : MonoBehaviour
 
 		foreach (GameObject obj in _MaturityObjects)
 		{
-			obj.transform.localScale = Vector3.one * 1.5f + (Vector3.up * 0.5f);
-			obj.transform.localPosition = Vector3.up * 0.1f;
+			obj.transform.localScale = Vector3.one * 1.25f;
+			obj.transform.localPosition = Vector3.up * 0.075f;
 		}
+
+		_MeshRenderer = GetComponent<MeshRenderer>();
 	}
 
 	private void Update()
@@ -135,8 +140,7 @@ public class PikminSprout : MonoBehaviour
 		switch (_CurrentState)
 		{
 			case PikminSproutState.Dropping:
-				transform.rotation = Quaternion.LookRotation(transform.position - _OldPosition);
-				break;
+				transform.rotation = Quaternion.identity; break;
 			case PikminSproutState.Planted:
 				_Timer += Time.deltaTime;
 
@@ -204,6 +208,7 @@ public class PikminSprout : MonoBehaviour
 	public void OnSpawn(PikminSpawnData data)
 	{
 		_SpawnData = data;
+		_MeshRenderer.material.color = GameUtil.PikminColorToColor(data._Colour);
 		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
 		StartCoroutine(IE_DropAnimation());
 	}
@@ -230,7 +235,10 @@ public class PikminSprout : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-		transform.SetPositionAndRotation(path.GetEndPosition(), Quaternion.identity);
+		transform.position = path.GetEndPosition();
+		Vector3 direction = (_SpawnData._OriginPosition - transform.position);
+		direction.y = 0;
+		transform.rotation = Quaternion.LookRotation(direction);
 		_CurrentState = PikminSproutState.Planted;
 
 		yield return null;
