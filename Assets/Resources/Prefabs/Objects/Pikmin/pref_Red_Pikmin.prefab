@@ -844,9 +844,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.15
-  m_Height: 0.59549105
+  m_Height: 0.80504465
   m_Direction: 1
-  m_Center: {x: 0, y: 0.29774255, z: 0}
+  m_Center: {x: 0, y: 0.40251827, z: 0}
 --- !u!95 &1023579018677027712
 Animator:
   serializedVersion: 4
@@ -882,9 +882,6 @@ MonoBehaviour:
   _Data: {fileID: 11400000, guid: 88166cdec3d7d8b4abd1d7b065d99ec2, type: 2}
   _PlayerPushScale: 200
   _PikminPushScale: 45
-  _RejectionSphere:
-    position: {x: 0, y: 0.5, z: 0}
-    radius: 0.1
   _PikminInteractableMask:
     serializedVersion: 2
     m_Bits: 8192

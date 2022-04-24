@@ -31,8 +31,8 @@ public class PikminObject : ScriptableObject {
   public GameObject _Flower;
 
   [Header ("Movement")]
-  public float _MaxMovementSpeed = 2.5f;
-  public float _AccelerationSpeed = 10;
+  public float[] _MaxSpeedPerMaturity = new float[3];
+  public float[] _MaxAccelPerMaturity = new float[3];
   public float _RotationSpeed = 10;
 
   [Header ("Idle")]
@@ -44,4 +44,14 @@ public class PikminObject : ScriptableObject {
   [Header ("Audio")]
   public float _AudioVolume = 1;
   public AudioClip _DeathNoise = null;
+
+  public float GetMaxSpeed(PikminMaturity maturity)
+	{
+    return _MaxSpeedPerMaturity[(int)maturity];
+	}
+
+  public float GetAcceleration(PikminMaturity maturity)
+	{
+    return _MaxAccelPerMaturity[(int)maturity];
+	}
 }

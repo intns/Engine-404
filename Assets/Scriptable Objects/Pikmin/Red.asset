@@ -17,8 +17,14 @@ MonoBehaviour:
   _Leaf: {fileID: 8440573494992231151, guid: 820ffa9989a69394ab36de143cbb0e2a, type: 3}
   _Bud: {fileID: 6009009235213959189, guid: 57cf96bd92a4f864a9857a1f5ba2ac72, type: 3}
   _Flower: {fileID: 595203086311389770, guid: c219d3fe4361acc4abd94f4cb22e6b70, type: 3}
-  _MaxMovementSpeed: 5
-  _AccelerationSpeed: 8
+  _MaxSpeedPerMaturity:
+  - 7
+  - 7.4
+  - 8
+  _MaxAccelPerMaturity:
+  - 7.5
+  - 7.8
+  - 8.5
   _RotationSpeed: 10
   _SearchRadius: 8
   _AttackDamage: 5

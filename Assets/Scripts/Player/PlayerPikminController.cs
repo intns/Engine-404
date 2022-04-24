@@ -14,6 +14,10 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] private LayerMask _PikminLayer;
 	[SerializeField] LineRenderer _LineRenderer;
 
+	[Header("Plucking")]
+	[SerializeField] private float _PikminPluckDistance = 3.5f;
+	[SerializeField] private LayerMask _PikminPluckLayer;
+
 	[Header("Throwing")]
 	[SerializeField] private float _PikminThrowRadius = 17.5f;
 	[SerializeField] private float _PikminThrowHeight = 5;
@@ -41,12 +45,40 @@ public class PlayerPikminController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Player._Instance._MovementController._Paralysed)
+		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
 		{
 			return;
 		}
 
-		if (_CanThrowPikmin)
+		Collider[] colls = Physics.OverlapSphere(transform.position, _PikminPluckDistance, _PikminPluckLayer, QueryTriggerInteraction.Collide);
+		bool canPluck = colls.Length != 0;
+		if (colls.Length != 0)
+		{
+			PikminSprout closest = null;
+			float closestDist = float.PositiveInfinity;
+			foreach (Collider coll in colls)
+			{
+				PikminSprout sprout = coll.GetComponent<PikminSprout>();
+				if (sprout.CanPluck())
+				{
+					float dist = MathUtil.DistanceTo(transform.position, coll.transform.position);
+					if (dist < closestDist)
+					{
+						closestDist = dist;
+						closest = sprout;
+					}
+				}
+			}
+
+			if (closest != null && Input.GetButtonDown("A Button"))
+			{
+				PikminAI pikmin = closest.OnPluck();
+				pikmin.AddToSquad();
+				Destroy(closest.gameObject);
+			}
+		}
+
+		if (_CanThrowPikmin && !canPluck)
 		{
 			HandleThrowing();
 		}
@@ -72,8 +104,11 @@ public class PlayerPikminController : MonoBehaviour
 
 	private void OnDrawGizmosSelected()
 	{
-		// Draw the formation center position
+		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(_FormationCenter.position, 1);
+
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, _PikminPluckDistance);
 	}
 
 	private Vector3 CalculateVelocity(Vector3 destination, float vd)
@@ -81,7 +116,7 @@ public class PlayerPikminController : MonoBehaviour
 		Vector3 displacementXZ = MathUtil.XZToXYZ(new Vector2(destination.x - _PikminInHand.transform.position.x,
 			destination.z - _PikminInHand.transform.position.z));
 
-		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + _PikminThrowHeight) / Physics.gravity.y) 
+		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + _PikminThrowHeight) / Physics.gravity.y)
 			+ Mathf.Sqrt(2 * (vd - _PikminThrowHeight) / Physics.gravity.y);
 
 		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * _PikminThrowHeight);
@@ -231,12 +266,6 @@ public class PlayerPikminController : MonoBehaviour
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position, _PikminGrabRadius, _PikminLayer);
 		foreach (Collider collider in hitColliders)
 		{
-			// Check if the collider is actually a pikmin
-			if (!collider.CompareTag("Pikmin"))
-			{
-				continue;
-			}
-
 			PikminAI pikminComponent = collider.GetComponent<PikminAI>();
 			// Check if they're in the squad
 			if (!pikminComponent._InSquad)
@@ -261,7 +290,7 @@ public class PlayerPikminController : MonoBehaviour
 
 			// Checks the distance between the previously checked Pikmin
 			// and the Pikmin we're doing now
-			float distanceToPlayer = Vector3.Distance(collider.transform.position, transform.position);
+			float distanceToPlayer = MathUtil.DistanceTo(collider.transform.position, transform.position);
 			if (distanceToPlayer < closestPikminDistance)
 			{
 				closestPikmin = collider.gameObject;

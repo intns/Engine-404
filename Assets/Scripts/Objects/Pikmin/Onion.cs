@@ -11,6 +11,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[Serializable]
+public class PikminSpawnData
+{
+	public Vector3 _OriginPosition = Vector3.zero;
+	public Vector3 _EndPosition = Vector3.zero;
+	public PikminColour _Colour = PikminColour.Red;
+}
+
 public class Onion : MonoBehaviour
 {
 	[Header("References")]
@@ -21,11 +29,12 @@ public class Onion : MonoBehaviour
 	[SerializeField] private CanvasGroup _CanvasGroup = null;
 
 	[Header("Debug")]
-	[SerializeField] private GameObject _Pikmin = null;
+	[SerializeField] private GameObject _PikminSprout = null;
 
 	[Header("Settings")]
 	[SerializeField] private LayerMask _MapMask = 0;
 	[SerializeField] private LayerMask _PikminMask = 0;
+	[SerializeField] private float _PikminEjectionHeight = 3;
 	public PikminColour _PikminColour { get; private set; } = PikminColour.Red;
 
 	[Header("Dispersal")]
@@ -253,7 +262,7 @@ public class Onion : MonoBehaviour
 			for (int i = 0; i < amount; i++)
 			{
 				_CanUse = false;
-				TryCreatePikmin(hit.point + GetRandomPikminSpawnPosition(), _PikminColour, toSpawn[i]);
+				TryCreatePikmin(hit.point, _PikminColour, toSpawn[i]);
 				yield return new WaitForSeconds(0.02f);
 			}
 		}
@@ -283,17 +292,28 @@ public class Onion : MonoBehaviour
 	{
 		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
 		{
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 100; i++)
 			{
-				Vector2 offset = MathUtil.PositionInUnit(50, i);
-				Gizmos.DrawSphere(hit.point + MathUtil.XZToXYZ(offset) * _DisperseRadius, 1);
+				Vector2 offset = MathUtil.PositionInUnit(100, i);
+				Gizmos.DrawSphere(hit.point + MathUtil.XZToXYZ(offset) * _DisperseRadius, 0.25f);
 			}
+		}
+
+		for (int i = 0; i < 100; i++)
+		{
+			Vector2 offset = MathUtil.PositionInUnit(100, i);
+			Gizmos.DrawSphere(transform.position + MathUtil.XZToXYZ(offset) + Vector3.up * _PikminEjectionHeight, 0.15f);
 		}
 	}
 
-	private Vector3 GetRandomPikminSpawnPosition()
+	private Vector3 GetRandomBaseSpawnPosition(int idx = -1)
 	{
-		return MathUtil.XZToXYZ(MathUtil.PositionInUnit(100, UnityEngine.Random.Range(0, 100))) * _DisperseRadius;
+		if (idx == -1)
+		{
+			idx = UnityEngine.Random.Range(0, 100);
+		}
+
+		return MathUtil.XZToXYZ(MathUtil.PositionInUnit(100, idx));
 	}
 
 	public void EnterOnion(int toProduce, PikminColour colour)
@@ -303,12 +323,12 @@ public class Onion : MonoBehaviour
 		{
 			for (int i = 0; i < toProduce; i++)
 			{
-				TryCreatePikmin(hit.point + GetRandomPikminSpawnPosition(), colour, PikminMaturity.Leaf);
+				TryCreatePikmin(hit.point, colour, PikminMaturity.Leaf);
 			}
 		}
 	}
 
-	private void TryCreatePikmin(Vector3 position, PikminColour colour, PikminMaturity maturity)
+	private void TryCreatePikmin(Vector3 endPosition, PikminColour colour, PikminMaturity maturity)
 	{
 		if (PikminStatsManager.GetTotalOnField() == 100)
 		{
@@ -316,10 +336,22 @@ public class Onion : MonoBehaviour
 		}
 		else
 		{
-			GameObject pikmin = Instantiate(_Pikmin, position, Quaternion.identity);
-			PikminAI ai = pikmin.GetComponent<PikminAI>();
-			ai._Data._PikminColour = colour;
-			ai.SetMaturity(maturity);
+			int pos = UnityEngine.Random.Range(0, 101);
+
+			// Get offset on a circle, converted to 3d coords
+			Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+
+			// Spawn the sprout just above the onion
+			GameObject pikmin = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
+			PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
+
+			PikminSpawnData data = new()
+			{
+				_OriginPosition = pikmin.transform.position,
+				_EndPosition = endPosition + basePos * _DisperseRadius,
+				_Colour = colour,
+			};
+			sproutData.OnSpawn(data);
 		}
 	}
 }

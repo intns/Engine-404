@@ -456,7 +456,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			Vector3 direction = _Transform.position - hit.transform.position;
 			direction.y = 0;
 
-			_MovementVector += 75 * Time.deltaTime * direction;
+			_MovementVector += 100 * Time.deltaTime * direction;
 			return;
 		}
 
@@ -472,7 +472,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		else
 		{
 			// To prevent instant, janky movement we step towards the resultant max speed according to _Acceleration
-			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _Data._MaxMovementSpeed, _Data._AccelerationSpeed * Time.fixedDeltaTime);
+			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _Data.GetMaxSpeed(_CurrentMaturity), _Data.GetAcceleration(_CurrentMaturity) * Time.fixedDeltaTime);
 		}
 
 		Vector3 newVelocity = delta.normalized * _CurrentMoveSpeed;

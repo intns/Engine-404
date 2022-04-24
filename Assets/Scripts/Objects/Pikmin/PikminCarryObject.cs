@@ -161,11 +161,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void MoveTowards(Vector3 position)
 	{
-		Vector3 delta = position - transform.position;
+		Vector3 delta = (position - transform.position).normalized;
 		delta.y = 0;
-		delta.Normalize();
 
-		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.fixedDeltaTime);
+		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
 
 		Vector3 newVelocity = delta * _CurrentMoveSpeed;
 		newVelocity.y = _Rigidbody.velocity.y;
