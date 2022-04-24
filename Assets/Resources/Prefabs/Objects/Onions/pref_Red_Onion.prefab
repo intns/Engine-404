@@ -636,13 +636,15 @@ MonoBehaviour:
   _InSquadText: {fileID: 192843835}
   _InFieldText: {fileID: 8317071074415917742}
   _CanvasGroup: {fileID: 3082391488115674717}
-  _Pikmin: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+  _PikminSprout: {fileID: 7424206076050754538, guid: f2af8d0d6fcb66f42bbab8d2f2226853,
+    type: 3}
   _MapMask:
     serializedVersion: 2
     m_Bits: 512
   _PikminMask:
     serializedVersion: 2
     m_Bits: 1024
+  _PikminEjectionHeight: 4.52
   _DisperseRadius: 6.7
   _CarryEndpoint: {fileID: 1624515990}
 --- !u!23 &384720792
