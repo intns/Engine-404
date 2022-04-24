@@ -30,7 +30,6 @@ public class Onion : MonoBehaviour
 
 	[Header("Debug")]
 	[SerializeField] private GameObject _PikminSprout = null;
-	[SerializeField] private GameObject _PikminPrefab = null;
 
 	[Header("Settings")]
 	[SerializeField] private LayerMask _MapMask = 0;
