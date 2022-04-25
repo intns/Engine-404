@@ -285,6 +285,7 @@ public class CameraFollow : MonoBehaviour
 			endPos.y = _GroundOffset;
 
 			transform.position = Vector3.Lerp(transform.position, endPos, t / length);
+			transform.LookAt(_PlayerPosition);
 
 			t += Time.deltaTime;
 			yield return null;
