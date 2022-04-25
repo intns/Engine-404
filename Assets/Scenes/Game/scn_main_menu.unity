@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2998047, g: 0.69970703, b: 1, a: 1}
+  m_IndirectSpecularColor: {r: 0.69840145, g: 0.80206823, b: 0.5647279, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1102,7 +1102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 8
+  m_Intensity: 20
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -1131,8 +1131,8 @@ MonoBehaviour:
   m_IncludeForRayTracing: 1
   m_AreaLightShadowCone: 120
   m_UseScreenSpaceShadows: 0
-  m_InteractsWithSky: 1
-  m_AngularDiameter: 10
+  m_InteractsWithSky: 0
+  m_AngularDiameter: 9.06
   m_FlareSize: 2
   m_FlareTint: {r: 1, g: 1, b: 1, a: 1}
   m_FlareFalloff: 4
@@ -1163,15 +1163,15 @@ MonoBehaviour:
   m_MaxDepthBias: 0.001
   m_ShadowResolution:
     m_Override: 512
-    m_UseOverride: 1
-    m_Level: 0
+    m_UseOverride: 0
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
   m_UseContactShadow:
     m_Override: 0
-    m_UseOverride: 1
-    m_Level: 0
+    m_UseOverride: 0
+    m_Level: 1
   m_RayTracedContactShadow: 0
   m_ShadowTint: {r: 0, g: 0, b: 0, a: 1}
   m_PenumbraTint: 0
@@ -1224,7 +1224,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 8
+  m_Intensity: 20
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1267,13 +1267,13 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 3913
+  m_ColorTemperature: 6500
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
-  m_ShadowAngle: 10
+  m_ShadowAngle: 9.06
 --- !u!1 &620524752
 GameObject:
   m_ObjectHideFlags: 0
@@ -2644,8 +2644,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1245428190}
-  m_LocalRotation: {x: -0.009647588, y: 0.08695647, z: 0.2603406, w: 0.96154475}
-  m_LocalPosition: {x: -0.5771568, y: 13.07, z: -5.7868958}
+  m_LocalRotation: {x: 0.020232424, y: 0.05738951, z: -0.0011632856, w: 0.9981462}
+  m_LocalPosition: {x: -0.37392092, y: 14.545963, z: -5.76184}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2750,12 +2750,12 @@ MonoBehaviour:
     width: 0.2
   m_Looped: 0
   m_Waypoints:
-  - position: {x: -2.3447745, y: -2, z: 0}
-    roll: 30
-  - position: {x: -0.7139795, y: -1.5, z: 5}
-    roll: 20
-  - position: {x: 1.4145143, y: -0.5, z: 10}
-    roll: 10
+  - position: {x: -2.14, y: -0.5240364, z: 0.0000005081945}
+    roll: 0
+  - position: {x: -0.7139793, y: -0.5344877, z: 5.0000014}
+    roll: 0
+  - position: {x: 1.4145143, y: 0.04310131, z: 10.000001}
+    roll: 0
   - position: {x: 3.12, y: 0, z: 15}
     roll: 0
 --- !u!4 &1258127679
@@ -2814,12 +2814,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   volumeAnchorOverride: {fileID: 0}
-  antialiasing: 0
-  SMAAQuality: 2
+  antialiasing: 3
+  SMAAQuality: 1
   dithering: 0
   stopNaNs: 0
   taaSharpenStrength: 0.6
-  TAAQuality: 1
+  TAAQuality: 2
   taaHistorySharpening: 0.35
   taaAntiFlicker: 0.5
   taaMotionVectorRejection: 0
@@ -2930,7 +2930,7 @@ Camera:
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 2
+  m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
@@ -2944,7 +2944,7 @@ Camera:
     height: 1
   near clip plane: 0.099999994
   far clip plane: 999.99994
-  field of view: 47.149414
+  field of view: 35
   orthographic: 0
   orthographic size: 0.2400005
   m_Depth: 0
@@ -2969,8 +2969,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258384126}
-  m_LocalRotation: {x: -0.031824682, y: 0.08149655, z: 0.0026035944, w: 0.996162}
-  m_LocalPosition: {x: -0.5771568, y: 13.07, z: -5.7868958}
+  m_LocalRotation: {x: 0.020232521, y: 0.05738954, z: -0.0011632916, w: 0.9981462}
+  m_LocalPosition: {x: -0.37392092, y: 14.545963, z: -5.76184}
   m_LocalScale: {x: 5.0512304, y: 5.0512304, z: 5.0512304}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3029,7 +3029,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 2113370304}
   m_Follow: {fileID: 1245428191}
   m_Lens:
-    FieldOfView: 47.149414
+    FieldOfView: 35
     OrthographicSize: 0.2400005
     NearClipPlane: 0.099999994
     FarClipPlane: 999.99994
@@ -3037,7 +3037,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 36, y: 24}
+    m_SensorSize: {x: 1.7755102, y: 1}
     Iso: 200
     ShutterSpeed: 0.005
     Aperture: 16
@@ -4171,7 +4171,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 127
   m_IsActive: 1
 --- !u!4 &1901478599
 Transform:
@@ -4181,7 +4181,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1901478598}
   m_LocalRotation: {x: -0, y: 0.25881922, z: -0, w: 0.9659258}
-  m_LocalPosition: {x: -31.403282, y: -5.58, z: 21.925186}
+  m_LocalPosition: {x: -31.403282, y: -6.67, z: 21.925186}
   m_LocalScale: {x: 76, y: 1, z: 38}
   m_ConstrainProportionsScale: 0
   m_Children: []
