@@ -359,7 +359,8 @@ public class Onion : MonoBehaviour
 			PikminColour.Red => _SeedsToDisperse.x += toProduce,
 			PikminColour.Yellow => _SeedsToDisperse.y += toProduce,
 			PikminColour.Blue => _SeedsToDisperse.z += toProduce,
-			PikminColour.Size and _ => throw new NotImplementedException()
+			PikminColour.Size => throw new NotImplementedException(),
+			_ => throw new NotImplementedException()
 		};
 	}
 
@@ -433,10 +434,12 @@ public class Onion : MonoBehaviour
 			GameObject newPikmin = _SpawnedSprouts[_CurrentSeedIdx] = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
 			PikminSprout sproutData = newPikmin.GetComponent<PikminSprout>();
 
+			Physics.Raycast(Vector3.up * 15 + (hit.point + basePos * _DisperseRadius), Vector3.down, out RaycastHit hit2, 50, _MapMask);
+
 			PikminSpawnData data = new()
 			{
 				_OriginPosition = newPikmin.transform.position,
-				_EndPosition = hit.point + basePos * _DisperseRadius,
+				_EndPosition = hit2.point,
 				_Colour = colour,
 			};
 
