@@ -27,8 +27,7 @@ public enum PikminIntention
 {
 	Attack,
 	Carry,
-	PullWeeds,
-	Idle,
+	Idle, // AKA None
 }
 
 public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
@@ -272,7 +271,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, 0.5f, _PlayerAndPikminLayer);
 		foreach (Collider collider in objects)
 		{
-			if (collider.CompareTag("Pikmin"))
+			if (collider.CompareTag("Pikmin") && _Intention != PikminIntention.Idle )
 			{
 				Vector3 direction = _Transform.position - collider.transform.position;
 				direction.y = 0;
@@ -378,8 +377,6 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			case PikminIntention.Carry:
 				_Carrying = _TargetObject.GetComponentInParent<IPikminCarry>();
 				_Carrying.OnCarryStart(this);
-				break;
-			case PikminIntention.PullWeeds:
 				break;
 			case PikminIntention.Idle:
 				ChangeState(PikminStates.Idle);
