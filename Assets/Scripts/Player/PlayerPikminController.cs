@@ -135,16 +135,17 @@ public class PlayerPikminController : MonoBehaviour
 		transform.LookAt(new Vector3(_WhistleTransform.position.x, transform.position.y, _WhistleTransform.position.z));
 		_PikminInHand.transform.LookAt(new Vector3(_WhistleTransform.position.x, _PikminInHand.transform.position.y, _WhistleTransform.position.z));
 
-		Vector3 offs = (_WhistleTransform.position - _PikminInHand.transform.position) * 1.025f;
+		Vector3 whistleTransform = _WhistleTransform.position;
+		if (whistleTransform.y > transform.position.y + _PikminInHand._Data._ThrowingHeight)
+		{
+			whistleTransform.y = (transform.position.y + _PikminInHand._Data._ThrowingHeight) - 0.01f;
+		}
+
+		Vector3 offs = (whistleTransform - _PikminInHand.transform.position) * 1.025f;
 		// TODO: Fix clamp magnitude not working as intended!
 		Vector3 destination = _PikminInHand.transform.position + Vector3.ClampMagnitude(offs, _PikminThrowRadius);
 		float vd = destination.y - _PikminInHand.transform.position.y;
-
-		float throwHeight = _PikminInHand._Data._ThrowingHeight;
-		if (vd < throwHeight)
-		{
-			_ThrownVelocity = CalculateVelocity(destination, vd);
-		}
+		_ThrownVelocity = CalculateVelocity(destination, vd);
 
 		Vector3 velocity = _ThrownVelocity * 1.02f;
 		Vector3 pos = _PikminInHand.transform.position;
