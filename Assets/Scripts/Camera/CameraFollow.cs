@@ -275,7 +275,7 @@ public class CameraFollow : MonoBehaviour
 		Vector3 resultPos = Player._Instance._MovementController._RotationBeforeIdle * (Vector3.back * (_OrbitRadius - (_HolderIndex + 1.6f)));
 
 		float oldRot = _LookAtRotationSpeed;
-		_LookAtRotationSpeed = 10;
+		_LookAtRotationSpeed = 5;
 
 		_Apply = false;
 		float t = 0;
