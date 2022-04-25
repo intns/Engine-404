@@ -185,10 +185,25 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				break;
 		}
 
-		Collider[] colls = Physics.OverlapSphere(_Transform.position, 0.5f, _PikminInteractableMask);
-		foreach (Collider col in colls)
+		if (_CurrentState == PikminStates.Thrown
+			|| (_CurrentState == PikminStates.RunningTowards && !_InSquad))
 		{
-			OnCollisionHandle(col);
+			Collider[] colls = Physics.OverlapSphere(_Transform.position, 0.75f, _PikminInteractableMask);
+			if (colls.Length != 0)
+			{
+				Collider coll = colls[0];
+
+				_TargetObject = coll.transform;
+				_TargetObjectCollider = coll;
+
+				_Intention = coll.GetComponentInParent<IPikminInteractable>().IntentionType;
+				CarryoutIntention();
+			}
+		}
+
+		if (_CurrentState != PikminStates.RunningTowards)
+		{
+			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.2f);
 		}
 	}
 
@@ -617,9 +632,10 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			_Collider.isTrigger = true;
 
 			_TargetObjectCollider = obj.GetComponent<Collider>();
+			_TargetObject = obj;
+
 			_LatchedOffset = _Transform.position - _LatchedTransform.position;
-			Vector3 finalPos = obj.position + _LatchedOffset;
-			_Transform.rotation = Quaternion.LookRotation(finalPos - _Transform.position);
+			_Transform.rotation = Quaternion.LookRotation((ClosestPointOnTarget(_LatchedTransform, _TargetObjectCollider) + _Transform.forward) - _Transform.position);
 		}
 		else
 		{
