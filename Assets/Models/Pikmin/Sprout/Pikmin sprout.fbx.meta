@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 6ac6694dd977643948f7ae7305e370ba
+guid: 8f78d3c3eb200ca4084c47c57bc0ad29
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sprout_body
+    second: {fileID: 2100000, guid: 73b75e5adb3cefb4db5896f158585614, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
