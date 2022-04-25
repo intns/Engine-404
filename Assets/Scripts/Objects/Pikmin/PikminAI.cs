@@ -185,11 +185,11 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				break;
 		}
 
-		if (_CurrentState == PikminStates.Thrown
-			|| (_CurrentState == PikminStates.RunningTowards && !_InSquad))
+		Collider[] colls = Physics.OverlapSphere(_Transform.position, 0.75f, _PikminInteractableMask);
+		if (colls.Length > 0)
 		{
-			Collider[] colls = Physics.OverlapSphere(_Transform.position, 0.75f, _PikminInteractableMask);
-			if (colls.Length != 0)
+			if (_CurrentState == PikminStates.Thrown
+				|| (_CurrentState == PikminStates.RunningTowards && !_InSquad))
 			{
 				Collider coll = colls[0];
 
@@ -198,6 +198,26 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 
 				_Intention = coll.GetComponentInParent<IPikminInteractable>().IntentionType;
 				CarryoutIntention();
+			}
+			else if (_CurrentState == PikminStates.Idle || _CurrentState == PikminStates.Carrying)
+			{
+				foreach (var coll in colls)
+				{
+					// Ignore the object we're carrying, if doing so
+					if (_TargetObjectCollider != null && coll == _TargetObjectCollider)
+					{
+						continue;
+					}
+
+					Rigidbody rb = coll.attachedRigidbody;
+					if (rb != null)
+					{
+						Vector3 direction = _Transform.position - coll.transform.position;
+						direction.y = 0;
+
+						rb.velocity += 500 * Time.deltaTime * direction;
+					}
+				}
 			}
 		}
 
