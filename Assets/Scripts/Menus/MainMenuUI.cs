@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -22,9 +23,9 @@ public class MainMenuUI : MonoBehaviour
 	[SerializeField] private Transform _TemplateButton = null;
 
 	[Header("Settings")]
-	[SerializeField] private float _FadeinBlackTime = 2; 
-	[SerializeField] private float _FadeinUITime = 2; 
-	[SerializeField] private float _FadeoutTime = 2; 
+	[SerializeField] private float _FadeinBlackTime = 2;
+	[SerializeField] private float _FadeinUITime = 2;
+	[SerializeField] private float _FadeoutTime = 2;
 
 	[Header("Audio")]
 	[SerializeField] private AudioClip _HoverAudio;
@@ -65,9 +66,10 @@ public class MainMenuUI : MonoBehaviour
 					string sceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
 
 					Transform obj = Instantiate(_TemplateButton, _Canvas);
-					obj.GetComponentInChildren<Text>().text = sceneName;
+					RectTransform rectTransform = obj.GetComponent<RectTransform>();
+					obj.GetComponentInChildren<TextMeshProUGUI>().text = sceneName;
 					obj.GetComponent<Button>().onClick.AddListener(() => FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene(sceneName)));
-					obj.GetComponent<RectTransform>().localPosition = new Vector3(-450, 300 - ((skippedCurrent ? i - 1 : i) * 100));
+					obj.GetComponent<RectTransform>().localPosition = new Vector3(rectTransform.localPosition.x, rectTransform.localPosition.y - ((skippedCurrent ? i - 1 : i) * 100));
 					obj.gameObject.SetActive(true);
 					objects.Add(obj);
 				}
@@ -99,11 +101,11 @@ public class MainMenuUI : MonoBehaviour
 	private IEnumerator FadeInDebugControls(List<Transform> objects)
 	{
 		List<Image> imageComponents = new List<Image>();
-		List<Text> textComponents = new List<Text>();
+		List<TextMeshProUGUI> textComponents = new List<TextMeshProUGUI>();
 		for (int i = 0; i < objects.Count; i++)
 		{
 			imageComponents.Add(objects[i].GetComponent<Image>());
-			textComponents.Add(objects[i].GetComponentInChildren<Text>());
+			textComponents.Add(objects[i].GetComponentInChildren<TextMeshProUGUI>());
 		}
 
 		float t = 0;
@@ -117,9 +119,9 @@ public class MainMenuUI : MonoBehaviour
 				item.color = Color.Lerp(Color.clear, Color.white, t / time);
 			}
 
-			foreach (Text item in textComponents)
+			foreach (TextMeshProUGUI item in textComponents)
 			{
-				item.color = Color.Lerp(Color.clear, Color.white, t / time);
+				item.alpha = Mathf.SmoothStep(0, 1, t / time);
 			}
 
 			yield return null;
