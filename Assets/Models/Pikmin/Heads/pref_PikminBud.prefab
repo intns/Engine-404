@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1475177631874890674}
   m_Father: {fileID: 1188623792193874372}
@@ -41,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7295571735962628614}
   m_Layer: 0
-  m_Name: pref_Bud
+  m_Name: pref_PikminBud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +57,8 @@ Transform:
   m_GameObject: {fileID: 6009009235213959189}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1188623792193874372}
   - {fileID: 7569740758020612659}
@@ -89,6 +91,7 @@ Transform:
   m_LocalRotation: {x: 0.00000008146035, y: 0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.012879372, z: 0}
   m_LocalScale: {x: 6.8255453, y: 6.8255453, z: 6.8255453}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7179237785431978703}
   m_Father: {fileID: 7295571735962628614}
@@ -120,6 +123,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7179237785431978703}
   m_RootOrder: 0
@@ -151,6 +155,7 @@ Transform:
   m_LocalRotation: {x: 0.000000081460335, y: 0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.01287937, z: -4.0819635e-16}
   m_LocalScale: {x: 6.8255453, y: 6.8255453, z: 6.8255453}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7295571735962628614}
   m_RootOrder: 1
@@ -166,10 +171,12 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
