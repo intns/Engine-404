@@ -13,6 +13,9 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField, Tooltip("Number on the left signifies the minimum amount to carry, number on the right is the maximum.")]
 	private Vector2Int _CarryMinMax = new Vector2Int(1, 2);
 
+	[SerializeField, Tooltip("How close we have to be to the position to move onto the next position")]
+	private float _DistanceToNextPosition = 0.5f;
+
 	[SerializeField] private float _CarryCircleRadius = 1;
 	[SerializeField] private Vector3 _CarryCircleOffset = Vector3.zero;
 
@@ -79,7 +82,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
-		if (MathUtil.DistanceTo(transform.position, _MainOnion._CarryEndpoint.position, false) < 0.25f)
+		if (MathUtil.DistanceTo(transform.position, _MainOnion._CarryEndpoint.position, false) < _DistanceToNextPosition)
 		{
 			_ShutdownInProgress = true;
 			PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
@@ -103,7 +106,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 		else if (_CurrentPath != null && _CurrentPath.vectorPath.Count != 0)
 		{
-			if (MathUtil.DistanceTo(transform.position, _CurrentPath.vectorPath[_CurrentPathPosIdx], false) < 0.24f)
+			if (MathUtil.DistanceTo(transform.position, _CurrentPath.vectorPath[_CurrentPathPosIdx], false) < _DistanceToNextPosition)
 			{
 				_CurrentPathPosIdx++;
 				if (_CurrentPathPosIdx >= _CurrentPath.vectorPath.Count)

@@ -138,7 +138,7 @@ public class PlayerPikminController : MonoBehaviour
 		Vector3 whistleTransform = _WhistleTransform.position;
 		if (whistleTransform.y > transform.position.y + _PikminInHand._Data._ThrowingHeight)
 		{
-			whistleTransform.y = (transform.position.y + _PikminInHand._Data._ThrowingHeight) - 0.01f;
+			whistleTransform.y = (transform.position.y + _PikminInHand._Data._ThrowingHeight) - 0.05f;
 		}
 
 		Vector3 offs = (whistleTransform - _PikminInHand.transform.position) * 1.025f;

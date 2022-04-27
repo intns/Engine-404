@@ -25,10 +25,7 @@ public class PlayerMovementController : MonoBehaviour {
 
   [HideInInspector] public Quaternion _RotationBeforeIdle = Quaternion.identity;
   [HideInInspector] public bool _Paralysed = false;
-  [HideInInspector] public Vector3 _gVelocity => _Velocity;
 
-  private Vector3 _PreviousPosition;
-  private Vector3 _Velocity;
   private float _IdleTimer = 0;
   private RaycastHit _SlideHit;
   private Vector3 _CharacterContactPoint;
@@ -41,7 +38,6 @@ public class PlayerMovementController : MonoBehaviour {
     _SlideRayDist = (_Controller.height * .5f) + _Controller.radius;
     _SlideLimit = _Controller.slopeLimit - .1f;
     _MainCamera = Camera.main;
-    _PreviousPosition = transform.position;
   }
 
   private void Update () {
@@ -99,14 +95,11 @@ public class PlayerMovementController : MonoBehaviour {
     if (_Paralysed || GameManager._IsPaused) {
       return;
     }
-    // Calculate the velocity of the Player using the previous frame as a base point for the calculation
-    _Velocity = (transform.position - _PreviousPosition) / Time.fixedDeltaTime;
-    _PreviousPosition = transform.position;
 
     bool sliding = false;
     // See if surface immediately below should be slid down. We use this normally rather than a ControllerColliderHit point,
     // because that interferes with step climbing amongst other annoyances
-    if (Physics.Raycast (transform.position, -Vector3.up, out _SlideHit, _SlideRayDist)) {
+    if (Physics.SphereCast (transform.position, 0.75f, Vector3.down, out _SlideHit, _SlideRayDist)) {
       if (Vector3.Angle (_SlideHit.normal, Vector3.up) > _SlideLimit) {
         sliding = true;
       }
@@ -127,6 +120,7 @@ public class PlayerMovementController : MonoBehaviour {
       normal.Normalize ();
       direction *= _SlideSpeed;
       direction.y -= Physics.gravity.y * Time.deltaTime;
+      direction = Vector3.Lerp(_Controller.velocity, direction, 0.25f);
       _Controller.Move (direction * Time.deltaTime);
       return;
     }

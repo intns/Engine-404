@@ -271,7 +271,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, 0.5f, _PlayerAndPikminLayer);
 		foreach (Collider collider in objects)
 		{
-			if (collider.CompareTag("Pikmin") && _Intention != PikminIntention.Idle )
+			if (collider.CompareTag("Pikmin") && _Intention != PikminIntention.Idle)
 			{
 				Vector3 direction = _Transform.position - collider.transform.position;
 				direction.y = 0;
@@ -651,8 +651,17 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			_TargetObjectCollider = obj.GetComponent<Collider>();
 			_TargetObject = obj;
 
+			Vector3 closestPosition = ClosestPointOnTarget(_LatchedTransform, _TargetObjectCollider);
+			if (Physics.Raycast(_Transform.position - _Transform.forward * 1.5f, closestPosition - _Transform.position, out RaycastHit info))
+			{
+				if (info.collider == _TargetObjectCollider)
+				{
+					_Transform.SetPositionAndRotation(info.point - _Transform.forward,
+						Quaternion.FromToRotation(Vector3.up, info.normal));
+				}
+			}
+
 			_LatchedOffset = _Transform.position - _LatchedTransform.position;
-			_Transform.rotation = Quaternion.LookRotation((ClosestPointOnTarget(_LatchedTransform, _TargetObjectCollider) + _Transform.forward) - _Transform.position);
 		}
 		else
 		{
