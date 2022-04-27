@@ -29,6 +29,8 @@ public class HealthWheel : MonoBehaviour, IPooledObject
 	private void Start()
 	{
 		_BillboardHealth = transform.Find("Health_Display").gameObject.GetComponent<Image>();
+		_BillboardHealth.fillAmount = _CurrentHealth;
+
 		_Canvas = GetComponent<Canvas>();
 		_CanvasGroup = GetComponent<CanvasGroup>();
 	}
@@ -85,7 +87,6 @@ public class HealthWheel : MonoBehaviour, IPooledObject
 				StartCoroutine(FadeIn());
 			}
 
-			// Smoothly transition between values to avoid hard changing
 			_BillboardHealth.fillAmount = Mathf.Lerp(_BillboardHealth.fillAmount, _CurrentHealth / _MaxHealth, _HealthSpeed * Time.deltaTime);
 			_BillboardHealth.color = _ColorGradient.Evaluate(_CurrentHealth / _MaxHealth);
 		}
