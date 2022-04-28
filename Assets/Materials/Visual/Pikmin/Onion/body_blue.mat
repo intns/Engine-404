@@ -7,31 +7,34 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: moss_1_blend
+  m_Name: body_blue
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
-  m_ShaderKeywords: _DISABLE_SSR_TRANSPARENT _MATERIAL_FEATURE_SPECULAR_COLOR _NORMALMAP
-    _NORMALMAP_TANGENT_SPACE _SPECULARCOLORMAP
+  m_ShaderKeywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2225
-  stringTagMap: {}
+  stringTagMap:
+    MotionVector: User
   disabledShaderPasses:
-  - DistortionVectors
-  - MOTIONVECTORS
   - TransparentDepthPrepass
   - TransparentDepthPostpass
   - TransparentBackface
   - RayTracingPrepass
+  - MOTIONVECTORS
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Ambient_Occlusion:
+        m_Texture: {fileID: 2800000, guid: bc3c5858f07727e458c367cd007152ab, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: bf4480eb5562d90479c968191c76dca6, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8c90954ddf97bc2458a7248f484576c4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
@@ -42,7 +45,31 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: b096272e0c8fbd14cae5c2ea68a7d33a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CarPaint2_BRDFColorMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CarPaint2_BTFFlakeMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CarPaint2_FlakeThetaFISliceLUTMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClearcoatNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -50,7 +77,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DistortionVectorMap:
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Diffuse:
+        m_Texture: {fileID: 2800000, guid: e3a5bcedae69e9048ac58dd7f6c5c2ca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -71,23 +110,95 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: bf4480eb5562d90479c968191c76dca6, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8c90954ddf97bc2458a7248f484576c4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
+        m_Texture: {fileID: 2800000, guid: 1e5d3c5f141353d4c821956c0b79eefa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metallic:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: a673556996ca7354bb8d4fa94ad551f5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: b096272e0c8fbd14cae5c2ea68a7d33a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: c88b0f1b84fc3b64b8eeced85b034274, type: 3}
+        m_Texture: {fileID: 2800000, guid: 510282b498d48fa4598ca3373929a0f2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 2800000, guid: 5d755c27b5666664f80886868b6a9c54, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_AlphaMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_AnisoRotationMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_ClearcoatColorMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_ClearcoatIORMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_DiffuseColorMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_FresnelMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_HeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_SpecularColorMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SVBRDF_SpecularLobeMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_3b9568f982394b838e2e2bf7755e2b22_Texture_1:
+        m_Texture: {fileID: 2800000, guid: e3a5bcedae69e9048ac58dd7f6c5c2ca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Smoothness_Glossiness:
+        m_Texture: {fileID: 2800000, guid: e1f37f4eb02f6b744a2ff2ad4684c814, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
-        m_Texture: {fileID: 2800000, guid: 708b6965b637c194ca6fec9e08b2f64e, type: 3}
+        m_Texture: {fileID: 2800000, guid: ea5e4bf280ebb4f44ac191d722628d6c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SubsurfaceMaskMap:
@@ -139,13 +250,30 @@ Material:
     - _AlphaToMask: 0
     - _AlphaToMaskInspectorValue: 0
     - _Anisotropy: 0
+    - _AxF_BRDFType: 0
     - _BlendMode: 0
+    - _BumpScale: 1
+    - _CarPaint2_BRDFColorMapScale: 1
+    - _CarPaint2_BTFFlakeMapScale: 1
+    - _CarPaint2_CTDiffuse: 0
+    - _CarPaint2_ClearcoatIOR: 1
+    - _CarPaint2_FixedColorThetaHForIndirectLight: 0.5
+    - _CarPaint2_FixedFlakesThetaHForIndirectLight: 0.2
+    - _CarPaint2_FlakeMaxThetaI: 0
+    - _CarPaint2_FlakeMaxThetaIF: 0
+    - _CarPaint2_FlakeNumThetaF: 0
+    - _CarPaint2_FlakeNumThetaFF: 0
+    - _CarPaint2_FlakeNumThetaI: 0
+    - _CarPaint2_FlakeNumThetaIF: 0
+    - _CarPaint2_LobeCount: 0
     - _CoatMask: 0
+    - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0.5
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
+    - _DetailNormalMapScale: 1
     - _DetailNormalScale: 1
     - _DetailSmoothnessScale: 1
     - _DiffusionProfile: 0
@@ -153,20 +281,6 @@ Material:
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
-    - _DistortionBlendMode: 0
-    - _DistortionBlurBlendMode: 0
-    - _DistortionBlurDstBlend: 1
-    - _DistortionBlurRemapMax: 1
-    - _DistortionBlurRemapMin: 0
-    - _DistortionBlurScale: 1
-    - _DistortionBlurSrcBlend: 1
-    - _DistortionDepthTest: 1
-    - _DistortionDstBlend: 1
-    - _DistortionEnable: 0
-    - _DistortionScale: 1
-    - _DistortionSrcBlend: 1
-    - _DistortionVectorBias: -1
-    - _DistortionVectorScale: 2
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
@@ -179,6 +293,11 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
+    - _Flags: 0
+    - _FlagsB: 8388608
+    - _GlossMapScale: 0.5
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
@@ -193,28 +312,47 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 4
+    - _MappingMode: 0
+    - _MaterialID: 1
     - _Metallic: 0
-    - _MetallicRemapMax: 0
+    - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
+    - _Mode: 0
     - _NormalMapSpace: 0
     - _NormalScale: 1
+    - _OcclusionStrength: 1
     - _OpaqueCullMode: 2
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
+    - _Parallax: 0.02
+    - _PlanarSpace: 0
     - _RayTracing: 0
+    - _RayTracingTexFilteringScale: 0.07
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
-    - _SSRefractionProjectionModel: 0
-    - _Smoothness: 0
-    - _SmoothnessRemapMax: 1
+    - _RenderQueueType: 1
+    - _RequireSplitLighting: 0
+    - _SVBRDF_BRDFType: 0
+    - _SVBRDF_BRDFType_DiffuseType: 0
+    - _SVBRDF_BRDFType_SpecularType: 0
+    - _SVBRDF_BRDFVariants: 0
+    - _SVBRDF_BRDFVariants_BlinnType: 0
+    - _SVBRDF_BRDFVariants_FresnelType: 0
+    - _SVBRDF_BRDFVariants_WardType: 0
+    - _SVBRDF_HeightMapMaxMM: 0
+    - _SVBRDF_SpecularLobeMapScale: 1
+    - _Shininess: 0.078125
+    - _Smoothness: 0.615
+    - _SmoothnessRemapMax: 0.7106774
     - _SmoothnessRemapMin: 0
+    - _SmoothnessTextureChannel: 0
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
+    - _SpecularHighlights: 1
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -244,16 +382,22 @@ Material:
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
+    - _UVSec: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
-    - _ZTestModeDistortion: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
+    - _CarPaint2_BRDFColorMapUVScale: {r: 1, g: 1, b: 0, a: 0}
+    - _CarPaint2_BTFFlakeMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _CarPaint2_CTCoeffs: {r: 1, g: 1, b: 1, a: 1}
+    - _CarPaint2_CTF0s: {r: 1, g: 1, b: 1, a: 1}
+    - _CarPaint2_CTSpreads: {r: 1, g: 1, b: 1, a: 1}
+    - _ClearcoatNormalMap_SO: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -262,6 +406,19 @@ Material:
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _MappingMask: {r: 1, g: 0, b: 0, a: 0}
+    - _Material_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_AlphaMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_AnisoRotationMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_ClearcoatColorMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_ClearcoatIORMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_DiffuseColorMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_FresnelMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_HeightMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_NormalMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_SpecularColorMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SVBRDF_SpecularLobeMap_SO: {r: 1, g: 1, b: 0, a: 0}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
@@ -269,7 +426,7 @@ Material:
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &1580127194043505264
+--- !u!114 &7349111961178634405
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
