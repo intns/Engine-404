@@ -26,11 +26,11 @@ Material:
   m_Name: mat_YellowOnionBeam
   m_Shader: {fileID: -6465566751694194690, guid: dd926ba97d4bc984691af1b05cdcaa8e,
     type: 3}
-  m_ShaderKeywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
+  m_ShaderKeywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
     _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: 3000
   stringTagMap:
     MotionVector: User
@@ -178,8 +178,8 @@ Material:
     - _BlendMode: 0
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 0
-    - _CullMode: 2
-    - _CullModeForward: 2
+    - _CullMode: 0
+    - _CullModeForward: 0
     - _Cutoff: 0.5
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
@@ -204,7 +204,7 @@ Material:
     - _DistortionSrcBlend: 0
     - _DistortionVectorBias: -1
     - _DistortionVectorScale: 2
-    - _DoubleSidedEnable: 0
+    - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
@@ -292,7 +292,7 @@ Material:
     m_Colors:
     - Color_8F67E6D7: {r: 1, g: 1, b: 0, a: 0}
     - Color_9B66275C: {r: 1, g: 1, b: 0, a: 0}
-    - Color_E3948459: {r: 588.1335, g: 588.1335, b: 0, a: 1}
+    - Color_E3948459: {r: 82.17037, g: 82.17037, b: 3.4883633, a: 1}
     - Color_F1182B1: {r: 0.12205882, g: 0.125, b: 0, a: 0}
     - Vector2_3CA63243: {r: 1, g: 5, b: 0, a: 0}
     - Vector2_82554C08: {r: 3, g: 5, b: 0, a: 0}
@@ -300,7 +300,7 @@ Material:
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
-    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
