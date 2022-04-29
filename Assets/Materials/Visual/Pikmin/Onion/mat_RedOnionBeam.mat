@@ -22,9 +22,9 @@ Material:
   disabledShaderPasses:
   - TransparentBackface
   - MOTIONVECTORS
-  - TransparentDepthPrepass
-  - TransparentDepthPostpass
   - RayTracingPrepass
+  - TransparentDepthPostpass
+  - TransparentDepthPrepass
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
