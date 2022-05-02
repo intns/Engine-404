@@ -30,7 +30,7 @@ public enum PikminIntention
 	Idle, // AKA None
 }
 
-public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
+public class PikminAI : MonoBehaviour, IHealth
 {
 	[Header("Components")]
 	// Holds everything that makes a Pikmin unique
@@ -39,6 +39,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	[Header("Pushing away things")]
 	[SerializeField] private float _PlayerPushScale = 30;
 	[SerializeField] private float _PikminPushScale = 15;
+	[SerializeField] private float _ObjectPushScale = 200;
 
 	[SerializeField] private LayerMask _PikminInteractableMask = 0;
 	[SerializeField] private TrailRenderer _ThrowTrailRenderer = null;
@@ -79,7 +80,8 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 	[Space, Header("Misc")]
 	public bool _InSquad = false;
 	[SerializeField] private float _RagdollTime = 0;
-	[SerializeField] private Vector3 _MovementVector = Vector3.zero;
+	[SerializeField] private Vector3 _DirectionVector = Vector3.zero;
+	public Vector3 _AddedVelocity = Vector3.zero;
 
 	[SerializeField] private Transform _LatchedTransform = null;
 	public Vector3 _LatchedOffset = Vector3.zero;
@@ -214,7 +216,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 						Vector3 direction = _Transform.position - coll.transform.position;
 						direction.y = 0;
 
-						rb.velocity += 500 * Time.deltaTime * direction;
+						rb.velocity += _ObjectPushScale * Time.deltaTime * direction.normalized;
 					}
 				}
 			}
@@ -260,7 +262,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 
 			if (_Intention == PikminIntention.Attack && _TargetObject != null)
 			{
-				Vector3 directionToObj = ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius) - _Transform.position;
+				Vector3 directionToObj = _Transform.position - ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius);
 				if (Mathf.Abs(directionToObj.y) > 0.25f)
 				{
 					ChangeState(PikminStates.Idle);
@@ -276,16 +278,17 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				Vector3 direction = _Transform.position - collider.transform.position;
 				direction.y = 0;
 
-				_MovementVector += _PikminPushScale * Time.deltaTime * direction.normalized;
+				_AddedVelocity += _PikminPushScale * Time.fixedDeltaTime * direction.normalized;
 			}
-			else if (collider.CompareTag("Player"))
+
+			if (collider.CompareTag("Player"))
 			{
 				Vector3 direction = _Transform.position - collider.transform.position;
 				direction.y = 0;
 
-				_MovementVector += _PlayerPushScale * Time.deltaTime * direction.normalized;
+				_AddedVelocity += _PlayerPushScale * Time.fixedDeltaTime * direction.normalized;
 
-				if (!_InSquad)
+				if (!_InSquad && _CurrentState != PikminStates.RunningTowards)
 				{
 					AddToSquad();
 				}
@@ -293,8 +296,10 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		}
 
 		float storedY = _Rigidbody.velocity.y;
-		_Rigidbody.velocity = _MovementVector;
-		_MovementVector = new Vector3(0, storedY, 0);
+		_Rigidbody.velocity = _DirectionVector + _AddedVelocity;
+		_DirectionVector = Vector3.up * storedY;
+
+		_AddedVelocity = Vector3.Lerp(_AddedVelocity, Vector3.zero, 20 * Time.deltaTime);
 	}
 
 	private void LateUpdate()
@@ -343,7 +348,8 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				ChangeState(PikminStates.Idle);
 			}
 		}
-		else if (!_InSquad && collision.transform.CompareTag("Player"))
+		else if (!_InSquad && _CurrentState != PikminStates.RunningTowards
+			&& collision.transform.CompareTag("Player"))
 		{
 			AddToSquad();
 		}
@@ -404,7 +410,8 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			// Determine if the collider is on the same level as us
 			Vector3 direction = collider.ClosestPoint(_Transform.position) - _Transform.position;
 			direction.y = Mathf.Clamp(direction.y, -1.5f, 1.5f);
-			if (!Physics.Raycast(_Transform.position, direction, _Data._SearchRadius, _PikminInteractableMask))
+			if (!Physics.Raycast(_Transform.position, direction, out RaycastHit hit, _Data._SearchRadius)
+				&& hit.collider != collider)
 			{
 				continue;
 			}
@@ -485,16 +492,13 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		// If we're on top of something we should be interacting with, we'll slide off it
 		if (Physics.Raycast(_Transform.position, Vector3.down, out RaycastHit hit, 1.5f, _PikminInteractableMask))
 		{
-			Vector3 direction = _Transform.position - hit.transform.position;
-			direction.y = 0;
-
-			_MovementVector += 100 * Time.deltaTime * direction;
+			Vector3 direction = MathUtil.DirectionFromTo(hit.transform.position, _Transform.position);
+			_DirectionVector += 100 * Time.deltaTime * direction;
 			return;
 		}
 
 		// Rotate to look at the object we're moving towards
-		Vector3 delta = (position - _Transform.position).normalized;
-		delta.y = 0;
+		Vector3 delta = MathUtil.DirectionFromTo(_Transform.position, position);
 		_Transform.rotation = Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(delta), _Data._RotationSpeed * Time.deltaTime);
 
 		if (stopEarly && MathUtil.DistanceTo(_Transform.position, position, false) < 0.5f)
@@ -507,9 +511,9 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _Data.GetMaxSpeed(_CurrentMaturity), _Data.GetAcceleration(_CurrentMaturity) * Time.fixedDeltaTime);
 		}
 
-		Vector3 newVelocity = delta.normalized * _CurrentMoveSpeed;
+		Vector3 newVelocity = delta * _CurrentMoveSpeed;
 		newVelocity.y = _Rigidbody.velocity.y;
-		_MovementVector = newVelocity;
+		_DirectionVector = newVelocity;
 	}
 
 	private void MoveTowardsTarget()
@@ -522,15 +526,15 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		// Check if there is a collider for the target object we're running to
 		if (collider != null)
 		{
-			Vector3 direction = collider.ClosestPoint(_Transform.position) - _Transform.position;
-			direction.y = 0;
+			Vector3 closestPoint = collider.ClosestPoint(_Transform.position);
+			Vector3 direction = MathUtil.DirectionFromTo(_Transform.position, closestPoint);
 			if (Physics.Raycast(_Transform.position, direction, out RaycastHit hit, maxDistance))
 			{
 				return hit.point;
 			}
 			else
 			{
-				return collider.ClosestPoint(_Transform.position);
+				return closestPoint;
 			}
 		}
 
@@ -586,7 +590,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 				_Transform.rotation = Quaternion.Euler(0, _Transform.rotation.eulerAngles.y, 0);
 				LatchOnto(null);
 
-				_MovementVector = !Physics.Raycast(_Transform.position, Vector3.down, 0.5f) ? Vector3.down * 5 : Vector3.zero;
+				_DirectionVector = Vector3.down * 2;
 				_Animator.SetBool("Attacking", false);
 
 				_AttackingTransform = null;
@@ -638,7 +642,7 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		RemoveFromSquad(PikminStates.Thrown);
 	}
 
-	public void LatchOnto(Transform obj)
+	public void LatchOnto(Transform obj, bool useY = false)
 	{
 		_LatchedTransform = obj;
 		_TargetObject = obj;
@@ -652,11 +656,12 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 			_TargetObject = obj;
 
 			Vector3 closestPosition = ClosestPointOnTarget(_LatchedTransform, _TargetObjectCollider);
-			if (Physics.Raycast(_Transform.position - _Transform.forward * 1.5f, closestPosition - _Transform.position, out RaycastHit info))
+			Vector3 dirToClosestPos = MathUtil.DirectionFromTo(_Transform.position, closestPosition, true);
+			if (Physics.Raycast(_Transform.position - _Transform.forward * 1.5f, dirToClosestPos, out RaycastHit info))
 			{
 				if (info.collider == _TargetObjectCollider)
 				{
-					_Transform.SetPositionAndRotation(info.point - _Transform.forward,
+					_Transform.SetPositionAndRotation(info.point + info.normal,
 						Quaternion.FromToRotation(Vector3.up, info.normal));
 				}
 			}
@@ -723,12 +728,5 @@ public class PikminAI : MonoBehaviour, IHealth, IEntityInfo
 		}
 	}
 
-	#endregion
-
-	#region Entity Implementations
-	public EntityInfo GetEntityInfo()
-	{
-		return EntityInfo.Piki;
-	}
 	#endregion
 }

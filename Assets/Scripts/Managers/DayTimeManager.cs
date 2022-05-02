@@ -69,6 +69,9 @@ public class DayTimeManager : MonoBehaviour {
   }
 
   private static void EndOfDayFadeoutAction () {
+    PikminStatsManager.ClearSquad();
+    PikminStatsManager.ClearStats();
+
     SceneManager.LoadScene (0);
     Debug.Log ("End of Day, fadeout done");
   }

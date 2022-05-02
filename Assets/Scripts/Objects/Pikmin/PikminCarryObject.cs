@@ -82,6 +82,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
+		MoveTowards(_NextDestination);
+
 		if (MathUtil.DistanceTo(transform.position, _MainOnion._CarryEndpoint.position, false) < _DistanceToNextPosition)
 		{
 			_ShutdownInProgress = true;
@@ -133,11 +135,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
-		if (_IsBeingCarried)
-		{
-			MoveTowards(_NextDestination);
-		}
-
 		float storedY = _Rigidbody.velocity.y;
 		_Rigidbody.velocity = _MoveVector;
 		_MoveVector = new Vector3(0, storedY, 0);
@@ -165,8 +162,9 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void MoveTowards(Vector3 position)
 	{
-		Vector3 delta = (position - transform.position).normalized;
+		Vector3 delta = position - transform.position;
 		delta.y = 0;
+		delta.Normalize();
 
 		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
 

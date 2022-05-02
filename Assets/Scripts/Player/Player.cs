@@ -9,7 +9,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerPikminController),
 	typeof(PlayerMovementController))]
-public class Player : MonoBehaviour, IHealth, IEntityInfo
+public class Player : MonoBehaviour, IHealth
 {
 	public static Player _Instance;
 	[HideInInspector] public PlayerMovementController _MovementController = null;
@@ -98,12 +98,5 @@ public class Player : MonoBehaviour, IHealth, IEntityInfo
 		_CurrentHealth = set;
 	}
 
-	#endregion
-
-	#region Entity Implementations
-	public EntityInfo GetEntityInfo()
-	{
-		return EntityInfo.Player;
-	}
 	#endregion
 }

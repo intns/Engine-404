@@ -18,7 +18,8 @@ public enum PikminMaturity
 {
 	Leaf = 0,
 	Bud,
-	Flower
+	Flower,
+	Size
 }
 
 [CreateAssetMenu(fileName = "NewPikminType", menuName = "New Pikmin Type")]

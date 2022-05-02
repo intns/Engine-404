@@ -185,7 +185,7 @@ public class CameraFollow : MonoBehaviour
 		}
 
 		// Calculates the position the Camera wants to be in, using Ground Offset and Orbit Radius
-		Vector3 targetPosition = (transform.position - _PlayerPosition.position).normalized *
+		Vector3 targetPosition = MathUtil.DirectionFromTo(_PlayerPosition.position, transform.position, true) *
 			Mathf.Abs(_OrbitRadius) +
 			_PlayerPosition.position;
 

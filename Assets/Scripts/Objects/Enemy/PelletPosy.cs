@@ -3,6 +3,19 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyDamageScript))]
 public class PelletPosy : MonoBehaviour, IPikminAttack
 {
+	public enum State
+	{
+		Sprout,
+		Bud,
+		Pellet
+	}
+
+	[Header("Settings")]
+	public float _TimeToSprout = 2.5f;
+
+	[Header("Debugging")]
+	[SerializeField] private State _State = State.Bud;
+
 	private Animator _Animator = null;
 	private EnemyDamageScript _DamageScript = null;
 
@@ -12,12 +25,11 @@ public class PelletPosy : MonoBehaviour, IPikminAttack
 		_DamageScript = GetComponent<EnemyDamageScript>();
 	}
 
-	private void Update()
+	// When a Pikmin touches the part of the Pellet that pushes
+	// the Pikmin away, we will play an animation
+	public void OnTouchPushCollider()
 	{
-		if (_DamageScript._AttachedPikmin.Count == 0 && _Animator.GetBool("hit"))
-		{
-			_Animator.SetBool("hit", true);
-		}
+		_Animator.SetTrigger("Touch");
 	}
 
 	#region Pikmin Attacking Implementation
@@ -26,6 +38,11 @@ public class PelletPosy : MonoBehaviour, IPikminAttack
 	public void OnAttackEnd(PikminAI pikmin)
 	{
 		_DamageScript._AttachedPikmin.Remove(pikmin);
+
+		if (_DamageScript._AttachedPikmin.Count == 0 && _Animator != null)
+		{
+			_Animator.SetBool("hit", false);
+		}
 	}
 
 	public void OnAttackStart(PikminAI pikmin)

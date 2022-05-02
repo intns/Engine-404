@@ -110,6 +110,11 @@ public class PlayerPikminController : MonoBehaviour
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(_FormationCenter.position, 1);
 
+	  for (int i = 0; i < PikminStatsManager._InSquad.Count; i++)
+		{
+			Gizmos.DrawSphere(GetPositionAt(i), 0.1f);
+		}
+
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireSphere(transform.position, _PikminPluckDistance);
 	}
@@ -136,9 +141,9 @@ public class PlayerPikminController : MonoBehaviour
 		_PikminInHand.transform.LookAt(new Vector3(_WhistleTransform.position.x, _PikminInHand.transform.position.y, _WhistleTransform.position.z));
 
 		Vector3 whistleTransform = _WhistleTransform.position;
-		if (whistleTransform.y > transform.position.y + _PikminInHand._Data._ThrowingHeight)
+		if (whistleTransform.y > _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight)
 		{
-			whistleTransform.y = (transform.position.y + _PikminInHand._Data._ThrowingHeight) - 0.05f;
+			whistleTransform.y = (_PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight) - 0.05f;
 		}
 
 		Vector3 offs = (whistleTransform - _PikminInHand.transform.position) * 1.025f;
@@ -147,7 +152,13 @@ public class PlayerPikminController : MonoBehaviour
 		float vd = destination.y - _PikminInHand.transform.position.y;
 		_ThrownVelocity = CalculateVelocity(destination, vd);
 
-		Vector3 velocity = _ThrownVelocity * 1.02f;
+		if (float.IsNaN(_ThrownVelocity.x))
+		{
+			_ThrownVelocity = Vector3.forward;
+			return;
+		}
+
+		Vector3 velocity = _ThrownVelocity * 1.015f;
 		Vector3 pos = _PikminInHand.transform.position;
 		Vector3 oldPos = pos;
 		int i = 0;

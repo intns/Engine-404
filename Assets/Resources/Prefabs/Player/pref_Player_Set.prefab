@@ -150,7 +150,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f47a809373dc68446ba5351ed3bb4f44, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: ad17cadbab917b649bd6a98075162852, type: 2}
@@ -1907,9 +1907,9 @@ MonoBehaviour:
   _PikminGrabRadius: 8
   _VerticalMaxGrabRadius: 2.5
   _WhistleTransform: {fileID: 7354393338239934355}
-  _IterationScale: 0.5
-  _StartingDistance: 2
-  _DistancePerPikmin: 0.05
+  _IterationScale: 0.45
+  _StartingDistance: 1.5
+  _DistancePerPikmin: 0.04
   _CanThrowPikmin: 1
 --- !u!1 &7592230707083184919
 GameObject:

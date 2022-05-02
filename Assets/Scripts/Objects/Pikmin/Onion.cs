@@ -28,6 +28,10 @@ public class Onion : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _InFieldText;
 	[SerializeField] private CanvasGroup _CanvasGroup = null;
 
+	[Space]
+	[SerializeField] private Animation _Animator = null;
+	[SerializeField] private AnimationClip _IdleAnim = null;
+
 	[Header("Debug")]
 	[SerializeField] private GameObject _PikminSprout = null;
 
@@ -88,6 +92,11 @@ public class Onion : MonoBehaviour
 		}
 	}
 
+	private void OnAnimationDone()
+	{
+
+	}
+
 	private void Awake()
 	{
 		_OnionCanvas.gameObject.SetActive(false);
@@ -97,6 +106,9 @@ public class Onion : MonoBehaviour
 		{
 			_SpawnedSprouts.Add(i, null);
 		}
+
+		_Animator.AddClip(_IdleAnim, "idle");
+		_Animator.Play();
 	}
 
 	private void Update()

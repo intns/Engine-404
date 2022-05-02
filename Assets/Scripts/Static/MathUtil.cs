@@ -82,6 +82,26 @@ public static class MathUtil
 	}
 
 	/// <summary>
+	/// Calculates the normalized direction from a point towards another point
+	/// </summary>
+	/// <param name="from">The origin</param>
+	/// <param name="to">The destination</param>
+	/// <param name="useY">If we should use the Y axis vector</param>
+	/// <returns>A normalized direction around a unit circle</returns>
+	public static Vector3 DirectionFromTo(Vector3 from, Vector3 to, bool useY = false)
+	{
+		Vector3 direction = to - from;
+
+		if (!useY)
+		{
+			direction.y = 0;
+		}
+
+		direction.Normalize();
+		return direction;
+	}
+
+	/// <summary>
 	/// A basic square function to allow for an Ease-In LERP
 	/// </summary>
 	/// <param name="t">The time input to LERP</param>
