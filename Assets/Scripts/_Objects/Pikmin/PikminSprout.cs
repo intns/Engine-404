@@ -142,7 +142,8 @@ public class PikminSprout : MonoBehaviour
 		switch (_CurrentState)
 		{
 			case PikminSproutState.Dropping:
-				transform.rotation = Quaternion.identity; break;
+				transform.rotation = Quaternion.identity;
+				break;
 			case PikminSproutState.Planted:
 				_Timer += Time.deltaTime;
 

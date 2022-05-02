@@ -51,15 +51,13 @@ public class Player : MonoBehaviour, IHealth
 		// Handle exiting the game/program
 		if (Input.GetButtonDown("Start Button"))
 		{
-			Debug.Break();
-			Application.Quit();
+			Die();
 		}
 	}
 
 	private void Die()
 	{
-		Debug.Log("Player is dead!");
-		Debug.Break();
+		DayTimeManager.FinishDay();
 	}
 
 	public void Pause(bool toPause)

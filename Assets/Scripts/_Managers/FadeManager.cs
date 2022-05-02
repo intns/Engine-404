@@ -12,11 +12,16 @@ using UnityEngine.UI;
 
 public class FadeManager : MonoBehaviour
 {
-	public static FadeManager _Instance;
+	public static FadeManager _Instance { get; private set; }
 
 	[SerializeField] Image _FadeImage;
 
 	FadeManager()
+	{
+		_Instance = this;
+	}
+
+	void Awake()
 	{
 		_Instance = this;
 	}

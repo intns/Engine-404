@@ -8,6 +8,8 @@ using TMPro;
 
 public class DemoController : MonoBehaviour
 {
+	[SerializeField] bool _ResetPrefs = false;
+	[Space]
 	[SerializeField] private Volume _MainVP;
 	[SerializeField] private DayTimeManager _DayTimeManager;
 	[SerializeField] private string _MapName;
@@ -44,6 +46,24 @@ public class DemoController : MonoBehaviour
 		if (!Application.isEditor)
 		{
 			StartCoroutine(IE_StartScene());
+		}
+	}
+
+	void Update()
+	{
+		if (_ResetPrefs)
+		{
+			PlayerPrefs.DeleteAll();
+			_ResetPrefs = false;
+		}
+	}
+
+	private void OnDrawGizmos()
+	{
+		if (_ResetPrefs)
+		{
+			PlayerPrefs.DeleteAll();
+			_ResetPrefs = false;
 		}
 	}
 

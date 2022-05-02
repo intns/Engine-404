@@ -22,15 +22,16 @@ public class PikminSpawnData
 public class Onion : MonoBehaviour
 {
 	[Header("References")]
+	[SerializeField] private Animator _Animator = null;
+	[SerializeField] private SkinnedMeshRenderer _BodyRenderer = null;
+	[Space]
 	[SerializeField] private Canvas _OnionCanvas = null;
 	[SerializeField] private TextMeshProUGUI _InOnionText;
 	[SerializeField] private TextMeshProUGUI _InSquadText;
 	[SerializeField] private TextMeshProUGUI _InFieldText;
 	[SerializeField] private CanvasGroup _CanvasGroup = null;
-
 	[Space]
-	[SerializeField] private Animation _Animator = null;
-	[SerializeField] private AnimationClip _IdleAnim = null;
+	[SerializeField] private GameObject _DiscoverObject = null;
 
 	[Header("Debug")]
 	[SerializeField] private GameObject _PikminSprout = null;
@@ -92,11 +93,6 @@ public class Onion : MonoBehaviour
 		}
 	}
 
-	private void OnAnimationDone()
-	{
-
-	}
-
 	private void Awake()
 	{
 		_OnionCanvas.gameObject.SetActive(false);
@@ -107,8 +103,17 @@ public class Onion : MonoBehaviour
 			_SpawnedSprouts.Add(i, null);
 		}
 
-		_Animator.AddClip(_IdleAnim, "idle");
-		_Animator.Play();
+		if (PlayerPrefs.HasKey("ONION_Discovered") && PlayerPrefs.GetInt("ONION_Discovered") == 1)
+		{
+			_DiscoverObject.SetActive(false);
+			_Animator.SetTrigger("EmptyIdle");
+			_BodyRenderer.material.color = Color.white;
+		}
+		else
+		{
+			PlayerPrefs.SetInt("ONION_Discovered", 0);
+			_BodyRenderer.material.color = new Color(0.4078f, 0.4078f, 0.4078f);
+		}
 	}
 
 	private void Update()
