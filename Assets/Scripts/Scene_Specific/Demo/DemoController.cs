@@ -8,6 +8,8 @@ using TMPro;
 
 public class DemoController : MonoBehaviour
 {
+	[SerializeField] bool _ResetPrefs = false;
+	[Space]
 	[SerializeField] private Volume _MainVP;
 	[SerializeField] private DayTimeManager _DayTimeManager;
 	[SerializeField] private string _MapName;
@@ -34,14 +36,35 @@ public class DemoController : MonoBehaviour
 			fog.enabled.value = false;
 		}
 
-		GameManager._IsPaused = true;
-		_DayTimeManager.enabled = false;
+		GameManager._IsPaused = !Application.isEditor;
+		_DayTimeManager.enabled = Application.isEditor;
 		_Text.text = "";
 	}
 
 	private void Start()
 	{
-		StartCoroutine(IE_StartScene());
+		if (!Application.isEditor)
+		{
+			StartCoroutine(IE_StartScene());
+		}
+	}
+
+	void Update()
+	{
+		if (_ResetPrefs)
+		{
+			PlayerPrefs.DeleteAll();
+			_ResetPrefs = false;
+		}
+	}
+
+	private void OnDrawGizmos()
+	{
+		if (_ResetPrefs)
+		{
+			PlayerPrefs.DeleteAll();
+			_ResetPrefs = false;
+		}
 	}
 
 	IEnumerator IE_StartScene()

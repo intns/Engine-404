@@ -479,7 +479,7 @@ Transform:
   - {fileID: 9091959322304384042}
   m_Father: {fileID: 1234292869175272511}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -4.7340293, y: -130.31206, z: 54.57055}
+  m_LocalEulerAnglesHint: {x: 43.915, y: -153.893, z: 12.566}
 --- !u!1 &5976851148189797439
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,7 +511,7 @@ Transform:
   - {fileID: 2705111040213222536}
   m_Father: {fileID: 8902055426532872965}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0.047504377, y: 0.0012215744, z: 10.671645}
+  m_LocalEulerAnglesHint: {x: 0.299, y: -2.666, z: 1.445}
 --- !u!1 &6755523965720737452
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,7 +543,7 @@ Transform:
   - {fileID: 8274135220006746737}
   m_Father: {fileID: 1234292869175272511}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 11.925698, y: 140.92259, z: 63.495518}
+  m_LocalEulerAnglesHint: {x: -63.38, y: 131.614, z: 33.676}
 --- !u!1 &6841348890998006746
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +575,7 @@ Transform:
   - {fileID: 7310664422868880664}
   m_Father: {fileID: 2705111040213222536}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -1.5836765, y: 0.73595047, z: 28.490034}
+  m_LocalEulerAnglesHint: {x: 0.096, y: 0.017, z: -2.499}
 --- !u!1 &7485487480769538845
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,7 +638,7 @@ Transform:
   - {fileID: 8139918215471380287}
   m_Father: {fileID: 3255228014527823798}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -2.361175, y: -0.079064146, z: 30.999224}
+  m_LocalEulerAnglesHint: {x: 0.096, y: 0.021, z: 4.287}
 --- !u!1 &8912741456592704486
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,7 +808,7 @@ Transform:
   m_GameObject: {fileID: 9013275876603614953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8638121622264917876}
@@ -882,6 +882,7 @@ MonoBehaviour:
   _Data: {fileID: 11400000, guid: 88166cdec3d7d8b4abd1d7b065d99ec2, type: 2}
   _PlayerPushScale: 200
   _PikminPushScale: 45
+  _ObjectPushScale: 200
   _PikminInteractableMask:
     serializedVersion: 2
     m_Bits: 8192
@@ -904,6 +905,7 @@ MonoBehaviour:
   _CurrentMoveSpeed: 0
   _InSquad: 0
   _RagdollTime: 0
-  _MovementVector: {x: 0, y: 0, z: 0}
+  _DirectionVector: {x: 0, y: 0, z: 0}
+  _AddedVelocity: {x: 0, y: 0, z: 0}
   _LatchedTransform: {fileID: 0}
   _LatchedOffset: {x: 0, y: 0, z: 0}
