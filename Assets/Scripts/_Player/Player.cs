@@ -20,6 +20,11 @@ public class Player : MonoBehaviour, IHealth
 	[SerializeField] private float _MaxHealth = 100;
 	[SerializeField] private float _CurrentHealth = 100;
 
+	[Header("Animations")]
+	[SerializeField] private Animator _Animator;
+	[SerializeField] private CharacterController _Controller;
+	bool _IsHit = false;
+
 	private void OnEnable()
 	{
 		_Instance = this;
@@ -53,6 +58,22 @@ public class Player : MonoBehaviour, IHealth
 		{
 			Die();
 		}
+
+
+		if (_Controller.velocity != Vector3.zero)
+		{
+			_Animator.SetBool("Walk", true);
+		}
+		else
+		{
+			_Animator.SetBool("Walk", false);
+		}
+
+		if (_IsHit)
+		{
+			_Animator.ResetTrigger("Damage");
+			_IsHit = false;
+		}
 	}
 
 	private void Die()
@@ -63,6 +84,9 @@ public class Player : MonoBehaviour, IHealth
 	public void Pause(bool toPause)
 	{
 		// Time.timeScale = toPause ? 0 : 1;
+		_Animator.SetBool("Walk", false);
+		_Animator.ResetTrigger("Damage");
+
 		GameManager._IsPaused = toPause;
 		_MovementController._Paralysed = toPause;
 	}
@@ -88,11 +112,19 @@ public class Player : MonoBehaviour, IHealth
 
 	public float SubtractHealth(float take)
 	{
+		_Animator.SetTrigger("Damage");
+		_IsHit = true;
 		return _CurrentHealth -= take;
 	}
 
 	public void SetHealth(float set)
 	{
+		if (_CurrentHealth > set)
+		{
+			_Animator.SetTrigger("Damage");
+			_IsHit = true;
+		}
+
 		_CurrentHealth = set;
 	}
 

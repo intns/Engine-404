@@ -55,12 +55,10 @@ public class PlayerMovementController : MonoBehaviour
 		// Check if we've been idle long enough to look at the whistle
 		if (_IdleTimer > _LookAtWhistleTime)
 		{
-			Vector3 finalLookPosition = _WhistleTransform.position - transform.position;
-			finalLookPosition.y = 0;
-
-			if (finalLookPosition != Vector3.zero)
+			Vector3 dir = MathUtil.DirectionFromTo(transform.position, _WhistleTransform.position);
+			if (dir != Vector3.zero)
 			{
-				transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(finalLookPosition), _RotationSpeed * Time.deltaTime);
+				transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), _RotationSpeed * Time.deltaTime);
 			}
 		}
 		else

@@ -97,6 +97,8 @@ public class Onion : MonoBehaviour
 	{
 		_OnionCanvas.gameObject.SetActive(false);
 
+		_CurrentSeedIdx = UnityEngine.Random.Range(0, 101);
+
 		_SpawnedSprouts.Clear();
 		for (int i = 0; i < 100; i++)
 		{
