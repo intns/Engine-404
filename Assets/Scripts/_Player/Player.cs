@@ -59,20 +59,22 @@ public class Player : MonoBehaviour, IHealth
 			Die();
 		}
 
+		if (!GameManager._IsPaused)
+		{
+			if (_Controller.velocity != Vector3.zero)
+			{
+				_Animator.SetBool("Walk", true);
+			}
+			else
+			{
+				_Animator.SetBool("Walk", false);
+			}
 
-		if (_Controller.velocity != Vector3.zero)
-		{
-			_Animator.SetBool("Walk", true);
-		}
-		else
-		{
-			_Animator.SetBool("Walk", false);
-		}
-
-		if (_IsHit)
-		{
-			_Animator.ResetTrigger("Damage");
-			_IsHit = false;
+			if (_IsHit)
+			{
+				_Animator.ResetTrigger("Damage");
+				_IsHit = false;
+			}
 		}
 	}
 

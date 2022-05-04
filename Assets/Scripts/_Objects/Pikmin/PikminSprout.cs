@@ -83,8 +83,8 @@ public class PikminSprout : MonoBehaviour
 	[SerializeField] float _PeakHeight = 5;
 	[SerializeField] float _DropSpeed = 5;
 	[Space]
-	[SerializeField] float _TimeNeededForBud;
-	[SerializeField] float _TimeNeededForFlower;
+	[SerializeField] float _TimeNeededForBud = 180;
+	[SerializeField] float _TimeNeededForFlower = 240;
 
 	[Header("Components")]
 	[SerializeField] GameObject _RedPikminPrefab;
@@ -124,12 +124,14 @@ public class PikminSprout : MonoBehaviour
 
 		foreach (GameObject obj in _MaturityObjects)
 		{
-			obj.transform.localScale = Vector3.one * 1.25f;
-			obj.transform.localPosition = Vector3.up * 0.075f;
+			obj.transform.localPosition = Vector3.up * 0.35f;
 		}
 
 		_MeshRenderer = GetComponent<MeshRenderer>();
 		_ParticleSystem = GetComponent<ParticleSystem>();
+
+		_TimeNeededForBud += UnityEngine.Random.Range(60, -30);
+		_TimeNeededForFlower += UnityEngine.Random.Range(60, -30);
 	}
 
 	private void Update()

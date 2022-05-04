@@ -17,20 +17,32 @@ public class Collider_PikminSlip : MonoBehaviour
 		}
 	}
 
+	void OnTouch(Transform obj)
+	{
+		PikminAI ai = obj.GetComponent<PikminAI>();
+
+		Vector3 direction = MathUtil.DirectionFromTo(transform.position, obj.position);
+		ai._AddedVelocity += k_PushForce * Time.deltaTime * direction;
+
+		if (_OnTouch != null)
+		{
+			_OnTouch.Invoke();
+		}
+	}
+
 	private void OnCollisionStay(Collision collision)
 	{
 		if (collision.gameObject.CompareTag("Pikmin"))
 		{
-			Transform pikminObj = collision.transform;
-			PikminAI ai = pikminObj.GetComponent<PikminAI>();
+			OnTouch(collision.transform);
+		}
+	}
 
-			Vector3 direction = MathUtil.DirectionFromTo(transform.position, pikminObj.position);
-			ai._AddedVelocity += k_PushForce * Time.deltaTime * direction;
-
-			if (_OnTouch != null)
-			{
-				_OnTouch.Invoke();
-			}
+	private void OnTriggerStay(Collider other)
+	{
+		if (other.gameObject.CompareTag("Pikmin"))
+		{
+			OnTouch(other.transform);
 		}
 	}
 }

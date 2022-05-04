@@ -56,12 +56,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_29A8EAB: 0.2
-    - Vector1_3C2CF0EB: 0.0129
+    - Vector1_29A8EAB: 0.751
+    - Vector1_3C2CF0EB: 0.0117
     - Vector1_53B9698E: 0.8
-    - Vector1_6D9DC178: 69.36
-    - Vector1_93DCFAA9: 2.25
-    - Vector1_95BBCBE0: 3000
+    - Vector1_6D9DC178: 70
+    - Vector1_93DCFAA9: 14.39
+    - Vector1_95BBCBE0: 1500
     - Vector1_C5543ECF: 5
     - Vector1_E23798DE: 0.69
     - _AddPrecomputedVelocity: 0
@@ -71,10 +71,12 @@ Material:
     - _AlphaToMask: 0
     - _AlphaToMaskInspectorValue: 0
     - _BlendMode: 0
+    - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
     - _DepthOffsetEnable: 0
     - _DoubleSidedEnable: 0
+    - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
     - _EnableBlendModePreserveSpecularLighting: 0
@@ -107,8 +109,8 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - Color_A271762B: {r: 0, g: 0, b: 0, a: 0.62352943}
-    - Color_AFFD055F: {r: 1, g: 1, b: 1, a: 1}
-    - Color_E0824245: {r: 0.015352439, g: 0.13882521, b: 0.14150941, a: 0.56078434}
+    - Color_AFFD055F: {r: 1, g: 1, b: 1, a: 0.59607846}
+    - Color_E0824245: {r: 0.053082354, g: 0.072352946, b: 0.14117648, a: 0.49019608}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

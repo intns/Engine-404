@@ -13,6 +13,7 @@ public class PlayerPikminController : MonoBehaviour
 	public Transform _FormationCenter;
 	[SerializeField] private LayerMask _PikminLayer;
 	[SerializeField] LineRenderer _LineRenderer;
+	[SerializeField] Animator _Animator;
 
 	[Header("Plucking")]
 	[SerializeField] private float _PikminPluckDistance = 3.5f;
@@ -72,10 +73,20 @@ public class PlayerPikminController : MonoBehaviour
 
 			if (closest != null && Input.GetButtonDown("A Button"))
 			{
+				_Animator.SetTrigger("Pluck");
+
 				PikminAI pikmin = closest.OnPluck();
 				pikmin.AddToSquad();
 				Destroy(closest.gameObject);
 			}
+			else
+			{
+				_Animator.ResetTrigger("Pluck");
+			}
+		}
+		else
+		{
+			_Animator.ResetTrigger("Pluck");
 		}
 
 		if (_CanThrowPikmin)
@@ -110,7 +121,7 @@ public class PlayerPikminController : MonoBehaviour
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(_FormationCenter.position, 1);
 
-	  for (int i = 0; i < PikminStatsManager._InSquad.Count; i++)
+		for (int i = 0; i < PikminStatsManager._InSquad.Count; i++)
 		{
 			Gizmos.DrawSphere(GetPositionAt(i), 0.1f);
 		}

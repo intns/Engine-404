@@ -84,7 +84,7 @@ public class MainMenuUI : MonoBehaviour
 	public void PressPlay()
 	{
 		AudioSource.PlayClipAtPoint(_SelectAudio, Camera.main.transform.position, 0.25f);
-		FadeManager._Instance.FadeInOut(_FadeoutTime, _FadeoutTime, () => SceneManager.LoadScene("scn_demo_level"));
+		FadeManager._Instance.FadeInOut(_FadeoutTime, _FadeoutTime, () => SceneManager.LoadScene(1));
 	}
 
 	public void PressExit()

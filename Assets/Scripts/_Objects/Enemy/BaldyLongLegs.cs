@@ -5,8 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class BLL_Values
 {
-	public float _FootRotationSpeed;
-	public float _FootOverlapSphereSize;
 	public float _FootHeightFloorOffset;
 
 	[Space]
@@ -14,9 +12,10 @@ public class BLL_Values
 	public Vector2 _LegLiftTimeRange; // X is min bound Y is max bound
 
 	[Space]
-	public float _StepSpeed;
 	public float _StepHeight;
 	public float _DistanceForStep;
+
+	public bool _FlipToes;
 
 	[Space]
 	public LayerMask _MapMask;
@@ -30,55 +29,105 @@ public class BaldyLongLegsFoot
 	GameObject _RaycastObj = null;
 	BaldyLongLegs _Parent = null;
 	Transform _Target = null;
+
+	Collider _DeathCollider = null;
+	Collider_PikminDie _DieCollider = null;
+	Collider_PikminSlip _SlipCollider = null;
+
 	int _LegIdx = 0;
 
 	BLL_Values _Values;
 
 	float _LiftTimer = 0;
 	float _RNGTime = 0;
+
+	float _DeathCollTimer = 0;
+
 	Vector3 _NewPosition = Vector3.zero;
-	Quaternion _NewRotation = Quaternion.identity;
-
 	Vector3 _TargetPosition = Vector3.zero;
-	Quaternion _TargetRotation = Quaternion.identity;
 
-	BaldyLongLegsFoot _OtherFoot = null;
+	List<BaldyLongLegsFoot> _OtherFeet = new List<BaldyLongLegsFoot>();
 
-	public BaldyLongLegsFoot(BaldyLongLegs parentLegs, Transform target, int legIdx)
+	public BaldyLongLegsFoot(BaldyLongLegs parentLegs, Transform target, Collider dColl, int legIdx)
 	{
-		_RaycastObj = new GameObject();
+		_RaycastObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		_RaycastObj.name = $"name={target.name} idx={legIdx}";
 		_Parent = parentLegs;
+
+		_DeathCollider = dColl;
+		_DeathCollider.enabled = true;
+		_DieCollider = _DeathCollider.GetComponent<Collider_PikminDie>();
+		_SlipCollider = _DeathCollider.GetComponent<Collider_PikminSlip>();
 
 		_Target = target;
 		_LegIdx = legIdx;
+
+		_DeathCollTimer = 0.0f;
 	}
 
 	public bool IsMoving() { return _LiftTimer < _RNGTime; }
 
-	public void Set(BaldyLongLegsFoot otherFoot, BLL_Values values)
+	public void Set(List<BaldyLongLegsFoot> otherFeet, BLL_Values values)
 	{
 		_Values = values;
 		_RNGTime = Random.Range(_Values._LegLiftTimeRange.x, _Values._LegLiftTimeRange.y);
 
-		_OtherFoot = otherFoot;
+		_OtherFeet = otherFeet;
+
+		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
+		if (!Physics.SphereCast(_RaycastObj.transform.position, 5, Vector3.down, out RaycastHit hit, 200, _Values._MapMask))
+		{
+			return;
+		}
+
+		_NewPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
+		_Target.position = _NewPosition;
 	}
 
 	public void Update()
 	{
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
-		_Target.SetPositionAndRotation(_TargetPosition, _TargetRotation);
+
+		Quaternion nextRotation = _Target.rotation;
+		if (Physics.Raycast(_RaycastObj.transform.position, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
+		{
+			if (_Values._FlipToes)
+			{
+				nextRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+			}
+			else
+			{
+				nextRotation = Quaternion.FromToRotation(Vector3.down, hit.normal);
+			}
+		}
+
+		_Target.SetPositionAndRotation(_TargetPosition, nextRotation);
+
+		if (_DeathCollTimer <= 0.25f)
+		{
+			_DieCollider._Enabled = false;
+			_DeathCollTimer += Time.deltaTime;
+		}
+		else
+		{
+			_DieCollider._Enabled = true;
+			_SlipCollider.enabled = true;
+		}
 
 		if (_LiftTimer >= _RNGTime)
 		{
-			if (_OtherFoot.IsMoving())
+			for (int i = 0; i < _OtherFeet.Count; i++)
 			{
-				return;
+				if (_OtherFeet[i].IsMoving())
+				{
+					return;
+				}
 			}
 
 			Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);
 
 			// If we couldn't hit the map, and the distance isn't big enough
-			if (!Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * 8), _Values._FootOverlapSphereSize, Vector3.down, out RaycastHit hit, 200, _Values._MapMask)
+			if (!Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * (_Values._DistanceForStep / 2)), 5, Vector3.down, out hit, float.PositiveInfinity, _Values._MapMask)
 				|| Vector3.Distance(_NewPosition, hit.point) <= _Values._DistanceForStep)
 			{
 				return;
@@ -86,9 +135,8 @@ public class BaldyLongLegsFoot
 
 			_LiftTimer = 0;
 			_NewPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
-			_NewRotation = Quaternion.FromToRotation(Vector3.down, hit.normal);
 
-			AudioSource.PlayClipAtPoint(_Values._FootStep, _Target.position, 2);
+			AudioSource.PlayClipAtPoint(_Values._FootStep, Camera.main.transform.position);
 
 			_RNGTime = Random.Range(_Values._LegLiftTimeRange.x, _Values._LegLiftTimeRange.y);
 		}
@@ -99,28 +147,14 @@ public class BaldyLongLegsFoot
 			_TargetPosition = Vector3.Lerp(_Target.position, _NewPosition, t);
 			_TargetPosition.y += Mathf.Abs(Mathf.Sin(t * Mathf.PI)) * _Values._StepHeight;
 
-			_LiftTimer += Time.deltaTime * _Values._StepSpeed;
+			_LiftTimer += Time.deltaTime;
 
-			if (_LiftTimer < _RNGTime)
+			if (_LiftTimer < _RNGTime - 0.25f)
 			{
-				return;
-			}
+				_DieCollider._Enabled = false;
+				_SlipCollider.enabled = true;
 
-			// We've just touched the floor!
-			_TargetRotation = _NewRotation;
-
-			Collider[] colls = Physics.OverlapSphere(_Target.position, _Values._FootOverlapSphereSize, _Values._FootStompInteractMask);
-			foreach (var coll in colls)
-			{
-				if (coll.CompareTag("Pikmin"))
-				{
-					coll.GetComponent<PikminAI>().Die(0.5f);
-				}
-				else if (coll.CompareTag("Player"))
-				{
-					var player = coll.GetComponent<Player>();
-					player.SubtractHealth(player.GetMaxHealth() / 3);
-				}
+				_DeathCollTimer = 0;
 			}
 		}
 	}
@@ -132,6 +166,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 {
 	[Header("Components")]
 	[SerializeField] Transform[] _LegTargets;
+	[SerializeField] Collider[] _LegColliders;
 	public Transform _Target;
 
 	[Header("Settings")]
@@ -142,15 +177,12 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	[SerializeField] float _LegDistance;
 	[SerializeField] float _Speed;
 
-	[Header("Debug")]
-	[SerializeField] bool _TestIK = false;
-
 	List<BaldyLongLegsFoot> _Feet = new List<BaldyLongLegsFoot>();
 	private EnemyDamageScript _DamageScript = null;
 
 	public Vector3 GetRaycastObjPosition(int legIdx)
 	{
-		return transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_LegTargets.Length, legIdx + 1, _LegRotation) * _LegDistance, transform.position.y + 50);
+		return transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_LegTargets.Length, legIdx, _LegRotation) * _LegDistance, transform.position.y + 50);
 	}
 
 	private void Awake()
@@ -159,31 +191,55 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 		for (int i = 0; i < _LegTargets.Length; i++)
 		{
-			_Feet.Add(new BaldyLongLegsFoot(this, _LegTargets[i], i));
+			Vector3 currentPos = GetRaycastObjPosition(i);
+
+			int currentIdx = 0;
+			float minDist = float.PositiveInfinity;
+			for (int j = 0; j < _LegTargets.Length; j++)
+			{
+				float currentDist = MathUtil.DistanceTo(_LegTargets[j].position, currentPos, false);
+				if (currentDist < minDist)
+				{
+					minDist = currentDist;
+					currentIdx = i;
+				}
+			}
+
+			_Feet.Add(new BaldyLongLegsFoot(this, _LegTargets[currentIdx], _LegColliders[currentIdx], currentIdx));
 		}
 
-		_Feet[0].Set(_Feet[1], _Values);
-		_Feet[1].Set(_Feet[2], _Values);
-		_Feet[2].Set(_Feet[3], _Values);
-		_Feet[3].Set(_Feet[0], _Values);
+		for (int i = 0; i < _Feet.Count; i++)
+		{
+			List<BaldyLongLegsFoot> feet = new();
+
+			for (int j = 0; j < _Feet.Count; j++)
+			{
+				if (j == i)
+				{
+					continue;
+				}
+
+				feet.Add(_Feet[j]);
+			}
+
+			_Feet[i].Set(feet, _Values);
+		}
 	}
 
 	private void Update()
 	{
-		if (_TestIK)
-		{
-			//StartCoroutine(IE_TestIK());
-			_TestIK = false;
-		}
+		_LegRotation += Time.deltaTime / 20;
 
-		for (int i = 0; i < _LegTargets.Length; i++)
+		for (int i = 0; i < _Feet.Count; i++)
 		{
 			_Feet[i].Update();
 		}
 
 		Vector3 target = _Target.position;
 		target.y = transform.position.y;
-		transform.position = Vector3.Lerp(transform.position, target, _Speed * Time.deltaTime);
+
+		Vector3 velocity = Vector3.zero;
+		transform.position = Vector3.SmoothDamp(transform.position, target, ref velocity, Time.smoothDeltaTime, _Speed);
 	}
 
 

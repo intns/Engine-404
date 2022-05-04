@@ -260,15 +260,17 @@ public class Onion : MonoBehaviour
 			_InSquadText.text = $"{_CurPikminAmounts._InSquad}";
 			_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
 		}
+	}
 
-		// X is red, Y is yellow, Z is blue
-		int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
-		if (totalToDisperse > 0)
+	public void ANIM_TryCreateSprout()
+	{
+		// Onion spits out in 3s
+		for (int i = 0; i < 3; i++)
 		{
-			_TimeSinceLastDisperse += Time.deltaTime;
-			if (_TimeSinceLastDisperse > 1 / (totalToDisperse * _DisperseRate))
+			// X is red, Y is yellow, Z is blue
+			int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
+			if (totalToDisperse > 0)
 			{
-				_TimeSinceLastDisperse -= 1 / (totalToDisperse * _DisperseRate);
 				if (_SeedsToDisperse.x > 0)
 				{
 					TryCreateSprout(PikminColour.Red);
@@ -284,6 +286,11 @@ public class Onion : MonoBehaviour
 					TryCreateSprout(PikminColour.Blue);
 					_SeedsToDisperse.z--;
 				}
+			}
+			else
+			{
+				_Animator.SetBool("Spitting", false);
+				return;
 			}
 		}
 	}
@@ -381,6 +388,8 @@ public class Onion : MonoBehaviour
 			PikminColour.Size => throw new NotImplementedException(),
 			_ => throw new NotImplementedException()
 		};
+
+		_Animator.SetBool("Spitting", true);
 	}
 
 	/// <summary>
