@@ -24,8 +24,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6760881568670542062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7424206076050754518}
@@ -97,6 +97,7 @@ MonoBehaviour:
   _FlowerHeadPrefab: {fileID: 595203086311389770, guid: c219d3fe4361acc4abd94f4cb22e6b70,
     type: 3}
   _MaturityPlaceholderObj: {fileID: 6010049212355865715}
+  _MeshRenderer: {fileID: 1760998292150607017}
   _CurrentState: 0
   _SpawnData:
     _OriginPosition: {x: 0, y: 0, z: 0}
@@ -4978,6 +4979,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f78d3c3eb200ca4084c47c57bc0ad29, type: 3}
+--- !u!137 &1760998292150607017 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6568755015266887247, guid: 8f78d3c3eb200ca4084c47c57bc0ad29,
+    type: 3}
+  m_PrefabInstance: {fileID: 4370543877535778072}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4264332691777397491 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8f78d3c3eb200ca4084c47c57bc0ad29,

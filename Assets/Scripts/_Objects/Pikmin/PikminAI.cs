@@ -653,7 +653,7 @@ public class PikminAI : MonoBehaviour, IHealth
 		RemoveFromSquad(PikminStates.Thrown);
 	}
 
-	public void LatchOnto(Transform obj, bool useY = true)
+	public void LatchOnto(Transform obj, bool onlyY = true)
 	{
 		_LatchedTransform = obj;
 		_TargetObject = obj;
@@ -667,13 +667,19 @@ public class PikminAI : MonoBehaviour, IHealth
 			_TargetObject = obj;
 
 			Vector3 closestPosition = ClosestPointOnTarget(_LatchedTransform, _TargetObjectCollider);
-			Vector3 dirToClosestPos = MathUtil.DirectionFromTo(_Transform.position, closestPosition, useY);
+			Vector3 dirToClosestPos = MathUtil.DirectionFromTo(_Transform.position, closestPosition, true);
 			if (Physics.Raycast(_Transform.position - (_Transform.forward * 1.5f), dirToClosestPos, out RaycastHit info))
 			{
 				if (info.collider == _TargetObjectCollider)
 				{
-					_Transform.SetPositionAndRotation(info.point + info.normal,
-						Quaternion.FromToRotation(Vector3.up, info.normal));
+					Vector3 eulerAngles = Quaternion.FromToRotation(Vector3.up, info.normal).eulerAngles;
+					if (onlyY)
+					{
+						eulerAngles.x = transform.eulerAngles.x;
+						eulerAngles.z = transform.eulerAngles.z;
+					}
+
+					_Transform.SetPositionAndRotation(info.point + info.normal, Quaternion.Euler(eulerAngles));
 				}
 			}
 
@@ -684,7 +690,7 @@ public class PikminAI : MonoBehaviour, IHealth
 			_Rigidbody.isKinematic = false;
 			_Collider.isTrigger = false;
 
-			transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
 		}
 	}
 

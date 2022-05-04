@@ -61,7 +61,7 @@ public class Player : MonoBehaviour, IHealth
 
 		if (!GameManager._IsPaused)
 		{
-			if (_Controller.velocity != Vector3.zero)
+			if (_Controller.velocity.magnitude > 1.5f)
 			{
 				_Animator.SetBool("Walk", true);
 			}
@@ -75,6 +75,10 @@ public class Player : MonoBehaviour, IHealth
 				_Animator.ResetTrigger("Damage");
 				_IsHit = false;
 			}
+		}
+		else
+		{
+			_Animator.SetBool("Walk", false);
 		}
 	}
 

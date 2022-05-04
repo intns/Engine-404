@@ -96,6 +96,8 @@ public class PikminSprout : MonoBehaviour
 	[SerializeField] GameObject _FlowerHeadPrefab;
 	[Space]
 	[SerializeField] Transform _MaturityPlaceholderObj;
+	[Space]
+	[SerializeField] SkinnedMeshRenderer _MeshRenderer = null;
 
 	[Header("Debug")]
 	[SerializeField] PikminSproutState _CurrentState;
@@ -105,9 +107,7 @@ public class PikminSprout : MonoBehaviour
 	GameObject[] _MaturityObjects = new GameObject[3];
 
 	ParticleSystem _ParticleSystem = null;
-	MeshRenderer _MeshRenderer = null;
 
-	Vector3 _OldPosition = Vector3.zero;
 	float _Timer = 0;
 
 	private void OnEnable()
@@ -127,7 +127,6 @@ public class PikminSprout : MonoBehaviour
 			obj.transform.localPosition = Vector3.up * 0.35f;
 		}
 
-		_MeshRenderer = GetComponent<MeshRenderer>();
 		_ParticleSystem = GetComponent<ParticleSystem>();
 
 		_TimeNeededForBud += UnityEngine.Random.Range(60, -30);
@@ -161,8 +160,6 @@ public class PikminSprout : MonoBehaviour
 			default:
 				break;
 		}
-
-		_OldPosition = transform.position;
 	}
 
 	public PikminAI OnPluck()
