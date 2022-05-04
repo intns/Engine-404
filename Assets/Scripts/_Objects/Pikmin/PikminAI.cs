@@ -106,8 +106,7 @@ public class PikminAI : MonoBehaviour, IHealth
 		return 1;
 	}
 
-	// Empty implementation purposely
-	void IHealth.SetHealth(float h) { }
+	void IHealth.SetHealth(float h) { if (h <= 0) { Die(); } }
 
 	float IHealth.SubtractHealth(float h)
 	{
@@ -126,7 +125,7 @@ public class PikminAI : MonoBehaviour, IHealth
 	#region Unity Methods
 	private void OnEnable()
 	{
-		GameObject fObject = new GameObject($"{name}_formation_pos");
+		GameObject fObject = new($"{name}_formation_pos");
 		_FormationPosition = fObject.transform;
 		_Transform = transform;
 	}
@@ -143,10 +142,19 @@ public class PikminAI : MonoBehaviour, IHealth
 		_CurrentStatSpecifier = PikminStatSpecifier.OnField;
 		PikminStatsManager.Add(_Data._PikminColour, _CurrentMaturity, _CurrentStatSpecifier);
 
-		_HeadModels = new GameObject[(int)PikminMaturity.Flower + 1];
-		_HeadModels[0] = Instantiate(_Data._Leaf, _LeafSpawn);
-		_HeadModels[1] = Instantiate(_Data._Bud, _LeafSpawn);
-		_HeadModels[2] = Instantiate(_Data._Flower, _LeafSpawn);
+		_HeadModels = new GameObject[(int)PikminMaturity.Size];
+		_HeadModels[0] = Instantiate(_Data._Leaf);
+		_HeadModels[0].transform.parent = _LeafSpawn;
+		_HeadModels[0].transform.localPosition = Vector3.zero;
+
+		_HeadModels[1] = Instantiate(_Data._Bud);
+		_HeadModels[1].transform.parent = _LeafSpawn;
+		_HeadModels[1].transform.localPosition = Vector3.zero;
+
+		_HeadModels[2] = Instantiate(_Data._Flower);
+		_HeadModels[2].transform.parent = _LeafSpawn;
+		_HeadModels[2].transform.localPosition = Vector3.zero;
+
 		SetMaturity(_StartingMaturity);
 	}
 
@@ -719,8 +727,8 @@ public class PikminAI : MonoBehaviour, IHealth
 		Debug.Log("Left water");
 	}
 
-	// CALLED BY ANIMATION - PIKMIN HIT
-	public void HandleAttackingAnimationHit()
+	// CALLED BY PIKMIN ANIMATION - ATTACK
+	public void ANIM_Attack()
 	{
 		if (_Attacking != null)
 		{
