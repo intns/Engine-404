@@ -231,10 +231,11 @@ public class PikminAI : MonoBehaviour, IHealth
 				MoveTowardsTarget();
 			}
 
-			if (_Intention == PikminIntention.Attack && _TargetObject != null)
+			if (_Intention == PikminIntention.Carry && _Carrying != null)
 			{
-				Vector3 directionToObj = _Transform.position - ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius);
-				if (Mathf.Abs(directionToObj.y) > 0.25f)
+				// If we're running after something, to carry it, and all the spots
+				// suddenly are taken, then we will go to idle
+				if (!_Carrying.PikminSpotAvailable())
 				{
 					ChangeState(PikminStates.Idle);
 				}
@@ -392,7 +393,7 @@ public class PikminAI : MonoBehaviour, IHealth
 			IPikminInteractable interactableComponent = collider.GetComponentInParent<IPikminInteractable>();
 			PikminIntention currentIntention = interactableComponent.IntentionType;
 
-			if (_Intention == PikminIntention.Carry)
+			if (currentIntention == PikminIntention.Carry)
 			{
 				IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
 				if (toCarry != null && !toCarry.PikminSpotAvailable())
@@ -494,6 +495,8 @@ public class PikminAI : MonoBehaviour, IHealth
 
 	private void MoveTowardsTarget()
 	{
+		// Move a little bit forward so that we guarantee
+		// an intersection & so that we don't stop too early
 		MoveTowards(ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius) + _Transform.forward, false);
 	}
 

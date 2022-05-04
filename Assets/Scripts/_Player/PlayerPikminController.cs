@@ -210,6 +210,8 @@ public class PlayerPikminController : MonoBehaviour
 
 				_PikminInHand.StartThrowHold();
 				_LineRenderer.enabled = true;
+
+				_Animator.SetBool("HoldingThrow", true);
 			}
 		}
 
@@ -228,6 +230,7 @@ public class PlayerPikminController : MonoBehaviour
 			if (Input.GetButtonUp("A Button"))
 			{
 				_PikminInHand.EndThrowHold();
+				_Animator.SetBool("HoldingThrow", false);
 
 				Vector3 whistlePos = new Vector3(_WhistleTransform.position.x, 0, _WhistleTransform.position.z);
 				transform.LookAt(new Vector3(whistlePos.x, transform.position.y, whistlePos.z));
