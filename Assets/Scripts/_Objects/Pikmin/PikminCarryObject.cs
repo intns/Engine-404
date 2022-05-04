@@ -35,6 +35,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] private Vector3 _MoveVector = Vector3.zero;
 	[SerializeField] private Vector3 _NextDestination = Vector3.zero;
 
+	List<Collider> _Colliders;
+
 	private CarryText _CarryText = null;
 	private Onion _MainOnion = null;
 	private Rigidbody _Rigidbody = null;
@@ -96,15 +98,28 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			if (targetColour == _ColourToGenerateFor
 				|| _ColourToGenerateFor == PikminColour.Size)
 			{
-				_MainOnion.AddSproutsToSpawn(_PikminToProduceMatchColour, targetColour);
+				_MainOnion.StartSuction(gameObject, _PikminToProduceMatchColour, targetColour);
 			}
 			else
 			{
-				_MainOnion.AddSproutsToSpawn(_PikminToProduceNonMatchColour, targetColour);
+				_MainOnion.StartSuction(gameObject, _PikminToProduceNonMatchColour, targetColour);
 			}
 
-			Destroy(_CarryText.gameObject);
-			Destroy(gameObject);
+			if (_CarryText != null && _CarryText.gameObject != null)
+			{
+				Destroy(_CarryText.gameObject);
+			}
+
+			_Rigidbody.isKinematic = true;
+
+			Collider[] colliders = gameObject.GetComponentsInChildren<Collider>(false);
+			foreach (Collider coll in colliders)
+			{
+				coll.enabled = false;
+			}
+
+			enabled = false;
+			return;
 		}
 		else if (_CurrentPath != null && _CurrentPath.vectorPath.Count != 0)
 		{
@@ -162,13 +177,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void MoveTowards(Vector3 position)
 	{
-		Vector3 delta = position - transform.position;
-		delta.y = 0;
-		delta.Normalize();
-
 		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
 
-		Vector3 newVelocity = delta * _CurrentMoveSpeed;
+		Vector3 directionToPos = MathUtil.DirectionFromTo(transform.position, position);
+		Vector3 newVelocity = directionToPos * _CurrentMoveSpeed;
 		newVelocity.y = _Rigidbody.velocity.y;
 		_MoveVector = newVelocity;
 	}
@@ -207,7 +219,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
-		p.LatchOnto(transform);
+		p.LatchOnto(transform, false);
 		p.ChangeState(PikminStates.Carrying);
 		_CarryingPikmin.Add(p);
 

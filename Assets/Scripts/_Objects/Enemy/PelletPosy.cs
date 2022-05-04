@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// TODO: Rewrite this shit
 [RequireComponent(typeof(EnemyDamageScript))]
 public class PelletPosy : MonoBehaviour, IPikminAttack
 {

@@ -40,7 +40,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7424206076050754518}
-  - component: {fileID: 7424206076050754536}
   - component: {fileID: 7424206076050754537}
   - component: {fileID: 1959261163604520783}
   - component: {fileID: -8428305342598806869}
@@ -61,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 7424206076050754538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6010049212355865715}
@@ -69,48 +68,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &7424206076050754536
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7424206076050754538}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 3b2931345a0587948ae88332ef58c8eb, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &7424206076050754537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,8 +82,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _PeakHeight: 5
   _DropSpeed: 0.2
-  _TimeNeededForBud: 10
-  _TimeNeededForFlower: 20
+  _TimeNeededForBud: 180
+  _TimeNeededForFlower: 240
   _RedPikminPrefab: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
     type: 3}
   _BluePikminPrefab: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
@@ -4952,17 +4909,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8f78d3c3eb200ca4084c47c57bc0ad29,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8f78d3c3eb200ca4084c47c57bc0ad29,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8f78d3c3eb200ca4084c47c57bc0ad29,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8f78d3c3eb200ca4084c47c57bc0ad29,
         type: 3}

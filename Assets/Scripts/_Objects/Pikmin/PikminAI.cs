@@ -68,7 +68,6 @@ public class PikminAI : MonoBehaviour, IHealth
 	[Space, Header("Attacking")]
 	[SerializeField] private IPikminAttack _Attacking = null;
 	[SerializeField] private Transform _AttackingTransform = null;
-	[SerializeField] private float _AttackJumpTimer = 0;
 
 	[Space, Header("Carrying")]
 	[SerializeField] private IPikminCarry _Carrying = null;
@@ -620,6 +619,10 @@ public class PikminAI : MonoBehaviour, IHealth
 		{
 			_ThrowTrailRenderer.enabled = true;
 		}
+		else if (newState == PikminStates.Idle)
+		{
+			LatchOnto(null);
+		}
 	}
 
 	public void StartThrowHold()
@@ -650,7 +653,7 @@ public class PikminAI : MonoBehaviour, IHealth
 		RemoveFromSquad(PikminStates.Thrown);
 	}
 
-	public void LatchOnto(Transform obj, bool useY = false)
+	public void LatchOnto(Transform obj, bool useY = true)
 	{
 		_LatchedTransform = obj;
 		_TargetObject = obj;
@@ -664,8 +667,8 @@ public class PikminAI : MonoBehaviour, IHealth
 			_TargetObject = obj;
 
 			Vector3 closestPosition = ClosestPointOnTarget(_LatchedTransform, _TargetObjectCollider);
-			Vector3 dirToClosestPos = MathUtil.DirectionFromTo(_Transform.position, closestPosition, true);
-			if (Physics.Raycast(_Transform.position - _Transform.forward * 1.5f, dirToClosestPos, out RaycastHit info))
+			Vector3 dirToClosestPos = MathUtil.DirectionFromTo(_Transform.position, closestPosition, useY);
+			if (Physics.Raycast(_Transform.position - (_Transform.forward * 1.5f), dirToClosestPos, out RaycastHit info))
 			{
 				if (info.collider == _TargetObjectCollider)
 				{
@@ -680,6 +683,8 @@ public class PikminAI : MonoBehaviour, IHealth
 		{
 			_Rigidbody.isKinematic = false;
 			_Collider.isTrigger = false;
+
+			transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
 		}
 	}
 

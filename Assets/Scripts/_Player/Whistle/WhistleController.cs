@@ -83,6 +83,11 @@ public class WhistleController : MonoBehaviour
 	{
 		if (GameManager._IsPaused || Player._Instance._MovementController._Paralysed)
 		{
+			if (_Blowing)
+			{
+				EndBlow();
+			}
+
 			return;
 		}
 

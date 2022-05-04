@@ -59,19 +59,19 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
+		_Onion.AddSproutsToSpit(1, PikminColour.Red);
+
 		t = 0;
-		length = 1.5f;
+		length = 2.5f;
 		while (t <= length)
 		{
 			_Camera.transform.rotation = Quaternion.Lerp(_Camera.transform.rotation,
-				Quaternion.LookRotation(MathUtil.DirectionFromTo(_Camera.transform.position, _LookAtTarget.position + (Vector3.down * 6), true)),
-				MathUtil.EaseOut3(2.5f * Time.deltaTime));
+				Quaternion.LookRotation(MathUtil.DirectionFromTo(_Camera.transform.position, _LookAtTarget.position + (Vector3.down * 7.5f), true)),
+				MathUtil.EaseIn3(t / length));
 
 			t += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
-
-		_Onion.AddSproutsToSpawn(1, PikminColour.Red);
 
 		yield return new WaitForSeconds(1.25f);
 

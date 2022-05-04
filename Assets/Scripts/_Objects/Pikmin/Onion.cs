@@ -22,6 +22,8 @@ public class PikminSpawnData
 public class Onion : MonoBehaviour
 {
 	[Header("References")]
+	[SerializeField] private GameObject _PikminSprout = null;
+	[Space]
 	[SerializeField] private Animator _Animator = null;
 	[SerializeField] private SkinnedMeshRenderer _BodyRenderer = null;
 	[Space]
@@ -33,20 +35,16 @@ public class Onion : MonoBehaviour
 	[Space]
 	[SerializeField] private GameObject _DiscoverObject = null;
 
-	[Header("Debug")]
-	[SerializeField] private GameObject _PikminSprout = null;
-
 	[Header("Settings")]
 	[SerializeField] private LayerMask _MapMask = 0;
 	[SerializeField] private LayerMask _PikminMask = 0;
-	[SerializeField] private float _PikminEjectionHeight = 3;
-	public PikminColour _PikminColour { get; private set; } = PikminColour.Red;
+	[SerializeField] private float _PikminSuctionHeight = 4;
+	[SerializeField] private float _PikminEjectionHeight = 5.5f;
+	public PikminColour _OnionColour { get; private set; } = PikminColour.Red;
 
 	[Header("Dispersal")]
-	[SerializeField] private float _DisperseRadius = 2;
-	[SerializeField] private float _DisperseRate = 2;
+	[SerializeField] private float _DisperseRadius = 12;
 	private Vector3Int _SeedsToDisperse = Vector3Int.zero;
-	private float _TimeSinceLastDisperse = 0;
 
 	private int _CurrentSeedIdx = 0;
 	Dictionary<int, GameObject> _SpawnedSprouts = new Dictionary<int, GameObject>();
@@ -69,30 +67,7 @@ public class Onion : MonoBehaviour
 
 	private float _InputTimer = 0;
 
-	private IEnumerator FadeInCanvas()
-	{
-		float t = 0;
-		float time = 0.5f;
-		while (t <= time)
-		{
-			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / time);
-			yield return null;
-		}
-	}
-
-	private IEnumerator FadeOutCanvas()
-	{
-		float t = 0;
-		float time = 0.5f;
-		while (t <= time)
-		{
-			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(1, 0, t / time);
-			yield return null;
-		}
-	}
-
+	#region Unity Functions
 	private void Awake()
 	{
 		_OnionCanvas.gameObject.SetActive(false);
@@ -131,8 +106,8 @@ public class Onion : MonoBehaviour
 
 					_CurPikminAmounts = new PikminAmount
 					{
-						_InSquad = PikminStatsManager.GetInSquad(_PikminColour),
-						_InOnion = PikminStatsManager.GetInOnion(_PikminColour)
+						_InSquad = PikminStatsManager.GetInSquad(_OnionColour),
+						_InOnion = PikminStatsManager.GetInOnion(_OnionColour)
 					};
 
 					_OldPikminAmounts = new PikminAmount
@@ -262,75 +237,6 @@ public class Onion : MonoBehaviour
 		}
 	}
 
-	public void ANIM_TryCreateSprout()
-	{
-		// Onion spits out in 3s
-		for (int i = 0; i < 3; i++)
-		{
-			// X is red, Y is yellow, Z is blue
-			int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
-			if (totalToDisperse > 0)
-			{
-				if (_SeedsToDisperse.x > 0)
-				{
-					TryCreateSprout(PikminColour.Red);
-					_SeedsToDisperse.x--;
-				}
-				else if (_SeedsToDisperse.y > 0)
-				{
-					TryCreateSprout(PikminColour.Yellow);
-					_SeedsToDisperse.y--;
-				}
-				else if (_SeedsToDisperse.z > 0)
-				{
-					TryCreateSprout(PikminColour.Blue);
-					_SeedsToDisperse.z--;
-				}
-			}
-			else
-			{
-				_Animator.SetBool("Spitting", false);
-				return;
-			}
-		}
-	}
-
-	private IEnumerator IE_SpawnPikmin(int amount)
-	{
-		_CanUse = false;
-		yield return new WaitForSeconds(0.25f);
-
-		PikminTypeStats stats = PikminStatsManager.GetStats(_PikminColour);
-		List<PikminMaturity> toSpawn = new List<PikminMaturity>();
-
-		for (int i = 0; i < amount; i++)
-		{
-			if (stats._Flower._InOnion > 0)
-			{
-				stats._Flower._InOnion--;
-				toSpawn.Add(PikminMaturity.Flower);
-			}
-			else if (stats._Bud._InOnion > 0)
-			{
-				stats._Bud._InOnion--;
-				toSpawn.Add(PikminMaturity.Bud);
-			}
-			else if (stats._Leaf._InOnion > 0)
-			{
-				stats._Leaf._InOnion--;
-				toSpawn.Add(PikminMaturity.Leaf);
-			}
-		}
-
-		for (int i = 0; i < amount; i++)
-		{
-			_CanUse = false;
-			TryCreatePikmin(_PikminColour, toSpawn[i]);
-			yield return new WaitForSeconds(0.02f);
-		}
-
-		_CanUse = true;
-	}
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -366,19 +272,54 @@ public class Onion : MonoBehaviour
 			Vector2 offset = MathUtil.PositionInUnit(100, i);
 			Gizmos.DrawSphere(transform.position + MathUtil.XZToXYZ(offset) + Vector3.up * _PikminEjectionHeight, 0.15f);
 		}
-	}
 
-	private Vector3 GetRandomBaseSpawnPosition(int idx = -1)
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(transform.position + Vector3.up * _PikminSuctionHeight, 0.5f);
+	}
+	#endregion
+
+	#region Public Functions
+	/// <summary>
+	/// Played on the animation for the Sprout Eject, this will group 3 seeds together and spawn them at the same time
+	/// </summary>
+	public void ANIM_TryCreateSprout()
 	{
-		if (idx == -1)
+		// Onion spits out in 3s
+		for (int i = 0; i < 3; i++)
 		{
-			idx = UnityEngine.Random.Range(0, 100);
-		}
+			// X is red, Y is yellow, Z is blue
+			int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
+			if (totalToDisperse <= 0)
+			{
+				_Animator.SetBool("Spitting", false);
+				return;
+			}
 
-		return MathUtil.XZToXYZ(MathUtil.PositionInUnit(100, idx));
+			if (_SeedsToDisperse.x > 0)
+			{
+				TryCreateSprout(PikminColour.Red);
+				_SeedsToDisperse.x--;
+			}
+			else if (_SeedsToDisperse.y > 0)
+			{
+				TryCreateSprout(PikminColour.Yellow);
+				_SeedsToDisperse.y--;
+			}
+			else if (_SeedsToDisperse.z > 0)
+			{
+				TryCreateSprout(PikminColour.Blue);
+				_SeedsToDisperse.z--;
+			}
+		}
 	}
 
-	public void AddSproutsToSpawn(int toProduce, PikminColour colour)
+	/// <summary>
+	/// For triggering a spitting sequence, it will try to spit X amount of Y colour
+	/// </summary>
+	/// <param name="toProduce">The amount of Pikmin to spit</param>
+	/// <param name="colour">The colour of the Pikmin to spit</param>
+	/// <exception cref="NotImplementedException">Tried to spit a colour that hasn't been implemented</exception>
+	public void AddSproutsToSpit(int toProduce, PikminColour colour)
 	{
 		_ = colour switch
 		{
@@ -393,13 +334,143 @@ public class Onion : MonoBehaviour
 	}
 
 	/// <summary>
+	/// For handling sucking up an object, relies on the fact colliders are disabled, and transform (scale and position) altering scripts are disabled
+	/// </summary>
+	/// <param name="toSuck">The Game Object to suck up</param>
+	/// <param name="toProduce">The amount of Pikmin it will produce</param>
+	/// <param name="colour">The colour of the Pikmin it will produce</param>
+	public void StartSuction(GameObject toSuck, int toProduce, PikminColour colour)
+	{
+		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit info, _MapMask))
+		{
+			toSuck.transform.position = info.point;
+		}
+
+		StartCoroutine(IE_SuctionAnimation(toSuck, toProduce, colour));
+	}
+	#endregion
+
+	#region IEnumerators / Timed Functions
+	// For the spawning Pikmin sequence (from the in-game menu, not spitting)
+	private IEnumerator IE_SpawnPikmin(int amount)
+	{
+		_CanUse = false;
+		yield return new WaitForSeconds(0.25f);
+
+		PikminTypeStats stats = PikminStatsManager.GetStats(_OnionColour);
+		List<PikminMaturity> toSpawn = new List<PikminMaturity>();
+
+		for (int i = 0; i < amount; i++)
+		{
+			if (stats._Flower._InOnion > 0)
+			{
+				stats._Flower._InOnion--;
+				toSpawn.Add(PikminMaturity.Flower);
+			}
+			else if (stats._Bud._InOnion > 0)
+			{
+				stats._Bud._InOnion--;
+				toSpawn.Add(PikminMaturity.Bud);
+			}
+			else if (stats._Leaf._InOnion > 0)
+			{
+				stats._Leaf._InOnion--;
+				toSpawn.Add(PikminMaturity.Leaf);
+			}
+		}
+
+		for (int i = 0; i < amount; i++)
+		{
+			_CanUse = false;
+			TryCreatePikmin(_OnionColour, toSpawn[i]);
+			yield return new WaitForSeconds(0.03f);
+		}
+
+		_CanUse = true;
+	}
+
+	// For handling the suction animation
+	private IEnumerator IE_SuctionAnimation(GameObject obj, int toProduce, PikminColour color)
+	{
+		yield return null;
+
+		_Animator.SetBool("Suction", true);
+
+		float t = 0;
+		float timeToTop = 2.5f;
+		Vector3 origin = obj.transform.position;
+		Vector3 originScale = obj.transform.localScale;
+
+		while (t <= timeToTop)
+		{
+			obj.transform.position = Vector3.Lerp(origin, transform.position + Vector3.up * _PikminSuctionHeight, MathUtil.EaseIn3(t / timeToTop));
+			obj.transform.localScale = Vector3.Lerp(originScale, Vector3.zero, MathUtil.EaseIn3(t / timeToTop));
+			_Animator.SetBool("Suction", true);
+
+			t += Time.deltaTime;
+			yield return null;
+		}
+		_Animator.SetBool("SuctionHit", true);
+		_Animator.SetBool("Suction", false);
+
+		Destroy(obj);
+
+		AddSproutsToSpit(toProduce, color);
+
+		yield return new WaitForEndOfFrame();
+		_Animator.SetBool("SuctionHit", false);
+	}
+	#endregion
+
+	#region Utility Functions
+	private IEnumerator FadeInCanvas()
+	{
+		float t = 0;
+		float time = 0.5f;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
+			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / time);
+			yield return null;
+		}
+	}
+
+	private IEnumerator FadeOutCanvas()
+	{
+		float t = 0;
+		float time = 0.5f;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
+			_CanvasGroup.alpha = Mathf.Lerp(1, 0, t / time);
+			yield return null;
+		}
+	}
+
+	/// <summary>
+	/// Gets the spawn position around a unit circle for a random Pikmin
+	/// </summary>
+	/// <param name="idx">The index of the Pikmin to be spawned, affects where it will spawn and if it is -1 then will use random value</param>
+	/// <returns>Position around a unit circle in 3D space (X, Z coords only)</returns>
+	private Vector3 GetRandomBaseSpawnPosition(int idx = -1)
+	{
+		if (idx == -1)
+		{
+			idx = UnityEngine.Random.Range(0, 100);
+		}
+
+		return MathUtil.XZToXYZ(MathUtil.PositionInUnit(100, idx));
+	}
+
+
+	/// <summary>
 	/// For spawning in Pikmin through the menu usage
 	/// </summary>
 	/// <param name="colour">Colour of the Pikmin to spawn</param>
 	/// <param name="maturity">Maturity of the Pikmin to spawn</param>
 	private void TryCreatePikmin(PikminColour colour, PikminMaturity maturity)
 	{
-		if (PikminStatsManager.GetTotalOnField() == 100)
+		if (PikminStatsManager.GetTotalOnField() >= 100)
 		{
 			PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
 		}
@@ -437,10 +508,11 @@ public class Onion : MonoBehaviour
 		}
 	}
 
+
 	/// <summary>
-	/// For spawning a Pikmin through a carried object
+	/// For spawning a sprout
 	/// </summary>
-	/// <param name="colour">The colour of the Pikmin to spawn</param>
+	/// <param name="colour">The colour of the sprout to spawn</param>
 	private void TryCreateSprout(PikminColour colour)
 	{
 		if (PikminStatsManager.GetTotalOnField() == 100)
@@ -474,4 +546,5 @@ public class Onion : MonoBehaviour
 			sproutData.OnSpawn(data);
 		}
 	}
+	#endregion
 }

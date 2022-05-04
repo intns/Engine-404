@@ -81,7 +81,7 @@ public class PikminSprout : MonoBehaviour
 {
 	[Header("Settings")]
 	[SerializeField] float _PeakHeight = 5;
-	[SerializeField] float _DropSpeed = 5;
+	[SerializeField] float _DropSpeed = 0.2f;
 	[Space]
 	[SerializeField] float _TimeNeededForBud = 180;
 	[SerializeField] float _TimeNeededForFlower = 240;
