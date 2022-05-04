@@ -395,7 +395,7 @@ public class PikminAI : MonoBehaviour, IHealth
 			if (_Intention == PikminIntention.Carry)
 			{
 				IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
-				if (!toCarry.PikminSpotAvailable())
+				if (toCarry != null && !toCarry.PikminSpotAvailable())
 				{
 					continue;
 				}
