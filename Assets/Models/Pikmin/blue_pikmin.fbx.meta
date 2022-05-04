@@ -2,12 +2,20 @@ fileFormatVersion: 2
 guid: 9c6b1f76d1f01fc41839ff3e44f85c0f
 ModelImporter:
   serializedVersion: 21202
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: -623603649343465320
+    second: Scene
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: body_m.002
+    second: {fileID: 2100000, guid: dc3456e020d80364f8c20d0b47ccc734, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: body_m.005
     second: {fileID: 2100000, guid: dc3456e020d80364f8c20d0b47ccc734, type: 2}
   materials:
     materialImportMode: 2
@@ -81,7 +89,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human: []
