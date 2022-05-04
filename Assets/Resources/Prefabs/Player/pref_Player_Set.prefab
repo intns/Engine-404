@@ -1217,7 +1217,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 179
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1380,18 +1380,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _DefaultHolders:
-  - _FOV: 60
-    _Offset: {x: 15, y: 10}
-  - _FOV: 65
+  - _FOV: 40
+    _Offset: {x: 17.5, y: 10}
+  - _FOV: 47.5
     _Offset: {x: 20, y: 12}
-  - _FOV: 70
+  - _FOV: 50
     _Offset: {x: 28, y: 14}
   _TopViewHolders:
-  - _FOV: 70
-    _Offset: {x: 10, y: 12}
-  - _FOV: 75
+  - _FOV: 45
+    _Offset: {x: 10, y: 8}
+  - _FOV: 50
     _Offset: {x: 16, y: 16}
-  - _FOV: 80
+  - _FOV: 55
     _Offset: {x: 22, y: 20}
   _ChangeZoomAudio: {fileID: 8300000, guid: 492ddac1abd6cf9498fe0e4cfeb8218d, type: 3}
   _FollowSpeed: 7.5
@@ -1559,6 +1559,7 @@ MonoBehaviour:
   _ParticleRotationSpeed: 1
   _ParticleRaycastAddedHeight: 100
   _HeightOffset: 0.5
+  _Pluckaphone: 1
   _StartingRadius: 0.1
   _ExpandedRadius: 5
   _PikminCallHeight: 20
@@ -1566,7 +1567,7 @@ MonoBehaviour:
   _OffsetFromSurface: 0.1
   _PikminMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 17408
   _MaxDistFromPlayer: 6
   _MoveSpeed: 2.5
   _MaxDistance: 500
@@ -3147,7 +3148,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: bd888e14d6ccabe49aece7b2b8b2fcb4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

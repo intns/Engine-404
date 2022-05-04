@@ -26,13 +26,15 @@ public class WhistleController : MonoBehaviour
 	[SerializeField] private float _HeightOffset = 0.5f;
 
 	[Header("Settings")]
+	[SerializeField] private bool _Pluckaphone = false;
+	[Space]
 	[SerializeField] private float _StartingRadius = 1;
 	[SerializeField] private float _ExpandedRadius = 10;
 	[SerializeField] private float _PikminCallHeight = 0;
-
+	[Space]
 	[SerializeField] private float _MaxBlowTime = 3;
 	[SerializeField] private float _OffsetFromSurface = 0.5f;
-
+	[Space]
 	[SerializeField] private LayerMask _PikminMask = 0;
 
 	[Header("Controller Settings")]
@@ -184,7 +186,21 @@ public class WhistleController : MonoBehaviour
 				_PikminMask);
 			foreach (Collider pikmin in collisions)
 			{
-				pikmin.GetComponent<PikminAI>().AddToSquad();
+				PikminAI pAI = pikmin.GetComponent<PikminAI>();
+				if (pAI != null)
+				{
+					pAI.AddToSquad();
+				}
+				else if (_Pluckaphone)
+				{
+					PikminSprout sprout = pikmin.GetComponent<PikminSprout>();
+					if (sprout != null)
+					{
+						pAI = sprout.OnPluck();
+						pAI.AddToSquad();
+						Destroy(pikmin.gameObject);
+					}
+				}
 			}
 		}
 	}

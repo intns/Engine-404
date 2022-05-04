@@ -61,7 +61,7 @@ public class Player : MonoBehaviour, IHealth
 
 		if (!GameManager._IsPaused)
 		{
-			if (_Controller.velocity.magnitude > 1.5f)
+			if (_Controller.velocity.magnitude > 2.5f)
 			{
 				_Animator.SetBool("Walk", true);
 			}

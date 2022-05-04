@@ -397,13 +397,13 @@ public class Onion : MonoBehaviour
 		_Animator.SetBool("Suction", true);
 
 		float t = 0;
-		float timeToTop = 2.5f;
+		float timeToTop = 1.5f;
 		Vector3 origin = obj.transform.position;
 		Vector3 originScale = obj.transform.localScale;
 
 		while (t <= timeToTop)
 		{
-			obj.transform.position = Vector3.Lerp(origin, transform.position + Vector3.up * _PikminSuctionHeight, MathUtil.EaseIn3(t / timeToTop));
+			obj.transform.position = Vector3.Lerp(origin, transform.position + Vector3.up * _PikminSuctionHeight, MathUtil.EaseIn4(t / timeToTop));
 			obj.transform.localScale = Vector3.Lerp(originScale, Vector3.zero, MathUtil.EaseIn3(t / timeToTop));
 			_Animator.SetBool("Suction", true);
 

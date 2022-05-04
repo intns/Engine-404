@@ -314,6 +314,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91650538b80da53448a5af946111035d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _TimeToSprout: 2.5
+  _State: 1
 --- !u!1 &4907349531938508711
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,10 +451,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.005
-  m_Height: 0.05
+  m_Radius: 0.0037001702
+  m_Height: 0.057994656
   m_Direction: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.003997327, y: -2.9846559e-10, z: -0.0014115131}
 --- !u!1 &5897473332474148972
 GameObject:
   m_ObjectHideFlags: 0

@@ -193,45 +193,9 @@ public class PikminAI : MonoBehaviour, IHealth
 				break;
 		}
 
-		Collider[] colls = Physics.OverlapSphere(_Transform.position, 0.75f, _PikminInteractableMask);
-		if (colls.Length > 0)
-		{
-			if (_CurrentState == PikminStates.Thrown
-				|| (_CurrentState == PikminStates.RunningTowards && !_InSquad))
-			{
-				Collider coll = colls[0];
-
-				_TargetObject = coll.transform;
-				_TargetObjectCollider = coll;
-
-				_Intention = coll.GetComponentInParent<IPikminInteractable>().IntentionType;
-				CarryoutIntention();
-			}
-			else if (_CurrentState == PikminStates.Idle || _CurrentState == PikminStates.Carrying)
-			{
-				foreach (var coll in colls)
-				{
-					// Ignore the object we're carrying, if doing so
-					if (_TargetObjectCollider != null && coll == _TargetObjectCollider)
-					{
-						continue;
-					}
-
-					Rigidbody rb = coll.attachedRigidbody;
-					if (rb != null)
-					{
-						Vector3 direction = _Transform.position - coll.transform.position;
-						direction.y = 0;
-
-						rb.velocity += _ObjectPushScale * Time.deltaTime * direction.normalized;
-					}
-				}
-			}
-		}
-
 		if (_CurrentState != PikminStates.RunningTowards)
 		{
-			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.2f);
+			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.05f);
 		}
 	}
 
@@ -342,13 +306,17 @@ public class PikminAI : MonoBehaviour, IHealth
 		if (_CurrentState == PikminStates.Thrown
 			|| (_CurrentState == PikminStates.RunningTowards && !_InSquad))
 		{
-			if (collision.CompareTag("PikminInteract"))
+			if (_TargetObjectCollider != null && _TargetObjectCollider == collision)
+			{
+				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
+				CarryoutIntention();
+			}
+			else if (collision.CompareTag("PikminInteract"))
 			{
 				_TargetObject = collision.transform;
 				_TargetObjectCollider = collision;
 				_Intention = collision.gameObject.GetComponentInParent<IPikminInteractable>().IntentionType;
 				CarryoutIntention();
-				return;
 			}
 			else if (!collision.CompareTag("Player"))
 			{
@@ -415,31 +383,32 @@ public class PikminAI : MonoBehaviour, IHealth
 		foreach (Collider collider in objects)
 		{
 			// Determine if the collider is on the same level as us
-			Vector3 direction = collider.ClosestPoint(_Transform.position) - _Transform.position;
-			direction.y = Mathf.Clamp(direction.y, -1.5f, 1.5f);
-			if (!Physics.Raycast(_Transform.position, direction, out RaycastHit hit, _Data._SearchRadius)
-				&& hit.collider != collider)
+			Vector3 direction = MathUtil.DirectionFromTo(_Transform.position, collider.ClosestPoint(_Transform.position), true);
+			if (!Physics.Raycast(_Transform.position, direction, out RaycastHit hit, _Data._SearchRadius) && hit.collider != collider)
 			{
 				continue;
 			}
 
 			IPikminInteractable interactableComponent = collider.GetComponentInParent<IPikminInteractable>();
-			_Intention = interactableComponent.IntentionType;
+			PikminIntention currentIntention = interactableComponent.IntentionType;
 
 			if (_Intention == PikminIntention.Carry)
 			{
-				_Carrying = collider.GetComponentInParent<IPikminCarry>();
-				if (!_Carrying.PikminSpotAvailable())
+				IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
+				if (!toCarry.PikminSpotAvailable())
 				{
 					continue;
 				}
+
+				_Carrying = toCarry;
 			}
 
-			float distance = MathUtil.DistanceTo(transform.position, collider.transform.position);
+			float distance = MathUtil.DistanceTo(_Transform.position, collider.transform.position);
 			if (distance < curClosestDist)
 			{
 				closestCol = collider;
 				curClosestDist = distance;
+				_Intention = currentIntention;
 			}
 		}
 
@@ -525,7 +494,7 @@ public class PikminAI : MonoBehaviour, IHealth
 
 	private void MoveTowardsTarget()
 	{
-		MoveTowards(ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius), false);
+		MoveTowards(ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius) + _Transform.forward, false);
 	}
 
 	private Vector3 ClosestPointOnTarget(Transform target, Collider collider = null, float maxDistance = float.PositiveInfinity)
@@ -588,6 +557,10 @@ public class PikminAI : MonoBehaviour, IHealth
 		switch (_CurrentState)
 		{
 			case PikminStates.RunningTowards:
+				_Animator.SetBool("Walking", false);
+				_TargetObject = null;
+				_TargetObjectCollider = null;
+				break;
 			case PikminStates.Idle when _TargetObject != null:
 				_TargetObject = null;
 				_TargetObjectCollider = null;
@@ -675,8 +648,8 @@ public class PikminAI : MonoBehaviour, IHealth
 					Vector3 eulerAngles = Quaternion.FromToRotation(Vector3.up, info.normal).eulerAngles;
 					if (onlyY)
 					{
-						eulerAngles.x = transform.eulerAngles.x;
-						eulerAngles.z = transform.eulerAngles.z;
+						eulerAngles.x = _Transform.eulerAngles.x;
+						eulerAngles.z = _Transform.eulerAngles.z;
 					}
 
 					_Transform.SetPositionAndRotation(info.point + info.normal, Quaternion.Euler(eulerAngles));
@@ -690,7 +663,7 @@ public class PikminAI : MonoBehaviour, IHealth
 			_Rigidbody.isKinematic = false;
 			_Collider.isTrigger = false;
 
-			transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
+			_Transform.eulerAngles = new Vector3(0, _Transform.eulerAngles.y, _Transform.eulerAngles.z);
 		}
 	}
 
