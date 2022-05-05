@@ -1381,18 +1381,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _DefaultHolders:
   - _FOV: 40
-    _Offset: {x: 17.5, y: 10}
-  - _FOV: 47.5
     _Offset: {x: 20, y: 12}
+  - _FOV: 47.5
+    _Offset: {x: 25, y: 14}
   - _FOV: 50
-    _Offset: {x: 28, y: 14}
+    _Offset: {x: 32, y: 16}
   _TopViewHolders:
   - _FOV: 45
-    _Offset: {x: 10, y: 8}
+    _Offset: {x: 15, y: 14}
   - _FOV: 50
-    _Offset: {x: 16, y: 16}
+    _Offset: {x: 20, y: 16}
   - _FOV: 55
-    _Offset: {x: 22, y: 20}
+    _Offset: {x: 25, y: 18}
   _ChangeZoomAudio: {fileID: 8300000, guid: 492ddac1abd6cf9498fe0e4cfeb8218d, type: 3}
   _FollowSpeed: 7.5
   _OrbitChangeSpeed: 4
