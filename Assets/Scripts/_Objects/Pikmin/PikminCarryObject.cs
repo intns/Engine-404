@@ -219,9 +219,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
-		p.LatchOnto(transform, false);
+		p.LatchOnto(transform);
 		p.ChangeState(PikminStates.Carrying);
 		_CarryingPikmin.Add(p);
+		_CarryingPikmin[^1]._LatchedOffset = _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryMinMax.y, _CarryingPikmin.Count)) * _CarryCircleRadius;
 
 		if (_CarryingPikmin.Count >= _CarryMinMax.x)
 		{
@@ -233,13 +234,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			if (_CurrentSpeedTarget > _MaxSpeed)
 			{
 				_CurrentSpeedTarget = _MaxSpeed;
-			}
-
-			// Set the position and rotations of the Pikmin
-			for (int i = 0; i < _CarryingPikmin.Count; i++)
-			{
-				PikminAI pikminAi = _CarryingPikmin[i];
-				pikminAi._LatchedOffset = _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryingPikmin.Count, i)) * _CarryCircleRadius;
 			}
 		}
 
@@ -262,13 +256,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			{
 				// SHOULDN'T be needed, but just in case
 				_CurrentSpeedTarget = _BaseSpeed;
-			}
-
-			// Set the position and rotations of the Pikmin
-			for (int i = 0; i < _CarryingPikmin.Count; i++)
-			{
-				PikminAI pikminAi = _CarryingPikmin[i];
-				pikminAi._LatchedOffset = transform.position - GetPikminPosition(_CarryingPikmin.Count, i);
 			}
 		}
 

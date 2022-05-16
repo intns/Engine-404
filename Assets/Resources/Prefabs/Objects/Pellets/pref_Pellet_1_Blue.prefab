@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 756053896, guid: ae524c549db4f3d448d6e364307f6b63, type: 3}
+      propertyPath: m_Mass
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 756053896, guid: ae524c549db4f3d448d6e364307f6b63, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: _ColourToGenerateFor

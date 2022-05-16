@@ -89,16 +89,9 @@ public class BaldyLongLegsFoot
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
 
 		Quaternion nextRotation = _Target.rotation;
-		if (Physics.Raycast(_RaycastObj.transform.position, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
+		if (Physics.Raycast(_Target.transform.position, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
 		{
-			if (_Values._FlipToes)
-			{
-				nextRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-			}
-			else
-			{
-				nextRotation = Quaternion.FromToRotation(Vector3.down, hit.normal);
-			}
+			nextRotation = Quaternion.FromToRotation(_Values._FlipToes ? Vector3.up : Vector3.down, hit.normal);
 		}
 
 		_Target.SetPositionAndRotation(_TargetPosition, nextRotation);
@@ -173,16 +166,16 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	[SerializeField] BLL_Values _Values;
 	[SerializeField] LayerMask _MapMask;
 
-	[SerializeField] float _LegRotation;
 	[SerializeField] float _LegDistance;
 	[SerializeField] float _Speed;
 
+	float _CircleTimer = 0;
 	List<BaldyLongLegsFoot> _Feet = new List<BaldyLongLegsFoot>();
 	private EnemyDamageScript _DamageScript = null;
 
 	public Vector3 GetRaycastObjPosition(int legIdx)
 	{
-		return transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_LegTargets.Length, legIdx, _LegRotation) * _LegDistance, transform.position.y + 50);
+		return transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_LegTargets.Length, legIdx) * _LegDistance, transform.position.y + 50);
 	}
 
 	private void Awake()
@@ -228,18 +221,26 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 	private void Update()
 	{
-		_LegRotation += Time.deltaTime / 20;
-
 		for (int i = 0; i < _Feet.Count; i++)
 		{
 			_Feet[i].Update();
 		}
 
-		Vector3 target = _Target.position;
-		target.y = transform.position.y;
+		Vector3 target = _Target.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CircleTimer / 8) * 12);
+
+		if (Physics.SphereCast(transform.position + Vector3.up * 150, 5, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _MapMask))
+		{
+			target.y = hit.point.y - 5;
+		}
+
+		if (Random.Range(0, 5000) < 5)
+		{
+			_CircleTimer = Random.Range(0.0f, 2.0f);
+		}
 
 		Vector3 velocity = Vector3.zero;
 		transform.position = Vector3.SmoothDamp(transform.position, target, ref velocity, Time.smoothDeltaTime, _Speed);
+		_CircleTimer += Time.deltaTime;
 	}
 
 

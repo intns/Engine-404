@@ -43,7 +43,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   focusMode:
     m_OverrideState: 1
     m_Value: 2
@@ -67,25 +67,103 @@ MonoBehaviour:
     m_Value: 200
   m_NearSampleCount:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 5
   m_NearMaxBlur:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 4
   m_FarSampleCount:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 7
   m_FarMaxBlur:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 8
   m_Resolution:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 2
   m_HighQualityFiltering:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   m_PhysicallyBased:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-3028240609117293088
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9008a067f4d626c4d8bc4bc48f04bb89, type: 3}
+  m_Name: AmbientOcclusion
+  m_EditorClassIdentifier: 
+  active: 1
+  quality:
+    m_OverrideState: 0
+    m_Value: 2
+  rayTracing:
+    m_OverrideState: 0
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 2
+  directLightingStrength:
+    m_OverrideState: 0
+    m_Value: 0.671
+  radius:
+    m_OverrideState: 0
+    m_Value: 1.24
+  spatialBilateralAggressiveness:
+    m_OverrideState: 0
+    m_Value: 0.15
+  temporalAccumulation:
+    m_OverrideState: 0
+    m_Value: 1
+  ghostingReduction:
+    m_OverrideState: 0
+    m_Value: 0.5
+  blurSharpness:
+    m_OverrideState: 0
+    m_Value: 0.1
+  layerMask:
+    m_OverrideState: 0
+    m_Value:
+      serializedVersion: 2
+      m_Bits: 4294967295
+  occluderMotionRejection:
+    m_OverrideState: 0
+    m_Value: 1
+  receiverMotionRejection:
+    m_OverrideState: 0
+    m_Value: 1
+  m_StepCount:
+    m_OverrideState: 0
+    m_Value: 16
+  m_FullResolution:
+    m_OverrideState: 0
+    m_Value: 1
+  m_MaximumRadiusInPixels:
+    m_OverrideState: 0
+    m_Value: 80
+  m_BilateralUpsample:
+    m_OverrideState: 0
+    m_Value: 1
+  m_DirectionCount:
+    m_OverrideState: 0
+    m_Value: 4
+  m_RayLength:
+    m_OverrideState: 0
+    m_Value: 20
+  m_SampleCount:
+    m_OverrideState: 0
+    m_Value: 8
+  m_Denoise:
+    m_OverrideState: 0
+    m_Value: 1
+  m_DenoiserRadius:
+    m_OverrideState: 0
+    m_Value: 0.65
 --- !u!114 &-179156432941131994
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -101,7 +179,7 @@ MonoBehaviour:
   active: 1
   opacity:
     m_OverrideState: 1
-    m_Value: 0.11
+    m_Value: 0.09
   upperHemisphereOnly:
     m_OverrideState: 0
     m_Value: 1
@@ -256,7 +334,7 @@ MonoBehaviour:
   - {fileID: 8970283830134407682}
   - {fileID: -179156432941131994}
   - {fileID: -5964787811997245470}
-  - {fileID: 1815691799701945017}
+  - {fileID: -3028240609117293088}
 --- !u!114 &1303485282365098746
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -288,84 +366,6 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 1
     m_Value: 0
---- !u!114 &1815691799701945017
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9008a067f4d626c4d8bc4bc48f04bb89, type: 3}
-  m_Name: AmbientOcclusion
-  m_EditorClassIdentifier: 
-  active: 1
-  quality:
-    m_OverrideState: 1
-    m_Value: 1
-  rayTracing:
-    m_OverrideState: 0
-    m_Value: 0
-  intensity:
-    m_OverrideState: 1
-    m_Value: 4
-  directLightingStrength:
-    m_OverrideState: 0
-    m_Value: 0
-  radius:
-    m_OverrideState: 0
-    m_Value: 2
-  spatialBilateralAggressiveness:
-    m_OverrideState: 0
-    m_Value: 0.15
-  temporalAccumulation:
-    m_OverrideState: 1
-    m_Value: 1
-  ghostingReduction:
-    m_OverrideState: 0
-    m_Value: 0.5
-  blurSharpness:
-    m_OverrideState: 0
-    m_Value: 0.1
-  layerMask:
-    m_OverrideState: 0
-    m_Value:
-      serializedVersion: 2
-      m_Bits: 4294967295
-  occluderMotionRejection:
-    m_OverrideState: 0
-    m_Value: 1
-  receiverMotionRejection:
-    m_OverrideState: 0
-    m_Value: 1
-  m_StepCount:
-    m_OverrideState: 1
-    m_Value: 6
-  m_FullResolution:
-    m_OverrideState: 1
-    m_Value: 0
-  m_MaximumRadiusInPixels:
-    m_OverrideState: 1
-    m_Value: 40
-  m_BilateralUpsample:
-    m_OverrideState: 1
-    m_Value: 1
-  m_DirectionCount:
-    m_OverrideState: 1
-    m_Value: 2
-  m_RayLength:
-    m_OverrideState: 1
-    m_Value: 3
-  m_SampleCount:
-    m_OverrideState: 1
-    m_Value: 2
-  m_Denoise:
-    m_OverrideState: 1
-    m_Value: 1
-  m_DenoiserRadius:
-    m_OverrideState: 1
-    m_Value: 0.5
 --- !u!114 &3798882831304810760
 MonoBehaviour:
   m_ObjectHideFlags: 3

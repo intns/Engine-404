@@ -5,6 +5,7 @@
  * Created for: Controlling the whistle
  */
 
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -79,6 +80,88 @@ public class WhistleController : MonoBehaviour
 	private void Start()
 	{
 		_PlayerTransform = Player._Instance.transform;
+
+		StartCoroutine(IE_Move());
+	}
+
+	IEnumerator IE_Move()
+	{
+		while (enabled)
+		{
+			if (!GameManager._IsPaused)
+			{
+				if (!_Reticle.gameObject.activeInHierarchy)
+				{
+					_Reticle.gameObject.SetActive(true);
+				}
+
+				// Check if there is a controller attached
+				string[] names = Input.GetJoystickNames();
+				if (names.Length > 0 && names[0].Length > 0)
+				{
+					Vector3 directionVector = new Vector3(Input.GetAxis("Horizontal") * _MoveSpeed, 0, Input.GetAxis("Vertical") * _MoveSpeed);
+					//Rotate the input vector into camera space so up is camera's up and right is camera's right
+					directionVector = _MainCamera.transform.rotation * directionVector;
+
+					_OffsetFromPlayer.x += directionVector.x;
+					_OffsetFromPlayer.y += directionVector.z;
+
+					float totalDistanceSquared = (_OffsetFromPlayer.x * _OffsetFromPlayer.x) +
+						(_OffsetFromPlayer.y * _OffsetFromPlayer.y);
+
+					if (totalDistanceSquared > _MaxDistFromPlayer * _MaxDistFromPlayer)
+					{
+						float totalDistance = _MaxDistFromPlayer / Mathf.Sqrt(totalDistanceSquared);
+						_OffsetFromPlayer.x *= totalDistance;
+						_OffsetFromPlayer.y *= totalDistance;
+					}
+
+					Vector3 currentPosition = new Vector3(_PlayerTransform.position.x + _OffsetFromPlayer.x,
+						transform.position.y,
+						_PlayerTransform.position.z + _OffsetFromPlayer.y);
+
+					// Assign our position to the reticles position to the new position!
+					transform.position = _Reticle.position = currentPosition;
+
+					currentPosition.y += _ParticleRaycastAddedHeight;
+					if (Physics.Raycast(currentPosition, Vector3.down, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
+					{
+						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
+						transform.position = _Reticle.position = target;
+					}
+				}
+				else
+				{
+					// Reliant on the mouse, so cannot be used with controllers
+					try
+					{
+						Ray ray = _MainCamera.ScreenPointToRay(Input.mousePosition);
+						if (Physics.Raycast(ray, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
+						{
+							Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
+							transform.position = _Reticle.position = target;
+						}
+					}
+					catch
+					{
+						// Do nothing
+					}
+				}
+			}
+			else
+			{
+				if (_Blowing)
+				{
+					EndBlow();
+				}
+				else if (_Reticle.gameObject.activeInHierarchy)
+				{
+					_Reticle.gameObject.SetActive(false);
+				}
+			}
+
+			yield return null;
+		}
 	}
 
 	private void Update()
@@ -91,59 +174,6 @@ public class WhistleController : MonoBehaviour
 			}
 
 			return;
-		}
-
-		// Check if there is a controller attached
-		string[] names = Input.GetJoystickNames();
-		if (names.Length > 0 && names[0].Length > 0)
-		{
-			Vector3 directionVector = new Vector3(Input.GetAxis("Horizontal") * _MoveSpeed, 0, Input.GetAxis("Vertical") * _MoveSpeed);
-			//Rotate the input vector into camera space so up is camera's up and right is camera's right
-			directionVector = _MainCamera.transform.rotation * directionVector;
-
-			_OffsetFromPlayer.x += directionVector.x;
-			_OffsetFromPlayer.y += directionVector.z;
-
-			float totalDistanceSquared = (_OffsetFromPlayer.x * _OffsetFromPlayer.x) +
-				(_OffsetFromPlayer.y * _OffsetFromPlayer.y);
-
-			if (totalDistanceSquared > _MaxDistFromPlayer * _MaxDistFromPlayer)
-			{
-				float totalDistance = _MaxDistFromPlayer / Mathf.Sqrt(totalDistanceSquared);
-				_OffsetFromPlayer.x *= totalDistance;
-				_OffsetFromPlayer.y *= totalDistance;
-			}
-
-			Vector3 currentPosition = new Vector3(_PlayerTransform.position.x + _OffsetFromPlayer.x,
-				transform.position.y,
-				_PlayerTransform.position.z + _OffsetFromPlayer.y);
-
-			// Assign our position to the reticles position to the new position!
-			transform.position = _Reticle.position = currentPosition;
-
-			currentPosition.y += _ParticleRaycastAddedHeight;
-			if (Physics.Raycast(currentPosition, Vector3.down, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
-			{
-				Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
-				transform.position = _Reticle.position = target;
-			}
-		}
-		else
-		{
-			// Reliant on the mouse, so cannot be used with controllers
-			try
-			{
-				Ray ray = _MainCamera.ScreenPointToRay(Input.mousePosition);
-				if (Physics.Raycast(ray, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
-				{
-					Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
-					transform.position = _Reticle.position = target;
-				}
-			}
-			catch
-			{
-				// Do nothing
-			}
 		}
 
 		// Detecting Player input

@@ -276,7 +276,6 @@ MonoBehaviour:
   _Data: {fileID: 11400000, guid: 0b84675161ac2f44cac1d648732027a7, type: 2}
   _PlayerPushScale: 200
   _PikminPushScale: 45
-  _ObjectPushScale: 200
   _PikminInteractableMask:
     serializedVersion: 2
     m_Bits: 8192
@@ -294,14 +293,20 @@ MonoBehaviour:
   _TargetObjectCollider: {fileID: 0}
   _Intention: 3
   _AttackingTransform: {fileID: 0}
-  _AttackJumpTimer: 0
   _CurrentStatSpecifier: 0
   _CurrentMoveSpeed: 0
   _InSquad: 0
   _RagdollTime: 0
   _DirectionVector: {x: 0, y: 0, z: 0}
+  _MapMask:
+    serializedVersion: 2
+    m_Bits: 512
+  _AllMask:
+    serializedVersion: 2
+    m_Bits: 32401
   _AddedVelocity: {x: 0, y: 0, z: 0}
   _LatchedTransform: {fileID: 0}
+  _LatchedTransformCollider: {fileID: 0}
   _LatchedOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &482727455065319374
 GameObject:

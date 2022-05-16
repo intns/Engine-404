@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 569532173}
   m_LocalRotation: {x: 0.7071068, y: 0, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: -0.006, y: 0, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 0.69617}
+  m_LocalPosition: {x: -0.0071, y: -0, z: 0}
+  m_LocalScale: {x: 0.93, y: 0.93, z: 1.0146283}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1587067452172411432}
@@ -120,6 +120,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7067881604291001658}
+  - component: {fileID: 1749591085003212095}
   m_Layer: 13
   m_Name: base
   m_TagString: PikminInteract
@@ -143,6 +144,19 @@ Transform:
   m_Father: {fileID: 2734694748811294069}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1749591085003212095
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214742703860127826}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0050011342
+  m_Center: {x: -0.0029337294, y: -1.5407293e-10, z: 1.0579708e-10}
 --- !u!1 &3342069368978941147
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +462,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5399365580622219870}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.0037001702
@@ -721,3 +735,23 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5389076462877605904}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4172643792248264985 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 67f946c5ca8dfd345beacc74eeba7558,
+    type: 3}
+  m_PrefabInstance: {fileID: 5389076462877605904}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1087378143209367390
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4172643792248264985}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2246786623285488087, guid: 67f946c5ca8dfd345beacc74eeba7558, type: 3}

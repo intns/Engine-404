@@ -91,6 +91,10 @@ public class PikminSprout : MonoBehaviour
 	[SerializeField] GameObject _BluePikminPrefab;
 	[SerializeField] GameObject _YellowPikminPrefab;
 	[Space]
+	[SerializeField] Texture _RedPikminSproutTex;
+	[SerializeField] Texture _BluePikminSproutTex;
+	[SerializeField] Texture _YellowPikminSproutTex;
+	[Space]
 	[SerializeField] GameObject _LeafHeadPrefab;
 	[SerializeField] GameObject _BudHeadPrefab;
 	[SerializeField] GameObject _FlowerHeadPrefab;
@@ -169,12 +173,15 @@ public class PikminSprout : MonoBehaviour
 		{
 			case PikminColour.Red:
 				toInstantiate = _RedPikminPrefab;
+				_MeshRenderer.material.mainTexture = _RedPikminSproutTex;
 				break;
 			case PikminColour.Yellow:
 				toInstantiate = _YellowPikminPrefab;
+				_MeshRenderer.material.mainTexture = _YellowPikminSproutTex;
 				break;
 			case PikminColour.Blue:
 				toInstantiate = _BluePikminPrefab;
+				_MeshRenderer.material.mainTexture = _BluePikminSproutTex;
 				break;
 			default:
 				break;
@@ -210,10 +217,24 @@ public class PikminSprout : MonoBehaviour
 	public void OnSpawn(PikminSpawnData data)
 	{
 		_SpawnData = data;
-		_MeshRenderer.material.color = GameUtil.PikminColorToColor(data._Colour);
+
+		switch (data._Colour)
+		{
+			case PikminColour.Red:
+				_MeshRenderer.material.mainTexture = _RedPikminSproutTex;
+				break;
+			case PikminColour.Yellow:
+				_MeshRenderer.material.mainTexture = _YellowPikminSproutTex;
+				break;
+			case PikminColour.Blue:
+				_MeshRenderer.material.mainTexture = _BluePikminSproutTex;
+				break;
+			default:
+				break;
+		}
 
 		ParticleSystem.MainModule settings = _ParticleSystem.main;
-		settings.startColor = _MeshRenderer.material.color;
+		settings.startColor = GameUtil.PikminColorToColor(data._Colour);
 
 		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
 		StartCoroutine(IE_DropAnimation());

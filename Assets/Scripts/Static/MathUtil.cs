@@ -101,6 +101,28 @@ public static class MathUtil
 		return direction;
 	}
 
+	public static Collider GetClosestCollider(Vector3 pos, Collider[] list)
+	{
+		if (list == null || list.Length == 0)
+		{
+			return null;
+		}
+
+		Collider closest = list[0];
+		float closestDist = DistanceTo(pos, closest.transform.position);
+		foreach (Collider i in list)
+		{
+			float currDist = DistanceTo(pos, i.transform.position);
+			if (currDist < closestDist)
+			{
+				closest = i;
+				closestDist = currDist;
+			}
+		}
+
+		return closest;
+	}
+
 	/// <summary>
 	/// A basic square function to allow for an Ease-In LERP
 	/// </summary>

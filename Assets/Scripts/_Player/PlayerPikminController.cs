@@ -132,18 +132,20 @@ public class PlayerPikminController : MonoBehaviour
 
 	private Vector3 CalculateVelocity(Vector3 destination, float vd)
 	{
+		float gravity = Physics.gravity.y - 9.81f;
+
 		Vector3 displacementXZ = MathUtil.XZToXYZ(new Vector2(destination.x - _PikminInHand.transform.position.x,
 			destination.z - _PikminInHand.transform.position.z));
 
 		float throwHeight = _PikminInHand._Data._ThrowingHeight;
 
-		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + throwHeight) / Physics.gravity.y)
-			+ Mathf.Sqrt(2 * (vd - throwHeight) / Physics.gravity.y);
+		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + throwHeight) / gravity)
+			+ Mathf.Sqrt(2 * (vd - throwHeight) / gravity);
 
-		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * throwHeight);
+		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * throwHeight);
 		Vector3 velocityXZ = (displacementXZ / time) * 1.01f;
 
-		return velocityXZ + (velocityY * -Mathf.Sign(Physics.gravity.y));
+		return velocityXZ + (velocityY * -Mathf.Sign(gravity));
 	}
 
 	private void SetLineRenderer()
@@ -222,7 +224,7 @@ public class PlayerPikminController : MonoBehaviour
 			if (Input.GetButton("A Button"))
 			{
 				// Move the Pikmin's model to in front of the player
-				_PikminInHand.transform.position = transform.position + (transform.forward / 2);
+				_PikminInHand.transform.position = transform.position + (transform.right / 3) + (transform.forward / 3) + (Vector3.down / 4);
 				SetLineRenderer();
 				aButtonAction = true;
 			}
@@ -300,7 +302,7 @@ public class PlayerPikminController : MonoBehaviour
 		{
 			PikminAI pikminComponent = collider.GetComponent<PikminAI>();
 			// Check if they're in the squad
-			if (!pikminComponent._InSquad)
+			if (!pikminComponent || !pikminComponent._InSquad)
 			{
 				continue;
 			}

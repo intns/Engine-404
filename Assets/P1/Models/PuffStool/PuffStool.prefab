@@ -1,5 +1,115 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &923161749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 923161750}
+  - component: {fileID: 923161751}
+  - component: {fileID: 923161752}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &923161750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923161749}
+  m_LocalRotation: {x: -0.61237264, y: 0.6123729, z: -0.35355246, w: -0.35355318}
+  m_LocalPosition: {x: 0.33, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1791259001760650555}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: -240, y: 0, z: 90}
+--- !u!64 &923161751
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923161749}
+  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4123541361864710882, guid: 6d9bb5427b239e8489344386db7bfed0, type: 3}
+--- !u!114 &923161752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923161749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c05db8b43cbb59499af668104d33af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _OnTouch:
+    m_PersistentCalls:
+      m_Calls: []
+  _Parent: {fileID: 0}
+  _PushForce: 1000
+--- !u!1 &1932818944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1932818945}
+  - component: {fileID: 1932818946}
+  m_Layer: 13
+  m_Name: Collider
+  m_TagString: PikminInteract
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1932818945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932818944}
+  m_LocalRotation: {x: 0.5000001, y: 0.49999943, z: -0.5000008, w: 0.49999973}
+  m_LocalPosition: {x: -0.3077444, y: -0.00017154968, z: 0.001142225}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990540904357341454}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
+--- !u!136 &1932818946
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932818944}
+  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.27283508
+  m_Height: 0.5897083
+  m_Direction: 0
+  m_Center: {x: 0.00038481707, y: 0.27229342, z: 0.010311711}
 --- !u!1 &224392082027374218
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,9 +119,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5467829576000964807}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 26
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +141,7 @@ Transform:
   - {fileID: 6217423192758762766}
   m_Father: {fileID: 5335215937833184067}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.35189867, y: -89.48323, z: 150.04852}
 --- !u!1 &1062626932287325970
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,7 +166,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062626932287325970}
-  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156, w: 1}
+  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156,
+    w: 1}
   m_LocalPosition: {x: -4.0500935e-15, y: 0.000000004768367, z: 7.7686553e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -154,9 +265,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1991343561794760892}
   - component: {fileID: 4613489110303658919}
-  m_Layer: 0
+  - component: {fileID: 1519136910}
+  - component: {fileID: 1519136908}
+  - component: {fileID: 1519136909}
+  - component: {fileID: 1519136911}
+  - component: {fileID: 1727977974}
+  m_Layer: 13
   m_Name: PuffStool
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -170,7 +286,7 @@ Transform:
   m_GameObject: {fileID: 1218642371008915974}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7508999062300593199}
@@ -192,7 +308,7 @@ Animator:
   m_GameObject: {fileID: 1218642371008915974}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 6d9bb5427b239e8489344386db7bfed0, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4470fe87fdb503348bce61cee4a95130, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -202,6 +318,172 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!54 &1519136910
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218642371008915974}
+  serializedVersion: 2
+  m_Mass: 6000
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!114 &1519136908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218642371008915974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24626ca32a797a40a278ac524e262dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Showcase: 0
+  _MaxHealth: 3500
+  _DeadObjectOffset: {x: 0, y: 0, z: 0}
+  _DeadObject: {fileID: 0}
+  _HWObject: {fileID: 722451351670197914, guid: 611e1e55a27ea104dadc717baf15d4e1,
+    type: 3}
+  _HWOffset: {x: 0, y: 8.09, z: 0}
+  _HWScale: 1.5
+  _AttachedPikmin: []
+  _Dead: 0
+  _HWScript: {fileID: 0}
+--- !u!114 &1519136909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218642371008915974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09bf4b04a40ecc04ca13ddfa68965224, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _DeaccelerateCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.17374738
+      value: 0.5381134
+      inSlope: 1.7821723
+      outSlope: 1.7821723
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.6882447
+      outWeight: 0.23311311
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _DeaccelerateTime: 0.25
+  _CurrentSmoothVelocity: {x: 0, y: 0, z: 0}
+--- !u!114 &1519136911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218642371008915974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab82eafe98b762419392bd85276ce1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Speed: 3
+  _TimePerAttack: 3
+  _TimeForStun: 4
+  _HealthForStun: 20
+  _DetectionSphere: 15
+  _DeathSphere: 2.5
+  _PlayerAndPikminMask:
+    serializedVersion: 2
+    m_Bits: 1152
+  _CurrentState: 0
+  _TargetObject: {fileID: 0}
+  _AttackTimer: 0
+  _StunTimer: 0
+  _CurrentHealthForStun: 0
+--- !u!114 &1727977974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218642371008915974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 1
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 1791259001760650555}
+  - {fileID: 1990540904357341454}
+  - {fileID: 5335215937833184067}
+  - {fileID: 1219266135969892906}
+  - {fileID: 6625195142828842067}
+  - {fileID: 7390883872367339328}
+  - {fileID: 2460024406441988745}
+  - {fileID: 8516666240055352440}
+  - {fileID: 6851029243761239112}
+  - {fileID: 372647322157028611}
+  - {fileID: 4948999957093238503}
+  - {fileID: 7657773114740410007}
+  - {fileID: 3056081838354841688}
+  - {fileID: 3664560988016716424}
+  - {fileID: 6696724422272423187}
+  - {fileID: 1646594164806181507}
+  - {fileID: 1515572251337869700}
+  - {fileID: 7289633725612756912}
+  - {fileID: 5360615194714685330}
+  - {fileID: 5084819737813764435}
+  - {fileID: 5965901652393392057}
+  - {fileID: 2525939170577411649}
+  - {fileID: 3954405052211484362}
+  - {fileID: 7848122092448838959}
+  - {fileID: 8466907771620392170}
+  - {fileID: 6544199023309414275}
+  - {fileID: 208674728944910196}
+  - {fileID: 2779190292416859271}
+  - {fileID: 4114654265442254933}
+  - {fileID: 1581309824463324341}
+  - {fileID: 3022209118935247812}
+  - {fileID: 1029287122555804901}
+  - {fileID: 4923584738575399283}
+  - {fileID: 5467829576000964807}
+  - {fileID: 6217423192758762766}
 --- !u!1 &1310386637002821009
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,9 +493,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7657773114740410007}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 11
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,7 +515,7 @@ Transform:
   - {fileID: 3056081838354841688}
   m_Father: {fileID: 5335215937833184067}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -22.687277, y: -136.55852, z: -20.200424}
 --- !u!1 &1311780266110309357
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,9 +525,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3664560988016716424}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 12
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -265,7 +547,7 @@ Transform:
   - {fileID: 6696724422272423187}
   m_Father: {fileID: 5335215937833184067}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.6198039, y: -90.00175, z: -90.26117}
 --- !u!1 &2137190175510555657
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,9 +557,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7848122092448838959}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 20
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -297,7 +579,7 @@ Transform:
   - {fileID: 8466907771620392170}
   m_Father: {fileID: 3954405052211484362}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20.615469, y: 13.263678, z: -1.8622292}
 --- !u!1 &2233568803506264609
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,9 +589,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7390883872367339328}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 4
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -329,7 +611,7 @@ Transform:
   - {fileID: 2460024406441988745}
   m_Father: {fileID: 6625195142828842067}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.000009832841, y: -0.000015032578, z: 62.901608}
 --- !u!1 &2479034500915623590
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,9 +621,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6217423192758762766}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 26_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -370,9 +652,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6851029243761239112}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 7
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -392,7 +674,7 @@ Transform:
   - {fileID: 372647322157028611}
   m_Father: {fileID: 8516666240055352440}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -4.8163633, y: -3.207664, z: -2.064223}
 --- !u!1 &2745878906295916982
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,9 +684,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6544199023309414275}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 22
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -424,7 +706,7 @@ Transform:
   - {fileID: 208674728944910196}
   m_Father: {fileID: 8466907771620392170}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.991274, y: -28.617708, z: 27.560516}
 --- !u!1 &3029284022588116494
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,9 +716,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2525939170577411649}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 18
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -456,7 +738,7 @@ Transform:
   - {fileID: 3954405052211484362}
   m_Father: {fileID: 5335215937833184067}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -72.59888, y: 110.20408, z: -92.42926}
 --- !u!1 &3113560402617312889
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,9 +748,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1581309824463324341}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 24
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -488,7 +770,7 @@ Transform:
   - {fileID: 3022209118935247812}
   m_Father: {fileID: 5335215937833184067}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -22.624353, y: -43.407837, z: -160.22299}
 --- !u!1 &3117318193857394734
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,9 +780,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5084819737813764435}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 17
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -520,7 +802,7 @@ Transform:
   - {fileID: 5965901652393392057}
   m_Father: {fileID: 5360615194714685330}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -17.991262, y: 28.617746, z: 27.560482}
 --- !u!1 &3544015008714901246
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,9 +812,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1791259001760650555}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 0
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -551,9 +833,10 @@ Transform:
   m_Children:
   - {fileID: 1990540904357341454}
   - {fileID: 5335215937833184067}
+  - {fileID: 923161750}
   m_Father: {fileID: 7508999062300593199}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.00014172641, y: -90.000084, z: -88.70411}
 --- !u!1 &3544436234420073817
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,9 +846,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1515572251337869700}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 14
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -585,7 +868,7 @@ Transform:
   - {fileID: 7289633725612756912}
   m_Father: {fileID: 1646594164806181507}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.342503, y: -14.50679, z: 27.082802}
 --- !u!1 &3564393049368789784
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,9 +878,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1219266135969892906}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 2
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -617,7 +900,7 @@ Transform:
   - {fileID: 6625195142828842067}
   m_Father: {fileID: 1990540904357341454}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 89.98021, y: 50.18964, z: 0}
 --- !u!1 &3628476435001164337
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,9 +910,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8466907771620392170}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 21
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -649,7 +932,7 @@ Transform:
   - {fileID: 6544199023309414275}
   m_Father: {fileID: 7848122092448838959}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -31.43679, y: -26.198809, z: 19.280548}
 --- !u!1 &3820623645661704288
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,9 +942,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7289633725612756912}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 15
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -681,7 +964,7 @@ Transform:
   - {fileID: 5360615194714685330}
   m_Father: {fileID: 1515572251337869700}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -20.625269, y: -13.580208, z: -1.8597754}
 --- !u!1 &3921640054330769794
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,9 +975,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3802574311251793809}
   - component: {fileID: 1457826227377207144}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: nodes_28
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -706,7 +989,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3921640054330769794}
-  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156, w: 1}
+  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156,
+    w: 1}
   m_LocalPosition: {x: -4.0500935e-15, y: 0.000000004768367, z: 7.7686553e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -803,9 +1087,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1990540904357341454}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 1
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -824,9 +1108,10 @@ Transform:
   m_Children:
   - {fileID: 1219266135969892906}
   - {fileID: 8516666240055352440}
+  - {fileID: 1932818945}
   m_Father: {fileID: 1791259001760650555}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.00008354781, y: 0.00003145018, z: -179.22375}
 --- !u!1 &4237839729715981618
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,9 +1121,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5335215937833184067}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 10
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -865,7 +1150,7 @@ Transform:
   - {fileID: 5467829576000964807}
   m_Father: {fileID: 1791259001760650555}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.0000072821863, y: -0.00007228874, z: -4.738815}
 --- !u!1 &4289615752079950418
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,9 +1160,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 208674728944910196}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 22_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -906,9 +1191,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1029287122555804901}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 25
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -928,7 +1213,7 @@ Transform:
   - {fileID: 4923584738575399283}
   m_Father: {fileID: 5335215937833184067}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.27849948, y: -90.51959, z: 29.166231}
 --- !u!1 &4586074803464509878
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,9 +1223,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7508999062300593199}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: nodes_0
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -960,7 +1245,7 @@ Transform:
   - {fileID: 1791259001760650555}
   m_Father: {fileID: 1991343561794760892}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.000009334666, y: 0, z: 0}
 --- !u!1 &4593152181656079777
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,9 +1255,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5965901652393392057}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 17_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1001,9 +1286,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2779190292416859271}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 23
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1023,7 +1308,7 @@ Transform:
   - {fileID: 4114654265442254933}
   m_Father: {fileID: 5335215937833184067}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50.60423, y: -90.636696, z: 88.90616}
 --- !u!1 &4975282073898951088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,9 +1318,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4923584738575399283}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 25_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1064,9 +1349,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6696724422272423187}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 12_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1096,9 +1381,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2991074123605745448}
   - component: {fileID: 5460476298298143347}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: nodes_31
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1110,7 +1395,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5649315340060136130}
-  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156, w: 1}
+  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156,
+    w: 1}
   m_LocalPosition: {x: -4.0500935e-15, y: 0.000000004768367, z: 7.7686553e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1207,9 +1493,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3022209118935247812}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 24_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1238,9 +1524,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4114654265442254933}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 23_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1269,9 +1555,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3056081838354841688}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 11_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1300,9 +1586,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2460024406441988745}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 5
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1322,7 +1608,7 @@ Transform:
   - {fileID: 8859946990969457097}
   m_Father: {fileID: 7390883872367339328}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -1.2789935, y: 0.6439649, z: -116.71601}
 --- !u!1 &6673126048401339808
 GameObject:
   m_ObjectHideFlags: 0
@@ -1332,9 +1618,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5360615194714685330}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 16
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1354,7 +1640,7 @@ Transform:
   - {fileID: 5084819737813764435}
   m_Father: {fileID: 7289633725612756912}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 31.437105, y: 26.198795, z: 19.281189}
 --- !u!1 &6827207860868859731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1364,9 +1650,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 372647322157028611}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 8
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1386,7 +1672,7 @@ Transform:
   - {fileID: 4948999957093238503}
   m_Father: {fileID: 6851029243761239112}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.000010790004, y: 0.000018411718, z: -62.859142}
 --- !u!1 &6927996805011960335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1396,9 +1682,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4948999957093238503}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 9
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1418,7 +1704,7 @@ Transform:
   - {fileID: 155685970998884977}
   m_Father: {fileID: 372647322157028611}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.7050684, y: 0.2592236, z: 110.1871}
 --- !u!1 &7093075277339171524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1428,9 +1714,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3954405052211484362}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 19
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1450,7 +1736,7 @@ Transform:
   - {fileID: 7848122092448838959}
   m_Father: {fileID: 2525939170577411649}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -17.34251, y: 14.506775, z: 27.082773}
 --- !u!1 &7745164885568495355
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,9 +1746,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 155685970998884977}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 9_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1491,9 +1777,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8516666240055352440}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 6
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1513,7 +1799,7 @@ Transform:
   - {fileID: 6851029243761239112}
   m_Father: {fileID: 1990540904357341454}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -50.039303, z: 0}
 --- !u!1 &8220081415439950947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,9 +1810,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6609085492868748711}
   - component: {fileID: 2501796062309041786}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: nodes_30
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1538,7 +1824,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8220081415439950947}
-  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156, w: 1}
+  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156,
+    w: 1}
   m_LocalPosition: {x: -4.0500935e-15, y: 0.000000004768367, z: 7.7686553e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1635,9 +1922,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6625195142828842067}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 3
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1657,7 +1944,7 @@ Transform:
   - {fileID: 7390883872367339328}
   m_Father: {fileID: 1219266135969892906}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.8289223, y: -3.1209989, z: 2.0528755}
 --- !u!1 &8845657894233986605
 GameObject:
   m_ObjectHideFlags: 0
@@ -1667,9 +1954,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1646594164806181507}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 13
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1689,7 +1976,7 @@ Transform:
   - {fileID: 1515572251337869700}
   m_Father: {fileID: 5335215937833184067}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 72.59913, y: -110.20423, z: -92.42945}
 --- !u!1 &8880538414091838445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1699,9 +1986,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8859946990969457097}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: bone 5_end
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1731,9 +2018,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4283505267785163419}
   - component: {fileID: 34713315934546318}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: nodes_29
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1745,7 +2032,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8929678464471684027}
-  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156, w: 1}
+  m_LocalRotation: {x: 0.000000081460335, y: 1.546919e-15, z: -0.000000014901156,
+    w: 1}
   m_LocalPosition: {x: -4.0500935e-15, y: 0.000000004768367, z: 7.7686553e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

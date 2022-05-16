@@ -13,8 +13,16 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 	Camera _Camera;
 	Player _Player;
 
+	bool _Playing = false;
+
 	IEnumerator IE_Play()
 	{
+		if (_Playing)
+		{
+			yield break;
+		}
+		_Playing = true;
+
 		yield return null;
 
 		_Camera = Camera.main;
@@ -62,18 +70,16 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 		_Onion.AddSproutsToSpit(1, PikminColour.Red);
 
 		t = 0;
-		length = 2.5f;
+		length = 5;
 		while (t <= length)
 		{
 			_Camera.transform.rotation = Quaternion.Lerp(_Camera.transform.rotation,
 				Quaternion.LookRotation(MathUtil.DirectionFromTo(_Camera.transform.position, _LookAtTarget.position + (Vector3.down * 7.5f), true)),
-				MathUtil.EaseIn3(t / length));
+				MathUtil.EaseOut3(t / length));
 
 			t += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
-
-		yield return new WaitForSeconds(1.25f);
 
 		_Player.Pause(false);
 		_Camera.GetComponent<CameraFollow>().enabled = true;

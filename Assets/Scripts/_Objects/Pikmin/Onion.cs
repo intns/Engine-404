@@ -72,7 +72,7 @@ public class Onion : MonoBehaviour
 	{
 		_OnionCanvas.gameObject.SetActive(false);
 
-		_CurrentSeedIdx = UnityEngine.Random.Range(0, 101);
+		_CurrentSeedIdx = UnityEngine.Random.Range(0, 100);
 
 		_SpawnedSprouts.Clear();
 		for (int i = 0; i < 100; i++)
@@ -341,16 +341,11 @@ public class Onion : MonoBehaviour
 	/// <param name="colour">The colour of the Pikmin it will produce</param>
 	public void StartSuction(GameObject toSuck, int toProduce, PikminColour colour)
 	{
-		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit info, _MapMask))
-		{
-			toSuck.transform.position = info.point;
-		}
-
 		StartCoroutine(IE_SuctionAnimation(toSuck, toProduce, colour));
 	}
 	#endregion
 
-	#region IEnumerators / Timed Functions
+	#region IEnumerators
 	// For the spawning Pikmin sequence (from the in-game menu, not spitting)
 	private IEnumerator IE_SpawnPikmin(int amount)
 	{
