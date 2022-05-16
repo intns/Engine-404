@@ -34,6 +34,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack
 	[SerializeField] float _DetectionSphere = 5;
 	[SerializeField] float _DeathSphere = 2.5f;
 	[SerializeField] LayerMask _PlayerAndPikminMask;
+	[SerializeField] ParticleSystem _ToxicPS;
 
 	[Header("Debugging")]
 	[SerializeField] States _CurrentState = States.Idle;
@@ -66,91 +67,17 @@ public class PuffStool : MonoBehaviour, IPikminAttack
 		{
 			case States.Idle:
 				{
-					Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask));
-					if (closestObj != null)
-					{
-						_TargetObject = closestObj.transform;
-						ChangeState(States.Walking);
-					}
-
-					ChangeAnimationState(ANIM_Idle);
+					HandleIdle();
 					break;
 				}
 			case States.Walking:
 				{
-					if (_TargetObject == null)
-					{
-						ChangeState(States.Idle);
-						break;
-					}
-					else
-					{
-						ChangeAnimationState(ANIM_Walk);
-					}
-
-					Vector3 direction = MathUtil.DirectionFromTo(_TargetObject.position, _Transform.position);
-
-					_MovementEngine.SmoothVelocity = _Speed * direction;
-					_Transform.rotation = Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(direction), 10 * Time.deltaTime);
-
-					float distanceToTarget = float.PositiveInfinity;
-
-					Collider[] objects = Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask);
-					Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, objects);
-					if (closestObj != null)
-					{
-						float curDist = MathUtil.DistanceTo(_Transform.position, _TargetObject.position);
-						float closestDist = MathUtil.DistanceTo(_Transform.position, closestObj.transform.position);
-						if (closestDist < curDist)
-						{
-							_TargetObject = closestObj.transform;
-							distanceToTarget = closestDist;
-						}
-						else
-						{
-							distanceToTarget = curDist;
-						}
-					}
-					else
-					{
-						_TargetObject = null;
-					}
-
-					// Attack!
-					if (distanceToTarget < 3)
-					{
-						_AttackTimer += Time.deltaTime;
-
-						if (_AttackTimer >= _TimePerAttack)
-						{
-							_AttackTimer = 0;
-							ChangeState(States.Attack);
-						}
-					}
-
+					HandleWalking();
 					break;
 				}
 			case States.Stunned:
 				{
-					ChangeAnimationState(ANIM_Stunned);
-					_MovementEngine.SetVelocity(Vector3.zero);
-
-					_StunTimer += Time.deltaTime;
-					if (_StunTimer >= _TimeForStun)
-					{
-						while (_DamageScript._AttachedPikmin.Count > 0)
-						{
-							PikminAI pik = _DamageScript._AttachedPikmin[0];
-							if (pik != null)
-							{
-								pik.ChangeState(PikminStates.Idle);
-								pik._AddedVelocity = MathUtil.DirectionFromTo(_Transform.position, pik.transform.position) * 50;
-							}
-						}
-
-						ChangeState(States.StunEnd);
-					}
-
+					HandleStunned();
 					break;
 				}
 			case States.Attack:
@@ -168,6 +95,32 @@ public class PuffStool : MonoBehaviour, IPikminAttack
 		}
 	}
 
+	private void HandleStunned()
+	{
+		ChangeAnimationState(ANIM_Stunned);
+		_MovementEngine.SetVelocity(Vector3.zero);
+
+		_StunTimer += Time.deltaTime;
+		if (_StunTimer < _TimeForStun)
+		{
+			return;
+		}
+
+		while (_DamageScript._AttachedPikmin.Count > 0)
+		{
+			PikminAI pik = _DamageScript._AttachedPikmin[0];
+			if (pik == null)
+			{
+				break;
+			}
+
+			pik.ChangeState(PikminStates.Idle);
+			pik._AddedVelocity = MathUtil.DirectionFromTo(_Transform.position, pik.transform.position) * 50;
+		}
+
+		ChangeState(States.StunEnd);
+	}
+
 	private void OnDrawGizmos()
 	{
 		Gizmos.DrawWireSphere(transform.position, _DetectionSphere);
@@ -178,6 +131,71 @@ public class PuffStool : MonoBehaviour, IPikminAttack
 	#endregion
 
 	#region Utility Functions
+	private void HandleIdle()
+	{
+		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask));
+		if (closestObj != null)
+		{
+			_TargetObject = closestObj.transform;
+			ChangeState(States.Walking);
+		}
+
+		ChangeAnimationState(ANIM_Idle);
+	}
+
+	private void HandleWalking()
+	{
+		if (_TargetObject == null)
+		{
+			ChangeState(States.Idle);
+			return;
+		}
+		else
+		{
+			ChangeAnimationState(ANIM_Walk);
+		}
+
+		Vector3 direction = MathUtil.DirectionFromTo(_TargetObject.position, _Transform.position);
+
+		_MovementEngine.SmoothVelocity = _Speed * direction;
+		_Transform.rotation = Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(direction), 10 * Time.deltaTime);
+
+		float distanceToTarget = float.PositiveInfinity;
+
+		Collider[] objects = Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask);
+		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, objects);
+		if (closestObj != null)
+		{
+			float curDist = MathUtil.DistanceTo(_Transform.position, _TargetObject.position);
+			float closestDist = MathUtil.DistanceTo(_Transform.position, closestObj.transform.position);
+			if (closestDist < curDist)
+			{
+				_TargetObject = closestObj.transform;
+				distanceToTarget = closestDist;
+			}
+			else
+			{
+				distanceToTarget = curDist;
+			}
+		}
+		else
+		{
+			_TargetObject = null;
+		}
+
+		// Attack!
+		if (distanceToTarget < 4)
+		{
+			_AttackTimer += Time.deltaTime;
+
+			if (_AttackTimer >= _TimePerAttack)
+			{
+				_AttackTimer = 0;
+				ChangeState(States.Attack);
+			}
+		}
+	}
+
 	private void ChangeState(States newState)
 	{
 		switch (_CurrentState)
@@ -189,25 +207,21 @@ public class PuffStool : MonoBehaviour, IPikminAttack
 				_StunTimer = 0;
 				_CurrentHealthForStun = _HealthForStun;
 				break;
-			case States.StunStart:
-			case States.StunEnd:
-			default:
-				break;
 		}
 
 		_CurrentState = newState;
 
-		if (newState == States.StunStart)
+		switch (newState)
 		{
-			ChangeAnimationState(ANIM_StunStart);
-		}
-		else if (newState == States.StunEnd)
-		{
-			ChangeAnimationState(ANIM_StunEnd);
-		}
-		else if (newState == States.Attack)
-		{
-			ChangeAnimationState(ANIM_Attack);
+			case States.StunStart:
+				ChangeAnimationState(ANIM_StunStart);
+				break;
+			case States.StunEnd:
+				ChangeAnimationState(ANIM_StunEnd);
+				break;
+			case States.Attack:
+				ChangeAnimationState(ANIM_Attack);
+				break;
 		}
 	}
 
@@ -244,16 +258,14 @@ public class PuffStool : MonoBehaviour, IPikminAttack
 		}
 
 		_CurrentHealthForStun -= damage;
-		if (_CurrentHealthForStun <= 0)
-		{
-			if (_CurrentState != States.StunStart
+		if (_CurrentHealthForStun <= 0
+			&& _CurrentState != States.StunStart
 				&& _CurrentState != States.Stunned
 				&& _CurrentState != States.StunEnd
 				&& _CurrentState != States.Attack)
-			{
-				ChangeState(States.StunStart);
-				_CurrentHealthForStun = _HealthForStun;
-			}
+		{
+			ChangeState(States.StunStart);
+			_CurrentHealthForStun = _HealthForStun;
 		}
 
 		// Should be called last in case the 
@@ -278,22 +290,26 @@ public class PuffStool : MonoBehaviour, IPikminAttack
 
 	public void ANIM_OnAttack_Do()
 	{
+		_ToxicPS.Play();
+
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask);
 
 		foreach (var coll in objects)
 		{
-			if (Vector3.Distance(coll.transform.position, _Transform.position) < 2.5f)
+			if (Vector3.Distance(coll.transform.position, _Transform.position) >= 2.5f)
 			{
-				PikminAI ai = coll.GetComponent<PikminAI>();
-				if (ai != null)
-				{
-					ai.Die(0);
-				}
+				continue;
+			}
 
-				if (coll.transform == _TargetObject)
-				{
-					_TargetObject = null;
-				}
+			PikminAI ai = coll.GetComponent<PikminAI>();
+			if (ai != null)
+			{
+				ai.Die(0);
+			}
+
+			if (coll.transform == _TargetObject)
+			{
+				_TargetObject = null;
 			}
 		}
 	}

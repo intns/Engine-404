@@ -283,7 +283,7 @@ public class PikminAI : MonoBehaviour, IHealth
 		_Rigidbody.velocity = _DirectionVector + _AddedVelocity;
 		_DirectionVector = Vector3.up * storedY;
 
-		_AddedVelocity = Vector3.Lerp(_AddedVelocity, Vector3.zero, 20 * Time.deltaTime);
+		_AddedVelocity = Vector3.Lerp(_AddedVelocity, Vector3.zero, 10 * Time.deltaTime);
 	}
 
 	void LateUpdate()
