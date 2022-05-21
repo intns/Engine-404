@@ -21,6 +21,7 @@ public class PlayerPikminController : MonoBehaviour
 
 	[Header("Throwing")]
 	[SerializeField] private float _PikminThrowRadius = 17.5f;
+	[SerializeField] private LayerMask _AllMask;
 
 	[Header("Grabbing")]
 	[SerializeField] private float _PikminGrabRadius = 5;
@@ -181,7 +182,7 @@ public class PlayerPikminController : MonoBehaviour
 			pos += velocity * Time.fixedDeltaTime;
 
 			Vector3 heading = pos - oldPos;
-			if (Physics.Raycast(oldPos, heading.normalized, heading.magnitude))
+			if (Physics.Raycast(oldPos, heading.normalized, heading.magnitude, _AllMask, QueryTriggerInteraction.Ignore))
 			{
 				break;
 			}

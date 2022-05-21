@@ -18,6 +18,12 @@ public class MovementEngine : MonoBehaviour
 			_SmoothVelocity = value;
 		}
 	}
+
+	public Vector3 RealVelocity
+	{
+		get => _Rigidbody.velocity;
+	}
+
 	[SerializeField] AnimationCurve _DeaccelerateCurve;
 	[SerializeField] float _DeaccelerateTime = 0.25f;
 
@@ -51,10 +57,12 @@ public class MovementEngine : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		float storedY = _Rigidbody.velocity.y;
 		if (_CurrentSmoothVelocity != Vector3.zero)
 		{
 			SetVelocity(_CurrentSmoothVelocity);
 		}
+		_CurrentSmoothVelocity.y = storedY;
 	}
 
 	public void SetVelocity(Vector3 velocity)

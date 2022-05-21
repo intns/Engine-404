@@ -155,7 +155,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.0050011342
+  m_Radius: 0.006001134
   m_Center: {x: -0.0029337294, y: -1.5407293e-10, z: 1.0579708e-10}
 --- !u!1 &3342069368978941147
 GameObject:
@@ -307,6 +307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Showcase: 0
   _MaxHealth: 30
+  _DeadObjectOffset: {x: 0, y: 0, z: 0}
   _DeadObject: {fileID: 4853071827087637658, guid: ae524c549db4f3d448d6e364307f6b63,
     type: 3}
   _HWObject: {fileID: 722451351670197914, guid: 611e1e55a27ea104dadc717baf15d4e1,

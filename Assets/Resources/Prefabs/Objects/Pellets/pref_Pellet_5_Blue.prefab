@@ -14,8 +14,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
+      propertyPath: _MaxSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: _AccelerationSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: _CarryCircleRadius
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: _CarryCircleOffset.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
       propertyPath: _ColourToGenerateFor
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: _SpeedAddedPerPikmin
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: _DistanceToNextPosition
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
@@ -25,17 +55,17 @@ PrefabInstance:
     - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -80.87722
+      value: -26.25
       objectReference: {fileID: 0}
     - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.625425
+      value: 4.75
       objectReference: {fileID: 0}
     - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.6533804
+      value: 62.75
       objectReference: {fileID: 0}
     - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}

@@ -8,6 +8,7 @@ public class Collider_PikminSlip : MonoBehaviour
 	[SerializeField] UnityEvent _OnTouch = null;
 	[SerializeField] Transform _Parent = null;
 	[SerializeField] float _PushForce = 300;
+	[SerializeField] bool _UseVerticalVel = true;
 
 	private void Update()
 	{
@@ -22,6 +23,12 @@ public class Collider_PikminSlip : MonoBehaviour
 		PikminAI ai = obj.GetComponent<PikminAI>();
 
 		Vector3 direction = MathUtil.DirectionFromTo(transform.position, obj.position, true);
+
+		if (!_UseVerticalVel)
+		{
+			direction.y = 0;
+		}
+
 		ai._AddedVelocity += _PushForce * Time.deltaTime * direction;
 
 		if (_OnTouch != null)

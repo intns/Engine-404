@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1221946547981725967}
   - component: {fileID: 4872199814509870996}
   - component: {fileID: 4504549857464510146}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: pellet2__number_m
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,9 +95,9 @@ GameObject:
   - component: {fileID: 4151343529506950368}
   - component: {fileID: 4151343529506950371}
   - component: {fileID: 4151343529506950369}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: pref_Pellet_5_Red
-  m_TagString: Untagged
+  m_TagString: PikminInteract
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,13 +151,13 @@ MonoBehaviour:
   _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
     type: 3}
   _CarryMinMax: {x: 5, y: 10}
-  _DistanceToNextPosition: 1
-  _CarryCircleRadius: 1.91
-  _CarryCircleOffset: {x: 0, y: -0.7, z: 0}
-  _AccelerationSpeed: 10
+  _DistanceToNextPosition: 0.5
+  _CarryCircleRadius: 1.4
+  _CarryCircleOffset: {x: 0, y: -0.4, z: 0}
+  _AccelerationSpeed: 8
   _BaseSpeed: 2
-  _SpeedAddedPerPikmin: 0.1
-  _MaxSpeed: 3
+  _SpeedAddedPerPikmin: 0.5
+  _MaxSpeed: 4
   _ColourToGenerateFor: 0
   _PikminToProduceMatchColour: 10
   _PikminToProduceNonMatchColour: 5
@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 3565917862207703934}
   - component: {fileID: 566598473555536106}
   - component: {fileID: 7071673281988979460}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: pellet2__pellet5_m
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -72,8 +72,9 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 
 		Gizmos.color = Color.red;
 
-		Mesh mesh = _DeadObject.GetComponentInChildren<MeshFilter>().sharedMesh;
-		if (mesh != null)
+		MeshFilter filter = _DeadObject.GetComponentInChildren<MeshFilter>();
+		Mesh mesh;
+		if (filter != null && (mesh = filter.sharedMesh) != null)
 		{
 			Gizmos.DrawWireMesh(mesh, transform.position + _DeadObjectOffset);
 		}

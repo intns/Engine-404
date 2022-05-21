@@ -80,7 +80,7 @@ public class Onion : MonoBehaviour
 			_SpawnedSprouts.Add(i, null);
 		}
 
-		if (PlayerPrefs.HasKey("ONION_Discovered") && PlayerPrefs.GetInt("ONION_Discovered") == 1)
+		if (PlayerPrefs.GetInt("ONION_Discovered") == 1)
 		{
 			_DiscoverObject.SetActive(false);
 			_Animator.SetTrigger("EmptyIdle");
@@ -89,6 +89,10 @@ public class Onion : MonoBehaviour
 		else
 		{
 			PlayerPrefs.SetInt("ONION_Discovered", 0);
+
+			GetComponent<MeshRenderer>().enabled = false;
+			GetComponent<Collider>().enabled = false;
+
 			_BodyRenderer.material.color = new Color(0.4078f, 0.4078f, 0.4078f);
 		}
 	}
@@ -311,6 +315,12 @@ public class Onion : MonoBehaviour
 				_SeedsToDisperse.z--;
 			}
 		}
+	}
+
+	public void ANIM_EndDiscovery()
+	{
+		GetComponent<MeshRenderer>().enabled = true;
+		GetComponent<Collider>().enabled = true;
 	}
 
 	/// <summary>

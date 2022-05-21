@@ -5,17 +5,17 @@ using UnityEngine;
 [System.Serializable]
 public class BLL_Values
 {
-	public float _FootHeightFloorOffset;
+	public float _FootHeightFloorOffset = 0.8f;
 
 	[Space]
 	public AnimationCurve _LegLiftCurve;
-	public Vector2 _LegLiftTimeRange; // X is min bound Y is max bound
+	public Vector2 _LegLiftTimeRange = new Vector2(1.2f, 1.6f); // X is min bound Y is max bound
 
 	[Space]
-	public float _StepHeight;
-	public float _DistanceForStep;
+	public float _StepHeight = 3;
+	public float _DistanceForStep = 2;
 
-	public bool _FlipToes;
+	public bool _FlipToes = false;
 
 	[Space]
 	public LayerMask _MapMask;
@@ -32,7 +32,6 @@ public class BaldyLongLegsFoot
 
 	Collider _DeathCollider = null;
 	Collider_PikminDie _DieCollider = null;
-	Collider_PikminSlip _SlipCollider = null;
 
 	int _LegIdx = 0;
 
@@ -46,23 +45,33 @@ public class BaldyLongLegsFoot
 	Vector3 _NewPosition = Vector3.zero;
 	Vector3 _TargetPosition = Vector3.zero;
 
+	ParticleSystem _StompFX = null;
+
 	List<BaldyLongLegsFoot> _OtherFeet = new List<BaldyLongLegsFoot>();
 
 	public BaldyLongLegsFoot(BaldyLongLegs parentLegs, Transform target, Collider dColl, int legIdx)
 	{
-		_RaycastObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		_RaycastObj = new();
 		_RaycastObj.name = $"name={target.name} idx={legIdx}";
 		_Parent = parentLegs;
 
 		_DeathCollider = dColl;
 		_DeathCollider.enabled = true;
 		_DieCollider = _DeathCollider.GetComponent<Collider_PikminDie>();
-		_SlipCollider = _DeathCollider.GetComponent<Collider_PikminSlip>();
 
 		_Target = target;
+		_StompFX = _Target.GetComponentInChildren<ParticleSystem>();
+
 		_LegIdx = legIdx;
 
 		_DeathCollTimer = 0.0f;
+	}
+
+	public float GetDistanceFromParent()
+	{
+		float x = _Target.position.x - _Parent.transform.position.x;
+		float z = _Target.position.z - _Parent.transform.position.z;
+		return x * x + z * z;
 	}
 
 	public bool IsMoving() { return _LiftTimer < _RNGTime; }
@@ -75,7 +84,9 @@ public class BaldyLongLegsFoot
 		_OtherFeet = otherFeet;
 
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
-		if (!Physics.SphereCast(_RaycastObj.transform.position, 5, Vector3.down, out RaycastHit hit, 200, _Values._MapMask))
+
+		Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);
+		if (!Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * (_Values._DistanceForStep / 2)), 5, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
 		{
 			return;
 		}
@@ -96,19 +107,38 @@ public class BaldyLongLegsFoot
 
 		_Target.SetPositionAndRotation(_TargetPosition, nextRotation);
 
-		if (_DeathCollTimer <= 0.25f)
+		if (_LiftTimer < _RNGTime)
 		{
-			_DieCollider._Enabled = false;
-			_DeathCollTimer += Time.deltaTime;
+			// Lift the leg
+			float t = _Values._LegLiftCurve.Evaluate(_LiftTimer / _RNGTime);
+
+			_TargetPosition = Vector3.Lerp(_Target.position, _NewPosition, t);
+			_TargetPosition.y += Mathf.Abs(Mathf.Sin(t * Mathf.PI)) * _Values._StepHeight;
+
+			_LiftTimer += Time.deltaTime;
+
+			if (_LiftTimer >= _RNGTime - 0.125f)
+			{
+				_StompFX.Play();
+				_DieCollider._Enabled = true;
+				_DeathCollTimer = 0;
+
+				var colls = Physics.OverlapSphere(_Target.position, 4, _Values._FootStompInteractMask);
+				for (int i = 0; i < colls.Length; i++)
+				{
+					colls[i].GetComponent<PikminAI>().Die(0.5f);
+				}
+			}
 		}
 		else
 		{
-			_DieCollider._Enabled = true;
-			_SlipCollider.enabled = true;
-		}
+			_DeathCollTimer += Time.deltaTime;
 
-		if (_LiftTimer >= _RNGTime)
-		{
+			if (_DeathCollTimer <= 0.15f)
+			{
+				_DieCollider._Enabled = false;
+			}
+
 			for (int i = 0; i < _OtherFeet.Count; i++)
 			{
 				if (_OtherFeet[i].IsMoving())
@@ -127,28 +157,11 @@ public class BaldyLongLegsFoot
 			}
 
 			_LiftTimer = 0;
-			_NewPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
-
-			AudioSource.PlayClipAtPoint(_Values._FootStep, Camera.main.transform.position);
-
+			_DeathCollTimer = 0;
 			_RNGTime = Random.Range(_Values._LegLiftTimeRange.x, _Values._LegLiftTimeRange.y);
-		}
-		else // We're lifting the leg
-		{
-			float t = _Values._LegLiftCurve.Evaluate(_LiftTimer / _RNGTime);
 
-			_TargetPosition = Vector3.Lerp(_Target.position, _NewPosition, t);
-			_TargetPosition.y += Mathf.Abs(Mathf.Sin(t * Mathf.PI)) * _Values._StepHeight;
-
-			_LiftTimer += Time.deltaTime;
-
-			if (_LiftTimer < _RNGTime - 0.25f)
-			{
-				_DieCollider._Enabled = false;
-				_SlipCollider.enabled = true;
-
-				_DeathCollTimer = 0;
-			}
+			_NewPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
+			AudioSource.PlayClipAtPoint(_Values._FootStep, Camera.main.transform.position);
 		}
 	}
 }
@@ -157,6 +170,13 @@ public class BaldyLongLegsFoot
 [RequireComponent(typeof(EnemyDamageScript))]
 public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 {
+	enum States
+	{
+		Spawning,
+		Idle,
+		Shake
+	}
+
 	[Header("Components")]
 	[SerializeField] Transform[] _LegTargets;
 	[SerializeField] Collider[] _LegColliders;
@@ -165,17 +185,21 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	[Header("Settings")]
 	[SerializeField] BLL_Values _Values;
 	[SerializeField] LayerMask _MapMask;
+	[Space]
+	[SerializeField] float _LegDistance = 9;
+	[SerializeField] float _DistanceForSlow = 175;
+	[SerializeField] float _Height = 25;
+	[SerializeField] float _MaxSpeed = 2.5f;
+	[SerializeField] float _Offset = 0;
 
-	[SerializeField] float _LegDistance;
-	[SerializeField] float _Speed;
-
+	float _MoveSpeed = 0.0f;
 	float _CircleTimer = 0;
 	List<BaldyLongLegsFoot> _Feet = new List<BaldyLongLegsFoot>();
 	private EnemyDamageScript _DamageScript = null;
 
 	public Vector3 GetRaycastObjPosition(int legIdx)
 	{
-		return transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_LegTargets.Length, legIdx) * _LegDistance, transform.position.y + 50);
+		return transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_LegTargets.Length, legIdx, _Offset) * _LegDistance, transform.position.y + 50);
 	}
 
 	private void Awake()
@@ -226,20 +250,32 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 			_Feet[i].Update();
 		}
 
-		Vector3 target = _Target.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CircleTimer / 8) * 12);
-
-		if (Physics.SphereCast(transform.position + Vector3.up * 150, 5, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _MapMask))
-		{
-			target.y = hit.point.y - 5;
-		}
-
-		if (Random.Range(0, 5000) < 5)
-		{
-			_CircleTimer = Random.Range(0.0f, 2.0f);
-		}
-
 		Vector3 velocity = Vector3.zero;
-		transform.position = Vector3.SmoothDamp(transform.position, target, ref velocity, Time.smoothDeltaTime, _Speed);
+
+		float maxDist = 0;
+		for (int i = 0; i < _Feet.Count; i++)
+		{
+			float curDist = _Feet[i].GetDistanceFromParent();
+			maxDist = Mathf.Max(maxDist, curDist);
+		}
+
+		_MoveSpeed = Mathf.Lerp(_MoveSpeed, maxDist <= _DistanceForSlow ? _MaxSpeed : 0, 1.5f * Time.deltaTime);
+
+		Vector3 target = _Target.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CircleTimer / 8) * 12);
+		if (Physics.SphereCast(transform.position + Vector3.up * 50, 4, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
+		{
+			target.y = hit.point.y + _Height;
+		}
+
+		transform.SetPositionAndRotation(
+			Vector3.SmoothDamp(transform.position, target, ref velocity, Time.smoothDeltaTime, _MoveSpeed),
+			Quaternion.AngleAxis(-_Offset * 120, Vector3.up));
+
+		_Offset += Time.deltaTime / 7;
+		if (_Offset >= 360)
+		{
+			_Offset -= 360;
+		}
 		_CircleTimer += Time.deltaTime;
 	}
 

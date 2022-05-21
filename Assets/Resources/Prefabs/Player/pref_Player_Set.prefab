@@ -2111,12 +2111,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   _PikminThrowRadius: 20
+  _AllMask:
+    serializedVersion: 2
+    m_Bits: 2147483647
   _PikminGrabRadius: 8
   _VerticalMaxGrabRadius: 2.5
   _WhistleTransform: {fileID: 7354393338239934355}
   _IterationScale: 0.45
-  _StartingDistance: 1.5
-  _DistancePerPikmin: 0.04
+  _StartingDistance: 1
+  _DistancePerPikmin: 0.038
   _CanThrowPikmin: 1
 --- !u!1 &7592230707083184919
 GameObject:
