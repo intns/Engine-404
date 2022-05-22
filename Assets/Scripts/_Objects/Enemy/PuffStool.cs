@@ -124,6 +124,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack
 	private void OnDrawGizmos()
 	{
 		Gizmos.DrawWireSphere(transform.position, _DetectionSphere);
+		Gizmos.DrawWireSphere(transform.position, _DeathSphere);
 	}
 	#endregion
 
