@@ -20,6 +20,11 @@ public class BaldyLongLegsSpawner : MonoBehaviour
 
 	private void Update()
 	{
+		if (GameManager._IsPaused)
+		{
+			return;
+		}
+
 		if (_BLL._Target == null)
 		{
 			_BLL._Target = transform;

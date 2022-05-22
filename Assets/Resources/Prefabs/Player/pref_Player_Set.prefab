@@ -1386,6 +1386,8 @@ MonoBehaviour:
     _Offset: {x: 25, y: 14}
   - _FOV: 50
     _Offset: {x: 32, y: 16}
+  - _FOV: 55
+    _Offset: {x: 36, y: 18}
   _TopViewHolders:
   - _FOV: 45
     _Offset: {x: 15, y: 14}
@@ -1393,6 +1395,8 @@ MonoBehaviour:
     _Offset: {x: 20, y: 16}
   - _FOV: 55
     _Offset: {x: 25, y: 18}
+  - _FOV: 57.5
+    _Offset: {x: 30, y: 20}
   _ChangeZoomAudio: {fileID: 8300000, guid: 492ddac1abd6cf9498fe0e4cfeb8218d, type: 3}
   _FollowSpeed: 7.5
   _OrbitChangeSpeed: 4
@@ -2061,7 +2065,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MovementController: {fileID: 0}
   _PikminController: {fileID: 0}
-  _UIController: {fileID: 0}
+  _UIController: {fileID: 6933063881665219613}
   _MaxHealth: 100
   _CurrentHealth: 100
   _Animator: {fileID: 534525365}

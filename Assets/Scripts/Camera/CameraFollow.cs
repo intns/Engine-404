@@ -297,4 +297,11 @@ public class CameraFollow : MonoBehaviour
 
 		yield return null;
 	}
+
+	public void Shake(float intensity)
+	{
+		transform.SetPositionAndRotation(
+			Vector3.Lerp(transform.position, Random.insideUnitSphere + transform.position, intensity / 1000),
+			Quaternion.Lerp(transform.rotation, Random.rotationUniform, intensity / 1000));
+	}
 }
