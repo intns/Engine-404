@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 [System.Serializable]
 public class BLL_Values
 {
 	public float _FootHeightFloorOffset = 0.8f;
+
+	[Space]
+	public Vector3 _FootColliderOffset = Vector3.zero;
+	public float _FootColliderSize = 2;
 
 	[Space]
 	public AnimationCurve _LegLiftCurve;
@@ -45,7 +50,10 @@ public class BaldyLongLegsFoot
 	Vector3 _NewPosition = Vector3.zero;
 	Vector3 _TargetPosition = Vector3.zero;
 
-	ParticleSystem _StompFX = null;
+	CameraFollow _Camera = null;
+
+	VisualEffect _StompFX = null;
+	VisualEffect _TrailFX = null;
 
 	List<BaldyLongLegsFoot> _OtherFeet = new List<BaldyLongLegsFoot>();
 
@@ -60,7 +68,11 @@ public class BaldyLongLegsFoot
 		_DieCollider = _DeathCollider.GetComponent<Collider_PikminDie>();
 
 		_Target = target;
-		_StompFX = _Target.GetComponentInChildren<ParticleSystem>();
+		_StompFX = _Target.GetChild(0).GetComponentInChildren<VisualEffect>();
+		_TrailFX = _Target.GetChild(1).GetComponentInChildren<VisualEffect>();
+
+		_StompFX.Stop();
+		_TrailFX.Stop();
 
 		_LegIdx = legIdx;
 
@@ -85,6 +97,8 @@ public class BaldyLongLegsFoot
 
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
 
+		_Camera = Camera.main.GetComponent<CameraFollow>();
+
 		Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);
 		if (!Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * (_Values._DistanceForStep / 2)), 5, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
 		{
@@ -99,36 +113,51 @@ public class BaldyLongLegsFoot
 	{
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
 
-		Quaternion nextRotation = _Target.rotation;
-		if (Physics.Raycast(_Target.transform.position, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
-		{
-			nextRotation = Quaternion.FromToRotation(_Values._FlipToes ? Vector3.up : Vector3.down, hit.normal);
-		}
-
-		_Target.SetPositionAndRotation(_TargetPosition, nextRotation);
+		_Target.position = _TargetPosition;
+		Physics.Raycast(_Target.transform.position, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask);
 
 		if (_LiftTimer < _RNGTime)
 		{
 			// Lift the leg
-			float t = _Values._LegLiftCurve.Evaluate(_LiftTimer / _RNGTime);
+			float realT = _LiftTimer / _RNGTime;
+			float t = _Values._LegLiftCurve.Evaluate(realT);
 
 			_TargetPosition = Vector3.Lerp(_Target.position, _NewPosition, t);
 			_TargetPosition.y += Mathf.Abs(Mathf.Sin(t * Mathf.PI)) * _Values._StepHeight;
 
-			_LiftTimer += Time.deltaTime;
+			Vector3 euler = Quaternion.FromToRotation(Vector3.down, hit.normal).eulerAngles;
 
-			if (_LiftTimer >= _RNGTime - 0.125f)
+			const float minDist = 0.01f;
+			const float maxDist = 1.0f;
+			if (t >= minDist && t <= maxDist)
+			{
+				float normalised = Mathf.InverseLerp(minDist, maxDist, realT);
+				euler.z += Mathf.Abs(Mathf.Sin(normalised * Mathf.PI)) * 20;
+			}
+
+			_Target.rotation = Quaternion.Euler(euler);
+
+			_LiftTimer += Time.deltaTime;
+			if (_LiftTimer + 0.13f >= _RNGTime)
 			{
 				_StompFX.Play();
+				_TrailFX.Stop();
+
+				if (_LiftTimer + 0.07f >= _RNGTime)
+				{
+					_Camera.Shake(2);
+				}
+
 				_DieCollider._Enabled = true;
 				_DeathCollTimer = 0;
 
-				var colls = Physics.OverlapSphere(_Target.position, 4, _Values._FootStompInteractMask);
+				Collider[] colls = Physics.OverlapSphere(_Target.position + _Values._FootColliderOffset, _Values._FootColliderSize, _Values._FootStompInteractMask);
 				for (int i = 0; i < colls.Length; i++)
 				{
 					colls[i].GetComponent<PikminAI>().Die(0.5f);
 				}
 			}
+
 		}
 		else
 		{
@@ -159,6 +188,7 @@ public class BaldyLongLegsFoot
 			_LiftTimer = 0;
 			_DeathCollTimer = 0;
 			_RNGTime = Random.Range(_Values._LegLiftTimeRange.x, _Values._LegLiftTimeRange.y);
+			_TrailFX.Play();
 
 			_NewPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
 			AudioSource.PlayClipAtPoint(_Values._FootStep, Camera.main.transform.position);
@@ -243,6 +273,20 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 		}
 	}
 
+	private void OnDrawGizmosSelected()
+	{
+		if (_LegTargets.Length == 0)
+		{
+			return;
+		}
+
+
+		foreach (Transform t in _LegTargets)
+		{
+			Gizmos.DrawWireSphere(t.position + _Values._FootColliderOffset, _Values._FootColliderSize);
+		}
+	}
+
 	private void Update()
 	{
 		for (int i = 0; i < _Feet.Count; i++)
@@ -269,9 +313,9 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 		transform.SetPositionAndRotation(
 			Vector3.SmoothDamp(transform.position, target, ref velocity, Time.smoothDeltaTime, _MoveSpeed),
-			Quaternion.AngleAxis(-_Offset * 120, Vector3.up));
+			Quaternion.AngleAxis(-_Offset * 50, Vector3.up));
 
-		_Offset += Time.deltaTime / 7;
+		_Offset += Time.deltaTime / 12;
 		if (_Offset >= 360)
 		{
 			_Offset -= 360;
