@@ -326,6 +326,11 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 	private void Update()
 	{
+		if (GameManager._IsPaused)
+		{
+			return;
+		}
+
 		switch (_State)
 		{
 			case States.Spawning:

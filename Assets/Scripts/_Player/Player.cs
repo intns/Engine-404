@@ -14,7 +14,7 @@ public class Player : MonoBehaviour, IHealth
 	public static Player _Instance;
 	[HideInInspector] public PlayerMovementController _MovementController = null;
 	[HideInInspector] public PlayerPikminController _PikminController = null;
-	[HideInInspector] public PlayerUIController _UIController = null;
+	public PlayerUIController _UIController = null;
 
 	[Header("Settings")]
 	[SerializeField] private float _MaxHealth = 100;
@@ -34,7 +34,6 @@ public class Player : MonoBehaviour, IHealth
 	{
 		_MovementController = GetComponent<PlayerMovementController>();
 		_PikminController = GetComponent<PlayerPikminController>();
-		_UIController = GetComponent<PlayerUIController>();
 
 		// Resets the health back to the max if changed in the editor
 		_CurrentHealth = _MaxHealth;
