@@ -338,7 +338,7 @@ public class PikminAI : MonoBehaviour, IHealth
 			// If we've been running towards something, we've touched it and now we
 			// can carryout our intention
 			if (_TargetObjectCollider != null && _TargetObjectCollider == collision
-				&& (_TargetObjectCollider.gameObject.layer & _RunTowardsMask) != 0)
+				&& _TargetObjectCollider.gameObject.layer != _RunTowardsMask)
 			{
 				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
 				CarryoutIntention();
