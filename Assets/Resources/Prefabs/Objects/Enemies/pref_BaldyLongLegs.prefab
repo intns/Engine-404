@@ -994,8 +994,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7377229633112426697}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 6.7, y: 0, z: 0.5}
+  m_LocalScale: {x: 0.49194592, y: 0.49194592, z: 0.49194592}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7377229633150642409}
@@ -2233,7 +2233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Showcase: 0
-  _MaxHealth: 1000
+  _MaxHealth: 10000
   _DeadObjectOffset: {x: 0, y: 4, z: 0}
   _DeadObject: {fileID: 3845477201539155994, guid: dd1f9acce7bbade4a91413b2c74445f7,
     type: 3}
@@ -2366,7 +2366,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     _LegLiftTimeRange: {x: 1.2, y: 1.5}
-    _StepHeight: 3
+    _StepHeight: 2.5
     _DistanceForStep: 2
     _FlipToes: 0
     _MapMask:
@@ -2381,9 +2381,16 @@ MonoBehaviour:
     m_Bits: 512
   _LegDistance: 10
   _DistanceForSlow: 170
-  _Height: -5
+  _Height: -6.64
   _MaxSpeed: 4
   _Offset: 0
+  _State: 0
+  _SpawnCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &8859060947325851160 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7165055770358672752, guid: 28850e763ef0c3246aad31b3b7dfc7fa,
