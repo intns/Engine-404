@@ -15,8 +15,8 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 
 	[Header("Settings")]
 	[SerializeField] private float _MaxHealth = 10;
-	[SerializeField] private Vector3 _DeadObjectOffset = Vector3.zero;
-	[SerializeField] private GameObject _DeadObject = null;
+	[SerializeField] public Vector3 _DeadObjectOffset = Vector3.zero;
+	[SerializeField] public GameObject _DeadObject = null;
 
 	[Header("Health Wheel")]
 	[SerializeField] private GameObject _HWObject = null;
