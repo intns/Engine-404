@@ -98,6 +98,7 @@ public class BaldyLongLegsFoot
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
 
 		_Camera = Camera.main.GetComponent<CameraFollow>();
+		_TargetPosition = _Target.position;
 
 		Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);
 		if (!Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * (_Values._DistanceForStep / 2)), 5, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
@@ -154,7 +155,7 @@ public class BaldyLongLegsFoot
 				Collider[] colls = Physics.OverlapSphere(_Target.position + _Values._FootColliderOffset, _Values._FootColliderSize, _Values._FootStompInteractMask);
 				for (int i = 0; i < colls.Length; i++)
 				{
-					colls[i].GetComponent<PikminAI>().Die(0.5f);
+					colls[i].GetComponent<PikminAI>().Die(0.05f);
 				}
 			}
 
@@ -194,6 +195,28 @@ public class BaldyLongLegsFoot
 			AudioSource.PlayClipAtPoint(_Values._FootStep, Camera.main.transform.position);
 		}
 	}
+
+	public void SpawnUpdate()
+	{
+		_Target.position = _TargetPosition;
+
+		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
+		Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);
+		if (Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * (_Values._DistanceForStep / 2)), 5, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
+		{
+			_TargetPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
+			Vector3 euler = Quaternion.FromToRotation(Vector3.down, hit.normal).eulerAngles;
+			_Target.rotation = Quaternion.Euler(euler);
+		}
+
+		_LiftTimer = _RNGTime;
+	}
+
+	public void PlayStompFX()
+	{
+		_StompFX.Play();
+		_Camera.Shake(15);
+	}
 }
 
 
@@ -203,7 +226,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	enum States
 	{
 		Spawning,
-		Idle,
+		Active,
 		Shake
 	}
 
@@ -221,6 +244,9 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	[SerializeField] float _Height = 25;
 	[SerializeField] float _MaxSpeed = 2.5f;
 	[SerializeField] float _Offset = 0;
+
+	[Header("Debugging")]
+	[SerializeField] States _State = States.Spawning;
 
 	float _MoveSpeed = 0.0f;
 	float _CircleTimer = 0;
@@ -289,6 +315,75 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 	private void Update()
 	{
+		switch (_State)
+		{
+			case States.Spawning:
+				HandleSpawning();
+				break;
+			case States.Active:
+				HandleActive();
+				break;
+			case States.Shake:
+				break;
+			default:
+				break;
+		}
+	}
+
+	#region States
+
+	bool _Spawning = false;
+	Vector3 _StartPosition;
+	Vector3 _EndPosition;
+	float _SpawnTimer = 0;
+	[SerializeField] AnimationCurve _SpawnCurve;
+	void HandleSpawning()
+	{
+		if (!_Spawning)
+		{
+			if (Physics.SphereCast(transform.position + Vector3.up * 50, 4, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
+			{
+				_StartPosition = transform.position + Vector3.up * 50;
+				_EndPosition = hit.point;
+			}
+
+			_Spawning = true;
+		}
+		else
+		{
+			for (int i = 0; i < _Feet.Count; i++)
+			{
+				_Feet[i].SpawnUpdate();
+			}
+
+			float spawnTime = 1.0f;
+
+			Vector3 target = Vector3.Lerp(_StartPosition, _EndPosition, _SpawnCurve.Evaluate(_SpawnTimer / spawnTime));
+			if (Physics.SphereCast(transform.position + Vector3.up * 50, 4, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
+			{
+				target.y += hit.point.y + _Height;
+			}
+			transform.position = target;
+
+			_SpawnTimer += Time.deltaTime;
+
+			if (_SpawnTimer + 0.05f >= spawnTime)
+			{
+				for (int i = 0; i < _Feet.Count; i++)
+				{
+					_Feet[i].PlayStompFX();
+				}
+
+				if (_SpawnTimer >= spawnTime)
+				{
+					_State = States.Active;
+				}
+			}
+		}
+	}
+
+	void HandleActive()
+	{
 		for (int i = 0; i < _Feet.Count; i++)
 		{
 			_Feet[i].Update();
@@ -322,6 +417,8 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 		}
 		_CircleTimer += Time.deltaTime;
 	}
+
+	#endregion
 
 
 	#region Pikmin Attacking Implementation

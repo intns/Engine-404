@@ -52,7 +52,8 @@ public class PikminAI : MonoBehaviour, IHealth
 	[SerializeField] float _PlayerPushScale = 30;
 	[SerializeField] float _PikminPushScale = 15;
 
-	[SerializeField] LayerMask _PikminInteractableMask = 0;
+	[SerializeField] LayerMask _InteractableMask = 0;
+	[SerializeField] LayerMask _RunTowardsMask = 0;
 	[SerializeField] TrailRenderer _ThrowTrailRenderer = null;
 	[SerializeField] LayerMask _PlayerAndPikminLayer = 0;
 
@@ -336,7 +337,8 @@ public class PikminAI : MonoBehaviour, IHealth
 		{
 			// If we've been running towards something, we've touched it and now we
 			// can carryout our intention
-			if (_TargetObjectCollider != null && _TargetObjectCollider == collision)
+			if (_TargetObjectCollider != null && _TargetObjectCollider == collision
+				&& (_TargetObjectCollider.gameObject.layer & _RunTowardsMask) != 0)
 			{
 				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
 				CarryoutIntention();
@@ -434,7 +436,7 @@ public class PikminAI : MonoBehaviour, IHealth
 		_IdleTimer = 0;
 
 		// Scan for the closest target object and then run towards it
-		Collider[] objects = Physics.OverlapSphere(_Transform.position, _Data._SearchRadius, _PikminInteractableMask);
+		Collider[] objects = Physics.OverlapSphere(_Transform.position, _Data._SearchRadius, _InteractableMask | _RunTowardsMask);
 		Collider closestCol = null;
 		float curClosestDist = float.PositiveInfinity;
 		foreach (Collider collider in objects)
@@ -813,7 +815,7 @@ public class PikminAI : MonoBehaviour, IHealth
 			{
 				Vector3 closestPosition = ClosestPointOnTarget(_TargetObject, _TargetObjectCollider);
 				Vector3 dirToClosestPos = MathUtil.DirectionFromTo(_Transform.position, closestPosition, true);
-				if (Physics.Raycast(_Transform.position, dirToClosestPos, out RaycastHit info, 1.5f, _PikminInteractableMask, QueryTriggerInteraction.Collide)
+				if (Physics.Raycast(_Transform.position, dirToClosestPos, out RaycastHit info, 1.5f, _InteractableMask, QueryTriggerInteraction.Collide)
 					&& info.collider == _TargetObjectCollider)
 				{
 					Vector3 point = info.point;

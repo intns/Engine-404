@@ -724,12 +724,15 @@ MonoBehaviour:
   _LatchNormalOffset: 0.5
   _StoppingDistance: 0.35
   _IdleTickRate: 0.3
-  _AvoidSphereSize: 0.3
+  _AvoidSphereSize: 0.25
   _PlayerPushScale: 200
   _PikminPushScale: 45
-  _PikminInteractableMask:
+  _InteractableMask:
     serializedVersion: 2
     m_Bits: 8192
+  _RunTowardsMask:
+    serializedVersion: 2
+    m_Bits: 32768
   _ThrowTrailRenderer: {fileID: 6883210476010192704}
   _PlayerAndPikminLayer:
     serializedVersion: 2
@@ -755,6 +758,6 @@ MonoBehaviour:
     m_Bits: 512
   _AllMask:
     serializedVersion: 2
-    m_Bits: 32401
+    m_Bits: 65169
   _LatchedTransform: {fileID: 0}
   _LatchedOffset: {x: 0, y: 0, z: 0}
