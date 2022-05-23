@@ -259,6 +259,11 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 	private void Update()
 	{
+		if (GameManager._IsPaused)
+		{
+			return;
+		}
+
 		switch (_CurrentState)
 		{
 			case States.Idle:

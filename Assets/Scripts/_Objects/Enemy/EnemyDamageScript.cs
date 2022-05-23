@@ -53,6 +53,11 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 
 	private void Update()
 	{
+		if (GameManager._IsPaused)
+		{
+			return;
+		}
+
 		if (_CurrentHealth <= 0)
 		{
 			while (_AttachedPikmin.Count > 0)

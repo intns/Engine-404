@@ -40,6 +40,11 @@ public class MovementEngine : MonoBehaviour
 
 	private void Update()
 	{
+		if (GameManager._IsPaused)
+		{
+			return;
+		}
+
 		if (_SmoothVelocityTimer >= _DeaccelerateTime)
 		{
 			return;
@@ -57,6 +62,11 @@ public class MovementEngine : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		if (GameManager._IsPaused)
+		{
+			return;
+		}
+
 		float storedY = _Rigidbody.velocity.y;
 		if (_CurrentSmoothVelocity != Vector3.zero)
 		{
