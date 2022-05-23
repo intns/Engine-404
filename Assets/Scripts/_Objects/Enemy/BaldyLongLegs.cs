@@ -511,14 +511,13 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 			return;
 		}
 
-		//_DamageScript.SubtractHealth(damage);
+		_DamageScript._HWScript._CurrentHealth -= damage;
 
-		if (_DamageScript._HWScript._CurrentHealth <= 0)
+		float health = _DamageScript._HWScript._CurrentHealth;
+		if (health <= 0)
 		{
 			_State = States.DeathStart;
 		}
-
-		_DamageScript._HWScript._CurrentHealth -= damage;
 	}
 	#endregion
 }

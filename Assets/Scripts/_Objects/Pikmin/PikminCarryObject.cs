@@ -147,6 +147,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	{
 		if (GameManager._IsPaused)
 		{
+			_MoveVector = Vector3.zero;
+			_Rigidbody.velocity = Vector3.zero;
 			return;
 		}
 
