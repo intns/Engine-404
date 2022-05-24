@@ -1577,7 +1577,7 @@ MonoBehaviour:
   _MaxDistance: 500
   _MapMask:
     serializedVersion: 2
-    m_Bits: 12800
+    m_Bits: 512
   _WhistleCircleSegments: 50
 --- !u!82 &401268063754482086
 AudioSource:
@@ -2121,9 +2121,15 @@ MonoBehaviour:
   _PikminGrabRadius: 8
   _VerticalMaxGrabRadius: 2.5
   _WhistleTransform: {fileID: 7354393338239934355}
+  _MapMask:
+    serializedVersion: 2
+    m_Bits: 512
   _IterationScale: 0.45
   _StartingDistance: 1
   _DistancePerPikmin: 0.038
+  _CrowdControlLength: 2.5
+  _DirectionToMouse: {x: 0, y: 0}
+  _UsingCrowdControl: 0
   _CanThrowPikmin: 1
 --- !u!1 &7592230707083184919
 GameObject:

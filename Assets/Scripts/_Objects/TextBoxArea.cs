@@ -130,8 +130,6 @@ public class TextBoxArea : MonoBehaviour
 
 	private IEnumerator WriteText(string toWrite)
 	{
-		yield return new WaitForSeconds(0.5f);
-
 		_Text.text = string.Empty;
 
 		WaitForSeconds seconds = new WaitForSeconds(_CharacterPressTime);
@@ -152,9 +150,12 @@ public class TextBoxArea : MonoBehaviour
 				{
 					throw new KeyNotFoundException("Text Box Area string doesn't have a closing tag after beginning tag! A < was found with no </ to finish.");
 				}
+
+				// Close the tag
+				endEndIdx++;
 				wholeToken = toWrite[i..endEndIdx];
 				i = endEndIdx;
-				yield return new WaitForSeconds(_CharacterPressTime * 4);
+				yield return new WaitForSeconds(_CharacterPressTime * 20);
 			}
 
 			_Text.text += wholeToken;

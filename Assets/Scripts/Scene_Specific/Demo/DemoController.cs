@@ -36,8 +36,6 @@ public class DemoController : MonoBehaviour
 			fog.enabled.value = false;
 		}
 
-		GameManager._IsPaused = !Application.isEditor;
-		_DayTimeManager.enabled = Application.isEditor;
 		_Text.text = "";
 	}
 
@@ -45,6 +43,7 @@ public class DemoController : MonoBehaviour
 	{
 		if (!Application.isEditor)
 		{
+			GameManager._IsPaused = true;
 			StartCoroutine(IE_StartScene());
 		}
 	}

@@ -29,10 +29,16 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] private Transform _WhistleTransform = null;
 
 	[Header("Formation")]
+	[SerializeField] private LayerMask _MapMask;
+	[Space]
 	[SerializeField] private float _IterationScale = 1;
 	[SerializeField] private float _StartingDistance = 2;
 	[SerializeField] private float _DistancePerPikmin = 0.05f; // How much is added to the offset for each pikmin
+	[Space]
+	[SerializeField] private float _CrowdControlLength = 2.5f;
 
+	[SerializeField] Vector2 _DirectionToMouse = Vector2.zero;
+	[SerializeField] bool _UsingCrowdControl = false;
 	[HideInInspector] public bool _CanThrowPikmin = true;
 	private PikminAI _PikminInHand;
 
@@ -124,6 +130,7 @@ public class PlayerPikminController : MonoBehaviour
 
 		for (int i = 0; i < PikminStatsManager._InSquad.Count; i++)
 		{
+			Gizmos.color = Color.blue;
 			Gizmos.DrawSphere(GetPositionAt(i), 0.1f);
 		}
 
@@ -274,7 +281,16 @@ public class PlayerPikminController : MonoBehaviour
 			currentIteration++;
 		}
 
-		return _FormationCenter.position + MathUtil.XZToXYZ(_IterationScale * currentIteration * MathUtil.PositionInUnit(maxOnLevel, currentOnLevel));
+		Vector3 rawCirclePos = MathUtil.XZToXYZ(_IterationScale * currentIteration * MathUtil.PositionInUnit(maxOnLevel, currentOnLevel));
+
+		if (_UsingCrowdControl)
+		{
+			rawCirclePos *= (1 / (_CrowdControlLength - 0.5f));
+			rawCirclePos.x *= _DirectionToMouse.x * 1.15f * _CrowdControlLength;
+			rawCirclePos.z *= _DirectionToMouse.y * 1.15f * _CrowdControlLength;
+		}
+
+		return _FormationCenter.position + rawCirclePos;
 	}
 
 	/// <summary>
@@ -283,9 +299,45 @@ public class PlayerPikminController : MonoBehaviour
 	/// </summary>
 	private void HandleFormation()
 	{
-		Vector3 targetPosition = _FormationCenter.transform.position - transform.position;
+		Vector3 targetPos = _FormationCenter.transform.position - transform.position;
+
+		bool pressed = Input.GetMouseButtonDown(2) || Input.GetMouseButton(2);
+		if (pressed)
+		{
+			try
+			{
+				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				if (Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
+				{
+					Vector3 direction = hit.point - _FormationCenter.transform.position;
+					direction.y = 0;
+					direction.Normalize();
+
+					_DirectionToMouse.x = direction.x;
+					_DirectionToMouse.y = direction.z;
+
+					targetPos = Vector3.Lerp(targetPos, targetPos + direction, 10 * Time.deltaTime);
+					_UsingCrowdControl = true;
+				}
+			}
+			catch
+			{
+				// Do nothing
+			}
+		}
+		else
+		{
+			_UsingCrowdControl = false;
+		}
+
+		bool reassignPosition = pressed || Input.GetMouseButtonUp(2);
+		if (reassignPosition)
+		{
+			PikminStatsManager.ReassignFormation();
+		}
+
 		_FormationCenter.transform.position =
-			transform.position + Vector3.ClampMagnitude(targetPosition, _StartingDistance + _DistancePerPikmin * PikminStatsManager.GetTotalInSquad());
+			transform.position + Vector3.ClampMagnitude(targetPos, _StartingDistance + _DistancePerPikmin * PikminStatsManager.GetTotalInSquad());
 	}
 
 	/// <summary>
