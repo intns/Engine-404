@@ -72,10 +72,10 @@ public class Onion : MonoBehaviour
 	{
 		_OnionCanvas.gameObject.SetActive(false);
 
-		_CurrentSeedIdx = UnityEngine.Random.Range(0, 100);
+		_CurrentSeedIdx = UnityEngine.Random.Range(0, PikminStatsManager._MaxOnField);
 
 		_SpawnedSprouts.Clear();
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < PikminStatsManager._MaxOnField; i++)
 		{
 			_SpawnedSprouts.Add(i, null);
 		}
@@ -177,8 +177,8 @@ public class Onion : MonoBehaviour
 							}
 
 							int totalAdd = _CurPikminAmounts._InSquad - _OldPikminAmounts._InSquad;
-							if (_CurPikminAmounts._InSquad + 1 <= 100
-								&& totalAdd + PikminStatsManager.GetTotalOnField() < 100)
+							if (_CurPikminAmounts._InSquad + 1 <= PikminStatsManager._MaxOnField
+								&& totalAdd + PikminStatsManager.GetTotalOnField() < PikminStatsManager._MaxOnField)
 							{
 								_CurPikminAmounts._InOnion--;
 								_CurPikminAmounts._InSquad++;
@@ -264,16 +264,16 @@ public class Onion : MonoBehaviour
 	{
 		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
 		{
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < PikminStatsManager._MaxOnField; i++)
 			{
-				Vector2 offset = MathUtil.PositionInUnit(100, i);
+				Vector2 offset = MathUtil.PositionInUnit(PikminStatsManager._MaxOnField, i);
 				Gizmos.DrawSphere(hit.point + MathUtil.XZToXYZ(offset) * _DisperseRadius, 0.25f);
 			}
 		}
 
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < PikminStatsManager._MaxOnField; i++)
 		{
-			Vector2 offset = MathUtil.PositionInUnit(100, i);
+			Vector2 offset = MathUtil.PositionInUnit(PikminStatsManager._MaxOnField, i);
 			Gizmos.DrawSphere(transform.position + MathUtil.XZToXYZ(offset) + Vector3.up * _PikminEjectionHeight, 0.15f);
 		}
 
@@ -461,10 +461,10 @@ public class Onion : MonoBehaviour
 	{
 		if (idx == -1)
 		{
-			idx = UnityEngine.Random.Range(0, 100);
+			idx = UnityEngine.Random.Range(0, PikminStatsManager._MaxOnField);
 		}
 
-		return MathUtil.XZToXYZ(MathUtil.PositionInUnit(100, idx));
+		return MathUtil.XZToXYZ(MathUtil.PositionInUnit(PikminStatsManager._MaxOnField, idx));
 	}
 
 
@@ -475,13 +475,13 @@ public class Onion : MonoBehaviour
 	/// <param name="maturity">Maturity of the Pikmin to spawn</param>
 	private void TryCreatePikmin(PikminColour colour, PikminMaturity maturity)
 	{
-		if (PikminStatsManager.GetTotalOnField() >= 100)
+		if (PikminStatsManager.GetTotalOnField() >= PikminStatsManager._MaxOnField)
 		{
 			PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
 		}
 		else if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
 		{
-			int pos = UnityEngine.Random.Range(0, 101);
+			int pos = UnityEngine.Random.Range(0, PikminStatsManager._MaxOnField + 1);
 
 			// Get offset on a circle, converted to 3d coords
 			Vector3 basePos = GetRandomBaseSpawnPosition(pos);
@@ -520,7 +520,7 @@ public class Onion : MonoBehaviour
 	/// <param name="colour">The colour of the sprout to spawn</param>
 	private void TryCreateSprout(PikminColour colour)
 	{
-		if (PikminStatsManager.GetTotalOnField() == 100)
+		if (PikminStatsManager.GetTotalOnField() == PikminStatsManager._MaxOnField)
 		{
 			PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
 		}
@@ -529,7 +529,7 @@ public class Onion : MonoBehaviour
 			while (_SpawnedSprouts[_CurrentSeedIdx] != null)
 			{
 				_CurrentSeedIdx += UnityEngine.Random.Range(1, 15);
-				_CurrentSeedIdx %= 100;
+				_CurrentSeedIdx %= PikminStatsManager._MaxOnField;
 			}
 
 			// Get offset on a circle, converted to 3d coords
