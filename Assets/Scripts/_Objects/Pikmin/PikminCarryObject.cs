@@ -34,11 +34,12 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] private float _CurrentMoveSpeed = 0;
 	[SerializeField] private Vector3 _MoveVector = Vector3.zero;
 	[SerializeField] private Vector3 _NextDestination = Vector3.zero;
+	[SerializeField] Vector3 _TargetPosition;
 
 	List<Collider> _Colliders;
 
 	private CarryText _CarryText = null;
-	private Onion _MainOnion = null;
+	private Onion _TargetOnion = null;
 	private Rigidbody _Rigidbody = null;
 	private Seeker _Pathfinder = null;
 
@@ -50,11 +51,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	private List<PikminAI> _CarryingPikmin = new List<PikminAI>();
 	private bool _IsBeingCarried = false;
 	private bool _ShutdownInProgress = false;
+	Vector3 _SpawnPosition = Vector3.zero;
 
 	private void Awake()
 	{
-		_MainOnion = GameObject.FindGameObjectWithTag("DebugOnion").GetComponent<Onion>();
-
 		_Rigidbody = GetComponent<Rigidbody>();
 		_Pathfinder = GetComponent<Seeker>();
 
@@ -63,6 +63,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		GameObject carryText = Instantiate(_CarryTextPrefab, transform.position, Quaternion.identity);
 		_CarryText = carryText.GetComponent<CarryText>();
 		_CarryText._FollowTarget = transform;
+
+		_SpawnPosition = transform.position;
 
 		InvokeRepeating(nameof(CheckPath), 0, 1f);
 	}
@@ -74,7 +76,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
-		_Pathfinder.StartPath(transform.position, _MainOnion._CarryEndpoint.position, OnPathCalculated);
+		_Pathfinder.StartPath(transform.position, _TargetPosition, OnPathCalculated);
 	}
 
 	private void Update()
@@ -86,7 +88,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		MoveTowards(_NextDestination);
 
-		if (MathUtil.DistanceTo(transform.position, _MainOnion._CarryEndpoint.position, false) < _DistanceToNextPosition)
+		if (MathUtil.DistanceTo(transform.position, _TargetPosition, false) < _DistanceToNextPosition)
 		{
 			_ShutdownInProgress = true;
 			PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
@@ -98,11 +100,11 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			if (targetColour == _ColourToGenerateFor
 				|| _ColourToGenerateFor == PikminColour.Size)
 			{
-				_MainOnion.StartSuction(gameObject, _PikminToProduceMatchColour, targetColour);
+				_TargetOnion.StartSuction(gameObject, _PikminToProduceMatchColour, targetColour);
 			}
 			else
 			{
-				_MainOnion.StartSuction(gameObject, _PikminToProduceNonMatchColour, targetColour);
+				_TargetOnion.StartSuction(gameObject, _PikminToProduceNonMatchColour, targetColour);
 			}
 
 			if (_CarryText != null && _CarryText.gameObject != null)
@@ -129,7 +131,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 				if (_CurrentPathPosIdx >= _CurrentPath.vectorPath.Count)
 				{
 					// we've reached the final point and yet still not at the onion, recalculate!
-					_Pathfinder.StartPath(transform.position, _MainOnion._CarryEndpoint.position, OnPathCalculated);
+					_Pathfinder.StartPath(transform.position, _TargetPosition, OnPathCalculated);
 				}
 				else
 				{
@@ -139,7 +141,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 		else
 		{
-			_NextDestination = transform.position - _MainOnion._CarryEndpoint.position;
+			_NextDestination = transform.position - _TargetPosition;
 		}
 	}
 
@@ -186,7 +188,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		newVelocity.y = _Rigidbody.velocity.y;
 		_MoveVector = newVelocity;
 	}
-
+	
 	private void OnPathCalculated(Path p)
 	{
 		// If we're about to delete the object, no point in updating it
@@ -228,8 +230,24 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		if (_CarryingPikmin.Count >= _CarryMinMax.x)
 		{
+			PikminColour colour = GameUtil.GetMajorityColour(_CarryingPikmin);
+
+			foreach (var onion in Onion._ActiveOnions)
+			{
+				if (onion.OnionColour == colour)
+				{
+					_TargetOnion = onion;
+					break;
+				}
+			}
+
+			if (_TargetOnion.OnionActive)
+			{
+				_TargetPosition = _TargetOnion._CarryEndpoint.position;
+			}
+
 			// Enable AI
-			Path path = _Pathfinder.StartPath(transform.position, _MainOnion._CarryEndpoint.position, OnPathCalculated);
+			Path path = _Pathfinder.StartPath(transform.position, _TargetPosition, OnPathCalculated);
 			_IsBeingCarried = true;
 
 			_CurrentSpeedTarget += _SpeedAddedPerPikmin;

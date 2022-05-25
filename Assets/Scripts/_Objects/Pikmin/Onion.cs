@@ -40,11 +40,15 @@ public class Onion : MonoBehaviour
 	[SerializeField] private LayerMask _PikminMask = 0;
 	[SerializeField] private float _PikminSuctionHeight = 4;
 	[SerializeField] private float _PikminEjectionHeight = 5.5f;
-	public PikminColour _OnionColour { get; private set; } = PikminColour.Red;
+	[SerializeField] PikminColour _OnionColour = PikminColour.Red;
+	public PikminColour OnionColour { get { return _OnionColour; } private set { } }
+	public bool OnionActive { get; private set; }
 
 	[Header("Dispersal")]
 	[SerializeField] private float _DisperseRadius = 12;
 	private Vector3Int _SeedsToDisperse = Vector3Int.zero;
+
+	public static List<Onion> _ActiveOnions = new List<Onion>();
 
 	private int _CurrentSeedIdx = 0;
 	Dictionary<int, GameObject> _SpawnedSprouts = new Dictionary<int, GameObject>();
@@ -68,6 +72,10 @@ public class Onion : MonoBehaviour
 	private float _InputTimer = 0;
 
 	#region Unity Functions
+	private void OnEnable() => _ActiveOnions.Add(this);
+	private void OnDisable() => _ActiveOnions.Remove(this);
+	private void OnDestroy() => _ActiveOnions.Remove(this);
+
 	private void Awake()
 	{
 		_OnionCanvas.gameObject.SetActive(false);
@@ -83,6 +91,8 @@ public class Onion : MonoBehaviour
 		if (PlayerPrefs.GetInt("ONION_Discovered") == 1)
 		{
 			_DiscoverObject.SetActive(false);
+			OnionActive = true;
+
 			_Animator.SetTrigger("EmptyIdle");
 			_BodyRenderer.material.color = Color.white;
 		}
@@ -92,6 +102,7 @@ public class Onion : MonoBehaviour
 
 			GetComponent<MeshRenderer>().enabled = false;
 			GetComponent<Collider>().enabled = false;
+			OnionActive = false;
 
 			_BodyRenderer.material.color = new Color(0.4078f, 0.4078f, 0.4078f);
 		}
@@ -321,6 +332,7 @@ public class Onion : MonoBehaviour
 	{
 		GetComponent<MeshRenderer>().enabled = true;
 		GetComponent<Collider>().enabled = true;
+		OnionActive = true;
 	}
 
 	/// <summary>
@@ -415,6 +427,7 @@ public class Onion : MonoBehaviour
 			t += Time.deltaTime;
 			yield return null;
 		}
+
 		_Animator.SetBool("SuctionHit", true);
 		_Animator.SetBool("Suction", false);
 
@@ -478,39 +491,43 @@ public class Onion : MonoBehaviour
 		if (PikminStatsManager.GetTotalOnField() >= PikminStatsManager._MaxOnField)
 		{
 			PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
+			return;
 		}
-		else if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
+
+		if (!Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
 		{
-			int pos = UnityEngine.Random.Range(0, PikminStatsManager._MaxOnField + 1);
-
-			// Get offset on a circle, converted to 3d coords
-			Vector3 basePos = GetRandomBaseSpawnPosition(pos);
-
-			// Spawn the sprout just above the onion
-			GameObject pikmin = Instantiate(_PikminSprout, hit.point + basePos * _DisperseRadius, Quaternion.identity);
-			PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
-
-			PikminSpawnData data = new()
-			{
-				_OriginPosition = pikmin.transform.position,
-				_EndPosition = hit.point + basePos * _DisperseRadius,
-				_Colour = colour,
-			};
-
-			sproutData.OnSpawn(data);
-			if (maturity == PikminMaturity.Bud)
-			{
-				sproutData.PromoteMaturity();
-			}
-			else if (maturity == PikminMaturity.Flower)
-			{
-				sproutData.PromoteMaturity();
-				sproutData.PromoteMaturity();
-			}
-
-			sproutData.OnPluck();
-			Destroy(sproutData.gameObject);
+			return;
 		}
+
+		int pos = UnityEngine.Random.Range(0, PikminStatsManager._MaxOnField + 1);
+
+		// Get offset on a circle, converted to 3d coords
+		Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+
+		// Spawn the sprout just above the onion
+		GameObject pikmin = Instantiate(_PikminSprout, hit.point + basePos * _DisperseRadius, Quaternion.identity);
+		PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
+
+		PikminSpawnData data = new()
+		{
+			_OriginPosition = pikmin.transform.position,
+			_EndPosition = hit.point + basePos * _DisperseRadius,
+			_Colour = colour,
+		};
+
+		sproutData.OnSpawn(data);
+		if (maturity == PikminMaturity.Bud)
+		{
+			sproutData.PromoteMaturity();
+		}
+		else if (maturity == PikminMaturity.Flower)
+		{
+			sproutData.PromoteMaturity();
+			sproutData.PromoteMaturity();
+		}
+
+		sproutData.OnPluck();
+		Destroy(sproutData.gameObject);
 	}
 
 
@@ -523,33 +540,37 @@ public class Onion : MonoBehaviour
 		if (PikminStatsManager.GetTotalOnField() == PikminStatsManager._MaxOnField)
 		{
 			PikminStatsManager.Add(colour, PikminMaturity.Leaf, PikminStatSpecifier.InOnion);
+			return;
 		}
-		else if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
+
+		if (!Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
 		{
-			while (_SpawnedSprouts[_CurrentSeedIdx] != null)
-			{
-				_CurrentSeedIdx += UnityEngine.Random.Range(1, 15);
-				_CurrentSeedIdx %= PikminStatsManager._MaxOnField;
-			}
-
-			// Get offset on a circle, converted to 3d coords
-			Vector3 basePos = GetRandomBaseSpawnPosition(_CurrentSeedIdx);
-
-			// Spawn the sprout just above the onion
-			GameObject newPikmin = _SpawnedSprouts[_CurrentSeedIdx] = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
-			PikminSprout sproutData = newPikmin.GetComponent<PikminSprout>();
-
-			Physics.Raycast(Vector3.up * 15 + (hit.point + basePos * _DisperseRadius), Vector3.down, out RaycastHit hit2, 50, _MapMask);
-
-			PikminSpawnData data = new()
-			{
-				_OriginPosition = newPikmin.transform.position,
-				_EndPosition = hit2.point,
-				_Colour = colour,
-			};
-
-			sproutData.OnSpawn(data);
+			return;
 		}
+
+		while (_SpawnedSprouts[_CurrentSeedIdx] != null)
+		{
+			_CurrentSeedIdx += UnityEngine.Random.Range(1, 15);
+			_CurrentSeedIdx %= PikminStatsManager._MaxOnField;
+		}
+
+		// Get offset on a circle, converted to 3d coords
+		Vector3 basePos = GetRandomBaseSpawnPosition(_CurrentSeedIdx);
+
+		// Spawn the sprout just above the onion
+		GameObject newPikmin = _SpawnedSprouts[_CurrentSeedIdx] = Instantiate(_PikminSprout, transform.position + basePos + Vector3.up * _PikminEjectionHeight, Quaternion.identity);
+		PikminSprout sproutData = newPikmin.GetComponent<PikminSprout>();
+
+		Physics.Raycast(Vector3.up * 15 + (hit.point + basePos * _DisperseRadius), Vector3.down, out RaycastHit hit2, 50, _MapMask);
+
+		PikminSpawnData data = new()
+		{
+			_OriginPosition = newPikmin.transform.position,
+			_EndPosition = hit2.point,
+			_Colour = colour,
+		};
+
+		sproutData.OnSpawn(data);
 	}
 	#endregion
 }
