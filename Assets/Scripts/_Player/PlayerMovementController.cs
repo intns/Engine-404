@@ -30,6 +30,7 @@ public class PlayerMovementController : MonoBehaviour
 	private float _IdleTimer = 0;
 	private RaycastHit _SlideHit;
 	private Vector3 _CharacterContactPoint;
+	private Vector3 _HitNormal;
 	private float _SlideRayDist;
 	private Vector3 _BaseHeight;
 
@@ -95,15 +96,8 @@ public class PlayerMovementController : MonoBehaviour
 
 		// Rotate and move the player
 		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mDirection), _RotationSpeed * Time.deltaTime);
-		_Controller.Move(_MovementSpeed * Time.deltaTime * mDirection.normalized);
-	}
 
-	private void FixedUpdate()
-	{
-		if (_Paralysed || GameManager._IsPaused)
-		{
-			return;
-		}
+		Vector3 movement = mDirection.normalized * _MovementSpeed;
 
 		bool sliding = false;
 		// See if surface immediately below should be slid down. We use this normally rather than a ControllerColliderHit point,
@@ -119,8 +113,13 @@ public class PlayerMovementController : MonoBehaviour
 		// So if the above raycast didn't catch anything, raycast down from the stored ControllerColliderHit point instead
 		else
 		{
-			Physics.Raycast(_CharacterContactPoint + Vector3.up, -Vector3.up, out _SlideHit);
-			if (Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
+			if (Physics.Raycast(_CharacterContactPoint + Vector3.up, -Vector3.up, out _SlideHit)
+				&& Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
+			{
+				sliding = true;
+			}
+			else if (Physics.SphereCast(transform.position, 1.5f, mDirection.normalized + (Vector3.down / 2), out _SlideHit)
+				&& Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
 			{
 				sliding = true;
 			}
@@ -128,21 +127,22 @@ public class PlayerMovementController : MonoBehaviour
 
 		if (sliding)
 		{
-			Vector3 normal = _SlideHit.normal;
-			Vector3 direction = new Vector3(normal.x, -normal.y, normal.z);
-			Vector3.OrthoNormalize(ref normal, ref direction);
-			normal.Normalize();
-			direction *= _SlideSpeed;
-			direction.y -= Physics.gravity.y * Time.deltaTime;
-			direction = Vector3.Lerp(_Controller.velocity, direction, 0.25f);
-			_Controller.Move(direction * Time.deltaTime);
-			return;
+			movement.x += (1f - _SlideHit.normal.y) * _SlideHit.normal.x * _SlideSpeed;
+			movement.z += (1f - _SlideHit.normal.y) * _SlideHit.normal.z * _SlideSpeed;
 		}
+		else if (Vector3.Angle(Vector3.up, _HitNormal) > _Controller.slopeLimit)
+		{
+			movement.x += (1f - _HitNormal.y) * _HitNormal.x * _SlideSpeed;
+			movement.z += (1f - _HitNormal.y) * _HitNormal.z * _SlideSpeed;
+		}
+
+		_Controller.Move(movement * Time.deltaTime);
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
 		_CharacterContactPoint = hit.point;
+		_HitNormal = hit.normal;
 	}
 
 	private bool IsGrounded()

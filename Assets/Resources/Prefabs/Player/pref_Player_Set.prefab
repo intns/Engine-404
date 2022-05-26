@@ -1418,7 +1418,7 @@ Camera:
   far clip plane: 1000
   field of view: 70
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 7.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2246,10 +2246,10 @@ CharacterController:
   serializedVersion: 2
   m_Height: 1.622038
   m_Radius: 0.704672
-  m_SlopeLimit: 50
-  m_StepOffset: 0.01
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_SlopeLimit: 35
+  m_StepOffset: 0.15
+  m_SkinWidth: 0.0005
+  m_MinMoveDistance: 0
   m_Center: {x: 0.000000008118531, y: -0.515123, z: 0.2046716}
 --- !u!114 &7354393339214141952
 MonoBehaviour:
