@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600020656538222877}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 4, y: 0, z: 3.25}
+  m_LocalPosition: {x: 4.39, y: 0.77, z: 2.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -257,11 +257,44 @@ MonoBehaviour:
   _EndPosition: {fileID: 4778363084570862425}
   _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
     type: 3}
-  _PikminToPush: 5
+  _PikminToPush: 20
   _TimePerPush: 1
   _StepCount: 12
+  _PushMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.09146342
+      outSlope: 0.09146342
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.6981053
+    - serializedVersion: 3
+      time: 0.28941998
+      value: 0.41968527
+      inSlope: 2.73191
+      outSlope: 2.73191
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.13216436
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _PushStartPosition: {fileID: 1550241436896235295}
-  _DistancePerPikmin: 2
+  _DistancePerPikmin: 0.45
 --- !u!114 &543450652321285859
 MonoBehaviour:
   m_ObjectHideFlags: 0
