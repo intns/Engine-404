@@ -34,8 +34,8 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 			_Pusher = p;
 		}
 	}
-	List<PushPoint> _PushPoints = new List<PushPoint>();
 
+	List<PushPoint> _PushPoints = new List<PushPoint>();
 
 	public Action _OnPush { get; set; }
 
