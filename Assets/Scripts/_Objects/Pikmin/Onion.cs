@@ -330,6 +330,7 @@ public class Onion : MonoBehaviour
 
 	public void ANIM_EndDiscovery()
 	{
+		Debug.Log("End Discovery");
 		GetComponent<MeshRenderer>().enabled = true;
 		GetComponent<Collider>().enabled = true;
 		OnionActive = true;

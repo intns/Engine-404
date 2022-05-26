@@ -89,7 +89,6 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 			_Player.Pause(false);
 			_Camera.GetComponent<CameraFollow>().enabled = true;
 		});
-
 	}
 	#endregion
 }

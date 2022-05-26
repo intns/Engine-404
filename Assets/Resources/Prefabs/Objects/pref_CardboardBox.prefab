@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600020656538222877}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 4.39, y: 0.77, z: 2.88}
+  m_LocalPosition: {x: 4.48, y: 0.615, z: 2.977}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -201,14 +201,13 @@ GameObject:
   - component: {fileID: 5033509898910888739}
   - component: {fileID: 4778363085905958093}
   - component: {fileID: 4778363085905958092}
-  - component: {fileID: 543450652321285859}
   m_Layer: 0
   m_Name: pref_CardboardBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5033509898910888739
 Transform:
   m_ObjectHideFlags: 0
@@ -266,21 +265,21 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.09146342
-      outSlope: 0.09146342
+      inSlope: 0.39720643
+      outSlope: 0.39720643
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.6981053
+      outWeight: 0.45900336
     - serializedVersion: 3
-      time: 0.28941998
-      value: 0.41968527
-      inSlope: 2.73191
-      outSlope: 2.73191
+      time: 0.5102835
+      value: 0.67000854
+      inSlope: 2.4760792
+      outSlope: 2.4760792
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.13216436
+      inWeight: 0.20795667
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -295,22 +294,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   _PushStartPosition: {fileID: 1550241436896235295}
   _DistancePerPikmin: 0.45
---- !u!114 &543450652321285859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5661392213357013401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  uniqueID: 1030358472754181413
-  updateError: 1
-  checkTime: 0.2
 --- !u!1 &5921581867196305328
 GameObject:
   m_ObjectHideFlags: 0

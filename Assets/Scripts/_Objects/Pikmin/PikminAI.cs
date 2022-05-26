@@ -567,6 +567,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	void HandlePushing()
 	{
+		if (_Pushing == null)
+		{
+			ChangeState(PikminStates.Idle);
+			return;
+		}
+
 		Vector3 pushPos = _Pushing.GetPushPosition(this);
 		if (MathUtil.DistanceTo(_Transform.position, pushPos, false) > 0.5f)
 		{
@@ -574,11 +580,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 		else if (!_PushReady)
 		{
-			if (_Pushing == null)
-			{
-				ChangeState(PikminStates.Idle);
-			}
-
 			_Pushing.OnPikminReady(this);
 			_PushReady = true;
 		}

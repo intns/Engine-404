@@ -86,6 +86,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 		_Camera.GetComponent<CameraFollow>().enabled = true;
 
 		PlayerPrefs.SetInt("ONION_Discovered", 1);
+		_Onion.ANIM_EndDiscovery();
 
 		gameObject.SetActive(false);
 	}
