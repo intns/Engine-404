@@ -18,7 +18,7 @@ public class WhistleController : MonoBehaviour
 	[SerializeField] private GameObject _WhistleParticle = null;
 	[SerializeField] private Transform _ParticleParent = null;
 	[SerializeField] private AudioClip _BlowSound = null;
-	[SerializeField] private Transform _Reticle = null;
+	public Transform _Reticle = null;
 
 	[Header("Particles")]
 	[SerializeField] private int _ParticleDensity = 15;
@@ -214,6 +214,7 @@ public class WhistleController : MonoBehaviour
 				transform.position + (Vector3.up * _PikminCallHeight),
 				transform.localScale.x,
 				_PikminMask);
+
 			foreach (Collider pikmin in collisions)
 			{
 				PikminAI pAI = pikmin.GetComponent<PikminAI>();

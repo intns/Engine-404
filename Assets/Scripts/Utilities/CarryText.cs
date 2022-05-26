@@ -14,6 +14,8 @@ public class CarryText : MonoBehaviour
 	[SerializeField] private Color _TargetColor = Color.clear;
 	[SerializeField] private float _TimeSinceLastChange = 0;
 
+	bool _Destroying = false;
+
 	private void Awake()
 	{
 		_TMP.text = "";
@@ -26,6 +28,7 @@ public class CarryText : MonoBehaviour
 		{
 			return;
 		}
+
 		transform.position = _FollowTarget.position + Vector3.up * _HeightOffset;
 
 		_TimeSinceLastChange = Mathf.Min(_TimeSinceLastChange + Time.deltaTime, _FadeDuration);
@@ -54,8 +57,15 @@ public class CarryText : MonoBehaviour
 
 	public void Destroy()
 	{
+		if (_Destroying)
+		{
+			return;
+		}
+
 		_FollowTarget = null;
 		_TargetColor = Color.clear;
+
 		Destroy(gameObject, _FadeDuration);
+		_Destroying = true;
 	}
 }

@@ -43,7 +43,7 @@ public class DemoController : MonoBehaviour
 	{
 		if (!Application.isEditor)
 		{
-			GameManager._IsPaused = true;
+			Player._Instance.Pause(true);
 			StartCoroutine(IE_StartScene());
 		}
 	}
@@ -105,6 +105,6 @@ public class DemoController : MonoBehaviour
 
 		_BlackImage.enabled = false;
 		_Text.enabled = false;
-		GameManager._IsPaused = false;
+		Player._Instance.Pause(false);
 	}
 }

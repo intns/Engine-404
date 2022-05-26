@@ -33,7 +33,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 		_Player.Pause(true);
 		_Camera.GetComponent<CameraFollow>().enabled = false;
 
-		float maxFov = _Camera.fieldOfView;
+		float maxFov = 55;
 		float minFov = 30;
 
 		Color fadedColor = new Color(0.4078f, 0.4078f, 0.4078f);
@@ -51,6 +51,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 		yield return new WaitForSeconds(1.7f);
 
 		_Animator.SetTrigger("Discover");
+		_Onion.GetComponent<MeshRenderer>().enabled = false;
 
 		float t = 0;
 		float length = _DiscoverClip.length + 0.5f;
@@ -67,7 +68,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-		_Onion.AddSproutsToSpit(1, PikminColour.Red);
+		_Onion.AddSproutsToSpit(1, _Onion.OnionColour);
 
 		t = 0;
 		length = 5;

@@ -29,7 +29,7 @@ public class Collider_PikminSlip : MonoBehaviour
 			direction.y = 0;
 		}
 
-		ai._AddedVelocity += _PushForce * Time.deltaTime * direction;
+		ai._AddedVelocity = _PushForce * Time.deltaTime * direction;
 
 		if (_OnTouch != null)
 		{

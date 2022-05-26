@@ -4,6 +4,7 @@
  * Created on: 30/4/2020 (dd/mm/yy)
  */
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class MathUtil
@@ -101,7 +102,40 @@ public static class MathUtil
 		return direction;
 	}
 
-	public static Collider GetClosestCollider(Vector3 pos, Collider[] list)
+	public static Transform GetClosestTransform(Vector3 pos, Transform[] list, out int index, bool useY = true)
+	{
+		if (list == null || list.Length == 0)
+		{
+			index = -1;
+			return null;
+		}
+
+		Transform closest = list[0];
+
+		int endIdx = -1;
+		float closestDist = DistanceTo(pos, closest.position, useY);
+		for (int i1 = 0; i1 < list.Length; i1++)
+		{
+			Transform i = list[i1];
+			if (i == null)
+			{
+				continue;
+			}
+
+			float currDist = DistanceTo(pos, i.position, useY);
+			if (currDist < closestDist)
+			{
+				closest = i;
+				endIdx = i1;
+				closestDist = currDist;
+			}
+		}
+
+		index = endIdx;
+		return closest;
+	}
+
+	public static Collider GetClosestCollider(Vector3 pos, Collider[] list, bool useY = true)
 	{
 		if (list == null || list.Length == 0)
 		{
@@ -109,10 +143,10 @@ public static class MathUtil
 		}
 
 		Collider closest = list[0];
-		float closestDist = DistanceTo(pos, closest.transform.position);
+		float closestDist = DistanceTo(pos, closest.transform.position, useY);
 		foreach (Collider i in list)
 		{
-			float currDist = DistanceTo(pos, i.transform.position);
+			float currDist = DistanceTo(pos, i.transform.position, useY);
 			if (currDist < closestDist)
 			{
 				closest = i;

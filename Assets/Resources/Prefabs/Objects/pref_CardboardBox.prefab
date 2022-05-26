@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &600020656538222877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1550241436896235295}
+  m_Layer: 0
+  m_Name: Push
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1550241436896235295
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600020656538222877}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
+  m_LocalPosition: {x: 4, y: 0, z: 3.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5033509898910888739}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &925175545364174438
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,6 +201,7 @@ GameObject:
   - component: {fileID: 5033509898910888739}
   - component: {fileID: 4778363085905958093}
   - component: {fileID: 4778363085905958092}
+  - component: {fileID: 543450652321285859}
   m_Layer: 0
   m_Name: pref_CardboardBox
   m_TagString: Untagged
@@ -193,6 +225,7 @@ Transform:
   - {fileID: 9137131788367771837}
   - {fileID: 4778363084230004280}
   - {fileID: 4778363084570862425}
+  - {fileID: 1550241436896235295}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -227,6 +260,24 @@ MonoBehaviour:
   _PikminToPush: 5
   _TimePerPush: 1
   _StepCount: 12
+  _PushStartPosition: {fileID: 1550241436896235295}
+  _DistancePerPikmin: 2
+--- !u!114 &543450652321285859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5661392213357013401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  uniqueID: 1030358472754181413
+  updateError: 1
+  checkTime: 0.2
 --- !u!1 &5921581867196305328
 GameObject:
   m_ObjectHideFlags: 0

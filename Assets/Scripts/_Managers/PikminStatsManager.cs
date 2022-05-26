@@ -185,6 +185,7 @@ public static class PikminStatsManager
 	public static PikminTypeStats _YellowStats = new(PikminColour.Yellow);
 
 	public static List<PikminAI> _InSquad = new();
+	public static bool _Disbanding = false;
 
 	// Clears the Squad
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -292,6 +293,12 @@ public static class PikminStatsManager
 	//Sets up formations for the pikmin to use
 	public static void ReassignFormation()
 	{
+		if (_Disbanding)
+		{
+			return;
+		}
+
+		_InSquad.Sort();
 		for (int i = 0; i < _InSquad.Count; i++)
 		{
 			_InSquad[i]._FormationPosition.position = Player._Instance._PikminController.GetPositionAt(i);

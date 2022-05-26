@@ -6641,6 +6641,9 @@ GameObject:
   - component: {fileID: 7763760520641808710}
   - component: {fileID: 5501881722874002828}
   - component: {fileID: 6600880566763839750}
+  - component: {fileID: 1780096622}
+  - component: {fileID: 1780096623}
+  - component: {fileID: 1780096621}
   m_Layer: 0
   m_Name: pref_DolphinShip
   m_TagString: Untagged
@@ -6657,7 +6660,7 @@ Transform:
   m_GameObject: {fileID: 6294449218252823641}
   m_LocalRotation: {x: 0, y: -0.009860983, z: 0, w: 0.99995136}
   m_LocalPosition: {x: -9.658718, y: 6.3316, z: -10.655929}
-  m_LocalScale: {x: 3.5, y: 3.5, z: 3.5}
+  m_LocalScale: {x: 3.5000002, y: 3.5, z: 3.5000002}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 21289257487560897}
@@ -6734,6 +6737,52 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &1780096622
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294449218252823641}
+  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.63
+  m_Height: 2.58
+  m_Direction: 1
+  m_Center: {x: 0.0000009526266, y: 0.0000016577542, z: 5.820766e-10}
+--- !u!136 &1780096623
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294449218252823641}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.84
+  m_Height: 3.91
+  m_Direction: 1
+  m_Center: {x: 0.0000009526266, y: -0.38, z: 5.820766e-10}
+--- !u!114 &1780096621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294449218252823641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c05db8b43cbb59499af668104d33af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _OnTouch:
+    m_PersistentCalls:
+      m_Calls: []
+  _Parent: {fileID: 0}
+  _PushForce: 500
+  _UseVerticalVel: 0
 --- !u!1 &6294944845797906872
 GameObject:
   m_ObjectHideFlags: 0

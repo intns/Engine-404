@@ -4,7 +4,9 @@
  * Created on: 30/4/2020 (dd/mm/yy)
  */
 
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum PikminStates
 {
@@ -32,7 +34,7 @@ public enum PikminIntention
 	Idle, // AKA None
 }
 
-public class PikminAI : MonoBehaviour, IHealth
+public class PikminAI : MonoBehaviour, IHealth, IComparable
 {
 	[Header("Components")]
 	// Holds everything that makes a Pikmin unique
@@ -45,7 +47,6 @@ public class PikminAI : MonoBehaviour, IHealth
 
 	[Header("Idle")]
 	[SerializeField] float _IdleTickRate = 0.3f;
-
 
 	[Header("Object Avoidance")]
 	[SerializeField] float _AvoidSphereSize = 0.5f;
@@ -68,6 +69,7 @@ public class PikminAI : MonoBehaviour, IHealth
 	public PikminMaturity _CurrentMaturity { get; set; } = PikminMaturity.Leaf;
 
 	#region Debugging Variables
+	[Header("==Debugging==")]
 	public PikminStates _CurrentState = PikminStates.Idle;
 
 	[Space, Header("Idle")]
@@ -76,15 +78,16 @@ public class PikminAI : MonoBehaviour, IHealth
 	[SerializeField] PikminIntention _Intention = PikminIntention.Idle;
 	[SerializeField] float _IdleTimer = 0.0f;
 
-	[Space, Header("Attacking")]
-	[SerializeField] IPikminAttack _Attacking = null;
-	[SerializeField] Transform _AttackingTransform = null;
+	// Carrying
+	IPikminCarry _Carrying = null;
 
-	[Space, Header("Carrying")]
-	[SerializeField] IPikminCarry _Carrying = null;
+	[Space, Header("Attacking")]
+	[SerializeField] Transform _AttackingTransform = null;
+	IPikminAttack _Attacking = null;
 
 	[Space, Header("Pushing")]
-	[SerializeField] IPikminPush _Pushing = null;
+	IPikminPush _Pushing = null;
+	[SerializeField] bool _PushReady = false;
 
 	[Space, Header("Stats")]
 	[SerializeField] PikminStatSpecifier _CurrentStatSpecifier = default;
@@ -185,7 +188,7 @@ public class PikminAI : MonoBehaviour, IHealth
 
 	void Update()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager._IsPaused && GameManager._PauseType != PauseType.OnlyPikminActive)
 		{
 			return;
 		}
@@ -199,6 +202,9 @@ public class PikminAI : MonoBehaviour, IHealth
 				break;
 			case PikminStates.Attacking:
 				HandleAttacking();
+				break;
+			case PikminStates.Push:
+				HandlePushing();
 				break;
 			case PikminStates.Dead:
 				HandleDeath();
@@ -222,7 +228,7 @@ public class PikminAI : MonoBehaviour, IHealth
 
 	void FixedUpdate()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager._IsPaused && GameManager._PauseType != PauseType.OnlyPikminActive)
 		{
 			return;
 		}
@@ -278,7 +284,7 @@ public class PikminAI : MonoBehaviour, IHealth
 
 	void LateUpdate()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager._IsPaused && GameManager._PauseType != PauseType.OnlyPikminActive)
 		{
 			_Animator.SetBool("Walking", false);
 			return;
@@ -380,13 +386,12 @@ public class PikminAI : MonoBehaviour, IHealth
 		switch (_Intention)
 		{
 			case PikminIntention.Attack:
-				_AttackingTransform = _TargetObject;
-
 				_Attacking = _TargetObject.GetComponentInParent<IPikminAttack>();
 				_Attacking.OnAttackStart(this);
 
-				LatchOnto(_AttackingTransform);
+				_AttackingTransform = _TargetObject;
 
+				LatchOnto(_AttackingTransform);
 				ChangeState(PikminStates.Attacking);
 				break;
 			case PikminIntention.Carry:
@@ -402,7 +407,12 @@ public class PikminAI : MonoBehaviour, IHealth
 				}
 
 				_Pushing = _TargetObject.GetComponentInParent<IPikminPush>();
-				_Pushing.OnPikminAdded(this);
+				if (!_Pushing.OnPikminAdded(this))
+				{
+					_Intention = PikminIntention.Idle;
+					ChangeState(PikminStates.Idle);
+					return;
+				}
 				break;
 			case PikminIntention.Idle:
 				ChangeState(PikminStates.Idle);
@@ -555,6 +565,25 @@ public class PikminAI : MonoBehaviour, IHealth
 		}
 	}
 
+	void HandlePushing()
+	{
+		Vector3 pushPos = _Pushing.GetPushPosition(this);
+		if (MathUtil.DistanceTo(_Transform.position, pushPos, false) > 0.5f)
+		{
+			MoveTowards(pushPos, false);
+		}
+		else if (!_PushReady)
+		{
+			if (_Pushing == null)
+			{
+				ChangeState(PikminStates.Idle);
+			}
+
+			_Pushing.OnPikminReady(this);
+			_PushReady = true;
+		}
+	}
+
 	void HandleDeath()
 	{
 		RemoveFromSquad(PikminStates.Dead);
@@ -590,16 +619,24 @@ public class PikminAI : MonoBehaviour, IHealth
 	{
 		// Rotate to look at the object we're moving towards
 		Vector3 delta = MathUtil.DirectionFromTo(_Transform.position, position);
-		_Transform.rotation = Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(delta), _Data._RotationSpeed * Time.deltaTime);
 
-		if (stopEarly && MathUtil.DistanceTo(_Transform.position, position, false) < _StoppingDistance)
+		if (delta != Vector3.zero)
 		{
-			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.25f);
+			_Transform.rotation = _InSquad
+								// Rotate towards player
+								? Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, Player._Instance.transform.position)), _Data._RotationSpeed * Time.deltaTime)
+								// Rotate towards actual object
+								: Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(delta), _Data._RotationSpeed * Time.deltaTime);
 		}
-		else
+
+		if (!stopEarly || MathUtil.DistanceTo(_Transform.position, position, false) >= _StoppingDistance)
 		{
 			// To prevent instant, janky movement we step towards the resultant max speed according to _Acceleration
 			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _Data.GetMaxSpeed(_CurrentMaturity), _Data.GetAcceleration(_CurrentMaturity) * Time.fixedDeltaTime);
+		}
+		else
+		{
+			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.25f);
 		}
 
 		Vector3 newVelocity = delta * _CurrentMoveSpeed;
@@ -679,6 +716,28 @@ public class PikminAI : MonoBehaviour, IHealth
 	#endregion
 
 	#region Public Functions
+	public PikminColour GetColour() => _Data._PikminColour;
+
+	public int CompareTo(object obj)
+	{
+		PikminAI other = obj as PikminAI;
+
+		int thisColour = (int)GetColour();
+		int otherColour = (int)other.GetColour();
+
+		if ((int)Player._Instance._PikminController._SelectedThrowPikmin == thisColour)
+		{
+			return 1;
+		}
+
+		if (thisColour != otherColour)
+		{
+			return -1;
+		}
+
+		return 0;
+	}
+
 	public void SetMaturity(PikminMaturity m)
 	{
 		PikminStatsManager.Remove(_Data._PikminColour, _CurrentMaturity, _CurrentStatSpecifier);
@@ -729,14 +788,12 @@ public class PikminAI : MonoBehaviour, IHealth
 			case PikminStates.Carrying:
 				LatchOnto(null);
 				_Carrying?.OnCarryLeave(this);
-
 				_Carrying = null;
 				break;
 			case PikminStates.Push:
-				LatchOnto(null);
 				_Pushing?.OnPikminLeave(this);
-
 				_Pushing = null;
+				_PushReady = false;
 				break;
 			case PikminStates.Thrown:
 				_ThrowTrailRenderer.enabled = false;

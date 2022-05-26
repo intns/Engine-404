@@ -49,9 +49,7 @@ public class TextBoxArea : MonoBehaviour
 			{
 				_Enabled = false;
 
-				GameManager._IsPaused = false;
-				Player._Instance._MovementController._Paralysed = false;
-
+				Player._Instance.Pause(false);
 				Player._Instance._UIController.FadeInUI();
 				StartCoroutine(FadeOutCanvas());
 			}
@@ -79,8 +77,7 @@ public class TextBoxArea : MonoBehaviour
 		PlayerPrefs.SetInt(_GlobalName, 1);
 
 		// Pause the game and the Player
-		GameManager._IsPaused = true;
-		Player._Instance._MovementController._Paralysed = true;
+		Player._Instance.Pause(true);
 
 		// Fade out with old and in with new!
 		Player._Instance._UIController.FadeOutUI();
@@ -152,8 +149,7 @@ public class TextBoxArea : MonoBehaviour
 				}
 
 				// Close the tag
-				endEndIdx++;
-				wholeToken = toWrite[i..endEndIdx];
+				wholeToken = toWrite[i..(endEndIdx + 1)];
 				i = endEndIdx;
 				yield return new WaitForSeconds(_CharacterPressTime * 20);
 			}

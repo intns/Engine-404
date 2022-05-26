@@ -5,7 +5,8 @@
  */
 
 // Interface used when an object wants to be fully interactable with the PikminAI class
-public interface IPikminInteractable {
-  // What the Pikmin does to/for this object (pull weeds, attack, carry, etc.)
-  PikminIntention IntentionType { get; }
+public interface IPikminInteractable
+{
+	// What the Pikmin does to/for this object (pull weeds, attack, carry, etc.)
+	PikminIntention IntentionType { get; }
 }

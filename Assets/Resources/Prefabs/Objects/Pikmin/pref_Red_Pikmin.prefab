@@ -722,11 +722,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Data: {fileID: 11400000, guid: 88166cdec3d7d8b4abd1d7b065d99ec2, type: 2}
   _LatchNormalOffset: 0.5
-  _StoppingDistance: 0.35
+  _StoppingDistance: 0.15
   _IdleTickRate: 0.3
-  _AvoidSphereSize: 0.25
+  _AvoidSphereSize: 0.2
   _PlayerPushScale: 200
-  _PikminPushScale: 45
+  _PikminPushScale: 10
   _InteractableMask:
     serializedVersion: 2
     m_Bits: 8192
@@ -748,6 +748,7 @@ MonoBehaviour:
   _Intention: 3
   _IdleTimer: 0
   _AttackingTransform: {fileID: 0}
+  _PushReady: 0
   _CurrentStatSpecifier: 0
   _CurrentMoveSpeed: 0
   _AddedVelocity: {x: 0, y: 0, z: 0}

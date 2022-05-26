@@ -5132,7 +5132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab82eafe98b762419392bd85276ce1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Speed: 15
+  _Speed: 12
   _MaxHealth: 4000
   _DeadOffset: {x: 0, y: 1.25, z: 0}
   _DeadObject: {fileID: 5257347922307558217, guid: 6537e41b3fcf33a40a12b1604a732c77,
@@ -5781,7 +5781,7 @@ Transform:
   m_GameObject: {fileID: 3752822896887181780}
   m_LocalRotation: {x: -0.61237264, y: 0.6123729, z: -0.35355246, w: -0.35355318}
   m_LocalPosition: {x: 0.33, y: -0, z: 0}
-  m_LocalScale: {x: 1.0337384, y: 1.0337384, z: 1.0337384}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1791259001760650555}
@@ -5817,7 +5817,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _Parent: {fileID: 0}
-  _PushForce: 300
+  _PushForce: 750
   _UseVerticalVel: 0
 --- !u!1 &3820623645661704288
 GameObject:

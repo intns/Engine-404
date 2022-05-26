@@ -12,9 +12,13 @@ using UnityEngine;
 public class Player : MonoBehaviour, IHealth
 {
 	public static Player _Instance;
-	[HideInInspector] public PlayerMovementController _MovementController = null;
-	[HideInInspector] public PlayerPikminController _PikminController = null;
+	public PlayerMovementController _MovementController = null;
+	public PlayerPikminController _PikminController = null;
 	public PlayerUIController _UIController = null;
+	public WhistleController _WhistleController = null;
+
+	[Header("Components")]
+	[SerializeField] private LineRenderer _WhistleLine = null;
 
 	[Header("Settings")]
 	[SerializeField] private float _MaxHealth = 100;
@@ -41,23 +45,6 @@ public class Player : MonoBehaviour, IHealth
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Alpha8))
-		{
-			PikminStatsManager.Print();
-		}
-
-		// Handle health-related functions
-		if (_CurrentHealth <= 0)
-		{
-			Die();
-		}
-
-		// Handle exiting the game/program
-		if (Input.GetButtonDown("Start Button"))
-		{
-			Die();
-		}
-
 		if (!GameManager._IsPaused)
 		{
 			if (_Controller.velocity.magnitude > 2.5f)
@@ -74,10 +61,31 @@ public class Player : MonoBehaviour, IHealth
 				_Animator.ResetTrigger("Damage");
 				_IsHit = false;
 			}
+
+			// Handle health-related functions
+			if (_CurrentHealth <= 0)
+			{
+				Die();
+			}
+
+			// Handle exiting the game/program
+			if (Input.GetButtonDown("Start Button"))
+			{
+				Die();
+			}
+
+			// Offset the whistle line from the player position and then the reticle position
+			Vector3 dir1 = MathUtil.DirectionFromTo(transform.position, _WhistleController._Reticle.position, true);
+			Vector3 dir2 = MathUtil.DirectionFromTo(_WhistleController._Reticle.position, transform.position, true);
+
+			_WhistleLine.SetPosition(0, transform.position + dir1);
+			_WhistleLine.SetPosition(1, _WhistleController._Reticle.position + dir2);
 		}
 		else
 		{
 			_Animator.SetBool("Walk", false);
+			_WhistleLine.SetPosition(0, Vector3.zero);
+			_WhistleLine.SetPosition(1, Vector3.zero);
 		}
 	}
 
@@ -86,13 +94,14 @@ public class Player : MonoBehaviour, IHealth
 		DayTimeManager.FinishDay();
 	}
 
-	public void Pause(bool toPause)
+	public void Pause(bool toPause, PauseType type = PauseType.Full)
 	{
 		// Time.timeScale = toPause ? 0 : 1;
 		_Animator.SetBool("Walk", false);
 		_Animator.ResetTrigger("Damage");
 
 		GameManager._IsPaused = toPause;
+		GameManager._PauseType = type;
 		_MovementController._Paralysed = toPause;
 	}
 

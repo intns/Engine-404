@@ -40,6 +40,7 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] Vector2 _DirectionToMouse = Vector2.zero;
 	[SerializeField] bool _UsingCrowdControl = false;
 	[HideInInspector] public bool _CanThrowPikmin = true;
+	[HideInInspector] public PikminColour _SelectedThrowPikmin = PikminColour.Red;
 	private PikminAI _PikminInHand;
 
 	Vector3[] _LinePositions = new Vector3[50];
@@ -58,6 +59,23 @@ public class PlayerPikminController : MonoBehaviour
 			return;
 		}
 
+		for (int i = 0; i < 3; i++)
+		{
+			if (!Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i)))
+			{
+				continue;
+			}
+
+			PikminColour colour = (PikminColour)i;
+			if (_SelectedThrowPikmin == colour)
+			{
+				continue;
+			}
+
+			_SelectedThrowPikmin = colour;
+			PikminStatsManager.ReassignFormation();
+		}
+
 		Collider[] colls = Physics.OverlapSphere(transform.position, _PikminPluckDistance, _PikminPluckLayer, QueryTriggerInteraction.Collide);
 		bool canPluck = colls.Length != 0;
 		if (colls.Length != 0)
@@ -67,15 +85,19 @@ public class PlayerPikminController : MonoBehaviour
 			foreach (Collider coll in colls)
 			{
 				PikminSprout sprout = coll.GetComponent<PikminSprout>();
-				if (sprout.CanPluck())
+				if (!sprout.CanPluck())
 				{
-					float dist = MathUtil.DistanceTo(transform.position, coll.transform.position);
-					if (dist < closestDist)
-					{
-						closestDist = dist;
-						closest = sprout;
-					}
+					continue;
 				}
+
+				float dist = MathUtil.DistanceTo(transform.position, coll.transform.position);
+				if (dist >= closestDist)
+				{
+					continue;
+				}
+
+				closestDist = dist;
+				closest = sprout;
 			}
 
 			if (closest != null && Input.GetButtonDown("A Button"))
@@ -100,14 +122,11 @@ public class PlayerPikminController : MonoBehaviour
 		{
 			HandleThrowing(canPluck);
 		}
-		else
+		else if (_PikminInHand != null)
 		{
-			if (_PikminInHand != null)
-			{
-				_PikminInHand.EndThrowHold();
-				_PikminInHand = null;
-				_LineRenderer.enabled = false;
-			}
+			_PikminInHand.EndThrowHold();
+			_PikminInHand = null;
+			_LineRenderer.enabled = false;
 		}
 
 		HandleFormation();
@@ -115,11 +134,15 @@ public class PlayerPikminController : MonoBehaviour
 		// Disbanding
 		if (Input.GetButtonDown("X Button"))
 		{
+			PikminStatsManager._Disbanding = true;
+
 			// Remove each Pikmin from the squad
 			while (PikminStatsManager._InSquad.Count > 0)
 			{
 				PikminStatsManager._InSquad[0].RemoveFromSquad();
 			}
+
+			PikminStatsManager._Disbanding = false;
 		}
 	}
 
