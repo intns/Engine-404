@@ -164,7 +164,11 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 		if (_AttachedPiki.Count >= _PikminToPush)
 		{
 			StartCoroutine(IE_PushingSequence());
-			_OnPush.Invoke();
+
+			if (_OnPush != null)
+			{
+				_OnPush.Invoke();
+			}
 		}
 	}
 

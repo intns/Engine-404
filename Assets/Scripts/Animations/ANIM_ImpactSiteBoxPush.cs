@@ -11,12 +11,10 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 	private void Awake()
 	{
 		_Transform = transform;
-		_Box._OnPush += Act;
-	}
-
-	void Act()
-	{
-		StartCoroutine(ANIM_Overlook());
+		_Box._OnPush += () =>
+		{
+			StartCoroutine(ANIM_Overlook());
+		};
 	}
 
 	#region IEnumerators
@@ -38,12 +36,9 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 
 		Vector3 originCameraPos = _Camera.transform.position;
 
-		FadeManager._Instance.FadeInOut(0.3f, 0.3f, () =>
-		{
-			_Camera.transform.position = _Player.transform.position - (-_Box.transform.forward * 12.5f) + (Vector3.up * 15);
-			_Camera.transform.LookAt(_Box.transform.position);
-			_Camera.fieldOfView = minFov;
-		});
+		_Camera.transform.position = _Player.transform.position - (-_Box.transform.forward * 12.5f) + (Vector3.up * 15);
+		_Camera.transform.LookAt(_Box.transform.position);
+		_Camera.fieldOfView = minFov;
 
 		float t = 0;
 		float length = 15f;
@@ -57,10 +52,12 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 			{
 				pos += MathUtil.XZToXYZ(MathUtil.PositionInUnit(startingOffs + t / MathUtil.M_TAU, 20), 15);
 				_Camera.fieldOfView = Mathf.Lerp(minFov, maxFov, t / length);
-				_Camera.transform.rotation = Quaternion.Lerp(_Camera.transform.rotation,
+				_Camera.transform.SetPositionAndRotation(
+					// Position
+					Vector3.Lerp(_Camera.transform.position, pos, 3 * Time.deltaTime), Quaternion.Lerp(_Camera.transform.rotation,
+					// Rotation
 					Quaternion.LookRotation(MathUtil.DirectionFromTo(_Camera.transform.position, _Box.transform.position, true)),
-					3 * Time.deltaTime);
-				_Camera.transform.position = Vector3.Lerp(_Camera.transform.position, pos, 3 * Time.deltaTime);
+					3 * Time.deltaTime));
 			}
 			else
 			{
@@ -82,7 +79,7 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-		FadeManager._Instance.FadeInOut(0.3f, 0.3f, () =>
+		FadeManager._Instance.FadeInOut(0.75f, 0.75f, () =>
 		{
 			_Camera.transform.position = originCameraPos;
 			_Camera.transform.LookAt(_Player.transform.position);

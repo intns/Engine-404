@@ -87,6 +87,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	[Space, Header("Pushing")]
 	IPikminPush _Pushing = null;
+	[SerializeField] Transform _PushingTransform = null;
 	[SerializeField] bool _PushReady = false;
 
 	[Space, Header("Stats")]
@@ -332,7 +333,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_TargetObject = collision.transform;
 				_TargetObjectCollider = collision;
 				_Intention = collision.GetComponentInParent<IPikminInteractable>().IntentionType;
-				CarryoutIntention();
+				CarryoutIntention(collision.transform);
 			}
 			else if (!collision.CompareTag("Pikmin"))
 			{
@@ -347,7 +348,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				&& _TargetObjectCollider.gameObject.layer != _RunTowardsMask)
 			{
 				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
-				CarryoutIntention();
+				CarryoutIntention(collision.transform);
 			}
 		}
 		else if (isPlayer
@@ -378,7 +379,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	#endregion
 
 	#region States
-	void CarryoutIntention()
+	void CarryoutIntention(Transform rawTransform = null)
 	{
 		PikminStates previousState = _CurrentState;
 
@@ -413,6 +414,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 					ChangeState(PikminStates.Idle);
 					return;
 				}
+
+				_PushingTransform = rawTransform;
 				break;
 			case PikminIntention.Idle:
 				ChangeState(PikminStates.Idle);
@@ -574,6 +577,13 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 
 		Vector3 pushPos = _Pushing.GetPushPosition(this);
+
+		// GetPushPosition may change our state, so we'll exit early if that's the case
+		if (_CurrentState == PikminStates.Idle)
+		{
+			return;
+		}
+
 		if (MathUtil.DistanceTo(_Transform.position, pushPos, false) > 0.5f)
 		{
 			MoveTowards(pushPos, false);
@@ -582,6 +592,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			_Pushing.OnPikminReady(this);
 			_PushReady = true;
+
+			if (Physics.Raycast(_Transform.position + Vector3.up * 1.25f, MathUtil.DirectionFromTo(_Transform.position + Vector3.up * 1.25f, _PushingTransform.position), out RaycastHit hit))
+			{
+				transform.rotation = Quaternion.FromToRotation(Vector3.back, hit.normal);
+			}
 		}
 	}
 
@@ -690,10 +705,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 
 		Vector3 pos = _LatchedTransform.position + _LatchedOffset;
+		bool useY = _CurrentState == PikminStates.Carrying;
+
 		if (_TargetObjectCollider != null)
 		{
 			Vector3 nextPos = _TargetObjectCollider.ClosestPoint(pos);
-			Vector3 direct = MathUtil.DirectionFromTo(_Transform.position, nextPos, true);
+			Vector3 direct = MathUtil.DirectionFromTo(_Transform.position, nextPos, !useY);
 
 			if (Physics.Raycast(_Transform.position, direct, out RaycastHit info, 1.5f + _LatchNormalOffset)
 				&& info.transform == _LatchedTransform)
@@ -710,7 +727,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			_TargetObjectCollider = _LatchedTransform.GetComponent<Collider>();
 		}
 
-		Vector3 directionFromPosToObj = MathUtil.DirectionFromTo(pos, _LatchedTransform.position, true);
+		Vector3 directionFromPosToObj = MathUtil.DirectionFromTo(pos, _LatchedTransform.position, !useY);
 		_Transform.SetPositionAndRotation(pos, Quaternion.LookRotation(directionFromPosToObj));
 	}
 
@@ -794,6 +811,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Push:
 				_Pushing?.OnPikminLeave(this);
 				_Pushing = null;
+				_PushingTransform = null;
 				_PushReady = false;
 				break;
 			case PikminStates.Thrown:
@@ -952,9 +970,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		Debug.Log("Left water");
 	}
 
-	public bool IsGrounded()
+	public bool IsGrounded(float distTo = 0.2f)
 	{
-		return Physics.Raycast(_Transform.position, Vector3.down, 0.2f, _MapMask, QueryTriggerInteraction.Ignore);
+		return Physics.Raycast(_Transform.position, Vector3.down, distTo, _MapMask, QueryTriggerInteraction.Ignore);
 	}
 
 	// CALLED BY PIKMIN ANIMATION - ATTACK

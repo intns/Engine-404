@@ -68,15 +68,6 @@ public class BaldyLongLegsSpawner : MonoBehaviour
 		_Spawned = true;
 		_LongLegsObj.SetActive(true);
 
-		float timer = 0;
-		while (timer < 1.5f)
-		{
-			_LongLegsObj.transform.position = Vector3.Lerp(_SpawnPosition, transform.position - (Vector3.up * 5),
-				_SpawnInCurve.Evaluate(timer / 1.5f));
-			timer += Time.deltaTime;
-			yield return null;
-		}
-
 		yield return null;
 	}
 }

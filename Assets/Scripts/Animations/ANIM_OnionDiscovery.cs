@@ -40,7 +40,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 
 		_BodyRenderer.material.color = fadedColor;
 
-		FadeManager._Instance.FadeInOut(0.3f, 0.3f, () =>
+		FadeManager._Instance.FadeInOut(0.75f, 0.75f, () =>
 		{
 			Vector3 fromPlayerToTarget = MathUtil.DirectionFromTo(_Player.transform.position, _LookAtTarget.position);
 			_Camera.transform.position = _Player.transform.position - (fromPlayerToTarget * 12.5f) + (Vector3.up * 15);
@@ -48,7 +48,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			_Camera.fieldOfView = minFov;
 		});
 
-		yield return new WaitForSeconds(1.7f);
+		yield return new WaitForSeconds(2);
 
 		_Animator.SetTrigger("Discover");
 		_Onion.GetComponent<MeshRenderer>().enabled = false;
