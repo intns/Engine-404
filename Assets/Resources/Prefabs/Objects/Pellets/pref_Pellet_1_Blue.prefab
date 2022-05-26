@@ -20,6 +20,11 @@ PrefabInstance:
       propertyPath: _ColourToGenerateFor
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
+        type: 3}
+      propertyPath: _DistanceToNextPosition
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3677256432814352986, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: _MatchColour
@@ -95,5 +100,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 404338164463603243, guid: ae524c549db4f3d448d6e364307f6b63, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ae524c549db4f3d448d6e364307f6b63, type: 3}
+--- !u!1 &4504508561415287242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4853071827087637658, guid: ae524c549db4f3d448d6e364307f6b63,
+    type: 3}
+  m_PrefabInstance: {fileID: 9068747400991903056}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3734833241176934376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4504508561415287242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  smoothType: 0
+  subdivisions: 2
+  iterations: 2
+  strength: 0.5
+  uniformLength: 1
+  maxSegmentLength: 2
+  bezierTangentLength: 0.4
+  offset: 0.2
+  factor: 0.1

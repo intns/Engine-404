@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 2605067543600766223}
   - component: {fileID: 756053896}
   - component: {fileID: 2273998655982522743}
-  - component: {fileID: 404338164463603243}
+  - component: {fileID: 804055351478062553}
   m_Layer: 13
   m_Name: pref_Pellet_1_Red
   m_TagString: PikminInteract
@@ -150,7 +150,7 @@ MonoBehaviour:
   _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
     type: 3}
   _CarryMinMax: {x: 1, y: 2}
-  _DistanceToNextPosition: 0.5
+  _DistanceToNextPosition: 2
   _CarryCircleRadius: 1
   _CarryCircleOffset: {x: -0.06, y: 0.29, z: 0.06}
   _AccelerationSpeed: 8
@@ -163,6 +163,7 @@ MonoBehaviour:
   _CurrentMoveSpeed: 0
   _MoveVector: {x: 0, y: 0, z: 0}
   _NextDestination: {x: 0, y: 0, z: 0}
+  _TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &756053896
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -207,7 +208,7 @@ MonoBehaviour:
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
---- !u!114 &404338164463603243
+--- !u!114 &804055351478062553
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

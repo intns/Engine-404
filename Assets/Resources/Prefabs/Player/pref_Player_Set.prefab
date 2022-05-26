@@ -1600,13 +1600,13 @@ MonoBehaviour:
   _FollowSpeed: 7.5
   _OrbitChangeSpeed: 4
   _FOVChangeSpeed: 3
-  _HeightChangeSpeed: 7
-  _DistForHeightChange: 30
+  _HeightChangeSpeed: 1
+  _DistForHeightChange: 20
   _EasingHeightOffset: 10
-  _HeightSphereRadius: 2.5
-  _LookAtRotationSpeed: 5
+  _HeightSphereRadius: 7.5
+  _LookAtRotationSpeed: 1.5
   _RotateAroundSpeed: 10
-  _TriggerRotationSpeed: 80
+  _TriggerRotationSpeed: -75
   _CameraResetLength: 0.5
   _CameraResetCooldown: 1
   _MapLayer:
@@ -2247,7 +2247,7 @@ CharacterController:
   m_Height: 1.622038
   m_Radius: 0.704672
   m_SlopeLimit: 50
-  m_StepOffset: 0.05
+  m_StepOffset: 0.01
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0.000000008118531, y: -0.515123, z: 0.2046716}

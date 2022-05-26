@@ -67,6 +67,11 @@ PrefabInstance:
       propertyPath: _ColourToGenerateFor
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4914750753363105310, guid: 6537e41b3fcf33a40a12b1604a732c77,
+        type: 3}
+      propertyPath: _DistanceToNextPosition
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5257347922307558217, guid: 6537e41b3fcf33a40a12b1604a732c77,
         type: 3}
       propertyPath: m_Name
@@ -79,3 +84,31 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f12b44ecd9bde384a9a117f0940d0be4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6537e41b3fcf33a40a12b1604a732c77, type: 3}
+--- !u!1 &8082340793081445633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5257347922307558217, guid: 6537e41b3fcf33a40a12b1604a732c77,
+    type: 3}
+  m_PrefabInstance: {fileID: 4098245105377547848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3341186663106143548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8082340793081445633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  smoothType: 0
+  subdivisions: 2
+  iterations: 2
+  strength: 0.5
+  uniformLength: 1
+  maxSegmentLength: 2
+  bezierTangentLength: 0.4
+  offset: 0.2
+  factor: 0.1
