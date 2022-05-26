@@ -19,7 +19,6 @@ public class TextBoxArea : MonoBehaviour
 	string _GlobalName = "";
 	bool _Enabled = false;
 
-	bool _FinishEarly = false;
 	bool _FinishedPageWrite = false;
 
 	#region Unity Functions
@@ -27,13 +26,19 @@ public class TextBoxArea : MonoBehaviour
 	{
 		_Canvas.gameObject.SetActive(false);
 		Debug.Assert(_Entry != null);
+
+		_GlobalName = gameObject.name + "_" + gameObject.GetInstanceID();
+		if (PlayerPrefs.GetInt(_GlobalName) == 1)
+		{
+			return;
+		}
+
+		PlayerPrefs.SetInt(_GlobalName, 0);
 	}
 
 	private void Awake()
 	{
 		_Transform = transform;
-		_GlobalName = gameObject.name + "_" + gameObject.GetInstanceID();
-		PlayerPrefs.SetInt(_GlobalName, 0);
 	}
 
 	private void Update()
@@ -48,7 +53,7 @@ public class TextBoxArea : MonoBehaviour
 			if (_PageIndex == _Entry._Pages.Count - 1)
 			{
 				_Enabled = false;
-
+				PlayerPrefs.SetInt(_GlobalName, 1);
 				Player._Instance.Pause(false);
 				Player._Instance._UIController.FadeInUI();
 				StartCoroutine(FadeOutCanvas());
@@ -73,8 +78,6 @@ public class TextBoxArea : MonoBehaviour
 		{
 			return;
 		}
-
-		PlayerPrefs.SetInt(_GlobalName, 1);
 
 		// Pause the game and the Player
 		Player._Instance.Pause(true);
