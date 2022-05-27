@@ -21,6 +21,7 @@ public class PlayerMovementController : MonoBehaviour
 	[SerializeField] private float _SlideSpeed = 5;
 	[SerializeField] private float _RotationSpeed = 3;
 	[SerializeField] private float _Gravity = -Physics.gravity.y;
+	[SerializeField] LayerMask _MapMask;
 
 	[SerializeField] private float _LookAtWhistleTime = 2.5f;
 
@@ -102,23 +103,21 @@ public class PlayerMovementController : MonoBehaviour
 		bool sliding = false;
 		// See if surface immediately below should be slid down. We use this normally rather than a ControllerColliderHit point,
 		// because that interferes with step climbing amongst other annoyances
-		if (Physics.SphereCast(transform.position, 0.75f, Vector3.down, out _SlideHit, _SlideRayDist))
+		if (Physics.SphereCast(transform.position, 0.75f, Vector3.down, out _SlideHit, _SlideRayDist, _MapMask, QueryTriggerInteraction.Ignore)
+			&& Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
 		{
-			if (Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
-			{
 				sliding = true;
-			}
 		}
 		// However, just raycasting straight down from the center can fail when on steep slopes
 		// So if the above raycast didn't catch anything, raycast down from the stored ControllerColliderHit point instead
 		else
 		{
-			if (Physics.Raycast(_CharacterContactPoint + Vector3.up, -Vector3.up, out _SlideHit)
+			if (Physics.Raycast(_CharacterContactPoint + Vector3.up, -Vector3.up, out _SlideHit, _SlideRayDist, _MapMask, QueryTriggerInteraction.Ignore)
 				&& Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
 			{
 				sliding = true;
 			}
-			else if (Physics.SphereCast(transform.position, 1.5f, mDirection.normalized + (Vector3.down / 2), out _SlideHit)
+			else if (Physics.SphereCast(transform.position, 1.5f, mDirection.normalized + (Vector3.down / 2), out _SlideHit, _SlideRayDist, _MapMask, QueryTriggerInteraction.Ignore)
 				&& Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
 			{
 				sliding = true;

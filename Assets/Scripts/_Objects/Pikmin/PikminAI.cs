@@ -87,7 +87,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	[Space, Header("Pushing")]
 	IPikminPush _Pushing = null;
-	[SerializeField] Transform _PushingTransform = null;
 	[SerializeField] bool _PushReady = false;
 
 	[Space, Header("Stats")]
@@ -414,8 +413,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 					ChangeState(PikminStates.Idle);
 					return;
 				}
-
-				_PushingTransform = rawTransform;
 				break;
 			case PikminIntention.Idle:
 				ChangeState(PikminStates.Idle);
@@ -592,11 +589,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			_Pushing.OnPikminReady(this);
 			_PushReady = true;
-
-			if (Physics.Raycast(_Transform.position + Vector3.up * 1.25f, MathUtil.DirectionFromTo(_Transform.position + Vector3.up * 1.25f, _PushingTransform.position), out RaycastHit hit))
-			{
-				transform.rotation = Quaternion.FromToRotation(Vector3.back, hit.normal);
-			}
 		}
 	}
 
@@ -811,7 +803,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Push:
 				_Pushing?.OnPikminLeave(this);
 				_Pushing = null;
-				_PushingTransform = null;
 				_PushReady = false;
 				break;
 			case PikminStates.Thrown:
