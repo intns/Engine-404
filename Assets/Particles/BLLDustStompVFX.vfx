@@ -71,7 +71,8 @@ MonoBehaviour:
   m_ParameterInfo:
   - name: ParticlesNumber
     path: ParticlesNumber
-    tooltip: 
+    tooltip: Don't forget to change the "capacity" property of the "initialize particle"
+      block
     sheetType: m_Int
     realType: Int32
     defaultValue:
@@ -148,7 +149,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.4
+      m_SerializableObject: 0.1
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -181,8 +182,8 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: InitialVelocity
-    path: InitialVelocity
+  - name: InitialSidesVelocity
+    path: InitialSidesVelocity
     tooltip: Multiply initial velocity by this number
     sheetType: m_Float
     realType: Single
@@ -2418,7 +2419,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.Vector, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"vector":{"x":10.0,"y":10.0,"z":10.0}}'
+      m_SerializableObject: '{"vector":{"x":10.0,"y":0.0,"z":10.0}}'
     m_Space: 0
   m_Property:
     name: Velocity
@@ -2529,8 +2530,7 @@ MonoBehaviour:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
   m_Direction: 0
-  m_LinkedSlots:
-  - {fileID: 8926484042661615727}
+  m_LinkedSlots: []
 --- !u!114 &8926484042661615146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3558,7 +3558,8 @@ MonoBehaviour:
   m_IsOutput: 0
   m_EnumValues: []
   m_ValueFilter: 0
-  m_Tooltip: 
+  m_Tooltip: Don't forget to change the "capacity" property of the "initialize particle"
+    block
   m_Nodes:
   - m_Id: 0
     linkedSlots:
@@ -4116,7 +4117,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.4
+      m_SerializableObject: 0.1
     m_Space: 2147483647
   m_Property:
     name: o
@@ -4681,7 +4682,7 @@ MonoBehaviour:
   m_InputSlots: []
   m_OutputSlots:
   - {fileID: 8926484042661615727}
-  m_ExposedName: InitialVelocity
+  m_ExposedName: InitialSidesVelocity
   m_Exposed: 1
   m_Order: 8
   m_Category: 
@@ -4702,8 +4703,6 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615727}
       inputSlot: {fileID: 8926484042661615144}
-    - outputSlot: {fileID: 8926484042661615727}
-      inputSlot: {fileID: 8926484042661615145}
     - outputSlot: {fileID: 8926484042661615727}
       inputSlot: {fileID: 8926484042661615146}
     position: {x: 761, y: 996}
@@ -4744,7 +4743,6 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 8926484042661615144}
-  - {fileID: 8926484042661615145}
   - {fileID: 8926484042661615146}
 --- !u!114 &8926484042661615728
 MonoBehaviour:
