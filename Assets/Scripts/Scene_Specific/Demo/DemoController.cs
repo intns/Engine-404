@@ -21,7 +21,12 @@ public class DemoController : MonoBehaviour
 
 	private void Awake()
 	{
-		_MainVP.profile.TryGet(out Fog fog);
+		_Text.text = "";
+
+		if (!_MainVP.profile.TryGet(out Fog fog))
+		{
+			return;
+		}
 
 		bool editFog = Random.Range(0, 5) < 2.5f;
 		// We're going to randomise the VP a bit
@@ -35,8 +40,6 @@ public class DemoController : MonoBehaviour
 		{
 			fog.enabled.value = false;
 		}
-
-		_Text.text = "";
 	}
 
 	private void Start()

@@ -298,7 +298,6 @@ public static class PikminStatsManager
 			return;
 		}
 
-		_InSquad.Sort();
 		for (int i = 0; i < _InSquad.Count; i++)
 		{
 			_InSquad[i]._FormationPosition.position = Player._Instance._PikminController.GetPositionAt(i);

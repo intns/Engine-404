@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class PlayerUIController : MonoBehaviour
 {
 	[SerializeField] private TextMeshProUGUI _DayText;
 	[SerializeField] private TextMeshProUGUI _SquadText;
 	[SerializeField] private TextMeshProUGUI _AreaText;
+
+	[SerializeField] Image _CurrentPikminImage;
+	[SerializeField] private Sprite[] _PikminImages;
+	Animation _PikminImageAnimation;
+
 	[SerializeField] private CanvasGroup _CanvasGroup;
 
 	[SerializeField] bool _DisplayValues = false;
 	int _InSquadAmount = 0;
 	int _InFieldAmount = 0;
+
 
 	private IEnumerator FadeInCanvas()
 	{
@@ -32,6 +39,7 @@ public class PlayerUIController : MonoBehaviour
 		_DayText.GetComponent<Animation>().Play();
 		_SquadText.GetComponent<Animation>().Play();
 		_AreaText.GetComponent<Animation>().Play();
+		_PikminImageAnimation.Play();
 	}
 
 	private IEnumerator FadeOutCanvas()
@@ -63,6 +71,10 @@ public class PlayerUIController : MonoBehaviour
 		_DayText.text = string.Empty;
 		_SquadText.text = string.Empty;
 		_AreaText.text = string.Empty;
+
+		_CurrentPikminImage.color = Color.clear;
+		_PikminImageAnimation = _CurrentPikminImage.GetComponent<Animation>();
+
 		FadeInUI();
 	}
 
@@ -91,6 +103,17 @@ public class PlayerUIController : MonoBehaviour
 			_SquadText.text = _InSquadAmount.ToString();
 			_AreaText.text = _InFieldAmount.ToString();
 			_DayText.text = PlayerPrefs.GetInt("day").ToString();
+
+			PikminColour colour = Player._Instance._PikminController._SelectedThrowPikmin;
+			if (colour != PikminColour.Size)
+			{
+				_CurrentPikminImage.color = Color.white;
+				_CurrentPikminImage.sprite = _PikminImages[(int)colour];
+			}
+			else
+			{
+				_CurrentPikminImage.color = Color.clear;
+			}
 		}
 	}
 }

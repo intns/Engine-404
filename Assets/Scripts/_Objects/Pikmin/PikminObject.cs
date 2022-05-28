@@ -11,7 +11,7 @@ public enum PikminColour
 	Red = 0,
 	Yellow,
 	Blue,
-	Size
+	Size // Also used as a "NONE" variable
 }
 
 public enum PikminMaturity
@@ -48,7 +48,20 @@ public class PikminObject : ScriptableObject
 
 	[Header("Audio")]
 	public float _AudioVolume = 1;
+
+	[Space]
 	public AudioClip _DeathNoise = null;
+	public AudioClip _ThrowNoise = null;
+	[Space]
+	public AudioClip _IdleNoise = null;
+	[Space]
+	public AudioClip _HeldNoise = null;
+	[Space]
+	public AudioClip _AttackScreechNoise = null;
+	public AudioClip _AttackHitNoise = null;
+	[Space]
+	public AudioClip _CarryAddNoise = null;
+	public AudioClip _CarryingNoise = null;
 
 	public float GetMaxSpeed(PikminMaturity maturity)
 	{

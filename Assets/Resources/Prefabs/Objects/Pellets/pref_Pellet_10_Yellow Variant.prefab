@@ -7,6 +7,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2085960260022617591, guid: 6537e41b3fcf33a40a12b1604a732c77,
+        type: 3}
+      propertyPath: Priority
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: -2085960260022617591, guid: 6537e41b3fcf33a40a12b1604a732c77,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -2085960260022617591, guid: 6537e41b3fcf33a40a12b1604a732c77,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -2085960260022617591, guid: 6537e41b3fcf33a40a12b1604a732c77,
+        type: 3}
+      propertyPath: rolloffMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -2085960260022617591, guid: 6537e41b3fcf33a40a12b1604a732c77,
+        type: 3}
+      propertyPath: DopplerLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2085960260022617591, guid: 6537e41b3fcf33a40a12b1604a732c77,
+        type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4881350832369955315, guid: 6537e41b3fcf33a40a12b1604a732c77,
         type: 3}
       propertyPath: m_RootOrder
@@ -64,6 +94,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4914750753363105310, guid: 6537e41b3fcf33a40a12b1604a732c77,
         type: 3}
+      propertyPath: _CarryNoiseClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 82f0bada0276e0845b8d9ef9b6cb33d5, type: 3}
+    - target: {fileID: 4914750753363105310, guid: 6537e41b3fcf33a40a12b1604a732c77,
+        type: 3}
       propertyPath: _ColourToGenerateFor
       value: 1
       objectReference: {fileID: 0}
@@ -84,31 +119,3 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 374aa1c1bfa3e8c40a8e49fc011d9fe2, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6537e41b3fcf33a40a12b1604a732c77, type: 3}
---- !u!1 &2235199353195382343 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5257347922307558217, guid: 6537e41b3fcf33a40a12b1604a732c77,
-    type: 3}
-  m_PrefabInstance: {fileID: 6336810883379064078}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5952076731843027814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2235199353195382343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  smoothType: 0
-  subdivisions: 2
-  iterations: 2
-  strength: 0.5
-  uniformLength: 1
-  maxSegmentLength: 2
-  bezierTangentLength: 0.4
-  offset: 0.2
-  factor: 0.1

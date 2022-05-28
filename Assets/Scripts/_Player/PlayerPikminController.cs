@@ -59,21 +59,61 @@ public class PlayerPikminController : MonoBehaviour
 			return;
 		}
 
-		for (int i = 0; i < 3; i++)
+		if (Input.GetKeyDown(KeyCode.Alpha0))
 		{
-			if (!Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i)))
+			PikminStatsManager.Print();
+		}
+
+		if (PikminStatsManager.GetTotalInSquad() > 0)
+		{
+			if (_SelectedThrowPikmin == PikminColour.Size)
 			{
-				continue;
+				_SelectedThrowPikmin = GameUtil.GetMajorityColour(PikminStatsManager._InSquad);
 			}
 
-			PikminColour colour = (PikminColour)i;
-			if (_SelectedThrowPikmin == colour)
+			for (int i = 0; i < 3; i++)
 			{
-				continue;
-			}
+				if (!Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i)))
+				{
+					continue;
+				}
 
-			_SelectedThrowPikmin = colour;
-			PikminStatsManager.ReassignFormation();
+				PikminColour colour = (PikminColour)i;
+				if (_SelectedThrowPikmin == colour)
+				{
+					continue;
+				}
+
+				switch (colour)
+				{
+					case PikminColour.Red:
+						if (PikminStatsManager._RedStats.GetTotalInSquad() <= 0)
+						{
+							continue;
+						}
+						break;
+					case PikminColour.Yellow:
+						if (PikminStatsManager._YellowStats.GetTotalInSquad() <= 0)
+						{
+							continue;
+						}
+						break;
+					case PikminColour.Blue:
+						if (PikminStatsManager._BlueStats.GetTotalInSquad() <= 0)
+						{
+							continue;
+						}
+						break;
+					default:
+						break;
+				}
+
+				_SelectedThrowPikmin = colour;
+			}
+		}
+		else
+		{
+			_SelectedThrowPikmin = PikminColour.Size;
 		}
 
 		Collider[] colls = Physics.OverlapSphere(transform.position, _PikminPluckDistance, _PikminPluckLayer, QueryTriggerInteraction.Collide);
@@ -379,6 +419,11 @@ public class PlayerPikminController : MonoBehaviour
 			PikminAI pikminComponent = collider.GetComponent<PikminAI>();
 			// Check if they're in the squad
 			if (!pikminComponent || !pikminComponent._InSquad)
+			{
+				continue;
+			}
+
+			if (pikminComponent.GetColour() != _SelectedThrowPikmin)
 			{
 				continue;
 			}

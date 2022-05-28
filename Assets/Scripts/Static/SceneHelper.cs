@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 public static class SceneHelper {
+  #if UNITY_EDITOR
   public static void SetupNewScene (ref GameObject player, ref GameObject sceneMaster) {
     // Create Scene Master Prefab
     sceneMaster = (GameObject) PrefabUtility.InstantiatePrefab (Resources.Load ("Prefabs/pref_SceneMaster") as GameObject);
@@ -40,4 +41,5 @@ public static class SceneHelper {
     floor.name = "Floor";
     floor.layer = LayerMask.NameToLayer ("Map");
   }
+  #endif
 }

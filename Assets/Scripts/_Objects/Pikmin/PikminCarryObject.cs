@@ -8,6 +8,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 {
 	[Header("References")]
 	[SerializeField] private GameObject _CarryTextPrefab;
+	[SerializeField] private AudioClip _CarryNoiseClip;
 
 	[Header("Settings")]
 	[SerializeField, Tooltip("Number on the left signifies the minimum amount to carry, number on the right is the maximum.")]
@@ -36,12 +37,11 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] private Vector3 _NextDestination = Vector3.zero;
 	[SerializeField] Vector3 _TargetPosition;
 
-	List<Collider> _Colliders;
-
 	private CarryText _CarryText = null;
 	private Onion _TargetOnion = null;
 	private Rigidbody _Rigidbody = null;
 	private Seeker _Pathfinder = null;
+	AudioSource _Source;
 
 	private float _CurrentSpeedTarget = 0;
 
@@ -53,10 +53,14 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	private bool _ShutdownInProgress = false;
 	Vector3 _SpawnPosition = Vector3.zero;
 
+	public bool IsMoving() => _IsBeingCarried;
+
 	private void Awake()
 	{
 		_Rigidbody = GetComponent<Rigidbody>();
 		_Pathfinder = GetComponent<Seeker>();
+		_Source = GetComponent<AudioSource>();
+		_Source.clip = _CarryNoiseClip;
 
 		_CurrentSpeedTarget = _BaseSpeed;
 
@@ -83,7 +87,17 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	{
 		if (!_IsBeingCarried || GameManager._IsPaused)
 		{
+			if (_Source.isPlaying)
+			{
+				_Source.Stop();
+			}
+
 			return;
+		}
+
+		if (!_Source.isPlaying)
+		{
+			_Source.Play();
 		}
 
 		MoveTowards(_NextDestination);
@@ -141,7 +155,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 		else
 		{
-			_NextDestination = transform.position - _TargetPosition;
+			_NextDestination = (transform.position + _TargetPosition) / 2;
 		}
 	}
 
@@ -188,7 +202,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		newVelocity.y = _Rigidbody.velocity.y;
 		_MoveVector = newVelocity;
 	}
-	
+
 	private void OnPathCalculated(Path p)
 	{
 		// If we're about to delete the object, no point in updating it

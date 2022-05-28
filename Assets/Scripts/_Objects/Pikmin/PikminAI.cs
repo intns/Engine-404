@@ -104,6 +104,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	[Space]
 	[SerializeField] Transform _LatchedTransform = null;
 	public Vector3 _LatchedOffset = Vector3.zero;
+	[SerializeField] float _HeldAudioTimer = 0;
 
 	public bool _InSquad { get; private set; } = false;
 	#endregion
@@ -154,9 +155,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	void Awake()
 	{
 		_Rigidbody = GetComponent<Rigidbody>();
-		_AudioSource = GetComponent<AudioSource>();
 		_Animator = GetComponent<Animator>();
 		_Collider = GetComponent<CapsuleCollider>();
+
+		_AudioSource = GetComponent<AudioSource>();
+		_AudioSource.volume = _Data._AudioVolume;
 
 		_ThrowTrailRenderer.enabled = false;
 
@@ -190,6 +193,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	{
 		if (GameManager._IsPaused && GameManager._PauseType != PauseType.OnlyPikminActive)
 		{
+			_Animator.SetBool("Walking", false);
 			return;
 		}
 
@@ -209,13 +213,21 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Dead:
 				HandleDeath();
 				break;
+			case PikminStates.BeingHeld:
+				if (_HeldAudioTimer >= 0.5f)
+				{
+					_AudioSource.pitch = Random.Range(0.75f, 1.25f);
+					PlaySound(_Data._HeldNoise, Random.Range(0, 0.15f));
+					_HeldAudioTimer = 0;
+				}
+
+				_HeldAudioTimer += Time.deltaTime;
+				break;
 
 			case PikminStates.Carrying:
 			case PikminStates.Thrown:
 			case PikminStates.RunningTowards:
-			case PikminStates.BeingHeld:
 			case PikminStates.Waiting:
-				break;
 			default:
 				break;
 		}
@@ -224,7 +236,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.05f);
 		}
+
+		HandleAnimations();
 	}
+
 
 	void FixedUpdate()
 	{
@@ -259,7 +274,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	private void RepelPikminAndPlayers()
 	{
-		if (_CurrentState == PikminStates.Thrown)
+		if (_CurrentState != PikminStates.RunningTowards && _CurrentState != PikminStates.Idle)
 		{
 			return;
 		}
@@ -282,39 +297,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 	}
 
-	void LateUpdate()
-	{
-		if (GameManager._IsPaused && GameManager._PauseType != PauseType.OnlyPikminActive)
-		{
-			_Animator.SetBool("Walking", false);
-			return;
-		}
-
-		MaintainLatch();
-
-		_Animator.SetBool("Thrown", _CurrentState == PikminStates.Thrown);
-		_Animator.SetBool("Attacking", _CurrentState == PikminStates.Attacking);
-
-		switch (_CurrentState)
-		{
-			case PikminStates.Idle:
-			case PikminStates.RunningTowards:
-				{
-					Vector2 horizonalVelocity = new Vector2(_Rigidbody.velocity.x, _Rigidbody.velocity.z);
-					_Animator.SetBool("Walking", horizonalVelocity.magnitude >= 0.2f);
-					break;
-				}
-
-			case PikminStates.Push:
-			case PikminStates.Carrying:
-				_Animator.SetBool("Walking", true);
-				break;
-
-			default:
-				break;
-		}
-	}
-
 	void OnCollisionHandle(Collider collision)
 	{
 		if (_InSquad)
@@ -332,7 +314,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_TargetObject = collision.transform;
 				_TargetObjectCollider = collision;
 				_Intention = collision.GetComponentInParent<IPikminInteractable>().IntentionType;
-				CarryoutIntention(collision.transform);
+				CarryoutIntention();
 			}
 			else if (!collision.CompareTag("Pikmin"))
 			{
@@ -347,7 +329,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				&& _TargetObjectCollider.gameObject.layer != _RunTowardsMask)
 			{
 				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
-				CarryoutIntention(collision.transform);
+				CarryoutIntention();
 			}
 		}
 		else if (isPlayer
@@ -378,7 +360,33 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	#endregion
 
 	#region States
-	void CarryoutIntention(Transform rawTransform = null)
+
+	private void HandleAnimations()
+	{
+		_Animator.SetBool("Thrown", _CurrentState == PikminStates.Thrown);
+		_Animator.SetBool("Attacking", _CurrentState == PikminStates.Attacking);
+
+		switch (_CurrentState)
+		{
+			case PikminStates.Idle:
+			case PikminStates.RunningTowards:
+				{
+					Vector2 horizonalVelocity = new Vector2(_Rigidbody.velocity.x, _Rigidbody.velocity.z);
+					_Animator.SetBool("Walking", horizonalVelocity.magnitude >= 0.2f);
+					break;
+				}
+
+			case PikminStates.Push:
+			case PikminStates.Carrying:
+				_Animator.SetBool("Walking", true);
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	void CarryoutIntention()
 	{
 		PikminStates previousState = _CurrentState;
 
@@ -436,6 +444,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			return;
 		}
+
+		// Checks if we're in squad anyways, so it's a safe check to make sure
+		// we're not actually in squad (known bug)
+		RemoveFromSquad();
 
 		_IdleTimer += Time.deltaTime;
 		if (_IdleTimer <= _IdleTickRate)
@@ -563,6 +575,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			ChangeState(PikminStates.Idle);
 			return;
 		}
+
+		PlaySound(_Data._AttackScreechNoise);
 	}
 
 	void HandlePushing()
@@ -808,6 +822,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Thrown:
 				_ThrowTrailRenderer.enabled = false;
 				break;
+			case PikminStates.BeingHeld:
+				_AudioSource.pitch = 1.0f;
+				break;
 			default:
 				break;
 		}
@@ -820,8 +837,14 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Thrown:
 				_ThrowTrailRenderer.enabled = true;
 				break;
+			case PikminStates.Carrying:
+				PlaySoundForced(_Data._CarryAddNoise);
+				break;
 			case PikminStates.Idle:
 				LatchOnto(null);
+				_AudioSource.volume = 0.01f;
+				_AudioSource.clip = _Data._IdleNoise;
+				_AudioSource.Play();
 				break;
 		}
 	}
@@ -855,6 +878,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_CurrentStatSpecifier = PikminStatSpecifier.OnField;
 		_TargetObject = null;
 		ChangeState(PikminStates.Thrown);
+
+		PlaySoundForced(_Data._ThrowNoise);
 
 		PikminStatsManager.RemoveFromSquad(this, _Data._PikminColour, _CurrentMaturity);
 		PikminStatsManager.ReassignFormation();
@@ -972,8 +997,43 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		if (_Attacking != null)
 		{
 			_Attacking.OnAttackRecieve(_Data._AttackDamage);
+			PlaySoundForced(_Data._AttackHitNoise);
 		}
 	}
 
+	public void PlaySound(AudioClip clip, float delay = 0)
+	{
+		if (_AudioSource.clip != clip)
+		{
+			_AudioSource.clip = clip;
+		}
+
+		if (_AudioSource.isPlaying)
+		{
+			return;
+		}
+
+		_AudioSource.volume = _Data._AudioVolume;
+		if (delay != 0)
+		{
+			_AudioSource.PlayDelayed(delay);
+		}
+		else
+		{
+			_AudioSource.Play();
+		}
+	}
+
+	public void PlaySoundForced(AudioClip clip)
+	{
+		if (_AudioSource.clip != clip)
+		{
+			_AudioSource.clip = clip;
+			_AudioSource.Stop();
+		}
+
+		_AudioSource.volume = _Data._AudioVolume;
+		_AudioSource.Play();
+	}
 	#endregion
 }
