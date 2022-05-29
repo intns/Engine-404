@@ -56,6 +56,11 @@ public class PlayerPikminController : MonoBehaviour
 	{
 		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
 		{
+			if (_PikminInHand != null)
+			{
+				EndThrow();
+			}
+
 			return;
 		}
 
@@ -71,7 +76,7 @@ public class PlayerPikminController : MonoBehaviour
 				_SelectedThrowPikmin = GameUtil.GetMajorityColour(PikminStatsManager._InSquad);
 			}
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < (int)PikminColour.Size; i++)
 			{
 				if (!Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i)))
 				{
@@ -164,9 +169,7 @@ public class PlayerPikminController : MonoBehaviour
 		}
 		else if (_PikminInHand != null)
 		{
-			_PikminInHand.EndThrowHold();
-			_PikminInHand = null;
-			_LineRenderer.enabled = false;
+			EndThrow();
 		}
 
 		HandleFormation();
@@ -227,22 +230,23 @@ public class PlayerPikminController : MonoBehaviour
 		Vector3 whistleTransform = _WhistleTransform.position;
 		if (whistleTransform.y > _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight)
 		{
-			whistleTransform.y = (_PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight) - 0.05f;
+			whistleTransform.y = _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight;
 		}
 
-		Vector3 offs = (whistleTransform - _PikminInHand.transform.position) * 1.025f;
+		Vector3 offs = (whistleTransform - transform.position);
 		// TODO: Fix clamp magnitude not working as intended!
-		Vector3 destination = _PikminInHand.transform.position + Vector3.ClampMagnitude(offs, _PikminThrowRadius);
-		float vd = destination.y - _PikminInHand.transform.position.y;
+		Vector2 clamped = Vector2.ClampMagnitude(new Vector2(offs.x, offs.z), _PikminThrowRadius);
+		Vector3 destination = transform.position + Vector3.ClampMagnitude(MathUtil.XZToXYZ(clamped), _PikminThrowRadius);
+		float vd = destination.y - transform.position.y;
 		_ThrownVelocity = CalculateVelocity(destination, vd);
 
 		if (float.IsNaN(_ThrownVelocity.x))
 		{
-			_ThrownVelocity = Vector3.forward;
+			_ThrownVelocity = Vector3.forward * 10 + Vector3.up * 10;
 			return;
 		}
 
-		Vector3 velocity = _ThrownVelocity * 1.015f;
+		Vector3 velocity = _ThrownVelocity;
 		Vector3 pos = _PikminInHand.transform.position;
 		Vector3 oldPos = pos;
 		int i = 0;
@@ -302,9 +306,6 @@ public class PlayerPikminController : MonoBehaviour
 
 			if (Input.GetButtonUp("A Button"))
 			{
-				_PikminInHand.EndThrowHold();
-				_Animator.SetBool("HoldingThrow", false);
-
 				Vector3 whistlePos = new Vector3(_WhistleTransform.position.x, 0, _WhistleTransform.position.z);
 				transform.LookAt(new Vector3(whistlePos.x, transform.position.y, whistlePos.z));
 				_PikminInHand.transform.LookAt(new Vector3(whistlePos.x, _PikminInHand.transform.position.y, whistlePos.z));
@@ -315,20 +316,90 @@ public class PlayerPikminController : MonoBehaviour
 					rigidbody.velocity = _ThrownVelocity;
 				}
 
-				_LineRenderer.enabled = false;
+				EndThrow();
 
-				// As the Pikmin has been thrown, remove it from the hand variable
-				_PikminInHand = null;
 				aButtonAction = true;
 			}
 
 			if (!aButtonAction)
 			{
-				_PikminInHand.EndThrowHold();
-				_PikminInHand = null;
-				_LineRenderer.enabled = false;
+				EndThrow();
 			}
 		}
+	}
+
+	void EndThrow()
+	{
+		PikminColour colour = _PikminInHand.GetColour();
+		bool reassign = false;
+		switch (colour)
+		{
+			case PikminColour.Red:
+				if (PikminStatsManager._RedStats.GetTotalInSquad() - 1 <= 0)
+				{
+					reassign = true;
+				}
+				break;
+			case PikminColour.Yellow:
+				if (PikminStatsManager._YellowStats.GetTotalInSquad() - 1 <= 0)
+				{
+					reassign = true;
+				}
+				break;
+			case PikminColour.Blue:
+				if (PikminStatsManager._BlueStats.GetTotalInSquad() - 1 <= 0)
+				{
+					reassign = true;
+				}
+				break;
+			default:
+				break;
+		}
+
+		if (reassign)
+		{
+			for (int i = 0; i < (int)PikminColour.Size; i++)
+			{
+				colour = (PikminColour)i;
+				switch (colour)
+				{
+					case PikminColour.Red:
+						if (PikminStatsManager._RedStats.GetTotalInSquad() > 0)
+						{
+							break;
+						}
+						break;
+					case PikminColour.Yellow:
+						if (PikminStatsManager._YellowStats.GetTotalInSquad() > 0)
+						{
+							break;
+						}
+						break;
+					case PikminColour.Blue:
+						if (PikminStatsManager._BlueStats.GetTotalInSquad() > 0)
+						{
+							break;
+						}
+						break;
+					default:
+						break;
+				}
+			}
+
+			if (PikminStatsManager._BlueStats.GetTotalInSquad() <= 0)
+			{
+				_SelectedThrowPikmin = PikminColour.Size;
+			}
+			else
+			{
+				_SelectedThrowPikmin = colour;
+			}
+		}
+
+		_Animator.SetBool("HoldingThrow", false);
+		_PikminInHand.EndThrowHold();
+		_PikminInHand = null;
+		_LineRenderer.enabled = false;
 	}
 
 	public Vector3 GetPositionAt(int index)

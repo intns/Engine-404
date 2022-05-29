@@ -534,7 +534,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 2
+  m_CollisionDetection: 3
 --- !u!136 &716618907664093782
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -583,11 +583,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Data: {fileID: 11400000, guid: 3db7dda9683fc2141b4bb4fd3e588be6, type: 2}
   _LatchNormalOffset: 0.5
-  _StoppingDistance: 0.35
+  _StoppingDistance: 0.25
   _IdleTickRate: 0.3
-  _AvoidSphereSize: 0.25
+  _AvoidSphereSize: 0.5
   _PlayerPushScale: 200
-  _PikminPushScale: 45
+  _PikminPushScale: 20
   _InteractableMask:
     serializedVersion: 2
     m_Bits: 8192

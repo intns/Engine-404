@@ -576,7 +576,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			return;
 		}
 
-		PlaySound(_Data._AttackScreechNoise);
+		//PlaySound(_Data._AttackScreechNoise);
 	}
 
 	void HandlePushing()
