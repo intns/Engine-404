@@ -125,13 +125,14 @@ public class DemoController : MonoBehaviour
 		Transform shipTransform = _CeresAnimator.transform;
 
 		main.position = shipTransform.position + Vector3.up * 15 + Vector3.back * 20;
+		Vector3 position = Vector3.Lerp(main.position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 35, 5 * Time.deltaTime);
 
 		float t = 0;
 		float length = 7.5f;
 		while (t <= length)
 		{
 			// Rotate the camera to look at the Player
-			Vector3 position = Vector3.Lerp(main.position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 35, 5 * Time.deltaTime);
+			position = Vector3.Lerp(position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 35, 5 * Time.deltaTime);
 
 			Quaternion rotation = Quaternion.Lerp(main.rotation,
 							Quaternion.LookRotation(MathUtil.DirectionFromTo(main.position, shipTransform.position + Vector3.up * 5, true)),
