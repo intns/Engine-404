@@ -72,7 +72,6 @@ public class DemoController : MonoBehaviour
 	IEnumerator IE_StartScene()
 	{
 		_BlackImage.enabled = true;
-		yield return null;
 
 		yield return new WaitForSeconds(1.5f);
 
@@ -88,9 +87,10 @@ public class DemoController : MonoBehaviour
 		}
 
 		yield return new WaitForSeconds(1.25f);
-		_DayTimeManager.enabled = true;
 
+		_DayTimeManager.enabled = true;
 		StartCoroutine(IE_DoAnimation());
+
 		t = 0;
 		while (t <= 2)
 		{
@@ -107,8 +107,9 @@ public class DemoController : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-		_BlackImage.enabled = false;
 		_Text.enabled = false;
+		_BlackImage.enabled = false;
+		_CanvasGroup.alpha = 1;
 
 		yield return new WaitForSecondsRealtime(4);
 		Player._Instance.Pause(false);
@@ -126,11 +127,11 @@ public class DemoController : MonoBehaviour
 		main.position = shipTransform.position + Vector3.up * 15 + Vector3.back * 20;
 
 		float t = 0;
-		float length = 7;
+		float length = 7.5f;
 		while (t <= length)
 		{
 			// Rotate the camera to look at the Player
-			Vector3 position = Vector3.Lerp(main.position, shipTransform.position + Vector3.up * 20 + Vector3.fwd * 35, 6.5f * Time.deltaTime);
+			Vector3 position = Vector3.Lerp(main.position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 35, 5 * Time.deltaTime);
 
 			Quaternion rotation = Quaternion.Lerp(main.rotation,
 							Quaternion.LookRotation(MathUtil.DirectionFromTo(main.position, shipTransform.position + Vector3.up * 5, true)),
