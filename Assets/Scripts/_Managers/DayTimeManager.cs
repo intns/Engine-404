@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
@@ -25,22 +26,32 @@ public class DTM_Audio_Event
 public class DayTimeManager : MonoBehaviour
 {
 	[Header("Components")]
-	public Transform _SunLight = null;
+	[SerializeField] Transform _SunLight = null;
 
 	[Header("Settings")]
 	[Tooltip("Time it takes from day start to day end (in seconds)")]
-	[SerializeField] private float _TotalDayTime = 1000;
+	[SerializeField] float _TotalDayTime = 1000;
+
+	[SerializeField] AnimationCurve _ShipLiftCurve = null;
 
 	[Header("Sun Rotation")]
-	[SerializeField] private Vector3 _FromRotVec = Vector3.zero;
-	[SerializeField] private Vector3 _ToRotVec = Vector3.zero;
-	private Quaternion _FromRot = Quaternion.identity;
-	private Quaternion _ToRot = Quaternion.identity;
+	[SerializeField] Vector3 _FromRotVec = Vector3.zero;
+	[SerializeField] Vector3 _ToRotVec = Vector3.zero;
+	Quaternion _FromRot = Quaternion.identity;
+	Quaternion _ToRot = Quaternion.identity;
 
 	[Header("Events")]
-	[SerializeField] private List<DTM_Audio_Event> _AudioEvents = new List<DTM_Audio_Event>();
-	private readonly Stopwatch _TimeElapsed = new Stopwatch();
-	private AudioSource _Source = null;
+	[SerializeField] List<DTM_Audio_Event> _AudioEvents = new List<DTM_Audio_Event>();
+	Stopwatch _TimeElapsed = new Stopwatch();
+	AudioSource _Source = null;
+	bool _StartEndDay = false;
+
+	public static DayTimeManager _Instance = null;
+
+	private void OnEnable()
+	{
+		_Instance = this;
+	}
 
 	private void Awake()
 	{
@@ -58,6 +69,11 @@ public class DayTimeManager : MonoBehaviour
 
 	private void Update()
 	{
+		if (_StartEndDay)
+		{
+			return;
+		}
+
 		double seconds = _TimeElapsed.Elapsed.TotalSeconds;
 
 		for (int i = 0; i < _AudioEvents.Count; i++)
@@ -71,21 +87,68 @@ public class DayTimeManager : MonoBehaviour
 
 		_SunLight.rotation = Quaternion.Slerp(_FromRot, _ToRot, (float)(seconds / _TotalDayTime));
 
-		if (seconds >= _TotalDayTime)
+		if (seconds >= _TotalDayTime && !_StartEndDay)
 		{
+			_StartEndDay = true;
 			FinishDay();
 		}
 	}
 
-	public static void FinishDay()
+	public void FinishDay()
 	{
-		FadeManager._Instance.FadeOut(2.5f, () =>
-		{
-			PikminStatsManager.ClearSquad();
-			PikminStatsManager.ClearStats();
+		StartCoroutine(IE_EODSequence());
+	}
 
-			SceneManager.LoadScene(0);
-			Debug.Log("End of Day, fadeout done");
+	IEnumerator IE_EODSequence()
+	{
+		yield return null;
+
+		Player._Instance.Pause(true);
+
+		Transform shipTransform = Ship._Instance._Transform;
+
+		// So the animator can't set the transform of the object
+		shipTransform.GetComponent<Animator>().enabled = false;
+
+		Vector3 fixedPosOffset = Vector3.forward * 30 + Vector3.up * 17.5f;
+
+		Vector3 shipStartPosition = shipTransform.position;
+		Vector3 shipEndPosition = shipTransform.position + Vector3.up * 150;
+
+		Transform mcTransform = Camera.main.transform;
+		FadeManager._Instance.FadeInOut(1.5f, 1, () =>
+		{
+			mcTransform.GetComponent<CameraFollow>().enabled = false;
+			mcTransform.position = shipTransform.position + fixedPosOffset;
+			mcTransform.LookAt(shipTransform);
 		});
+
+		yield return new WaitForSeconds(2.5f);
+
+		float timer = 10;
+		float t = 0;
+		bool started = false;
+
+		while (t < timer)
+		{
+			shipTransform.position = Vector3.Lerp(shipStartPosition, shipEndPosition, _ShipLiftCurve.Evaluate(t / timer));
+			mcTransform.position = Vector3.Lerp(mcTransform.position, shipTransform.position + fixedPosOffset, 2.5f * Time.deltaTime);
+
+			if (started == false && t > 7.5f)
+			{
+				FadeManager._Instance.FadeOut(2.5f, () =>
+				{
+					PikminStatsManager.ClearSquad();
+					PikminStatsManager.ClearStats();
+
+					SceneManager.LoadScene(0);
+					Debug.Log("End of Day, fadeout done");
+				});
+				started = true;
+			}
+
+			t += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
 	}
 }
