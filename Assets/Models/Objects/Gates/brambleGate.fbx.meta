@@ -1,99 +1,9 @@
 fileFormatVersion: 2
-guid: 34c568fbc162a8e4e9d48e90532001e8
+guid: e960dd315da98cb42bafac996c40b637
 ModelImporter:
   serializedVersion: 21202
-  internalIDToNameTable:
-  - first:
-      74: 2264077025236624520
-    second: Armature.001|Armature.001Action
-  - first:
-      74: -1153017888000365145
-    second: Armature.001|Armature.002Action
-  - first:
-      74: -7376977406845123523
-    second: Armature.001|Armature.003Action
-  - first:
-      74: -9069736461833792049
-    second: Armature.001|Armature.004Action
-  - first:
-      74: -5142241952092147453
-    second: Armature.001|Armature.005Action
-  - first:
-      74: 6906267723572508546
-    second: Armature.002|Armature.001Action
-  - first:
-      74: 5138602965388526686
-    second: Armature.002|Armature.002Action
-  - first:
-      74: -5505715565960345857
-    second: Armature.002|Armature.003Action
-  - first:
-      74: 3530596194268279727
-    second: Armature.002|Armature.004Action
-  - first:
-      74: -5382724091580818210
-    second: Armature.002|Armature.005Action
-  - first:
-      74: 3598511621795961054
-    second: Armature.003|Armature.001Action
-  - first:
-      74: -894896622507537408
-    second: Armature.003|Armature.002Action
-  - first:
-      74: 8645343760740499401
-    second: Armature.003|Armature.003Action
-  - first:
-      74: -472127104101072145
-    second: Armature.003|Armature.004Action
-  - first:
-      74: -411841847731389286
-    second: Armature.003|Armature.005Action
-  - first:
-      74: -9027478188125155498
-    second: Armature.004|Armature.001Action
-  - first:
-      74: 4867429941484902380
-    second: Armature.004|Armature.002Action
-  - first:
-      74: -8202691109779532850
-    second: Armature.004|Armature.003Action
-  - first:
-      74: -5669740592792570897
-    second: Armature.004|Armature.004Action
-  - first:
-      74: 2200778306023475783
-    second: Armature.004|Armature.005Action
-  - first:
-      74: 3379960435701499455
-    second: Armature.005|Armature.001Action
-  - first:
-      74: 7693348722931728473
-    second: Armature.005|Armature.002Action
-  - first:
-      74: -1668140584559971927
-    second: Armature.005|Armature.003Action
-  - first:
-      74: -5346695045666235549
-    second: Armature.005|Armature.004Action
-  - first:
-      74: 7413068192051285482
-    second: Armature.005|Armature.005Action
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: plant
-    second: {fileID: 2800000, guid: dc61a9844d8cf2947a2c720e325bcffe, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: spine
-    second: {fileID: 2800000, guid: 0dfd02bf77c7f3941ab1d3cbddcf4582, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: wood
-    second: {fileID: 2800000, guid: b3efbf47cede33846b50ccd1309317b2, type: 3}
+  internalIDToNameTable: []
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -126,7 +36,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 3
+    meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
@@ -158,15 +68,15 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 180
-    normalImportMode: 1
+    normalSmoothAngle: 60
+    normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
