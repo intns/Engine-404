@@ -19,6 +19,9 @@ public class DemoController : MonoBehaviour
 	[SerializeField] private Image _BlackImage = null;
 	[SerializeField] private TextMeshProUGUI _Text = null;
 
+	[Header("Intro Sequence")]
+	[SerializeField] Animator _CeresAnimator = null;
+
 	private void Awake()
 	{
 		_Text.text = "";
@@ -44,11 +47,8 @@ public class DemoController : MonoBehaviour
 
 	private void Start()
 	{
-		if (!Application.isEditor)
-		{
-			Player._Instance.Pause(true);
-			StartCoroutine(IE_StartScene());
-		}
+		Player._Instance.Pause(true);
+		StartCoroutine(IE_StartScene());
 	}
 
 	void Update()
@@ -90,6 +90,7 @@ public class DemoController : MonoBehaviour
 		yield return new WaitForSeconds(1.25f);
 		_DayTimeManager.enabled = true;
 
+		StartCoroutine(IE_DoAnimation());
 		t = 0;
 		while (t <= 2)
 		{
@@ -108,6 +109,39 @@ public class DemoController : MonoBehaviour
 
 		_BlackImage.enabled = false;
 		_Text.enabled = false;
+
+		yield return new WaitForSecondsRealtime(4);
 		Player._Instance.Pause(false);
+	}
+
+	IEnumerator IE_DoAnimation()
+	{
+		_CeresAnimator.SetTrigger("DEMO_INTRO");
+		Transform main = Camera.main.transform;
+
+		CameraFollow cameraFollow = main.GetComponent<CameraFollow>();
+		cameraFollow.enabled = false;
+		Transform shipTransform = _CeresAnimator.transform;
+
+		main.position = shipTransform.position + Vector3.up * 15 + Vector3.back * 20;
+
+		float t = 0;
+		float length = 7;
+		while (t <= length)
+		{
+			// Rotate the camera to look at the Player
+			Vector3 position = Vector3.Lerp(main.position, shipTransform.position + Vector3.up * 20 + Vector3.fwd * 35, 6.5f * Time.deltaTime);
+
+			Quaternion rotation = Quaternion.Lerp(main.rotation,
+							Quaternion.LookRotation(MathUtil.DirectionFromTo(main.position, shipTransform.position + Vector3.up * 5, true)),
+							10 * Time.deltaTime);
+
+			main.SetPositionAndRotation(position, rotation);
+
+			t += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
+
+		cameraFollow.enabled = true;
 	}
 }
