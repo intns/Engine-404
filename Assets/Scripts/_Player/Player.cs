@@ -91,7 +91,7 @@ public class Player : MonoBehaviour, IHealth
 
 	private void Die()
 	{
-		DayTimeManager.FinishDay();
+		DayTimeManager._Instance.FinishDay();
 	}
 
 	public void Pause(bool toPause, PauseType type = PauseType.Full)
