@@ -2,10 +2,13 @@
  * PlayerPikminController.cs
  * Created by: Ambrosia
  * Created on: 12/2/2020 (dd/mm/yy)
+ * Last update by : Senka
+ * Last update on : 9/7/2022
  * Created for: managing the Players Pikmin and the associated data
  */
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerPikminController : MonoBehaviour
 {
@@ -41,6 +44,7 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] bool _UsingCrowdControl = false;
 	[HideInInspector] public bool _CanThrowPikmin = true;
 	[HideInInspector] public PikminColour _SelectedThrowPikmin = PikminColour.Red;
+	private bool _SelectedAPikminThisFrame;
 	private PikminAI _PikminInHand;
 
 	Vector3[] _LinePositions = new Vector3[50];
@@ -64,56 +68,11 @@ public class PlayerPikminController : MonoBehaviour
 			return;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Alpha0))
-		{
-			PikminStatsManager.Print();
-		}
-
 		if (PikminStatsManager.GetTotalInSquad() > 0)
 		{
 			if (_SelectedThrowPikmin == PikminColour.Size)
 			{
 				_SelectedThrowPikmin = GameUtil.GetMajorityColour(PikminStatsManager._InSquad);
-			}
-
-			for (int i = 0; i < (int)PikminColour.Size; i++)
-			{
-				if (!Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i)))
-				{
-					continue;
-				}
-
-				PikminColour colour = (PikminColour)i;
-				if (_SelectedThrowPikmin == colour)
-				{
-					continue;
-				}
-
-				switch (colour)
-				{
-					case PikminColour.Red:
-						if (PikminStatsManager._RedStats.GetTotalInSquad() <= 0)
-						{
-							continue;
-						}
-						break;
-					case PikminColour.Yellow:
-						if (PikminStatsManager._YellowStats.GetTotalInSquad() <= 0)
-						{
-							continue;
-						}
-						break;
-					case PikminColour.Blue:
-						if (PikminStatsManager._BlueStats.GetTotalInSquad() <= 0)
-						{
-							continue;
-						}
-						break;
-					default:
-						break;
-				}
-
-				_SelectedThrowPikmin = colour;
 			}
 		}
 		else
@@ -187,6 +146,95 @@ public class PlayerPikminController : MonoBehaviour
 
 			PikminStatsManager._Disbanding = false;
 		}
+	}
+
+	private void OnPrintPikminStatManager() {
+		PikminStatsManager.Print();
+	}
+
+    private void OnSelectPreviousPikminType() {
+		// If there are no pikmins in the squad, player can't select one
+		if (PikminStatsManager.GetTotalInSquad() <= 0) {
+			return;
+		}
+
+		// Get previous type (modulo the number of types so that it cycles)
+		PikminColour colour = (PikminColour) (((int) _SelectedThrowPikmin - 1) % (int) PikminColour.Size);
+		bool invalidColour = true;
+
+		// If there are no pikmin of this types in the squad, we search in the previous one
+		while (invalidColour) {
+			switch (colour) {
+				case PikminColour.Red:
+					if (PikminStatsManager._RedStats.GetTotalInSquad() <= 0) {
+						colour = (PikminColour)(((int)colour - 1) % (int)PikminColour.Size);
+						continue;
+					}
+					invalidColour = false;
+					break;
+				case PikminColour.Yellow:
+					if (PikminStatsManager._YellowStats.GetTotalInSquad() > 0) {
+						colour = (PikminColour)(((int)colour - 1) % (int)PikminColour.Size);
+						continue;
+					}
+					invalidColour = false;
+					break;
+				case PikminColour.Blue:
+					if (PikminStatsManager._BlueStats.GetTotalInSquad() > 0) {
+						colour = (PikminColour)(((int)colour - 1) % (int)PikminColour.Size);
+						continue;
+					}
+					invalidColour = false;
+					break;
+				default:
+					break;
+			}
+		}
+
+		// Finally, we store the result (can be the same as before the trigger if
+		// the player has no other type)
+		_SelectedThrowPikmin = colour;
+	}
+
+	private void OnSelectNextPikminType() {
+		// Basically works the same as OnSelectPreviousPikminType but by selecting
+		// the next one. A refactor to group code could be a good idea
+		if (PikminStatsManager.GetTotalInSquad() <= 0) {
+			return;
+		}
+
+		PikminColour colour = (PikminColour)(((int)_SelectedThrowPikmin + 1) % (int)PikminColour.Size);
+		bool invalidColour = true;
+
+		while (invalidColour) {
+			switch (colour) {
+				case PikminColour.Red:
+					if (PikminStatsManager._RedStats.GetTotalInSquad() <= 0) {
+						colour = (PikminColour)(((int)colour + 1) % (int)PikminColour.Size);
+						continue;
+					}
+					invalidColour = false;
+					break;
+				case PikminColour.Yellow:
+					if (PikminStatsManager._YellowStats.GetTotalInSquad() > 0) {
+						colour = (PikminColour)(((int)colour + 1) % (int)PikminColour.Size);
+						continue;
+					}
+					invalidColour = false;
+					break;
+				case PikminColour.Blue:
+					if (PikminStatsManager._BlueStats.GetTotalInSquad() > 0) {
+						colour = (PikminColour)(((int)colour + 1) % (int)PikminColour.Size);
+						continue;
+					}
+					invalidColour = false;
+					break;
+				default:
+					break;
+			}
+		}
+
+		_SelectedThrowPikmin = colour;
 	}
 
 	private void OnDrawGizmosSelected()
