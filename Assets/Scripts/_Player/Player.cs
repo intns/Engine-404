@@ -71,7 +71,6 @@ public class Player : MonoBehaviour, IHealth
 		}
 		else
 		{
-			_Animator.SetBool("Walk", false);
 			_WhistleLine.SetPosition(0, Vector3.zero);
 			_WhistleLine.SetPosition(1, Vector3.zero);
 		}
@@ -101,9 +100,7 @@ public class Player : MonoBehaviour, IHealth
 	// Happens whenever the movement joystick/buttons change values
 	private void OnMovement(InputValue value) {
 		// If the player is moving in any direction and the game isn't paused, play the movement animation
-		if ((!GameManager._IsPaused) && ((value.Get<Vector2>().x != 0) || (value.Get<Vector2>().y != 0))) {
-			_Animator.SetBool("Walk", true);
-		}
+		_Animator.SetBool("Walk", (!_MovementController._Paralysed) && (!GameManager._IsPaused) && ((value.Get<Vector2>().x != 0) || (value.Get<Vector2>().y != 0)));
 	}
 
 	#region Health Implementation

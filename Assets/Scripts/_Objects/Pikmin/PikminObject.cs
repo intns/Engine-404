@@ -2,10 +2,14 @@
  * PikminObject.cs
  * Created by: Ambrosia
  * Created on: 30/4/2020 (dd/mm/yy)
+ * Last update by : Senka
+ * Last update on : 10/7/2022
  */
 
 using UnityEngine;
 
+// If you add any pikmin colour here, don't forget to
+// update all the pikmin type related functions
 public enum PikminColour
 {
 	Red = 0,
