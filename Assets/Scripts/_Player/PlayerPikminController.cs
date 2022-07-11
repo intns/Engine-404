@@ -123,7 +123,7 @@ public class PlayerPikminController : MonoBehaviour
 		_JustReleasedFormation = false;
 	}
 
-	private void OnDisbandPikmins() {
+	public void OnDisbandPikmins() {
 		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
 			return;
 		}
@@ -138,21 +138,21 @@ public class PlayerPikminController : MonoBehaviour
 		PikminStatsManager._Disbanding = false;
 	}
 
-	private void OnControlFormation(InputValue value) {
+	public void OnControlFormation(InputAction.CallbackContext context) {
 		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
 			_ControlFormation = false;
 			return;
 		}
 
-		if (value.isPressed) {
+		if (context.started) {
 			_ControlFormation = true;
-		} else {
+		} else if (context.canceled) {
 			_ControlFormation = false;
 			_JustReleasedFormation = true;
 		}
 	}
 
-	private void OnPrimaryAction(InputValue value) {
+	public void OnPrimaryAction(InputAction.CallbackContext context) {
 		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
 			return;
 		}
@@ -161,7 +161,7 @@ public class PlayerPikminController : MonoBehaviour
 		bool canPluck = colls.Length != 0;
 
 		// Determine if button is being pressed or released
-		if (value.isPressed) {
+		if (context.started) {
 			if (canPluck) {
 				_ClosestSprout = null;
 				float closestDist = float.PositiveInfinity;
@@ -201,7 +201,7 @@ public class PlayerPikminController : MonoBehaviour
 					_HoldingPikmin = true;
 				}
 			}
-		} else {
+		} else if (context.canceled) {
 			// The rest of the throw depends if we even got a Pikmin
 			if (_PikminInHand != null) {
 				Vector3 whistlePos = new Vector3(_WhistleTransform.position.x, 0, _WhistleTransform.position.z);
@@ -218,12 +218,14 @@ public class PlayerPikminController : MonoBehaviour
 		}
 	}
 
-	private void OnPrintPikminStatManager() {
-		PikminStatsManager.Print();
+	public void OnPrintPikminStatManager(InputAction.CallbackContext context) {
+		if (context.started) {
+			PikminStatsManager.Print();
+		}
 	}
 
-    private void OnSelectPreviousPikminType() {
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+    public void OnSelectPreviousPikminType(InputAction.CallbackContext context) {
+		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
 			return;
 		}
 
@@ -236,8 +238,8 @@ public class PlayerPikminController : MonoBehaviour
 		_SelectedThrowPikmin = SelectValidPikminType(false);
 	}
 
-	private void OnSelectNextPikminType() {
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+	public void OnSelectNextPikminType(InputAction.CallbackContext context) {
+		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
 			return;
 		}
 
@@ -250,8 +252,8 @@ public class PlayerPikminController : MonoBehaviour
 		_SelectedThrowPikmin = SelectValidPikminType(true);
 	}
 
-	private void OnSelectMajorityPikminType() {
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+	public void OnSelectMajorityPikminType(InputAction.CallbackContext context) {
+		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
 			return;
 		}
 

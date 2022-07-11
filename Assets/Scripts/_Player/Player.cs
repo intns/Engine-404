@@ -93,14 +93,14 @@ public class Player : MonoBehaviour, IHealth
 	}
 
 	// When start key is pressed
-	private void OnStart() {
+	public void OnStart() {
 		Die();
 	}
 
 	// Happens whenever the movement joystick/buttons change values
-	private void OnMovement(InputValue value) {
+	public void OnMovement(InputAction.CallbackContext context) {
 		// If the player is moving in any direction and the game isn't paused, play the movement animation
-		_Animator.SetBool("Walk", (!_MovementController._Paralysed) && (!GameManager._IsPaused) && ((value.Get<Vector2>().x != 0) || (value.Get<Vector2>().y != 0)));
+		_Animator.SetBool("Walk", (!_MovementController._Paralysed) && (!GameManager._IsPaused) && ((context.ReadValue<Vector2>().x != 0) || (context.ReadValue<Vector2>().y != 0)));
 	}
 
 	#region Health Implementation

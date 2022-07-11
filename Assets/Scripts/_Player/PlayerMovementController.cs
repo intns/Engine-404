@@ -176,8 +176,8 @@ public class PlayerMovementController : MonoBehaviour
 	}
 
 	// Happens whenever the movement joystick/buttons change values
-	private void OnMovement(InputValue value) {
+	public void OnMovement(InputAction.CallbackContext context) {
 		// Stores the current movement (already normalized)
-		_Movement = value.Get<Vector2>();
+		_Movement = context.ReadValue<Vector2>();
 	}
 }

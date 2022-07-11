@@ -222,16 +222,16 @@ public class WhistleController : MonoBehaviour
 		}
 	}
 
-	private void OnMovement(InputValue value) {
-		_Movement = value.Get<Vector2>();
+	public void OnMovement(InputAction.CallbackContext context) {
+		_Movement = context.ReadValue<Vector2>();
 	}
 
-	private void OnWhistle(InputValue value) {
+	public void OnWhistle(InputAction.CallbackContext context) {
 		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
 			return;
 		}
 
-		if (value.isPressed) {
+		if (context.started) {
 			transform.localScale = Vector3.one * _StartingRadius;
 			_Blowing = true;
 
@@ -240,7 +240,7 @@ public class WhistleController : MonoBehaviour
 
 			// Play the blow sound
 			_Source.Play();
-		} else {
+		} else if (context.canceled) {
 			EndBlow();
 		}
 	}

@@ -155,22 +155,26 @@ public class CameraFollow : MonoBehaviour
 		HandleControls();
 	}
 
-	private void OnRotateCamera(InputValue value) {
-		_CameraTriggerRotation = value.Get<float>();
+	public void OnRotateCamera(InputAction.CallbackContext context) {
+		_CameraTriggerRotation = context.ReadValue<float>();
 	}
 
-	private void OnZoom() {
-		_HolderIndex++;
-		ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
+	public void OnZoom(InputAction.CallbackContext context) {
+		if (context.started) {
+			_HolderIndex++;
+			ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
+		}
 	}
 
-	private void OnTopDownView() {
-		_TopView = !_TopView; // Invert the TopView 
-		ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
+	public void OnTopDownView(InputAction.CallbackContext context) {
+		if (context.started) {
+			_TopView = !_TopView; // Invert the TopView 
+			ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
+		}
 	}
 
-	private void OnResetCamera() {
-		if (_ResetCooldownTimer <= 0 && _Apply) {
+	public void OnResetCamera(InputAction.CallbackContext context) {
+		if (context.started && _ResetCooldownTimer <= 0 && _Apply) {
 			float yDif = transform.eulerAngles.y - Player._Instance._MovementController._RotationBeforeIdle.eulerAngles.y;
 			if (Mathf.Abs(yDif) >= 0.5f) {
 				StartCoroutine(ResetCamOverTime(_CameraResetLength));
