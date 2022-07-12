@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class PikminSpawnData
@@ -56,6 +57,7 @@ public class Onion : MonoBehaviour
 	public Transform _CarryEndpoint = null;
 	private bool _CanUse = false;
 	private bool _InMenu = false;
+	private float _UpDownAxis;
 
 	// First number is coming out of the onion,
 	// Second number is total in the onion
@@ -110,58 +112,18 @@ public class Onion : MonoBehaviour
 
 	private void Update()
 	{
-		if (_CanUse)
-		{
-			if (Input.GetButtonDown("A Button") && !_InMenu)
-			{
-				Player._Instance.Pause(true);
-				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
-				{
-					_OnionCanvas.gameObject.SetActive(true);
-
-					_CurPikminAmounts = new PikminAmount
-					{
-						_InSquad = PikminStatsManager.GetInSquad(_OnionColour),
-						_InOnion = PikminStatsManager.GetInOnion(_OnionColour)
-					};
-
-					_OldPikminAmounts = new PikminAmount
-					{
-						_InOnion = _CurPikminAmounts._InOnion,
-						_InSquad = _CurPikminAmounts._InSquad
-					};
-
-					_InMenu = true;
-
-					StartCoroutine(FadeInCanvas());
-				}));
-			}
-			else if (Input.GetButtonDown("B Button") && _InMenu)
-			{
-				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
-				{
-					_OnionCanvas.gameObject.SetActive(false);
-					Player._Instance.Pause(false);
-					_InMenu = false;
-
-					StartCoroutine(FadeOutCanvas());
-				}));
-			}
-		}
-
 		// Handle in-menu input processing
 		if (_InMenu)
 		{
-			float vInput = Input.GetAxis("Vertical");
 			if (_InputTimer <= 0)
 			{
-				switch (vInput)
+				switch (_UpDownAxis)
 				{
 					// Up on the stick / W
 					case > 0.25f:
 						if (_CurPikminAmounts._InSquad > 0)
 						{
-							if (vInput > 0.8f)
+							if (_UpDownAxis > 0.8f)
 							{
 								_InputTimer = 0.05f;
 							}
@@ -178,7 +140,7 @@ public class Onion : MonoBehaviour
 					case < -0.25f:
 						if (_CurPikminAmounts._InOnion > 0)
 						{
-							if (vInput < -0.8f)
+							if (_UpDownAxis < -0.8f)
 							{
 								_InputTimer = 0.05f;
 							}
@@ -205,10 +167,55 @@ public class Onion : MonoBehaviour
 				_InputTimer -= Time.deltaTime;
 			}
 
-			if (Input.GetButtonDown("A Button")
-				&& (_CurPikminAmounts._InSquad != _OldPikminAmounts._InSquad
-					|| _CurPikminAmounts._InOnion != _OldPikminAmounts._InOnion))
+			
+
+			_InOnionText.text = $"{_CurPikminAmounts._InOnion}";
+			_InSquadText.text = $"{_CurPikminAmounts._InSquad}";
+			_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
+		}
+	}
+
+	public void OnMovement(InputAction.CallbackContext context) {
+		_UpDownAxis = context.ReadValue<Vector2>().y;
+	}
+
+	public void OnWhistle(InputAction.CallbackContext context) {
+		if (context.started && _InMenu) {
+			FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 			{
+				_OnionCanvas.gameObject.SetActive(false);
+				Player._Instance.Pause(false);
+				_InMenu = false;
+
+				StartCoroutine(FadeOutCanvas());
+			}));
+		}
+	}
+
+	public void OnPrimaryAction(InputAction.CallbackContext context) {
+		if (context.started && _CanUse) {
+			if (!_InMenu) {
+				Player._Instance.Pause(true);
+				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() => {
+					_OnionCanvas.gameObject.SetActive(true);
+
+					_CurPikminAmounts = new PikminAmount {
+						_InSquad = PikminStatsManager.GetInSquad(_OnionColour),
+						_InOnion = PikminStatsManager.GetInOnion(_OnionColour)
+					};
+
+					_OldPikminAmounts = new PikminAmount {
+						_InOnion = _CurPikminAmounts._InOnion,
+						_InSquad = _CurPikminAmounts._InSquad
+					};
+
+					_InMenu = true;
+
+					StartCoroutine(FadeInCanvas());
+				}));
+			}
+			else if (_CurPikminAmounts._InSquad != _OldPikminAmounts._InSquad ||
+				_CurPikminAmounts._InOnion != _OldPikminAmounts._InOnion) {
 				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 				{
 					_OnionCanvas.gameObject.SetActive(false);
@@ -217,23 +224,17 @@ public class Onion : MonoBehaviour
 
 					int fieldDifference = _CurPikminAmounts._InSquad - _OldPikminAmounts._InSquad;
 
-					if (fieldDifference > 0)
-					{
+					if (fieldDifference > 0) {
 						StartCoroutine(IE_SpawnPikmin(fieldDifference));
-					}
-					else if (fieldDifference < 0)
-					{
+					} else if (fieldDifference < 0) {
 						Collider[] pikmin = Physics.OverlapSphere(_CarryEndpoint.position, 50f, _PikminMask);
-						if (pikmin.Length == 0)
-						{
+						if (pikmin.Length == 0) {
 							return;
 						}
 
-						for (int i = 0; i < Mathf.Abs(fieldDifference); i++)
-						{
+						for (int i = 0; i < Mathf.Abs(fieldDifference); i++) {
 							var pikai = pikmin[i].GetComponent<PikminAI>();
-							if (pikai._InSquad)
-							{
+							if (pikai._InSquad) {
 								pikai.RemoveFromSquad();
 								PikminStatsManager.Add(pikai._Data._PikminColour, pikai._CurrentMaturity, PikminStatSpecifier.InOnion);
 								PikminStatsManager.Remove(pikai._Data._PikminColour, pikai._CurrentMaturity, PikminStatSpecifier.OnField);
@@ -245,10 +246,6 @@ public class Onion : MonoBehaviour
 					StartCoroutine(FadeOutCanvas());
 				}));
 			}
-
-			_InOnionText.text = $"{_CurPikminAmounts._InOnion}";
-			_InSquadText.text = $"{_CurPikminAmounts._InSquad}";
-			_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
 		}
 	}
 
