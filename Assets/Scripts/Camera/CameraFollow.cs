@@ -7,6 +7,7 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class CameraHolder
@@ -45,6 +46,7 @@ public class CameraFollow : MonoBehaviour
 	[SerializeField] private float _TriggerRotationSpeed = 1;
 	[SerializeField] private float _CameraResetLength = 1;
 	[SerializeField] private float _CameraResetCooldown = 1;
+	private float _CameraTriggerRotation;
 
 	[Header("Miscellaneous")]
 	[SerializeField] private LayerMask _MapLayer = 0;
@@ -153,6 +155,33 @@ public class CameraFollow : MonoBehaviour
 		HandleControls();
 	}
 
+	public void OnRotateCamera(InputAction.CallbackContext context) {
+		_CameraTriggerRotation = context.ReadValue<float>();
+	}
+
+	public void OnZoom(InputAction.CallbackContext context) {
+		if (context.started) {
+			_HolderIndex++;
+			ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
+		}
+	}
+
+	public void OnTopDownView(InputAction.CallbackContext context) {
+		if (context.started) {
+			_TopView = !_TopView; // Invert the TopView 
+			ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
+		}
+	}
+
+	public void OnResetCamera(InputAction.CallbackContext context) {
+		if (context.started && _ResetCooldownTimer <= 0 && _Apply) {
+			float yDif = transform.eulerAngles.y - Player._Instance._MovementController._RotationBeforeIdle.eulerAngles.y;
+			if (Mathf.Abs(yDif) >= 0.5f) {
+				StartCoroutine(ResetCamOverTime(_CameraResetLength));
+			}
+		}
+	}
+
 	/// <summary>
 	/// Applies the CurrentHolder variable to the Camera's variables
 	/// </summary>
@@ -199,43 +228,13 @@ public class CameraFollow : MonoBehaviour
 	/// </summary>
 	private void HandleControls()
 	{
-		// Check if we're holding either the Left or Right trigger and
-		// rotate around the player using TriggerRotationSpeed if so
-		if (Input.GetButton("Right Trigger"))
-		{
-			RotateView(-_TriggerRotationSpeed * Time.deltaTime);
-		}
-		else if (Input.GetButton("Left Trigger"))
-		{
-			RotateView(_TriggerRotationSpeed * Time.deltaTime);
-		}
+		// Rotate around the player using TriggerRotationSpeed
+		RotateView(_CameraTriggerRotation * _TriggerRotationSpeed * Time.deltaTime);
 
 		// As we've let go of the triggers, reset the desired new rotation
-		if (Input.GetButtonUp("Right Trigger") || Input.GetButtonUp("Left Trigger"))
+		if (_CameraTriggerRotation == 0)
 		{
 			_CurrentRotation = 0;
-		}
-
-		if (Input.GetButtonDown("Right Bumper"))
-		{
-			_HolderIndex++;
-			ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
-		}
-		if (Input.GetButtonDown("Left Stick Click"))
-		{
-			_TopView = !_TopView; // Invert the TopView 
-			ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
-		}
-
-		if (Input.GetButtonDown("Left Bumper") &&
-			_ResetCooldownTimer <= 0 &&
-			_Apply)
-		{
-			float yDif = transform.eulerAngles.y - Player._Instance._MovementController._RotationBeforeIdle.eulerAngles.y;
-			if (Mathf.Abs(yDif) >= 0.5f)
-			{
-				StartCoroutine(ResetCamOverTime(_CameraResetLength));
-			}
 		}
 
 		if (_ResetCooldownTimer > 0)

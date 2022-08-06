@@ -2,10 +2,13 @@
  * Player.cs
  * Created by: Ambrosia
  * Created on: 8/2/2020 (dd/mm/yy)
+ * Last update by : Senka
+ * Last update on : 9/7/2022
  * Created for: having a generalised manager for the seperate Player scripts
  */
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerPikminController),
 	typeof(PlayerMovementController))]
@@ -47,15 +50,6 @@ public class Player : MonoBehaviour, IHealth
 	{
 		if (!GameManager._IsPaused)
 		{
-			if (_Controller.velocity.magnitude > 2.5f)
-			{
-				_Animator.SetBool("Walk", true);
-			}
-			else
-			{
-				_Animator.SetBool("Walk", false);
-			}
-
 			if (_IsHit)
 			{
 				_Animator.ResetTrigger("Damage");
@@ -64,12 +58,6 @@ public class Player : MonoBehaviour, IHealth
 
 			// Handle health-related functions
 			if (_CurrentHealth <= 0)
-			{
-				Die();
-			}
-
-			// Handle exiting the game/program
-			if (Input.GetButtonDown("Start Button"))
 			{
 				Die();
 			}
@@ -83,7 +71,6 @@ public class Player : MonoBehaviour, IHealth
 		}
 		else
 		{
-			_Animator.SetBool("Walk", false);
 			_WhistleLine.SetPosition(0, Vector3.zero);
 			_WhistleLine.SetPosition(1, Vector3.zero);
 		}
@@ -103,6 +90,17 @@ public class Player : MonoBehaviour, IHealth
 		GameManager._IsPaused = toPause;
 		GameManager._PauseType = type;
 		_MovementController._Paralysed = toPause;
+	}
+
+	// When start key is pressed
+	public void OnStart() {
+		Die();
+	}
+
+	// Happens whenever the movement joystick/buttons change values
+	public void OnMovement(InputAction.CallbackContext context) {
+		// If the player is moving in any direction and the game isn't paused, play the movement animation
+		_Animator.SetBool("Walk", (!_MovementController._Paralysed) && (!GameManager._IsPaused) && ((context.ReadValue<Vector2>().x != 0) || (context.ReadValue<Vector2>().y != 0)));
 	}
 
 	#region Health Implementation

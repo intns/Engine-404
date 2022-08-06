@@ -2,11 +2,14 @@
  * WhistleController.cs
  * Created by: Ambrosia, Helodity
  * Created on: 9/2/2020, overhaul on 31/3/2020 (dd/mm/yy)
+ * Last update by : Senka
+ * Last update on : 10/7/2022
  * Created for: Controlling the whistle
  */
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(AudioSource))]
 public class WhistleController : MonoBehaviour
@@ -41,6 +44,7 @@ public class WhistleController : MonoBehaviour
 	[Header("Controller Settings")]
 	[SerializeField] private float _MaxDistFromPlayer = 5;
 	[SerializeField] private float _MoveSpeed = 5;
+	private Vector2 _Movement;
 	private Vector2 _OffsetFromPlayer = Vector2.zero;
 
 	[Header("Raycast Settings")]
@@ -53,6 +57,7 @@ public class WhistleController : MonoBehaviour
 	private GameObject[] _Particles;
 	private Camera _MainCamera;
 	private Transform _PlayerTransform;
+	private PlayerInput _PlayerInput;
 	private bool _Blowing = false;
 	private float _TimeBlowing = 0;
 
@@ -75,6 +80,8 @@ public class WhistleController : MonoBehaviour
 		_Source.clip = _BlowSound;
 
 		_MainCamera = Camera.main;
+
+		_PlayerInput = gameObject.GetComponentInParent<PlayerInput>();
 	}
 
 	private void Start()
@@ -96,10 +103,8 @@ public class WhistleController : MonoBehaviour
 				}
 
 				// Check if there is a controller attached
-				string[] names = Input.GetJoystickNames();
-				if (names.Length > 0 && names[0].Length > 0)
-				{
-					Vector3 directionVector = new Vector3(Input.GetAxis("Horizontal") * _MoveSpeed, 0, Input.GetAxis("Vertical") * _MoveSpeed);
+				if (_PlayerInput.currentControlScheme != "KeyboardAndMouse") {
+					Vector3 directionVector = new Vector3(_Movement.x * _MoveSpeed, 0, _Movement.y * _MoveSpeed);
 					//Rotate the input vector into camera space so up is camera's up and right is camera's right
 					directionVector = _MainCamera.transform.rotation * directionVector;
 
@@ -129,13 +134,11 @@ public class WhistleController : MonoBehaviour
 						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
 						transform.position = _Reticle.position = target;
 					}
-				}
-				else
-				{
+				} else {
 					// Reliant on the mouse, so cannot be used with controllers
 					try
 					{
-						Ray ray = _MainCamera.ScreenPointToRay(Input.mousePosition);
+						Ray ray = _MainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 						if (Physics.Raycast(ray, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
 						{
 							Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
@@ -174,23 +177,6 @@ public class WhistleController : MonoBehaviour
 			}
 
 			return;
-		}
-
-		// Detecting Player input
-		if (Input.GetButtonDown("B Button"))
-		{
-			transform.localScale = Vector3.one * _StartingRadius;
-			_Blowing = true;
-
-			// Start the particles
-			SetParticlesActive(true);
-
-			// Play the blow sound
-			_Source.Play();
-		}
-		if (Input.GetButtonUp("B Button"))
-		{
-			EndBlow();
 		}
 
 		if (_Blowing)
@@ -233,6 +219,29 @@ public class WhistleController : MonoBehaviour
 					}
 				}
 			}
+		}
+	}
+
+	public void OnMovement(InputAction.CallbackContext context) {
+		_Movement = context.ReadValue<Vector2>();
+	}
+
+	public void OnWhistle(InputAction.CallbackContext context) {
+		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+			return;
+		}
+
+		if (context.started) {
+			transform.localScale = Vector3.one * _StartingRadius;
+			_Blowing = true;
+
+			// Start the particles
+			SetParticlesActive(true);
+
+			// Play the blow sound
+			_Source.Play();
+		} else if (context.canceled) {
+			EndBlow();
 		}
 	}
 

@@ -2,10 +2,13 @@
  * PlayerMovementController.cs
  * Created by: Ambrosia
  * Created on: 7/2/2020 (dd/mm/yy)
+ * Last update by : Senka
+ * Last update on : 9/7/2022
  * Created for: controlling the movement of the Player
  */
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -29,6 +32,7 @@ public class PlayerMovementController : MonoBehaviour
 	[HideInInspector] public bool _Paralysed = false;
 
 	private float _IdleTimer = 0;
+	private Vector2 _Movement;
 	private RaycastHit _SlideHit;
 	private Vector3 _CharacterContactPoint;
 	private Vector3 _HitNormal;
@@ -75,11 +79,8 @@ public class PlayerMovementController : MonoBehaviour
 			_Controller.Move(_Gravity * Time.deltaTime * Vector3.down);
 		}
 
-		// Get input from the 'Horizontal' and 'Vertical' axis, and normalize it
-		// so as to not the player move quicker when going diagonally
-		Vector3 mDirection = new Vector3(Input.GetAxis("Horizontal"),
-			0,
-			Input.GetAxis("Vertical")).normalized;
+		// Get current movement and make it a Vector3
+		Vector3 mDirection = new Vector3(_Movement.x, 0, _Movement.y);
 
 		// If the player has even touched the H and V axis
 		if (Mathf.Abs(mDirection.x) <= _MovementDeadzone.x && Mathf.Abs(mDirection.z) <= _MovementDeadzone.y)
@@ -172,5 +173,11 @@ public class PlayerMovementController : MonoBehaviour
 		// We couldn't ground ourselves whilst travelling down a slope and 
 		// the controller says we're not grounded so return false
 		return false;
+	}
+
+	// Happens whenever the movement joystick/buttons change values
+	public void OnMovement(InputAction.CallbackContext context) {
+		// Stores the current movement (already normalized)
+		_Movement = context.ReadValue<Vector2>();
 	}
 }
