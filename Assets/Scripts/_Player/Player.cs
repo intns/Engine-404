@@ -11,7 +11,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerPikminController),
-	typeof(PlayerMovementController))]
+									typeof(AnimationController),
+									typeof(PlayerMovementController))]
 public class Player : MonoBehaviour, IHealth
 {
 	public static Player _Instance;
@@ -28,9 +29,24 @@ public class Player : MonoBehaviour, IHealth
 	[SerializeField] private float _CurrentHealth = 100;
 
 	[Header("Animations")]
-	[SerializeField] private Animator _Animator;
+	[SerializeField] AnimationController _AnimController;
+
+	public static class PlayerAnimation
+	{
+		public const int Walk = 0;
+		public const int Die = 1;
+		public const int Damage = 2;
+		public const int Idle = 3;
+	}
+
+	[SerializeField] AnimationClip _WalkAnimation;
+	[SerializeField] AnimationClip _DieAnimation;
+	[SerializeField] AnimationClip _DamageAnimation;
+	[SerializeField] AnimationClip _IdleAnimation;
+
 	[SerializeField] private CharacterController _Controller;
 	bool _IsHit = false;
+	bool _Walking = false;
 
 	private void OnEnable()
 	{
@@ -42,6 +58,11 @@ public class Player : MonoBehaviour, IHealth
 		_MovementController = GetComponent<PlayerMovementController>();
 		_PikminController = GetComponent<PlayerPikminController>();
 
+		Debug.Assert(PlayerAnimation.Walk == _AnimController.AddState(_WalkAnimation));
+		Debug.Assert(PlayerAnimation.Die == _AnimController.AddState(_DieAnimation));
+		Debug.Assert(PlayerAnimation.Damage == _AnimController.AddState(_DamageAnimation));
+		Debug.Assert(PlayerAnimation.Idle == _AnimController.AddState(_IdleAnimation));
+
 		// Resets the health back to the max if changed in the editor
 		_CurrentHealth = _MaxHealth;
 	}
@@ -50,10 +71,18 @@ public class Player : MonoBehaviour, IHealth
 	{
 		if (!GameManager._IsPaused)
 		{
-			if (_IsHit)
+			if (_Walking)
 			{
-				_Animator.ResetTrigger("Damage");
+				_AnimController.ChangeState(PlayerAnimation.Walk);
+			}
+			else if (_IsHit)
+			{
+				_AnimController.ChangeState(PlayerAnimation.Damage);
 				_IsHit = false;
+			}
+			else
+			{
+				_AnimController.ChangeState(PlayerAnimation.Idle);
 			}
 
 			// Handle health-related functions
@@ -83,9 +112,7 @@ public class Player : MonoBehaviour, IHealth
 
 	public void Pause(bool toPause, PauseType type = PauseType.Full)
 	{
-		// Time.timeScale = toPause ? 0 : 1;
-		_Animator.SetBool("Walk", false);
-		_Animator.ResetTrigger("Damage");
+		_AnimController.ChangeState(PlayerAnimation.Idle);
 
 		GameManager._IsPaused = toPause;
 		GameManager._PauseType = type;
@@ -93,14 +120,16 @@ public class Player : MonoBehaviour, IHealth
 	}
 
 	// When start key is pressed
-	public void OnStart() {
+	public void OnStart()
+	{
 		Die();
 	}
 
 	// Happens whenever the movement joystick/buttons change values
-	public void OnMovement(InputAction.CallbackContext context) {
-		// If the player is moving in any direction and the game isn't paused, play the movement animation
-		_Animator.SetBool("Walk", (!_MovementController._Paralysed) && (!GameManager._IsPaused) && ((context.ReadValue<Vector2>().x != 0) || (context.ReadValue<Vector2>().y != 0)));
+	public void OnMovement(InputAction.CallbackContext context)
+	{
+		// If NOT paralyzed AND NOT paused AND IS moving any direction
+		_Walking = (!_MovementController._Paralysed) && (!GameManager._IsPaused) && ((context.ReadValue<Vector2>().x != 0) || (context.ReadValue<Vector2>().y != 0));
 	}
 
 	#region Health Implementation
@@ -124,8 +153,8 @@ public class Player : MonoBehaviour, IHealth
 
 	public float SubtractHealth(float take)
 	{
-		_Animator.SetTrigger("Damage");
 		_IsHit = true;
+		_AnimController.ChangeState(PlayerAnimation.Damage);
 		return _CurrentHealth -= take;
 	}
 
@@ -133,7 +162,7 @@ public class Player : MonoBehaviour, IHealth
 	{
 		if (_CurrentHealth > set)
 		{
-			_Animator.SetTrigger("Damage");
+			_AnimController.ChangeState(PlayerAnimation.Damage);
 			_IsHit = true;
 		}
 

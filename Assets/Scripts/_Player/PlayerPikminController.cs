@@ -1,10 +1,8 @@
 /*
  * PlayerPikminController.cs
- * Created by: Ambrosia
+ * Created by: Ambrosia, SenkaSkriena
  * Created on: 12/2/2020 (dd/mm/yy)
- * Last update by : Senka
- * Last update on : 10/7/2022
- * Created for: managing the Players Pikmin and the associated data
+ * Created for: Managing the Players Pikmin and the associated data
  */
 
 using UnityEngine;
@@ -14,54 +12,54 @@ public class PlayerPikminController : MonoBehaviour
 {
 	[Header("Components")]
 	public Transform _FormationCenter;
-	[SerializeField] private LayerMask _PikminLayer;
+	[SerializeField] LayerMask _PikminLayer;
 	[SerializeField] LineRenderer _LineRenderer;
 	[SerializeField] Animator _Animator;
 
 	[Header("Plucking")]
-	[SerializeField] private float _PikminPluckDistance = 3.5f;
-	[SerializeField] private LayerMask _PikminPluckLayer;
+	[SerializeField] float _PikminPluckDistance = 3.5f;
+	[SerializeField] LayerMask _PikminPluckLayer;
 
 	[Header("Throwing")]
-	[SerializeField] private float _PikminThrowRadius = 17.5f;
-	[SerializeField] private LayerMask _AllMask;
+	[SerializeField] float _PikminThrowRadius = 17.5f;
+	[SerializeField] LayerMask _AllMask;
 
 	[Header("Grabbing")]
-	[SerializeField] private float _PikminGrabRadius = 5;
-	[SerializeField] private float _VerticalMaxGrabRadius = 1.5f;
-	[SerializeField] private Transform _WhistleTransform = null;
+	[SerializeField] float _PikminGrabRadius = 5;
+	[SerializeField] float _VerticalMaxGrabRadius = 1.5f;
+	[SerializeField] Transform _WhistleTransform = null;
 
 	[Header("Formation")]
-	[SerializeField] private LayerMask _MapMask;
+	[SerializeField] LayerMask _MapMask;
 	[Space]
-	[SerializeField] private float _IterationScale = 1;
-	[SerializeField] private float _StartingDistance = 2;
-	[SerializeField] private float _DistancePerPikmin = 0.05f; // How much is added to the offset for each pikmin
+	[SerializeField] float _IterationScale = 1;
+	[SerializeField] float _StartingDistance = 2;
+	[SerializeField] float _DistancePerPikmin = 0.05f; // How much is added to the offset for each pikmin
 	[Space]
-	[SerializeField] private float _CrowdControlLength = 2.5f;
+	[SerializeField] float _CrowdControlLength = 2.5f;
 
 	[SerializeField] Vector2 _DirectionToMouse = Vector2.zero;
 	[SerializeField] bool _UsingCrowdControl = false;
 	[HideInInspector] public bool _CanThrowPikmin = true;
 	[HideInInspector] public PikminColour _SelectedThrowPikmin = PikminColour.Red;
-	private bool _SelectedAPikminThisFrame;
-	private PikminAI _PikminInHand;
-	private bool _Plucking = false;
-	private PikminSprout _ClosestSprout = null;
-	private bool _HoldingPikmin = false;
-	private bool _ControlFormation = false;
-	private bool _JustReleasedFormation = false;
+	
+	PikminAI _PikminInHand;
+	bool _Plucking = false;
+	PikminSprout _ClosestSprout = null;
+	bool _HoldingPikmin = false;
+	bool _ControlFormation = false;
+	bool _JustReleasedFormation = false;
 
 	Vector3[] _LinePositions = new Vector3[50];
 	Vector3 _ThrownVelocity = Vector3.zero;
 
-	private void Awake()
+	void Awake()
 	{
 		_LineRenderer.positionCount = _LinePositions.Length;
 		_ThrownVelocity = transform.forward;
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
 		{
@@ -123,37 +121,47 @@ public class PlayerPikminController : MonoBehaviour
 		_JustReleasedFormation = false;
 	}
 
-	public void OnDisbandPikmins() {
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+	public void OnDisbandPikmins()
+	{
+		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		{
 			return;
 		}
 
 		PikminStatsManager._Disbanding = true;
 
 		// Remove each Pikmin from the squad
-		while (PikminStatsManager._InSquad.Count > 0) {
+		while (PikminStatsManager._InSquad.Count > 0)
+		{
 			PikminStatsManager._InSquad[0].RemoveFromSquad();
 		}
 
 		PikminStatsManager._Disbanding = false;
 	}
 
-	public void OnControlFormation(InputAction.CallbackContext context) {
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+	public void OnControlFormation(InputAction.CallbackContext context)
+	{
+		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		{
 			_ControlFormation = false;
 			return;
 		}
 
-		if (context.started) {
+		if (context.started)
+		{
 			_ControlFormation = true;
-		} else if (context.canceled) {
+		}
+		else if (context.canceled)
+		{
 			_ControlFormation = false;
 			_JustReleasedFormation = true;
 		}
 	}
 
-	public void OnPrimaryAction(InputAction.CallbackContext context) {
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+	public void OnPrimaryAction(InputAction.CallbackContext context)
+	{
+		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		{
 			return;
 		}
 
@@ -161,18 +169,23 @@ public class PlayerPikminController : MonoBehaviour
 		bool canPluck = colls.Length != 0;
 
 		// Determine if button is being pressed or released
-		if (context.started) {
-			if (canPluck) {
+		if (context.started)
+		{
+			if (canPluck)
+			{
 				_ClosestSprout = null;
 				float closestDist = float.PositiveInfinity;
-				foreach (Collider coll in colls) {
+				foreach (Collider coll in colls)
+				{
 					PikminSprout sprout = coll.GetComponent<PikminSprout>();
-					if (!sprout.CanPluck()) {
+					if (!sprout.CanPluck())
+					{
 						continue;
 					}
 
 					float dist = MathUtil.DistanceTo(transform.position, coll.transform.position);
-					if (dist >= closestDist) {
+					if (dist >= closestDist)
+					{
 						continue;
 					}
 
@@ -180,18 +193,21 @@ public class PlayerPikminController : MonoBehaviour
 					_ClosestSprout = sprout;
 				}
 
-				if (_ClosestSprout != null) {
+				if (_ClosestSprout != null)
+				{
 					_Plucking = true;
 				}
 			}
 
 			// Check if we've got more than 0 Pikmin in
 			// our squad and we press the Throw key (currently Space)
-			
-			else if (_CanThrowPikmin && PikminStatsManager.GetTotalOnField() > 0 && _PikminInHand == null) {
+
+			else if (_CanThrowPikmin && PikminStatsManager.GetTotalOnField() > 0 && _PikminInHand == null)
+			{
 				GameObject closestPikmin = GetClosestPikmin();
 				// Check if we've even gotten a Pikmin
-				if (closestPikmin != null) {
+				if (closestPikmin != null)
+				{
 					_PikminInHand = closestPikmin.GetComponent<PikminAI>();
 
 					_PikminInHand.StartThrowHold();
@@ -201,15 +217,19 @@ public class PlayerPikminController : MonoBehaviour
 					_HoldingPikmin = true;
 				}
 			}
-		} else if (context.canceled) {
+		}
+		else if (context.canceled)
+		{
 			// The rest of the throw depends if we even got a Pikmin
-			if (_PikminInHand != null) {
+			if (_PikminInHand != null)
+			{
 				Vector3 whistlePos = new Vector3(_WhistleTransform.position.x, 0, _WhistleTransform.position.z);
 				transform.LookAt(new Vector3(whistlePos.x, transform.position.y, whistlePos.z));
 				_PikminInHand.transform.LookAt(new Vector3(whistlePos.x, _PikminInHand.transform.position.y, whistlePos.z));
 
 				Rigidbody rigidbody = _PikminInHand.GetComponent<Rigidbody>();
-				if (_ThrownVelocity != Vector3.zero) {
+				if (_ThrownVelocity != Vector3.zero)
+				{
 					rigidbody.velocity = _ThrownVelocity;
 				}
 
@@ -218,19 +238,24 @@ public class PlayerPikminController : MonoBehaviour
 		}
 	}
 
-	public void OnPrintPikminStatManager(InputAction.CallbackContext context) {
-		if (context.started) {
+	public void OnPrintPikminStatManager(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
 			PikminStatsManager.Print();
 		}
 	}
 
-    public void OnSelectPreviousPikminType(InputAction.CallbackContext context) {
-		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+	public void OnSelectPreviousPikminType(InputAction.CallbackContext context)
+	{
+		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		{
 			return;
 		}
 
 		// If there are no pikmins in the squad, player can't select one
-		if (PikminStatsManager.GetTotalInSquad() <= 0) {
+		if (PikminStatsManager.GetTotalInSquad() <= 0)
+		{
 			return;
 		}
 
@@ -238,13 +263,16 @@ public class PlayerPikminController : MonoBehaviour
 		_SelectedThrowPikmin = SelectValidPikminType(false);
 	}
 
-	public void OnSelectNextPikminType(InputAction.CallbackContext context) {
-		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+	public void OnSelectNextPikminType(InputAction.CallbackContext context)
+	{
+		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		{
 			return;
 		}
 
 		// If there are no pikmins in the squad, player can't select one
-		if (PikminStatsManager.GetTotalInSquad() <= 0) {
+		if (PikminStatsManager.GetTotalInSquad() <= 0)
+		{
 			return;
 		}
 
@@ -252,13 +280,16 @@ public class PlayerPikminController : MonoBehaviour
 		_SelectedThrowPikmin = SelectValidPikminType(true);
 	}
 
-	public void OnSelectMajorityPikminType(InputAction.CallbackContext context) {
-		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+	public void OnSelectMajorityPikminType(InputAction.CallbackContext context)
+	{
+		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		{
 			return;
 		}
 
 		// If there are no pikmins in the squad, player can't select one
-		if (PikminStatsManager.GetTotalInSquad() <= 0) {
+		if (PikminStatsManager.GetTotalInSquad() <= 0)
+		{
 			return;
 		}
 
@@ -266,34 +297,40 @@ public class PlayerPikminController : MonoBehaviour
 		_SelectedThrowPikmin = GameUtil.GetMajorityColour(PikminStatsManager._InSquad);
 	}
 
-	private PikminColour SelectValidPikminType(bool forward) {
+	PikminColour SelectValidPikminType(bool forward)
+	{
 		// Determine the step based on if we want to go forward or backward
 		int step = forward ? 1 : -1;
 
 		// Get previous type (modulo the number of types so that it cycles)
-		PikminColour colour = (PikminColour) Modulo((int)_SelectedThrowPikmin + step, (int)PikminColour.Size);
+		PikminColour colour = (PikminColour)Modulo((int)_SelectedThrowPikmin + step, (int)PikminColour.Size);
 		bool invalidColour = true;
 
 		// If there are no pikmin of this type in the squad, we search in the previous/next one
-		while (invalidColour) {
-			switch (colour) {
+		while (invalidColour)
+		{
+			switch (colour)
+			{
 				case PikminColour.Red:
-					if (PikminStatsManager._RedStats.GetTotalInSquad() <= 0) {
-						colour = (PikminColour) Modulo((int)colour + step, (int)PikminColour.Size);
+					if (PikminStatsManager._RedStats.GetTotalInSquad() <= 0)
+					{
+						colour = (PikminColour)Modulo((int)colour + step, (int)PikminColour.Size);
 						continue;
 					}
 					invalidColour = false;
 					break;
 				case PikminColour.Yellow:
-					if (PikminStatsManager._YellowStats.GetTotalInSquad() <= 0) {
-						colour = (PikminColour) Modulo((int)colour + step, (int)PikminColour.Size);
+					if (PikminStatsManager._YellowStats.GetTotalInSquad() <= 0)
+					{
+						colour = (PikminColour)Modulo((int)colour + step, (int)PikminColour.Size);
 						continue;
 					}
 					invalidColour = false;
 					break;
 				case PikminColour.Blue:
-					if (PikminStatsManager._BlueStats.GetTotalInSquad() <= 0) {
-						colour = (PikminColour) Modulo((int)colour + step, (int)PikminColour.Size);
+					if (PikminStatsManager._BlueStats.GetTotalInSquad() <= 0)
+					{
+						colour = (PikminColour)Modulo((int)colour + step, (int)PikminColour.Size);
 						continue;
 					}
 					invalidColour = false;
@@ -307,11 +344,12 @@ public class PlayerPikminController : MonoBehaviour
 	}
 
 	// Actual modulo that works with negative numbers
-	private int Modulo(int x, int m) {
+	int Modulo(int x, int m)
+	{
 		return (x % m + m) % m;
 	}
 
-	private void OnDrawGizmosSelected()
+	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(_FormationCenter.position, 1);
@@ -326,7 +364,7 @@ public class PlayerPikminController : MonoBehaviour
 		Gizmos.DrawWireSphere(transform.position, _PikminPluckDistance);
 	}
 
-	private Vector3 CalculateVelocity(Vector3 destination, float vd)
+	Vector3 CalculateVelocity(Vector3 destination, float vd)
 	{
 		float gravity = Physics.gravity.y - 9.81f;
 
@@ -344,7 +382,7 @@ public class PlayerPikminController : MonoBehaviour
 		return velocityXZ + (velocityY * -Mathf.Sign(gravity));
 	}
 
-	private void SetLineRenderer()
+	void SetLineRenderer()
 	{
 		transform.LookAt(new Vector3(_WhistleTransform.position.x, transform.position.y, _WhistleTransform.position.z));
 		_PikminInHand.transform.LookAt(new Vector3(_WhistleTransform.position.x, _PikminInHand.transform.position.y, _WhistleTransform.position.z));
@@ -495,7 +533,7 @@ public class PlayerPikminController : MonoBehaviour
 	/// Prevents the Pikmin formation center from moving every frame
 	/// by clamping it to a set distance away from the player
 	/// </summary>
-	private void HandleFormation()
+	void HandleFormation()
 	{
 		Vector3 targetPos = _FormationCenter.transform.position - transform.position;
 
@@ -541,7 +579,7 @@ public class PlayerPikminController : MonoBehaviour
 	/// Searches for the closest Pikmin in proximity to the Player and returns it
 	/// </summary>
 	/// <returns>The closest Pikmin gameobject in the Player's squad</returns>
-	private GameObject GetClosestPikmin()
+	GameObject GetClosestPikmin()
 	{
 		GameObject closestPikmin = null;
 		float closestPikminDistance = _PikminGrabRadius;

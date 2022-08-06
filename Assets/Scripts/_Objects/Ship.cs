@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Ship : MonoBehaviour
 {
 	public static Ship _Instance = null;
 
 	[Header("Components")]
+	[SerializeField] VisualEffect _FireVFX;
+
 	[HideInInspector]
 	public Transform _Transform = null;
 
@@ -16,6 +19,7 @@ public class Ship : MonoBehaviour
 	private void OnEnable()
 	{
 		_Instance = this;
+		SetEngineFlamesVFX(false);
 	}
 
 	private void Awake()
@@ -31,5 +35,20 @@ public class Ship : MonoBehaviour
 	#endregion
 
 	#region Public Functions
+	/// <summary>
+	/// Starts / Stops flames underneath ship
+	/// </summary>
+	/// <param name="state">Whether to start or stop the flames</param>
+	public void SetEngineFlamesVFX(bool state)
+	{
+		if (state)
+		{
+			_FireVFX.Play();
+		}
+		else
+		{
+			_FireVFX.Stop();
+		}
+	}
 	#endregion
 }

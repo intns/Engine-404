@@ -105,6 +105,7 @@ public class DayTimeManager : MonoBehaviour
 
 		Player._Instance.Pause(true);
 
+		Ship._Instance.SetEngineFlamesVFX(true);
 		Transform shipTransform = Ship._Instance._Transform;
 
 		// So the animator can't set the transform of the object

@@ -20,6 +20,7 @@ public class DemoController : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _Text = null;
 
 	[Header("Intro Sequence")]
+	[SerializeField] bool _DoSequence = false;
 	[SerializeField] Animator _CeresAnimator = null;
 
 	private void Awake()
@@ -47,8 +48,11 @@ public class DemoController : MonoBehaviour
 
 	private void Start()
 	{
-		Player._Instance.Pause(true);
-		StartCoroutine(IE_StartScene());
+		if (_DoSequence)
+		{
+			Player._Instance.Pause(true);
+			StartCoroutine(IE_StartScene());
+		}
 	}
 
 	void Update()
@@ -117,6 +121,7 @@ public class DemoController : MonoBehaviour
 
 	IEnumerator IE_DoAnimation()
 	{
+		Ship._Instance.SetEngineFlamesVFX(true);
 		_CeresAnimator.SetTrigger("DEMO_INTRO");
 		Transform main = Camera.main.transform;
 
@@ -145,5 +150,6 @@ public class DemoController : MonoBehaviour
 		}
 
 		cameraFollow.enabled = true;
+		Ship._Instance.SetEngineFlamesVFX(false);
 	}
 }
