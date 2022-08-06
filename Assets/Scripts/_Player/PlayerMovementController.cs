@@ -23,7 +23,9 @@ public class PlayerMovementController : MonoBehaviour
 	[SerializeField] private float _SlideLimit = 25;
 	[SerializeField] private float _SlideSpeed = 5;
 	[SerializeField] private float _RotationSpeed = 3;
-	[SerializeField] private float _Gravity = -Physics.gravity.y;
+	private float _Gravity = Physics.gravity.y;
+	[SerializeField] private float _Weight = 0.01f;
+
 	[SerializeField] LayerMask _MapMask;
 
 	[SerializeField] private float _LookAtWhistleTime = 2.5f;
@@ -32,7 +34,7 @@ public class PlayerMovementController : MonoBehaviour
 	[HideInInspector] public bool _Paralysed = false;
 
 	private float _IdleTimer = 0;
-	private Vector2 _Movement;
+	private Vector3 _Movement;
 	private RaycastHit _SlideHit;
 	private Vector3 _CharacterContactPoint;
 	private Vector3 _HitNormal;
@@ -72,15 +74,23 @@ public class PlayerMovementController : MonoBehaviour
 			_RotationBeforeIdle = transform.rotation;
 		}
 
+		_Controller.Move(new Vector3(0, _Movement.y, 0));
 		// If we're not grounded and not on a slope
-		if (!IsGrounded())
+		if (!_Controller.isGrounded)
 		{
 			// Apply gravity
-			_Controller.Move(_Gravity * Time.deltaTime * Vector3.down);
+			_Movement.y += _Gravity * _Weight * Time.deltaTime;
+		}
+		else
+		{
+			// Else, stop downward movement (but keep pushing it a bit toward the ground because
+			// characterControllers are buggy)
+			_Movement.y = _Gravity * _Weight * Time.deltaTime;
 		}
 
 		// Get current movement and make it a Vector3
-		Vector3 mDirection = new Vector3(_Movement.x, 0, _Movement.y);
+		Vector3 mDirection = _Movement;
+		mDirection.y = 0;
 
 		// If the player has even touched the H and V axis
 		if (Mathf.Abs(mDirection.x) <= _MovementDeadzone.x && Mathf.Abs(mDirection.z) <= _MovementDeadzone.y)
@@ -145,39 +155,10 @@ public class PlayerMovementController : MonoBehaviour
 		_HitNormal = hit.normal;
 	}
 
-	private bool IsGrounded()
-	{
-		// Calculate the bottom position of the character controller
-		// then check if there is any collider beneath us
-		if (Physics.Raycast(transform.position - _BaseHeight, Vector3.down, out RaycastHit hit, 1f))
-		{
-			// Handle special case of water
-			if (hit.transform.CompareTag("Water"))
-			{
-				return false;
-			}
-
-			// Check if the raycast hit a floor,
-			// and then check the distance between the floor and the player
-			if (hit.normal == Vector3.up)
-			{
-				return hit.distance <= 0.2;
-			}
-
-			// Move down but only the distance away, this cancels out the bouncing
-			// effect that you can achieve by removing this function
-			_Controller.Move(Vector3.down * hit.distance);
-			return true;
-		}
-
-		// We couldn't ground ourselves whilst travelling down a slope and 
-		// the controller says we're not grounded so return false
-		return false;
-	}
-
 	// Happens whenever the movement joystick/buttons change values
-	public void OnMovement(InputAction.CallbackContext context) {
+	public void OnMovement(InputAction.CallbackContext context)
+	{
 		// Stores the current movement (already normalized)
-		_Movement = context.ReadValue<Vector2>();
+		_Movement = new Vector3(context.ReadValue<Vector2>().x, _Movement.y, context.ReadValue<Vector2>().y);
 	}
 }

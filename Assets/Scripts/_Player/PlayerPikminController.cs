@@ -48,7 +48,6 @@ public class PlayerPikminController : MonoBehaviour
 	PikminSprout _ClosestSprout = null;
 	bool _HoldingPikmin = false;
 	bool _ControlFormation = false;
-	bool _JustReleasedFormation = false;
 
 	Vector3[] _LinePositions = new Vector3[50];
 	Vector3 _ThrownVelocity = Vector3.zero;
@@ -118,12 +117,11 @@ public class PlayerPikminController : MonoBehaviour
 		}
 
 		HandleFormation();
-		_JustReleasedFormation = false;
 	}
 
-	public void OnDisbandPikmins()
+	public void OnDisbandPikmins(InputAction.CallbackContext context)
 	{
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
 		{
 			return;
 		}
@@ -154,7 +152,7 @@ public class PlayerPikminController : MonoBehaviour
 		else if (context.canceled)
 		{
 			_ControlFormation = false;
-			_JustReleasedFormation = true;
+			PikminStatsManager.ReassignFormation();
 		}
 	}
 
@@ -248,13 +246,12 @@ public class PlayerPikminController : MonoBehaviour
 
 	public void OnSelectPreviousPikminType(InputAction.CallbackContext context)
 	{
-		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
-		{
-			return;
-		}
-
-		// If there are no pikmins in the squad, player can't select one
-		if (PikminStatsManager.GetTotalInSquad() <= 0)
+		if (
+			!context.started ||
+			Player._Instance._MovementController._Paralysed ||
+			GameManager._IsPaused ||
+			PikminStatsManager.GetTotalInSquad() <= 0
+			)
 		{
 			return;
 		}
@@ -265,13 +262,12 @@ public class PlayerPikminController : MonoBehaviour
 
 	public void OnSelectNextPikminType(InputAction.CallbackContext context)
 	{
-		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
-		{
-			return;
-		}
-
-		// If there are no pikmins in the squad, player can't select one
-		if (PikminStatsManager.GetTotalInSquad() <= 0)
+		if (
+			!context.started ||
+			Player._Instance._MovementController._Paralysed ||
+			GameManager._IsPaused ||
+			PikminStatsManager.GetTotalInSquad() <= 0
+			)
 		{
 			return;
 		}
@@ -282,13 +278,12 @@ public class PlayerPikminController : MonoBehaviour
 
 	public void OnSelectMajorityPikminType(InputAction.CallbackContext context)
 	{
-		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
-		{
-			return;
-		}
-
-		// If there are no pikmins in the squad, player can't select one
-		if (PikminStatsManager.GetTotalInSquad() <= 0)
+		if (
+			!context.started ||
+			Player._Instance._MovementController._Paralysed ||
+			GameManager._IsPaused ||
+			PikminStatsManager.GetTotalInSquad() <= 0
+			)
 		{
 			return;
 		}
@@ -565,8 +560,7 @@ public class PlayerPikminController : MonoBehaviour
 			_UsingCrowdControl = false;
 		}
 
-		bool reassignPosition = _ControlFormation || _JustReleasedFormation;
-		if (reassignPosition)
+		if (_ControlFormation)
 		{
 			PikminStatsManager.ReassignFormation();
 		}
