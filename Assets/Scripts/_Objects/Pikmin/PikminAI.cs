@@ -101,6 +101,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	[Space]
 	[SerializeField] LayerMask _MapMask;
 	[SerializeField] LayerMask _AllMask;
+	[SerializeField] float _MinimumY = -500;
 	[Space]
 	[SerializeField] Transform _LatchedTransform = null;
 	public Vector3 _LatchedOffset = Vector3.zero;
@@ -195,6 +196,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			_Animator.SetBool("Walking", false);
 			return;
+		}
+
+		if (_Transform.position.y < _MinimumY)
+		{
+			_Rigidbody.velocity = Vector3.zero;
+			_Transform.position = Player._Instance.transform.position;
 		}
 
 		MaintainLatch();

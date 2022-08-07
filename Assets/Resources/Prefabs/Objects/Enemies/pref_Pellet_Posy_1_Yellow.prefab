@@ -70,7 +70,7 @@ PrefabInstance:
     - target: {fileID: 4172643792057292528, guid: 294fc44b5aeb24b4c90a343bf25572a7,
         type: 3}
       propertyPath: m_Name
-      value: pref_Pellet_Posy_1_Yellow Variant
+      value: pref_Pellet_Posy_1_Yellow
       objectReference: {fileID: 0}
     - target: {fileID: 4172643792248264985, guid: 294fc44b5aeb24b4c90a343bf25572a7,
         type: 3}
@@ -80,6 +80,12 @@ PrefabInstance:
     - target: {fileID: 5389076463626424317, guid: 294fc44b5aeb24b4c90a343bf25572a7,
         type: 3}
       propertyPath: _DeadObject
+      value: 
+      objectReference: {fileID: 8466240138002768766, guid: db9ff199994265b4693b453d3be9b1a7,
+        type: 3}
+    - target: {fileID: 5389076463626424317, guid: 294fc44b5aeb24b4c90a343bf25572a7,
+        type: 3}
+      propertyPath: _DeadObject.Array.data[0]
       value: 
       objectReference: {fileID: 8466240138002768766, guid: db9ff199994265b4693b453d3be9b1a7,
         type: 3}

@@ -1426,8 +1426,9 @@ MonoBehaviour:
   _Showcase: 0
   _MaxHealth: 10
   _DeadObjectOffset: {x: 0, y: 9, z: -1}
-  _DeadObject: {fileID: 8082340793081445633, guid: f9d87b2e41f2b7d4a8937ce1bb529fac,
-    type: 3}
+  _DeadObject:
+  - {fileID: 8082340793081445633, guid: f9d87b2e41f2b7d4a8937ce1bb529fac, type: 3}
+  - {fileID: 5257347922307558217, guid: 6537e41b3fcf33a40a12b1604a732c77, type: 3}
   _HWObject: {fileID: 722451351670197914, guid: 611e1e55a27ea104dadc717baf15d4e1,
     type: 3}
   _HWOffset: {x: 0, y: 14.5, z: 0}

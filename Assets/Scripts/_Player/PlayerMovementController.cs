@@ -39,12 +39,10 @@ public class PlayerMovementController : MonoBehaviour
 	private Vector3 _CharacterContactPoint;
 	private Vector3 _HitNormal;
 	private float _SlideRayDist;
-	private Vector3 _BaseHeight;
 
 	private void Awake()
 	{
 		_Controller = GetComponent<CharacterController>();
-		_BaseHeight = Vector3.up * (_Controller.height / 2);
 		_SlideRayDist = (_Controller.height * .5f) + _Controller.radius;
 		_SlideLimit = _Controller.slopeLimit - .1f;
 		_MainCamera = Camera.main;
@@ -124,11 +122,6 @@ public class PlayerMovementController : MonoBehaviour
 		else
 		{
 			if (Physics.Raycast(_CharacterContactPoint + Vector3.up, -Vector3.up, out _SlideHit, _SlideRayDist, _MapMask, QueryTriggerInteraction.Ignore)
-				&& Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
-			{
-				sliding = true;
-			}
-			else if (Physics.SphereCast(transform.position, 1.5f, mDirection.normalized + (Vector3.down / 2), out _SlideHit, _SlideRayDist, _MapMask, QueryTriggerInteraction.Ignore)
 				&& Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
 			{
 				sliding = true;

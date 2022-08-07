@@ -485,7 +485,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 	public void ANIM_Death()
 	{
-		Instantiate(_DamageScript._DeadObject, transform.position + _DamageScript._DeadObjectOffset, Quaternion.identity);
+		Instantiate(_DamageScript._DeadObject[0], transform.position + _DamageScript._DeadObjectOffset, Quaternion.identity);
 	}
 
 	public void ANIM_DeathEnd()

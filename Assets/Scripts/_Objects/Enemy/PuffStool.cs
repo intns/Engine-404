@@ -221,17 +221,28 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 	float _CurrentHealth = 0;
 	HealthWheel _HWScript = null;
 
-	string _CurrentAnimState = "";
-	const string ANIM_Idle = "Idle";
-	const string ANIM_Walk = "Walk";
-	const string ANIM_Attack = "Attack";
+	[Header("Animations")]
+	[SerializeField] AnimationClip _IdleAnim;
+	[SerializeField] AnimationClip _WalkAnim;
+	[SerializeField] AnimationClip _AttackAnim;
+	[SerializeField] AnimationClip _StunStartAnim;
+	[SerializeField] AnimationClip _StunEndAnim;
+	[SerializeField] AnimationClip _StunAnim;
+	[SerializeField] AnimationClip _DeathStandAnim;
+	[SerializeField] AnimationClip _DeathStunnedAnim;
+	AnimationController _AnimController = new AnimationController();
 
-	const string ANIM_StunStart = "StunStart";
-	const string ANIM_StunEnd = "StunEnd";
-	const string ANIM_Stunned = "Stunned";
-
-	const string ANIM_DeathStand = "DeathStand";
-	const string ANIM_DeathStunned = "DeathStunned";
+	public static class AnimationState
+	{
+		public const int Idle = 0;
+		public const int Walk = 1;
+		public const int Attack = 2;
+		public const int StunStart = 3;
+		public const int StunEnd = 4;
+		public const int Stun = 5;
+		public const int DeathStand = 6;
+		public const int DeathStunned = 7;
+	}
 
 	#region Unity Functions
 	private void Awake()
@@ -255,6 +266,16 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		_HWScript._MaxHealth = _MaxHealth;
 		_HWScript._CurrentHealth = _MaxHealth;
 		_HWScript.transform.localScale = Vector3.one * _HWScale;
+
+		_AnimController._ParentAnimator = _Animator;
+		Debug.Assert(AnimationState.Idle == _AnimController.AddState(_IdleAnim));
+		Debug.Assert(AnimationState.Walk == _AnimController.AddState(_WalkAnim));
+		Debug.Assert(AnimationState.Attack == _AnimController.AddState(_AttackAnim));
+		Debug.Assert(AnimationState.StunStart == _AnimController.AddState(_StunStartAnim));
+		Debug.Assert(AnimationState.StunEnd == _AnimController.AddState(_StunEndAnim));
+		Debug.Assert(AnimationState.Stun == _AnimController.AddState(_StunAnim));
+		Debug.Assert(AnimationState.DeathStand == _AnimController.AddState(_DeathStandAnim));
+		Debug.Assert(AnimationState.DeathStunned == _AnimController.AddState(_DeathStunnedAnim));
 	}
 
 	private void Update()
@@ -378,7 +399,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 			ChangeState(States.Walking);
 		}
 
-		ChangeAnimationState(ANIM_Idle);
+		_AnimController.ChangeState(AnimationState.Idle);
 	}
 
 	private void HandleWalking()
@@ -389,7 +410,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		_MovementEngine.SmoothVelocity = _Speed * _WanderDirection;
 		_Transform.rotation = Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(_WanderDirection), 4 * Time.deltaTime);
 
-		ChangeAnimationState(ANIM_Walk);
+		_AnimController.ChangeState(AnimationState.Walk);
 
 		if (_TargetObject == null)
 		{
@@ -437,7 +458,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 	private void HandleStunned()
 	{
-		ChangeAnimationState(ANIM_Stunned);
+		_AnimController.ChangeState(AnimationState.Stun);
 		_MovementEngine.SetVelocity(Vector3.zero);
 
 		_StunTimer += Time.deltaTime;
@@ -481,44 +502,33 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		switch (newState)
 		{
 			case States.StunStart:
-				ChangeAnimationState(ANIM_StunStart);
+				_AnimController.ChangeState(AnimationState.StunStart);
 				break;
 			case States.StunEnd:
-				ChangeAnimationState(ANIM_StunEnd);
+				_AnimController.ChangeState(AnimationState.StunEnd);
 				break;
 			case States.Idle:
-				ChangeAnimationState(ANIM_Idle);
+				_AnimController.ChangeState(AnimationState.Idle);
 				break;
 			case States.Walking:
-				ChangeAnimationState(ANIM_Walk);
+				_AnimController.ChangeState(AnimationState.Walk);
 				break;
 			case States.Attack:
-				ChangeAnimationState(ANIM_Attack);
+				_AnimController.ChangeState(AnimationState.Attack);
 				break;
 			case States.Death:
 				if (oldState == States.Stunned
 				|| oldState == States.StunStart
 				|| oldState == States.StunEnd)
 				{
-					ChangeAnimationState(ANIM_DeathStunned);
+					_AnimController.ChangeState(AnimationState.DeathStunned);
 				}
 				else
 				{
-					ChangeAnimationState(ANIM_DeathStand);
+					_AnimController.ChangeState(AnimationState.DeathStand);
 				}
 				break;
 		}
-	}
-
-	private void ChangeAnimationState(string newState)
-	{
-		if (_CurrentAnimState == newState)
-		{
-			return;
-		}
-
-		_CurrentAnimState = newState;
-		_Animator.Play(newState);
 	}
 	#endregion
 

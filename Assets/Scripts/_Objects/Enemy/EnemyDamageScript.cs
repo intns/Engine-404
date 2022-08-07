@@ -11,17 +11,17 @@ using UnityEngine;
 public class EnemyDamageScript : MonoBehaviour, IHealth
 {
 	[Header("ENABLE WHEN NOT USED FOR GAMEPLAY")]
-	[SerializeField] private bool _Showcase = false;
+	[SerializeField] bool _Showcase = false;
 
 	[Header("Settings")]
-	[SerializeField] private float _MaxHealth = 10;
+	[SerializeField] float _MaxHealth = 10;
 	[SerializeField] public Vector3 _DeadObjectOffset = Vector3.zero;
-	[SerializeField] public GameObject _DeadObject = null;
+	[SerializeField] public GameObject[] _DeadObject;
 
 	[Header("Health Wheel")]
-	[SerializeField] private GameObject _HWObject = null;
-	[SerializeField] private Vector3 _HWOffset = Vector3.up;
-	[SerializeField] private float _HWScale = 1;
+	[SerializeField] GameObject _HWObject = null;
+	[SerializeField] Vector3 _HWOffset = Vector3.up;
+	[SerializeField] float _HWScale = 1;
 
 	[HideInInspector] public List<PikminAI> _AttachedPikmin = new List<PikminAI>();
 	[HideInInspector] public bool _Dead = false;
@@ -65,7 +65,16 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 				_AttachedPikmin[0].ChangeState(PikminStates.Idle);
 			}
 
-			Instantiate(_DeadObject, transform.position + _DeadObjectOffset, Quaternion.identity);
+			for (int i = 0; i < _DeadObject.Length; i++)
+			{
+				Vector3 newPosition = transform.position + _DeadObjectOffset;
+
+				// Spawn object in a circle around each other
+				newPosition += MathUtil.XZToXYZ(MathUtil.PositionInUnit(_DeadObject.Length, i)) * 1.5f;
+
+				Instantiate(_DeadObject[i], newPosition, Quaternion.identity);
+			}
+
 			Destroy(gameObject);
 		}
 	}
@@ -77,15 +86,19 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 
 		Gizmos.color = Color.red;
 
-		MeshFilter filter = _DeadObject.GetComponentInChildren<MeshFilter>();
-		Mesh mesh;
-		if (filter != null && (mesh = filter.sharedMesh) != null)
+		foreach (GameObject obj in _DeadObject)
 		{
-			Gizmos.DrawWireMesh(mesh, transform.position + _DeadObjectOffset);
-		}
-		else
-		{
-			Gizmos.DrawWireSphere(transform.position + _DeadObjectOffset, 1);
+			MeshFilter filter = obj.GetComponentInChildren<MeshFilter>();
+			Mesh mesh;
+			if (filter != null && (mesh = filter.sharedMesh) != null)
+			{
+				Gizmos.DrawWireMesh(mesh, transform.position + _DeadObjectOffset);
+			}
+			else
+			{
+				Gizmos.DrawWireSphere(transform.position + _DeadObjectOffset, 1);
+			}
+
 		}
 	}
 
