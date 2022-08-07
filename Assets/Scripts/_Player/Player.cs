@@ -154,7 +154,7 @@ public class Player : MonoBehaviour, IHealth
 	public float SubtractHealth(float take)
 	{
 		_IsHit = true;
-		_AnimController.ChangeState(PlayerAnimation.Damage);
+		_AnimController.ChangeState(PlayerAnimation.Damage, true);
 		return _CurrentHealth -= take;
 	}
 
@@ -162,7 +162,7 @@ public class Player : MonoBehaviour, IHealth
 	{
 		if (_CurrentHealth > set)
 		{
-			_AnimController.ChangeState(PlayerAnimation.Damage);
+			_AnimController.ChangeState(PlayerAnimation.Damage, true);
 			_IsHit = true;
 		}
 
