@@ -7,6 +7,7 @@
  * Created for: having a generalised manager for the seperate Player scripts
  */
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -105,18 +106,23 @@ public class Player : MonoBehaviour, IHealth
 		}
 	}
 
-	private void Die()
+	public void Die()
 	{
 		DayTimeManager._Instance.FinishDay();
 	}
 
-	public void Pause(bool toPause, PauseType type = PauseType.Full)
+	public void PikminExtinction()
+	{
+		StartCoroutine(IE_PikminExtinctionSequence());
+	}
+
+	public void Pause(bool isPaused, PauseType type = PauseType.Full)
 	{
 		_AnimController.ChangeState(PlayerAnimation.Idle);
 
-		GameManager._IsPaused = toPause;
+		_MovementController._Paralysed = isPaused;
+		GameManager._IsPaused = isPaused;
 		GameManager._PauseType = type;
-		_MovementController._Paralysed = toPause;
 	}
 
 	// When start key is pressed
@@ -169,5 +175,17 @@ public class Player : MonoBehaviour, IHealth
 		_CurrentHealth = set;
 	}
 
+	#endregion
+
+	#region IEnumerators
+	IEnumerator IE_PikminExtinctionSequence()
+	{
+		Pause(true);
+		_UIController.FadeOutUI();
+
+		yield return new WaitForSecondsRealtime(3.5f);
+
+		Die();
+	}
 	#endregion
 }

@@ -311,8 +311,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			return;
 		}
 
-		bool isPlayer = collision.CompareTag("Player");
-
 		if (_CurrentState == PikminStates.Thrown)
 		{
 			// Just landed from a throw, check if we're on something we interact with
@@ -339,7 +337,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				CarryoutIntention();
 			}
 		}
-		else if (isPlayer
+		else if (collision.CompareTag("Player")
 			&& _CurrentState != PikminStates.Push
 			&& _CurrentState != PikminStates.Carrying
 			&& _CurrentState != PikminStates.Attacking
@@ -465,9 +463,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_IdleTimer = 0;
 
 		// Scan for the closest target object and then run towards it
-		Collider[] objects = Physics.OverlapSphere(_Transform.position, _Data._SearchRadius, _InteractableMask | _RunTowardsMask);
 		Collider closestCol = null;
 		float curClosestDist = float.PositiveInfinity;
+		Collider[] objects = Physics.OverlapSphere(_Transform.position, _Data._SearchRadius, _InteractableMask | _RunTowardsMask);
 		foreach (Collider collider in objects)
 		{
 			IPikminInteractable interactableComponent = collider.GetComponentInParent<IPikminInteractable>();
@@ -636,6 +634,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			ParticleSystem.MainModule soulEffect = soul.main;
 			soulEffect.startColor = _Data._DeathSpiritPikminColour;
 			Destroy(soul.gameObject, 5);
+		}
+
+		if (PikminStatsManager.GetTotalInOnion() + PikminStatsManager.GetTotalOnField() == 0)
+		{
+			Player._Instance.PikminExtinction();
 		}
 
 		// Remove the object
