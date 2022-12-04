@@ -42,7 +42,10 @@ public class CameraFollow : MonoBehaviour
 	[SerializeField] private float _LookAtRotationSpeed = 1;
 
 	[Header("Controlled Rotation")]
+	// When pressing shift, the speed it rotates around
 	[SerializeField] private float _RotateAroundSpeed = 1;
+	[SerializeField] private AnimationCurve _RotateCurve = null;
+
 	[SerializeField] private float _TriggerRotationSpeed = 1;
 	[SerializeField] private float _CameraResetLength = 1;
 	[SerializeField] private float _CameraResetCooldown = 1;
@@ -272,6 +275,7 @@ public class CameraFollow : MonoBehaviour
 	private IEnumerator ResetCamOverTime(float length)
 	{
 		Vector3 resultPos = Player._Instance._MovementController._RotationBeforeIdle * (Vector3.back * (_OrbitRadius - (_HolderIndex + 1.6f)));
+		Vector3 startPos = transform.position;
 
 		float oldRot = _LookAtRotationSpeed;
 		_LookAtRotationSpeed = 5;
@@ -283,7 +287,7 @@ public class CameraFollow : MonoBehaviour
 			Vector3 endPos = resultPos + _PlayerPosition.position;
 			endPos.y = _GroundOffset;
 
-			transform.position = Vector3.Lerp(transform.position, endPos, t / length);
+			transform.position = Vector3.Lerp(startPos, endPos, _RotateCurve.Evaluate(t / length));
 			transform.LookAt(_PlayerPosition);
 
 			t += Time.deltaTime;
