@@ -17,6 +17,9 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField, Tooltip("How close we have to be to the position to move onto the next position")]
 	private float _DistanceToNextPosition = 0.5f;
 
+	[SerializeField, Tooltip("How long does it take for the object to be carried after spawn?")]
+	private float _InvulnTimeAfterSpawn = 1.0f;
+
 	[SerializeField] private float _CarryCircleRadius = 1;
 	[SerializeField] private Vector3 _CarryCircleOffset = Vector3.zero;
 
@@ -53,6 +56,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	private bool _ShutdownInProgress = false;
 	Vector3 _SpawnPosition = Vector3.zero;
 
+	private float _SpawnInvulnTimer = 0.0f;
+
 	public bool IsMoving() => _IsBeingCarried;
 
 	private void Awake()
@@ -85,7 +90,23 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void Update()
 	{
-		if (!_IsBeingCarried || GameManager._IsPaused)
+		if (GameManager._IsPaused)
+		{
+			if (_Source.isPlaying)
+			{
+				_Source.Stop();
+			}
+
+			return;
+		}
+
+		_SpawnInvulnTimer += Time.deltaTime;
+		if (_SpawnInvulnTimer < _InvulnTimeAfterSpawn)
+		{
+			return;
+		}
+
+		if (!_IsBeingCarried)
 		{
 			if (_Source.isPlaying)
 			{
@@ -298,7 +319,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	public bool PikminSpotAvailable()
 	{
-		return _CarryingPikmin.Count < _CarryMinMax.y;
+		return _SpawnInvulnTimer >= _InvulnTimeAfterSpawn && _CarryingPikmin.Count < _CarryMinMax.y;
 	}
 	#endregion
 }
