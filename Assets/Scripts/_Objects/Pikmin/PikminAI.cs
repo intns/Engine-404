@@ -292,6 +292,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			if (collider.CompareTag("Pikmin"))
 			{
 				Vector3 direction = MathUtil.DirectionFromTo(collider.transform.position, _Transform.position);
+				if (direction.sqrMagnitude <= 0.01f)
+				{
+					direction.x = Random.Range(-0.025f, 0.025f);
+					direction.z = Random.Range(-0.025f, 0.025f);
+				}
 				_AddedVelocity += _PikminPushScale * Time.fixedDeltaTime * direction;
 			}
 			else if (collider.CompareTag("Player"))
