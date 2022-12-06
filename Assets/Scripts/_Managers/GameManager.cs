@@ -14,16 +14,35 @@ public enum Language
 
 public enum PauseType
 {
-	Full,
-	OnlyPikminActive,
+	Paused,            // A 'full' pause
+	OnlyPikminActive, // Not fully paused because Pikmin AI can still work
+	Unpaused,          // Active game, no pause applied
 }
 
 public static class GameManager
 {
-	public static bool _IsPaused = false; // Used in checks to see if the game is paused
-	public static PauseType _PauseType = PauseType.Full;
+	public static bool IsPaused { get => PauseType != PauseType.Unpaused; }
+	public static PauseType PauseType
+	{
+		get
+		{
+			return _pauseType;
+		}
+		set
+		{
+			OnPauseEvent?.Invoke(value);
+
+			_pauseType = value;
+		}
+	}
+	private static PauseType _pauseType = PauseType.Unpaused;
 
 	public static bool _DebugGui = Application.isEditor; // Used for debugging
-
 	public static Language _Language = Language.English; // Used for alternate texts
+
+	#region Subscriber Events
+	/// Callbacks
+	public delegate void PauseEvent(PauseType t);
+	public static event PauseEvent OnPauseEvent;
+	#endregion
 }

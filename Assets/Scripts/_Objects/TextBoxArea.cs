@@ -54,7 +54,7 @@ public class TextBoxArea : MonoBehaviour
 			{
 				_Enabled = false;
 				PlayerPrefs.SetInt(_GlobalName, 1);
-				Player._Instance.Pause(false);
+				Player._Instance.Pause(PauseType.Unpaused);
 				Player._Instance._UIController.FadeInUI();
 				StartCoroutine(FadeOutCanvas());
 			}
@@ -80,7 +80,7 @@ public class TextBoxArea : MonoBehaviour
 		}
 
 		// Pause the game and the Player
-		Player._Instance.Pause(true);
+		Player._Instance.Pause(PauseType.Paused);
 
 		// Fade out with old and in with new!
 		Player._Instance._UIController.FadeOutUI();

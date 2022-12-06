@@ -5,6 +5,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class MathUtil
@@ -76,10 +77,14 @@ public static class MathUtil
 	/// <returns>The squared distance between 'first' and 'second'</returns>
 	public static float DistanceTo(Vector3 first, Vector3 second, bool useY = true)
 	{
-		float xD = first.x - second.x;
-		float yD = useY ? first.y - second.y : 0;
-		float zD = first.z - second.z;
-		return xD * xD + yD * yD + zD * zD;
+		if (!useY)
+		{
+			// Ignore the Y axis if useY is false.
+			first.y = second.y = 0;
+		}
+
+		// Use Vector3.SqrMagnitude to calculate the squared distance.
+		return Vector3.SqrMagnitude(first - second);
 	}
 
 	/// <summary>
@@ -93,68 +98,37 @@ public static class MathUtil
 	{
 		Vector3 direction = to - from;
 
+		// Only use the x and z coordinates if we don't want to use the y axis
 		if (!useY)
 		{
 			direction.y = 0;
 		}
 
-		direction.Normalize();
-		return direction;
+		// Return a normalized version of the direction vector
+		return Vector3.Normalize(direction);
 	}
 
-	public static Transform GetClosestTransform(Vector3 pos, Transform[] list, out int index, bool useY = true)
+	public static Transform GetClosestTransform(Vector3 pos, List<Transform> list, out int index, bool useY = true)
 	{
-		if (list == null || list.Length == 0)
+		if (list == null || list.Count == 0)
 		{
 			index = -1;
 			return null;
 		}
 
-		Transform closest = list[0];
-
-		int endIdx = -1;
-		float closestDist = DistanceTo(pos, closest.position, useY);
-		for (int i1 = 0; i1 < list.Length; i1++)
-		{
-			Transform i = list[i1];
-			if (i == null)
-			{
-				continue;
-			}
-
-			float currDist = DistanceTo(pos, i.position, useY);
-			if (currDist < closestDist)
-			{
-				closest = i;
-				endIdx = i1;
-				closestDist = currDist;
-			}
-		}
-
-		index = endIdx;
-		return closest;
+		index = list.FindIndex(i => DistanceTo(pos, i.position, useY) == list.Min(i => DistanceTo(pos, i.position, useY)));
+		return list[index];
 	}
 
-	public static Collider GetClosestCollider(Vector3 pos, Collider[] list, bool useY = true)
+	public static Collider GetClosestCollider(Vector3 pos, List<Collider> list, bool useY = true)
 	{
-		if (list == null || list.Length == 0)
+		if (list == null || list.Count == 0)
 		{
 			return null;
 		}
 
-		Collider closest = list[0];
-		float closestDist = DistanceTo(pos, closest.transform.position, useY);
-		foreach (Collider i in list)
-		{
-			float currDist = DistanceTo(pos, i.transform.position, useY);
-			if (currDist < closestDist)
-			{
-				closest = i;
-				closestDist = currDist;
-			}
-		}
-
-		return closest;
+		// Find the closest collider
+		return list.Find(i => DistanceTo(pos, i.transform.position, useY) == list.Min(j => DistanceTo(pos, j.transform.position, useY)));
 	}
 
 	/// <summary>

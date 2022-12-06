@@ -183,6 +183,21 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_HeadModels[2].transform.localPosition = Vector3.zero;
 
 		SetMaturity(_StartingMaturity);
+
+		GameManager.OnPauseEvent += OnPauseEvent;
+	}
+
+	private void OnPauseEvent(PauseType t)
+	{
+		if (t == PauseType.Paused)
+		{
+			_Animator.SetBool("Walking", false);
+			_Rigidbody.isKinematic = true;
+		}
+		else
+		{
+			_Rigidbody.isKinematic = false;
+		}
 	}
 
 	void Start()
@@ -192,9 +207,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	void Update()
 	{
-		if (GameManager._IsPaused && GameManager._PauseType != PauseType.OnlyPikminActive)
+		if (GameManager.IsPaused && GameManager.PauseType != PauseType.OnlyPikminActive)
 		{
-			_Animator.SetBool("Walking", false);
 			return;
 		}
 
@@ -250,7 +264,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	void FixedUpdate()
 	{
-		if (GameManager._IsPaused && GameManager._PauseType != PauseType.OnlyPikminActive)
+		if (GameManager.IsPaused && GameManager.PauseType != PauseType.OnlyPikminActive)
 		{
 			return;
 		}
@@ -279,79 +293,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_AddedVelocity = Vector3.Lerp(_AddedVelocity, Vector3.zero, 10 * Time.deltaTime);
 	}
 
-	private void RepelPikminAndPlayers()
-	{
-		if (_CurrentState != PikminStates.RunningTowards && _CurrentState != PikminStates.Idle)
-		{
-			return;
-		}
-
-		Collider[] objects = Physics.OverlapSphere(_Transform.position, _AvoidSphereSize, _PlayerAndPikminLayer);
-		foreach (Collider collider in objects)
-		{
-			if (collider.CompareTag("Pikmin"))
-			{
-				Vector3 direction = MathUtil.DirectionFromTo(collider.transform.position, _Transform.position);
-				if (direction.sqrMagnitude <= 0.01f)
-				{
-					direction.x = Random.Range(-0.025f, 0.025f);
-					direction.z = Random.Range(-0.025f, 0.025f);
-				}
-				_AddedVelocity += _PikminPushScale * Time.fixedDeltaTime * direction;
-			}
-			else if (collider.CompareTag("Player"))
-			{
-				Vector3 direction = MathUtil.DirectionFromTo(collider.transform.position, _Transform.position);
-				_AddedVelocity += _PlayerPushScale * Time.fixedDeltaTime * direction;
-
-				AddToSquad();
-			}
-		}
-	}
-
-	void OnCollisionHandle(Collider collision)
-	{
-		if (_InSquad)
-		{
-			return;
-		}
-
-		if (_CurrentState == PikminStates.Thrown)
-		{
-			// Just landed from a throw, check if we're on something we interact with
-			if (collision.CompareTag("PikminInteract"))
-			{
-				_TargetObject = collision.transform;
-				_TargetObjectCollider = collision;
-				_Intention = collision.GetComponentInParent<IPikminInteractable>().IntentionType;
-				CarryoutIntention();
-			}
-			else if (!collision.CompareTag("Pikmin"))
-			{
-				ChangeState(PikminStates.Idle);
-			}
-		}
-		else if (_CurrentState == PikminStates.RunningTowards)
-		{
-			// If we've been running towards something, we've touched it and now we
-			// can carryout our intention
-			if (_TargetObjectCollider != null && _TargetObjectCollider == collision
-				&& _TargetObjectCollider.gameObject.layer != _RunTowardsMask)
-			{
-				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
-				CarryoutIntention();
-			}
-		}
-		else if (collision.CompareTag("Player")
-			&& _CurrentState != PikminStates.Push
-			&& _CurrentState != PikminStates.Carrying
-			&& _CurrentState != PikminStates.Attacking
-			&& _CurrentState != PikminStates.Thrown)
-		{
-			AddToSquad();
-		}
-	}
-
 	void OnCollisionEnter(Collision collision)
 	{
 		OnCollisionHandle(collision.collider);
@@ -362,7 +303,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		OnCollisionHandle(collision.collider);
 	}
 
-	private void OnCollisionExit(Collision collision)
+	void OnCollisionExit(Collision collision)
 	{
 		OnCollisionHandle(collision.collider);
 	}
@@ -585,8 +526,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			ChangeState(PikminStates.Idle);
 			return;
 		}
-
-		//PlaySound(_Data._AttackScreechNoise);
 	}
 
 	void HandlePushing()
@@ -687,6 +626,79 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		// an intersection & so that we don't stop too early
 		Vector3 closestPoint = ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius);
 		MoveTowards(closestPoint, false);
+	}
+
+	private void RepelPikminAndPlayers()
+	{
+		if (_CurrentState != PikminStates.RunningTowards && _CurrentState != PikminStates.Idle)
+		{
+			return;
+		}
+
+		Collider[] objects = Physics.OverlapSphere(_Transform.position, _AvoidSphereSize, _PlayerAndPikminLayer);
+		foreach (Collider collider in objects)
+		{
+			if (collider.CompareTag("Pikmin"))
+			{
+				Vector3 direction = MathUtil.DirectionFromTo(collider.transform.position, _Transform.position);
+				if (direction.sqrMagnitude <= 0.01f)
+				{
+					direction.x = Random.Range(-0.025f, 0.025f);
+					direction.z = Random.Range(-0.025f, 0.025f);
+				}
+				_AddedVelocity += _PikminPushScale * Time.fixedDeltaTime * direction;
+			}
+			else if (collider.CompareTag("Player"))
+			{
+				Vector3 direction = MathUtil.DirectionFromTo(collider.transform.position, _Transform.position);
+				_AddedVelocity += _PlayerPushScale * Time.fixedDeltaTime * direction;
+
+				AddToSquad();
+			}
+		}
+	}
+
+	void OnCollisionHandle(Collider collision)
+	{
+		if (_InSquad)
+		{
+			return;
+		}
+
+		if (_CurrentState == PikminStates.Thrown)
+		{
+			// Just landed from a throw, check if we're on something we interact with
+			if (collision.CompareTag("PikminInteract"))
+			{
+				_TargetObject = collision.transform;
+				_TargetObjectCollider = collision;
+				_Intention = collision.GetComponentInParent<IPikminInteractable>().IntentionType;
+				CarryoutIntention();
+			}
+			else if (!collision.CompareTag("Pikmin") && !collision.CompareTag("Player"))
+			{
+				ChangeState(PikminStates.Idle);
+			}
+		}
+		else if (_CurrentState == PikminStates.RunningTowards)
+		{
+			// If we've been running towards something, we've touched it and now we
+			// can carryout our intention
+			if (_TargetObjectCollider != null && _TargetObjectCollider == collision
+				&& _TargetObjectCollider.gameObject.layer != _RunTowardsMask)
+			{
+				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
+				CarryoutIntention();
+			}
+		}
+		else if (collision.CompareTag("Player")
+			&& _CurrentState != PikminStates.Push
+			&& _CurrentState != PikminStates.Carrying
+			&& _CurrentState != PikminStates.Attacking
+			&& _CurrentState != PikminStates.Thrown)
+		{
+			AddToSquad();
+		}
 	}
 
 	Vector3 ClosestPointOnTarget(Transform target, Collider collider = null, float maxDistance = float.PositiveInfinity)
@@ -868,7 +880,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	{
 		_Rigidbody.isKinematic = true;
 		_Rigidbody.useGravity = false;
-		_Collider.enabled = false;
+		_Collider.isTrigger = true;
 
 		if (_Animator.GetBool("Walking") == true)
 		{
@@ -885,7 +897,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	{
 		_Rigidbody.isKinematic = false;
 		_Rigidbody.useGravity = true;
-		_Collider.enabled = true;
+		_Collider.isTrigger = false;
 
 		_Animator.SetBool("Holding", false);
 

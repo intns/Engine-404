@@ -20,7 +20,7 @@ public class BaldyLongLegsSpawner : MonoBehaviour
 
 	private void Update()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager.IsPaused)
 		{
 			return;
 		}

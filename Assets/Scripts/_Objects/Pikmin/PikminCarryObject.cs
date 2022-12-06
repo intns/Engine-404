@@ -80,7 +80,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void CheckPath()
 	{
-		if (!_IsBeingCarried || GameManager._IsPaused)
+		if (!_IsBeingCarried || GameManager.IsPaused)
 		{
 			return;
 		}
@@ -90,7 +90,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void Update()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager.IsPaused)
 		{
 			if (_Source.isPlaying)
 			{
@@ -182,7 +182,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	private void FixedUpdate()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager.IsPaused)
 		{
 			_MoveVector = Vector3.zero;
 			_Rigidbody.velocity = Vector3.zero;

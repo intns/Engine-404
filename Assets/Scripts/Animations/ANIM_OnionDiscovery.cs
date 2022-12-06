@@ -30,7 +30,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 
 
 		// Pause the game
-		_Player.Pause(true);
+		Player._Instance.Pause(PauseType.Paused);
 		_Camera.GetComponent<CameraFollow>().enabled = false;
 
 		float maxFov = 55;
@@ -82,7 +82,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-		_Player.Pause(false);
+		_Player.Pause(PauseType.Unpaused);
 		_Camera.GetComponent<CameraFollow>().enabled = true;
 
 		PlayerPrefs.SetInt("ONION_Discovered", 1);

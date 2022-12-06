@@ -13,34 +13,34 @@ using UnityEngine.InputSystem;
 public class PlayerMovementController : MonoBehaviour
 {
 	[Header("Components")]
-	[SerializeField] private Transform _WhistleTransform = null;
-	private CharacterController _Controller;
-	private Camera _MainCamera;
+	[SerializeField] Transform _WhistleTransform = null;
+	CharacterController _Controller;
+	Camera _MainCamera;
 
 	[Header("Settings")]
-	[SerializeField] private float _MovementSpeed = 3;
-	[SerializeField] private Vector2 _MovementDeadzone = Vector2.one / 0.1f;
-	[SerializeField] private float _SlideLimit = 25;
-	[SerializeField] private float _SlideSpeed = 5;
-	[SerializeField] private float _RotationSpeed = 3;
-	private float _Gravity = Physics.gravity.y;
-	[SerializeField] private float _Weight = 0.01f;
+	[SerializeField] float _MovementSpeed = 3;
+	[SerializeField] Vector2 _MovementDeadzone = Vector2.one / 0.1f;
+	[SerializeField] float _SlideLimit = 25;
+	[SerializeField] float _SlideSpeed = 5;
+	[SerializeField] float _RotationSpeed = 3;
+	float _Gravity = Physics.gravity.y;
+	[SerializeField] float _Weight = 0.01f;
 
 	[SerializeField] LayerMask _MapMask;
 
-	[SerializeField] private float _LookAtWhistleTime = 2.5f;
+	[SerializeField] float _LookAtWhistleTime = 2.5f;
 
 	[HideInInspector] public Quaternion _RotationBeforeIdle = Quaternion.identity;
 	[HideInInspector] public bool _Paralysed = false;
 
-	private float _IdleTimer = 0;
-	private Vector3 _Movement;
-	private RaycastHit _SlideHit;
-	private Vector3 _CharacterContactPoint;
-	private Vector3 _HitNormal;
-	private float _SlideRayDist;
+	float _IdleTimer = 0;
+	Vector3 _Movement;
+	RaycastHit _SlideHit;
+	Vector3 _CharacterContactPoint;
+	Vector3 _HitNormal;
+	float _SlideRayDist;
 
-	private void Awake()
+	void Awake()
 	{
 		_Controller = GetComponent<CharacterController>();
 		_SlideRayDist = (_Controller.height * .5f) + _Controller.radius;
@@ -48,9 +48,9 @@ public class PlayerMovementController : MonoBehaviour
 		_MainCamera = Camera.main;
 	}
 
-	private void Update()
+	void Update()
 	{
-		if (_Paralysed || GameManager._IsPaused)
+		if (_Paralysed || GameManager.IsPaused)
 		{
 			return;
 		}
@@ -104,8 +104,11 @@ public class PlayerMovementController : MonoBehaviour
 		mDirection = _MainCamera.transform.TransformDirection(mDirection);
 		mDirection.y = 0;
 
-		// Rotate and move the player
-		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mDirection), _RotationSpeed * Time.deltaTime);
+		// Only rotate if there isn't a Pikmin in hand, as it has priority
+		if (Player._Instance._PikminController._PikminInHand == null)
+		{ 
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mDirection), _RotationSpeed * Time.deltaTime);
+		}
 
 		Vector3 movement = mDirection.normalized * _MovementSpeed;
 
@@ -115,7 +118,7 @@ public class PlayerMovementController : MonoBehaviour
 		if (Physics.SphereCast(transform.position, 0.75f, Vector3.down, out _SlideHit, _SlideRayDist, _MapMask, QueryTriggerInteraction.Ignore)
 			&& Vector3.Angle(_SlideHit.normal, Vector3.up) > _SlideLimit)
 		{
-				sliding = true;
+			sliding = true;
 		}
 		// However, just raycasting straight down from the center can fail when on steep slopes
 		// So if the above raycast didn't catch anything, raycast down from the stored ControllerColliderHit point instead
@@ -142,7 +145,7 @@ public class PlayerMovementController : MonoBehaviour
 		_Controller.Move(movement * Time.deltaTime);
 	}
 
-	private void OnControllerColliderHit(ControllerColliderHit hit)
+	void OnControllerColliderHit(ControllerColliderHit hit)
 	{
 		_CharacterContactPoint = hit.point;
 		_HitNormal = hit.normal;

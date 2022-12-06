@@ -184,7 +184,7 @@ public class Onion : MonoBehaviour
 			FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 			{
 				_OnionCanvas.gameObject.SetActive(false);
-				Player._Instance.Pause(false);
+				Player._Instance.Pause(PauseType.Unpaused);
 				_InMenu = false;
 
 				StartCoroutine(FadeOutCanvas());
@@ -195,7 +195,7 @@ public class Onion : MonoBehaviour
 	public void OnPrimaryAction(InputAction.CallbackContext context) {
 		if (context.started && _CanUse) {
 			if (!_InMenu) {
-				Player._Instance.Pause(true);
+				Player._Instance.Pause(PauseType.Paused);
 				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() => {
 					_OnionCanvas.gameObject.SetActive(true);
 
@@ -219,7 +219,7 @@ public class Onion : MonoBehaviour
 				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 				{
 					_OnionCanvas.gameObject.SetActive(false);
-					Player._Instance.Pause(false);
+					Player._Instance.Pause(PauseType.Unpaused);
 					_InMenu = false;
 
 					int fieldDifference = _CurPikminAmounts._InSquad - _OldPikminAmounts._InSquad;

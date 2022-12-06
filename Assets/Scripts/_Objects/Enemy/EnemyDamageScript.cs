@@ -53,7 +53,7 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 
 	private void Update()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager.IsPaused)
 		{
 			return;
 		}

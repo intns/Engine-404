@@ -40,7 +40,7 @@ public class MovementEngine : MonoBehaviour
 
 	private void Update()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager.IsPaused)
 		{
 			return;
 		}
@@ -62,7 +62,7 @@ public class MovementEngine : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager.IsPaused)
 		{
 			return;
 		}

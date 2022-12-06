@@ -139,7 +139,7 @@ public class PikminSprout : MonoBehaviour
 
 	private void Update()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager.IsPaused)
 		{
 			return;
 		}

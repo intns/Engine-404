@@ -50,8 +50,12 @@ public class DemoController : MonoBehaviour
 	{
 		if (_DoSequence)
 		{
-			Player._Instance.Pause(true);
+			Player._Instance.Pause(PauseType.Paused);
 			StartCoroutine(IE_StartScene());
+		}
+		else
+		{
+			Player._Instance.Pause(PauseType.Unpaused);
 		}
 	}
 
@@ -116,7 +120,7 @@ public class DemoController : MonoBehaviour
 		_CanvasGroup.alpha = 1;
 
 		yield return new WaitForSecondsRealtime(4);
-		Player._Instance.Pause(false);
+		Player._Instance.Pause(PauseType.Unpaused);
 	}
 
 	IEnumerator IE_DoAnimation()

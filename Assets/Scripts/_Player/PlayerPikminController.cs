@@ -42,8 +42,8 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] bool _UsingCrowdControl = false;
 	[HideInInspector] public bool _CanThrowPikmin = true;
 	[HideInInspector] public PikminColour _SelectedThrowPikmin = PikminColour.Red;
-	
-	PikminAI _PikminInHand;
+
+	[HideInInspector] public PikminAI _PikminInHand;
 	bool _Plucking = false;
 	PikminSprout _ClosestSprout = null;
 	bool _HoldingPikmin = false;
@@ -60,7 +60,7 @@ public class PlayerPikminController : MonoBehaviour
 
 	void Update()
 	{
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
 		{
 			if (_PikminInHand != null)
 			{
@@ -108,7 +108,8 @@ public class PlayerPikminController : MonoBehaviour
 		if (_CanThrowPikmin && _HoldingPikmin)
 		{
 			// Move the Pikmin's model to in front of the player
-			_PikminInHand.transform.position = transform.position + (transform.right / 3) + (transform.forward / 3) + (Vector3.down / 4);
+			// TODO: fix whatever the fuck's wrong with this
+			_PikminInHand.transform.position = transform.position + transform.right / 1.5f + transform.forward + Vector3.up;
 			SetLineRenderer();
 		}
 		else if (_PikminInHand != null)
@@ -121,7 +122,7 @@ public class PlayerPikminController : MonoBehaviour
 
 	public void OnDisbandPikmins(InputAction.CallbackContext context)
 	{
-		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		if (!context.started || Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
 		{
 			return;
 		}
@@ -139,7 +140,7 @@ public class PlayerPikminController : MonoBehaviour
 
 	public void OnControlFormation(InputAction.CallbackContext context)
 	{
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
 		{
 			_ControlFormation = false;
 			return;
@@ -158,7 +159,7 @@ public class PlayerPikminController : MonoBehaviour
 
 	public void OnPrimaryAction(InputAction.CallbackContext context)
 	{
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
 		{
 			return;
 		}
@@ -249,7 +250,7 @@ public class PlayerPikminController : MonoBehaviour
 		if (
 			!context.started ||
 			Player._Instance._MovementController._Paralysed ||
-			GameManager._IsPaused ||
+			GameManager.IsPaused ||
 			PikminStatsManager.GetTotalInSquad() <= 0
 			)
 		{
@@ -265,7 +266,7 @@ public class PlayerPikminController : MonoBehaviour
 		if (
 			!context.started ||
 			Player._Instance._MovementController._Paralysed ||
-			GameManager._IsPaused ||
+			GameManager.IsPaused ||
 			PikminStatsManager.GetTotalInSquad() <= 0
 			)
 		{
@@ -281,7 +282,7 @@ public class PlayerPikminController : MonoBehaviour
 		if (
 			!context.started ||
 			Player._Instance._MovementController._Paralysed ||
-			GameManager._IsPaused ||
+			GameManager.IsPaused ||
 			PikminStatsManager.GetTotalInSquad() <= 0
 			)
 		{

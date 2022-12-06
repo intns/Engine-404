@@ -26,7 +26,7 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 		Player _Player = Player._Instance;
 
 		// Pause the game
-		_Player.Pause(true, PauseType.OnlyPikminActive);
+		_Player.Pause(PauseType.OnlyPikminActive);
 		_Camera.GetComponent<CameraFollow>().enabled = false;
 
 		float maxFov = 55;
@@ -83,7 +83,7 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 		{
 			_Camera.transform.position = originCameraPos;
 			_Camera.transform.LookAt(_Player.transform.position);
-			_Player.Pause(false);
+			_Player.Pause(PauseType.Unpaused);
 			_Camera.GetComponent<CameraFollow>().enabled = true;
 		});
 	}

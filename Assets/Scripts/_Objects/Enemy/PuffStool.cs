@@ -280,7 +280,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 	private void Update()
 	{
-		if (GameManager._IsPaused)
+		if (GameManager.IsPaused)
 		{
 			return;
 		}
@@ -392,7 +392,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 	#region Utility Functions
 	private void HandleIdle()
 	{
-		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask));
+		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, new(Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask)));
 		if (closestObj != null)
 		{
 			_TargetObject = closestObj.transform;
@@ -423,7 +423,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		float distanceToTarget = float.PositiveInfinity;
 
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask);
-		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, objects);
+		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, new(objects));
 		if (closestObj != null)
 		{
 			float curDist = MathUtil.DistanceTo(_Transform.position, _TargetObject.position);

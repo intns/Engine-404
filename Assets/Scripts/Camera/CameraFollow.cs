@@ -1,16 +1,15 @@
 /*
  * CameraFollow.cs
- * Created by: Neo, Ambrosia
+ * Created by: Neo, Ambrosia, SkrienaSenka
  * Created on: 6/2/2020 (dd/mm/yy)
  * Created for: following a target with incrementable offset and field of view
  */
 
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [System.Serializable]
-public class CameraHolder
+public class CameraPositionData
 {
 	public float _FOV = 75f;
 	public Vector2 _Offset = Vector2.one;
@@ -20,249 +19,183 @@ public class CameraHolder
 public class CameraFollow : MonoBehaviour
 {
 	[Header("Components")]
-	[SerializeField] private CameraHolder[] _DefaultHolders = null;
-	[SerializeField] private CameraHolder[] _TopViewHolders = null;
-	private Camera _MainCamera = null;
+	[SerializeField] CameraPositionData[] _DefaultData = null;
+	[SerializeField] CameraPositionData[] _TopViewData = null;
+	[Space()]
+	[SerializeField] AudioClip _ZoomAudio = null;
 
-	[Header("Audio")]
-	[SerializeField] private AudioClip _ChangeZoomAudio = null;
+	[Header("Settings")]
+	[SerializeField, Tooltip("Speed used to track the player or goal object")]
+	float _LookatFollowSpeed = 1;
+	[SerializeField, Tooltip("Speed used to change the orbit radius")]
+	float _OrbitChangeSpeed = 1;
+	[SerializeField, Tooltip("Speed at which the offset height changes")]
+	float _HeightChangeSpeed = 3.5f;
+	[SerializeField, Tooltip("Speed used to change the FOV")]
+	float _FOVChangeSpeed = 1;
 
-	[Header("Movement / Camera Specific")]
-	[SerializeField] private float _FollowSpeed = 1;
-	[SerializeField] private float _OrbitChangeSpeed = 1;
-	[SerializeField] private float _FOVChangeSpeed = 1;
+	[Header("Trigger Settings")]
+	[SerializeField, Tooltip("Speed of the interpolation used for triggers")]
+	float _TriggerRotationSpeed = 1;
+	[SerializeField, Tooltip("How sensitive the triggers are, as speed")]
+	float _TriggerSensitivity = 1;
 
-	[Header("Movement Correction")]
-	[SerializeField] private float _HeightChangeSpeed = 1;
-	[SerializeField] private float _DistForHeightChange = 1;
-	[SerializeField] private float _EasingHeightOffset = 1; // The offset of the sphere used,
-	[SerializeField] private float _HeightSphereRadius = 1; // The radius of the sphere used to check if there's a platform higher than what we're currently on
+	[Header("Reset Settings")]
+	[SerializeField, Tooltip("Speed of rotation for the reset sequence")]
+	float _ResetRotationSpeed = 1;
+	[SerializeField, Tooltip("How long it takes for the reset sequence to complete")]
+	float _ResetLength = 1;
 
-	[Header("Rotation")]
-	[SerializeField] private float _LookAtRotationSpeed = 1;
+	//[Header("Debugging")]
+	/*[SerializeField] */float _OrbitRadius = 0.0f;   // How far away to orbit
+	/*[SerializeField] */float _GroundOffset = 0.0f;  // How far off the ground
+	/*[Space()]*/
+	/*[SerializeField] */float _ResetTimer = 0.0f;             // Rotation reset timer
+	/*[SerializeField] */float _ControllerTriggerState = 0.0f; // State of controller triggers for reset
+	/*[Space()]*/
+	/*[SerializeField] */float _CurrentRotation = 0.0f; // Current rotation in degrees
+	/*[SerializeField] */float _TargetRotation = 0.0f;  // Current rotation in degrees
+	/*[Space()]*/
+	/*[SerializeField] */int _HolderIndex;        // Current struct index
+	/*[SerializeField] */bool _IsTopView = false; // Is top view or not
+	/*[SerializeField] */Vector3 _LookatPosition; // The position we're looking at
 
-	[Header("Controlled Rotation")]
-	// When pressing shift, the speed it rotates around
-	[SerializeField] private float _RotateAroundSpeed = 1;
-	[SerializeField] private AnimationCurve _RotateCurve = null;
+	// Misc. data
+	CameraPositionData _CurrentHolder = null;
+	AudioSource _AudioSource = null;
+	Camera _MainCamera = null;
+	Transform _PlayerPosition = null;
 
-	[SerializeField] private float _TriggerRotationSpeed = 1;
-	[SerializeField] private float _CameraResetLength = 1;
-	[SerializeField] private float _CameraResetCooldown = 1;
-	private float _CameraTriggerRotation;
-
-	[Header("Miscellaneous")]
-	[SerializeField] private LayerMask _MapLayer = 0;
-	private CameraHolder _CurrentHolder;
-	private AudioSource _AudioSource;
-	private Transform _PlayerPosition;
-	private float _OrbitRadius;
-	private float _GroundOffset;
-	private float _CurrentRotation;
-	private float _ResetCooldownTimer;
-	private int _HolderIndex;
-	private bool _TopView = false;
-	private bool _Apply = true;
-
-	private CameraFollow()
-	{
-		// Movement / Camera Specific
-		_FollowSpeed = 5;
-		_FOVChangeSpeed = 2;
-		_OrbitChangeSpeed = 2;
-
-		// Movement Correction
-		_HeightChangeSpeed = 2;
-		_DistForHeightChange = Mathf.Infinity;
-		_EasingHeightOffset = 2.5f;
-		_HeightSphereRadius = 2;
-
-		// Rotation
-		_LookAtRotationSpeed = 5;
-
-		// Controlled Rotation
-		_RotateAroundSpeed = 4;
-		_CameraResetLength = 2;
-		_TriggerRotationSpeed = 2;
-
-		// Non-exposed
-		_CurrentRotation = 0;
-		_ResetCooldownTimer = 0;
-	}
-
-	private void Start()
+	void Start()
 	{
 		_MainCamera = Camera.main;
 		_PlayerPosition = Player._Instance.transform;
 		_AudioSource = GetComponent<AudioSource>();
 
-		if (_DefaultHolders.Length != _TopViewHolders.Length)
+		if (_DefaultData.Length != _TopViewData.Length)
 		{
 			Debug.LogError("Top View holders must have the same length as default holders!");
 			Debug.Break();
 		}
 
-		_HolderIndex = 1;
-		_CurrentHolder = _DefaultHolders[_HolderIndex];
+		// Initialise to the one below middle
+		_HolderIndex = Mathf.FloorToInt(_DefaultData.Length / 2.0f);
+		_CurrentHolder = _DefaultData[_HolderIndex];
 
-		// Iterate a few times to make sure we have a, generally speaking,
-		// estimate of where the camera will actually be when it unlocks
-		for (int i = 0; i < 3; i++)
-		{
-			// Calculate the offset from the ground using the players current position and our additional Y offset
-			float groundOffset = _CurrentHolder._Offset.y + _PlayerPosition.position.y;
-			// Store the orbit radius in case we need to alter it when moving onto a higher plane
-			float orbitRadius = _CurrentHolder._Offset.x;
-			if (Physics.SphereCast(transform.position + (Vector3.up * _EasingHeightOffset),
-					_HeightSphereRadius,
-					Vector3.down,
-					out RaycastHit hit,
-					_DistForHeightChange,
-					_MapLayer))
-			{
-				float offset = Mathf.Abs(_PlayerPosition.position.y - hit.point.y);
-				groundOffset += offset;
-				orbitRadius += offset / 1.5f;
-			}
+		// Setup the camera for the scene load
+		_MainCamera.fieldOfView = _CurrentHolder._FOV;
+		_OrbitRadius = _CurrentHolder._Offset.x;
+		_GroundOffset = _CurrentHolder._Offset.y + _PlayerPosition.position.y;
 
-			// Smoothly change the OrbitRadius, GroundOffset and the Camera's field of view
-			_MainCamera.fieldOfView = _CurrentHolder._FOV;
-			_OrbitRadius = orbitRadius;
-			_GroundOffset = groundOffset;
+		_TargetRotation = _CurrentRotation = 270 - _PlayerPosition.eulerAngles.y;
 
-			// Calculates the position the Camera wants to be in, using Ground Offset and Orbit Radius
-			Vector3 targetPosition = (transform.position - _PlayerPosition.position).normalized *
-				Mathf.Abs(_OrbitRadius) +
-				_PlayerPosition.position;
-
-			targetPosition.y = _GroundOffset;
-
-			transform.position = targetPosition;
-			transform.LookAt(_PlayerPosition.position);
-		}
+		_LookatPosition = _PlayerPosition.position;
+		transform.LookAt(_LookatPosition);
 	}
 
-	private void Update()
+	void Update()
 	{
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused)
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
 		{
 			return;
 		}
 
-		// Rotate the camera to look at the Player
-		transform.rotation = Quaternion.Lerp(transform.rotation,
-			Quaternion.LookRotation(_PlayerPosition.position - transform.position),
-			_LookAtRotationSpeed * Time.deltaTime);
-
-		ApplyCurrentHolder();
-		HandleControls();
-	}
-
-	public void OnRotateCamera(InputAction.CallbackContext context) {
-		_CameraTriggerRotation = context.ReadValue<float>();
-	}
-
-	public void OnZoom(InputAction.CallbackContext context) {
-		if (context.started) {
-			_HolderIndex++;
-			ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
-		}
-	}
-
-	public void OnTopDownView(InputAction.CallbackContext context) {
-		if (context.started) {
-			_TopView = !_TopView; // Invert the TopView 
-			ApplyChangedZoomLevel(_TopView ? _TopViewHolders : _DefaultHolders);
-		}
-	}
-
-	public void OnResetCamera(InputAction.CallbackContext context) {
-		if (context.started && _ResetCooldownTimer <= 0 && _Apply) {
-			float yDif = transform.eulerAngles.y - Player._Instance._MovementController._RotationBeforeIdle.eulerAngles.y;
-			if (Mathf.Abs(yDif) >= 0.5f) {
-				StartCoroutine(ResetCamOverTime(_CameraResetLength));
-			}
-		}
-	}
-
-	/// <summary>
-	/// Applies the CurrentHolder variable to the Camera's variables
-	/// </summary>
-	private void ApplyCurrentHolder()
-	{
-		// Calculate the offset from the ground using the players current position and our additional Y offset
 		float groundOffset = _CurrentHolder._Offset.y + _PlayerPosition.position.y;
-		// Store the orbit radius in case we need to alter it when moving onto a higher plane
 		float orbitRadius = _CurrentHolder._Offset.x;
-		if (Physics.SphereCast(transform.position + (Vector3.up * _EasingHeightOffset),
-				_HeightSphereRadius,
-				Vector3.down,
-				out RaycastHit hit,
-				_DistForHeightChange,
-				_MapLayer))
-		{
-			float offset = Mathf.Abs(_PlayerPosition.position.y - hit.point.y);
-			groundOffset += offset;
-			orbitRadius += offset / 1.5f;
-		}
-
-		// Smoothly change the OrbitRadius, GroundOffset and the Camera's field of view
 		_MainCamera.fieldOfView = Mathf.Lerp(_MainCamera.fieldOfView, _CurrentHolder._FOV, _FOVChangeSpeed * Time.deltaTime);
 		_OrbitRadius = Mathf.Lerp(_OrbitRadius, orbitRadius, _OrbitChangeSpeed * Time.deltaTime);
 		_GroundOffset = Mathf.Lerp(_GroundOffset, groundOffset, _HeightChangeSpeed * Time.deltaTime);
 
-		if (!_Apply)
+		// Check if the controller trigger is being pressed
+		float factor = Mathf.Min(_TriggerRotationSpeed, _ResetRotationSpeed);
+		if (_ControllerTriggerState != 0.0f)
+		{
+			// Calculate the new rotation angle based on the trigger input
+			_TargetRotation = _CurrentRotation - _ControllerTriggerState * _TriggerSensitivity;
+
+			// Can't reset while using the triggers to change direction
+			_ResetTimer = 0;
+
+			factor = _TriggerRotationSpeed;
+		}
+		else if (_ResetTimer > 0)
+		{
+			_ResetTimer -= Time.deltaTime;
+
+			factor = _ResetRotationSpeed;
+		}
+
+		_CurrentRotation = Mathf.LerpAngle(_CurrentRotation, _TargetRotation, factor * Time.deltaTime);
+		_LookatPosition = Vector3.Lerp(_LookatPosition, _PlayerPosition.position, _LookatFollowSpeed * Time.deltaTime);
+
+		float xAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(transform.position, _LookatPosition + Vector3.up * 2.5f, true)).eulerAngles.x;
+		Vector3 newEulerAngles = new(Mathf.Lerp(transform.eulerAngles.x, xAngle, 25 * Time.deltaTime),
+															 270 - _CurrentRotation,
+															 0);
+		transform.eulerAngles = newEulerAngles;
+
+		transform.position = _LookatPosition + MathUtil.XZToXYZ(MathUtil.PositionInUnit(Mathf.Deg2Rad * _CurrentRotation, _OrbitRadius), _GroundOffset);
+	}
+
+	public void OnRotateCamera(InputAction.CallbackContext context)
+	{
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
 		{
 			return;
 		}
 
-		// Calculates the position the Camera wants to be in, using Ground Offset and Orbit Radius
-		Vector3 targetPosition = MathUtil.DirectionFromTo(_PlayerPosition.position, transform.position, true) *
-			Mathf.Abs(_OrbitRadius) +
-			_PlayerPosition.position;
-
-		targetPosition.y = _GroundOffset;
-
-		transform.position = Vector3.Lerp(transform.position, targetPosition, _FollowSpeed * Time.deltaTime);
+		_ControllerTriggerState = context.ReadValue<float>();
 	}
 
-	/// <summary>
-	/// Handles every type of control the Player has over the Camera
-	/// </summary>
-	private void HandleControls()
+	public void OnZoom(InputAction.CallbackContext context)
 	{
-		// Rotate around the player using TriggerRotationSpeed
-		RotateView(_CameraTriggerRotation * _TriggerRotationSpeed * Time.deltaTime);
-
-		// As we've let go of the triggers, reset the desired new rotation
-		if (_CameraTriggerRotation == 0)
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
 		{
-			_CurrentRotation = 0;
+			return;
 		}
 
-		if (_ResetCooldownTimer > 0)
+		if (context.started)
 		{
-			_ResetCooldownTimer -= Time.deltaTime;
+			_HolderIndex++;
+			ApplyChangedZoomLevel(_IsTopView ? _TopViewData : _DefaultData);
 		}
 	}
 
-	/// <summary>
-	/// Rotates the camera using a given angle around the Player
-	/// </summary>
-	/// <param name="angle"></param>
-	private void RotateView(float angle)
+	public void OnTopDownView(InputAction.CallbackContext context)
 	{
-		_CurrentRotation = Mathf.Lerp(_CurrentRotation, angle, _RotateAroundSpeed * Time.deltaTime);
-		transform.RotateAround(_PlayerPosition.position, Vector3.up, _CurrentRotation);
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
+		{
+			return;
+		}
+
+		if (context.started)
+		{
+			_IsTopView = !_IsTopView; // Invert the TopView 
+			ApplyChangedZoomLevel(_IsTopView ? _TopViewData : _DefaultData);
+		}
+	}
+
+	public void OnResetCamera(InputAction.CallbackContext context)
+	{
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
+		{
+			return;
+		}
+
+		if (context.started && _ControllerTriggerState == 0.0f)
+		{
+			_ResetTimer = _ResetLength;
+			_TargetRotation = 270 - _PlayerPosition.eulerAngles.y;
+		}
 	}
 
 	/// <summary>
 	/// Changes zoom level based on the holder index, and plays audio
 	/// </summary>
 	/// <param name="currentHolder"></param>
-	private void ApplyChangedZoomLevel(CameraHolder[] currentHolder)
+	void ApplyChangedZoomLevel(CameraPositionData[] currentHolder)
 	{
-		_AudioSource.PlayOneShot(_ChangeZoomAudio);
+		_AudioSource.PlayOneShot(_ZoomAudio);
 
 		if (_HolderIndex > currentHolder.Length - 1)
 		{
@@ -270,35 +203,6 @@ public class CameraFollow : MonoBehaviour
 		}
 
 		_CurrentHolder = currentHolder[_HolderIndex];
-	}
-
-	private IEnumerator ResetCamOverTime(float length)
-	{
-		Vector3 resultPos = Player._Instance._MovementController._RotationBeforeIdle * (Vector3.back * (_OrbitRadius - (_HolderIndex + 1.6f)));
-		Vector3 startPos = transform.position;
-
-		float oldRot = _LookAtRotationSpeed;
-		_LookAtRotationSpeed = 5;
-
-		_Apply = false;
-		float t = 0;
-		while (t <= length)
-		{
-			Vector3 endPos = resultPos + _PlayerPosition.position;
-			endPos.y = _GroundOffset;
-
-			transform.position = Vector3.Lerp(startPos, endPos, _RotateCurve.Evaluate(t / length));
-			transform.LookAt(_PlayerPosition);
-
-			t += Time.deltaTime;
-			yield return null;
-		}
-		_Apply = true;
-		_LookAtRotationSpeed = oldRot;
-
-		_ResetCooldownTimer = _CameraResetCooldown;
-
-		yield return null;
 	}
 
 	public void Shake(float intensity)

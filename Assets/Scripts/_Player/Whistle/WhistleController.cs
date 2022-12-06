@@ -95,7 +95,7 @@ public class WhistleController : MonoBehaviour
 	{
 		while (enabled)
 		{
-			if (!GameManager._IsPaused)
+			if (!GameManager.IsPaused)
 			{
 				if (!_Reticle.gameObject.activeInHierarchy)
 				{
@@ -169,7 +169,7 @@ public class WhistleController : MonoBehaviour
 
 	private void Update()
 	{
-		if (GameManager._IsPaused || Player._Instance._MovementController._Paralysed)
+		if (GameManager.IsPaused || Player._Instance._MovementController._Paralysed)
 		{
 			if (_Blowing)
 			{
@@ -227,7 +227,7 @@ public class WhistleController : MonoBehaviour
 	}
 
 	public void OnWhistle(InputAction.CallbackContext context) {
-		if (Player._Instance._MovementController._Paralysed || GameManager._IsPaused) {
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused) {
 			return;
 		}
 

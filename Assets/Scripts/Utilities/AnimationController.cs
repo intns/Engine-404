@@ -54,7 +54,7 @@ class AnimationController
 
 
 		_CurrentState = animIdx;
-		_ParentAnimator.Play(_Animations[animIdx].name, 0);
+		_ParentAnimator.Play(_Animations[animIdx].name, 0, 0.5f);
 	}
 
 
