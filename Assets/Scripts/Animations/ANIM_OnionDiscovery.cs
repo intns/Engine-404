@@ -82,8 +82,11 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-		_Player.Pause(PauseType.Unpaused);
-		_Camera.GetComponent<CameraFollow>().enabled = true;
+		FadeManager._Instance.FadeInOut(0.75f, 0.75f, () =>
+		{
+			_Player.Pause(PauseType.Unpaused);
+			_Camera.GetComponent<CameraFollow>().enabled = true;
+		});
 
 		PlayerPrefs.SetInt("ONION_Discovered", 1);
 		_Onion.ANIM_EndDiscovery();

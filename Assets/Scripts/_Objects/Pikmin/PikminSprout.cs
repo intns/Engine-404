@@ -28,7 +28,7 @@ public class PikminSproutPath
 	public Vector3 GetPosition()
 	{
 		position += GetSpeed() * Time.fixedDeltaTime;
-		return startPosition + new Vector3((float)GetXPosition(), (float)GetYPosition(), (float)GetZPosition());
+		return startPosition + new Vector3((float)position * distance.x, (float)GetYPosition(), (float)position * distance.z);
 	}
 
 	public double GetSpeed()
@@ -46,22 +46,11 @@ public class PikminSproutPath
 		return position >= 1.0;
 	}
 
-	private double GetXPosition()
-	{
-		return position * distance.x;
-	}
-
 	private double GetYPosition()
 	{
-		double yOffset = distance.y * position;
 		double yPosition = GetSquareRoot();
-		if (double.IsNaN(yPosition)) yPosition = 0;
-		return yPosition + yOffset;
-	}
-
-	private double GetZPosition()
-	{
-		return position * distance.z;
+		if (double.IsNaN(yPosition)) { yPosition = 0; }
+		return yPosition + distance.y * position;
 	}
 
 	private double GetSquareRoot()
@@ -248,7 +237,7 @@ public class PikminSprout : MonoBehaviour
 	// Handles the animation from the onion origin towards the floor placement
 	IEnumerator IE_DropAnimation()
 	{
-		PikminSproutPath path = new PikminSproutPath(_SpawnData._OriginPosition,
+		PikminSproutPath path = new(_SpawnData._OriginPosition,
 			_SpawnData._EndPosition, _DropSpeed, _PeakHeight);
 
 		transform.position = _SpawnData._OriginPosition;

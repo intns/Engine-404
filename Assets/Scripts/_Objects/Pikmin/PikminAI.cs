@@ -116,6 +116,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	Rigidbody _Rigidbody = null;
 	CapsuleCollider _Collider = null;
 	Transform _Transform = null;
+	Transform _PlayerTransform = null;
 
 	#region Interface Methods
 
@@ -203,6 +204,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	void Start()
 	{
 		_FormationPosition.SetParent(Player._Instance._PikminController._FormationCenter.transform);
+		_PlayerTransform = Player._Instance.transform;
 	}
 
 	void Update()
@@ -215,7 +217,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		if (_Transform.position.y < _MinimumY)
 		{
 			_Rigidbody.velocity = Vector3.zero;
-			_Transform.position = Player._Instance.transform.position;
+			_Transform.position = _PlayerTransform.position;
 		}
 
 		MaintainLatch();
@@ -600,19 +602,19 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			_Transform.rotation = _InSquad
 								// Rotate towards player
-								? Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, Player._Instance.transform.position)), _Data._RotationSpeed * Time.deltaTime)
+								? Quaternion.Lerp(_Transform.rotation, Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _PlayerTransform.position)), _Data._RotationSpeed * Time.deltaTime)
 								// Rotate towards actual object
-								: Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(delta), _Data._RotationSpeed * Time.deltaTime);
+								: Quaternion.Lerp(_Transform.rotation, Quaternion.LookRotation(delta), _Data._RotationSpeed * Time.deltaTime);
 		}
 
-		if (!stopEarly || MathUtil.DistanceTo(_Transform.position, position, false) >= _StoppingDistance)
+		if (stopEarly && MathUtil.DistanceTo(_Transform.position, position, false) < _StoppingDistance)
 		{
-			// To prevent instant, janky movement we step towards the resultant max speed according to _Acceleration
-			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _Data.GetMaxSpeed(_CurrentMaturity), _Data.GetAcceleration(_CurrentMaturity) * Time.fixedDeltaTime);
+			_CurrentMoveSpeed = Mathf.Lerp(_CurrentMoveSpeed, 0, 15 * Time.deltaTime);
 		}
 		else
 		{
-			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.25f);
+			// To prevent instant, janky movement we step towards the resultant max speed according to _Acceleration
+			_CurrentMoveSpeed = Mathf.Lerp(_CurrentMoveSpeed, _Data.GetMaxSpeed(_CurrentMaturity), _Data.GetAcceleration(_CurrentMaturity) * Time.deltaTime);
 		}
 
 		Vector3 newVelocity = delta * _CurrentMoveSpeed;

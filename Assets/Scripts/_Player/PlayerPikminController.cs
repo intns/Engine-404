@@ -14,7 +14,6 @@ public class PlayerPikminController : MonoBehaviour
 	public Transform _FormationCenter;
 	[SerializeField] LayerMask _PikminLayer;
 	[SerializeField] LineRenderer _LineRenderer;
-	[SerializeField] Animator _Animator;
 
 	[Header("Plucking")]
 	[SerializeField] float _PikminPluckDistance = 3.5f;
@@ -88,21 +87,12 @@ public class PlayerPikminController : MonoBehaviour
 		{
 			if (_Plucking)
 			{
-				_Animator.SetTrigger("Pluck");
-
 				PikminAI pikmin = _ClosestSprout.OnPluck();
 				pikmin.AddToSquad();
+
 				Destroy(_ClosestSprout.gameObject);
 				_Plucking = false;
 			}
-			else
-			{
-				_Animator.ResetTrigger("Pluck");
-			}
-		}
-		else
-		{
-			_Animator.ResetTrigger("Pluck");
 		}
 
 		if (_CanThrowPikmin && _HoldingPikmin)
@@ -212,7 +202,6 @@ public class PlayerPikminController : MonoBehaviour
 					_PikminInHand.StartThrowHold();
 					_LineRenderer.enabled = true;
 
-					_Animator.SetBool("HoldingThrow", true);
 					_HoldingPikmin = true;
 				}
 			}
@@ -494,7 +483,6 @@ public class PlayerPikminController : MonoBehaviour
 		}
 
 		_HoldingPikmin = false;
-		_Animator.SetBool("HoldingThrow", false);
 		_PikminInHand.EndThrowHold();
 		_PikminInHand = null;
 		_LineRenderer.enabled = false;
