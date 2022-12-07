@@ -71,6 +71,12 @@ public class Player : MonoBehaviour, IHealth
 
 		// Resets the health back to the max if changed in the editor
 		_CurrentHealth = _MaxHealth;
+
+		// Lock to the floor to start the scene
+		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
+		{
+			transform.position = hit.point;
+		}
 	}
 
 	private void Update()
