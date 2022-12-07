@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -16,7 +17,7 @@ class AnimationController
 	public int AddState(AnimationClip anim)
 	{
 		_Animations.Add(anim);
-		return _Animations.Count-1;
+		return _Animations.Count - 1;
 	}
 
 
@@ -24,32 +25,37 @@ class AnimationController
 	/// Changes the current state of the animator to that of animIdx
 	/// </summary>
 	/// <param name="animIdx"></param>
-	public void ChangeState(int animIdx, bool finishAnim = false)
+	public void ChangeState(int animIdx, bool finishAnim = false, bool overRide = false)
 	{
 		if (_CurrentState == animIdx)
 		{
 			return;
 		}
 
-		if (_FinishCurrent)
+		if (!overRide)
 		{
-			// Check the animator has finished the clip
-			AnimatorClipInfo[] clipsInfo = _ParentAnimator.GetCurrentAnimatorClipInfo(0);
-			AnimatorStateInfo stateInfo = _ParentAnimator.GetCurrentAnimatorStateInfo(0);
-			if (stateInfo.normalizedTime >= clipsInfo[0].clip.length)
+			if (_FinishCurrent)
 			{
+				// Check the animator has finished the clip
+				AnimatorStateInfo stateInfo = _ParentAnimator.GetCurrentAnimatorStateInfo(0);
+
+				if (stateInfo.normalizedTime < 1)
+				{
+					// It hasn't finished the clip yet, so we return and wait
+					return;
+				}
+
 				_FinishCurrent = false;
 			}
-			else
+
+			if (finishAnim)
 			{
-				// It hasn't finished the clip yet, so we return and wait
-				return;
+				_FinishCurrent = true;
 			}
 		}
-
-		if (finishAnim)
+		else
 		{
-			_FinishCurrent = true;
+			_FinishCurrent = finishAnim;
 		}
 
 

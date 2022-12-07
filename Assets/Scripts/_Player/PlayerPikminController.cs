@@ -40,6 +40,7 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] Vector2 _DirectionToMouse = Vector2.zero;
 	[SerializeField] bool _UsingCrowdControl = false;
 	[HideInInspector] public bool _CanThrowPikmin = true;
+	[HideInInspector] public bool _CanPlayerAttack = false;
 	[HideInInspector] public PikminColour _SelectedThrowPikmin = PikminColour.Red;
 
 	[HideInInspector] public PikminAI _PikminInHand;
@@ -79,6 +80,7 @@ public class PlayerPikminController : MonoBehaviour
 		else
 		{
 			_SelectedThrowPikmin = PikminColour.Size;
+			_CanPlayerAttack = true;
 		}
 
 		Collider[] colls = Physics.OverlapSphere(transform.position, _PikminPluckDistance, _PikminPluckLayer, QueryTriggerInteraction.Collide);
@@ -101,10 +103,14 @@ public class PlayerPikminController : MonoBehaviour
 			// TODO: fix whatever the fuck's wrong with this
 			_PikminInHand.transform.position = transform.position + transform.right / 1.5f + transform.forward + Vector3.up;
 			SetLineRenderer();
+
+			_CanPlayerAttack = false;
 		}
 		else if (_PikminInHand != null)
 		{
 			EndThrow();
+
+			_CanPlayerAttack = true;
 		}
 
 		HandleFormation();
@@ -126,6 +132,7 @@ public class PlayerPikminController : MonoBehaviour
 		}
 
 		PikminStatsManager._Disbanding = false;
+		_CanPlayerAttack = true;
 	}
 
 	public void OnControlFormation(InputAction.CallbackContext context)
@@ -203,6 +210,11 @@ public class PlayerPikminController : MonoBehaviour
 					_LineRenderer.enabled = true;
 
 					_HoldingPikmin = true;
+					_CanPlayerAttack = false;
+				}
+				else
+				{
+					_CanPlayerAttack = true;
 				}
 			}
 		}
@@ -222,6 +234,7 @@ public class PlayerPikminController : MonoBehaviour
 				}
 
 				EndThrow();
+				_CanPlayerAttack = true;
 			}
 		}
 	}

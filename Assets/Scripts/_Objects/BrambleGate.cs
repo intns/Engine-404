@@ -47,7 +47,6 @@ public class BrambleGate : MonoBehaviour, IPikminAttack
 
 		// Should be called last in case the 
 		_DamageScript.SubtractHealth(damage);
-		_DamageScript._HWScript._CurrentHealth = _DamageScript.GetCurrentHealth();
 	}
 	#endregion
 

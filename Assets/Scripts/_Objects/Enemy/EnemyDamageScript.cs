@@ -123,7 +123,9 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 
 	public float SubtractHealth(float take)
 	{
-		return _CurrentHealth -= take;
+		_CurrentHealth -= take;
+		_HWScript._CurrentHealth = GetCurrentHealth();
+		return _CurrentHealth;
 	}
 
 	public void SetHealth(float set)

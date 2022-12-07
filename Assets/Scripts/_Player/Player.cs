@@ -7,9 +7,12 @@
  * Created for: having a generalised manager for the seperate Player scripts
  */
 
+using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(PlayerPikminController),
 									typeof(AnimationController),
@@ -28,6 +31,10 @@ public class Player : MonoBehaviour, IHealth
 	[Header("Settings")]
 	[SerializeField] private float _MaxHealth = 100;
 	[SerializeField] private float _CurrentHealth = 100;
+	[Space]
+	[SerializeField] float _AttackSphereRadius = 2.5f;
+	[SerializeField] float _AttackDamage = 2.5f;
+	[SerializeField] float _AttackCooldown = 1.5f;
 
 	[Header("Animations")]
 	[SerializeField] AnimationController _AnimController;
@@ -37,21 +44,21 @@ public class Player : MonoBehaviour, IHealth
 		public const int Walk = 0;
 		public const int Die = 1;
 		public const int Damage = 2;
-		public const int Idle1 = 3;
-		public const int Idle2 = 4;
-
-		public static int Idle { get { return Idle1 + Random.Range(0, 1); } }
+		public const int Idle = 3;
+		public const int Attack = 4;
 	}
 
 	[SerializeField] AnimationClip _WalkAnimation;
 	[SerializeField] AnimationClip _DieAnimation;
 	[SerializeField] AnimationClip _DamageAnimation;
-	[SerializeField] AnimationClip _Idle1Animation;
-	[SerializeField] AnimationClip _Idle2Animation;
+	[SerializeField] AnimationClip _IdleAnimation;
+	[SerializeField] AnimationClip _AttackAnimation;
 
 	[SerializeField] private CharacterController _Controller;
 	bool _IsHit = false;
 	bool _Walking = false;
+
+	float _AttackTimer;
 
 	private void OnEnable()
 	{
@@ -66,8 +73,8 @@ public class Player : MonoBehaviour, IHealth
 		Debug.Assert(PlayerAnimation.Walk == _AnimController.AddState(_WalkAnimation));
 		Debug.Assert(PlayerAnimation.Die == _AnimController.AddState(_DieAnimation));
 		Debug.Assert(PlayerAnimation.Damage == _AnimController.AddState(_DamageAnimation));
-		Debug.Assert(PlayerAnimation.Idle1 == _AnimController.AddState(_Idle1Animation));
-		Debug.Assert(PlayerAnimation.Idle2 == _AnimController.AddState(_Idle2Animation));
+		Debug.Assert(PlayerAnimation.Idle == _AnimController.AddState(_IdleAnimation));
+		Debug.Assert(PlayerAnimation.Attack == _AnimController.AddState(_AttackAnimation));
 
 		// Resets the health back to the max if changed in the editor
 		_CurrentHealth = _MaxHealth;
@@ -102,7 +109,7 @@ public class Player : MonoBehaviour, IHealth
 			{
 				Die();
 			}
-			
+
 			// BUGFIX: Whistle line clips backwards and all sorts if you don't check the length
 			if (MathUtil.DistanceTo(transform.position, _WhistleController._Reticle.position) < 5)
 			{
@@ -126,6 +133,17 @@ public class Player : MonoBehaviour, IHealth
 
 			_AnimController.ChangeState(PlayerAnimation.Idle, true);
 		}
+
+		if (_AttackTimer > 0)
+		{
+			_AttackTimer -= Time.deltaTime;
+		}
+	}
+
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.DrawWireSphere(transform.position + transform.forward, _AttackSphereRadius);
+		Handles.Label(transform.position + transform.forward + Vector3.up * _AttackSphereRadius, $"Attack Damage: {_AttackDamage}");
 	}
 
 	public void Die()
@@ -157,6 +175,33 @@ public class Player : MonoBehaviour, IHealth
 	{
 		// If NOT paralyzed AND NOT paused AND IS moving any direction
 		_Walking = (!_MovementController._Paralysed) && (!GameManager.IsPaused) && ((context.ReadValue<Vector2>().x != 0) || (context.ReadValue<Vector2>().y != 0));
+	}
+
+	public void OnPrimaryAction(InputAction.CallbackContext context)
+	{
+		if (!context.started || GameManager.IsPaused || _CurrentHealth <= 0 || _MovementController._Paralysed
+			|| !_PikminController._CanPlayerAttack || _AttackTimer > 0)
+		{
+			return;
+		}
+
+		// TODO: Make animation play
+		_AnimController.ChangeState(PlayerAnimation.Attack, true, true);
+
+		// Attack!
+		if (!Physics.SphereCast(transform.position, _AttackSphereRadius, transform.forward, out RaycastHit info)
+			|| info.transform.CompareTag("Player") || info.transform.CompareTag("Pikmin"))
+		{
+			return;
+		}
+
+		IHealth c = info.transform.GetComponentInParent<IHealth>();
+		if (c != null)
+		{
+			c.SubtractHealth(_AttackDamage);
+
+			_AttackTimer = _AttackCooldown;
+		}
 	}
 
 	#region Animation Callbacks
