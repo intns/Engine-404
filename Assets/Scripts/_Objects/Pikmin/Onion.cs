@@ -23,62 +23,62 @@ public class PikminSpawnData
 public class Onion : MonoBehaviour
 {
 	[Header("References")]
-	[SerializeField] private GameObject _PikminSprout = null;
+	[SerializeField] GameObject _PikminSprout = null;
 	[Space]
-	[SerializeField] private Animator _Animator = null;
-	[SerializeField] private SkinnedMeshRenderer _BodyRenderer = null;
+	[SerializeField] Animator _Animator = null;
+	[SerializeField] SkinnedMeshRenderer _BodyRenderer = null;
 	[Space]
-	[SerializeField] private Canvas _OnionCanvas = null;
-	[SerializeField] private TextMeshProUGUI _InOnionText;
-	[SerializeField] private TextMeshProUGUI _InSquadText;
-	[SerializeField] private TextMeshProUGUI _InFieldText;
-	[SerializeField] private CanvasGroup _CanvasGroup = null;
+	[SerializeField] Canvas _OnionCanvas = null;
+	[SerializeField] TextMeshProUGUI _InOnionText;
+	[SerializeField] TextMeshProUGUI _InSquadText;
+	[SerializeField] TextMeshProUGUI _InFieldText;
+	[SerializeField] CanvasGroup _CanvasGroup = null;
 	[Space]
-	[SerializeField] private GameObject _DiscoverObject = null;
+	[SerializeField] GameObject _DiscoverObject = null;
 
 	[Header("Settings")]
-	[SerializeField] private LayerMask _MapMask = 0;
-	[SerializeField] private LayerMask _PikminMask = 0;
-	[SerializeField] private float _PikminSuctionHeight = 4;
-	[SerializeField] private float _PikminEjectionHeight = 5.5f;
+	[SerializeField] LayerMask _MapMask = 0;
+	[SerializeField] LayerMask _PikminMask = 0;
+	[SerializeField] float _PikminSuctionHeight = 4;
+	[SerializeField] float _PikminEjectionHeight = 5.5f;
 	[SerializeField] PikminColour _OnionColour = PikminColour.Red;
-	public PikminColour OnionColour { get { return _OnionColour; } private set { } }
-	public bool OnionActive { get; private set; }
 
 	[Header("Dispersal")]
-	[SerializeField] private float _DisperseRadius = 12;
-	private Vector3Int _SeedsToDisperse = Vector3Int.zero;
+	[SerializeField] float _DisperseRadius = 12;
+	Vector3Int _SeedsToDisperse = Vector3Int.zero;
 
-	public static List<Onion> _ActiveOnions = new List<Onion>();
-
-	private int _CurrentSeedIdx = 0;
-	Dictionary<int, GameObject> _SpawnedSprouts = new Dictionary<int, GameObject>();
+	public PikminColour OnionColour { get { return _OnionColour; } set { } }
+	public bool OnionActive { get; set; }
 
 	public Transform _CarryEndpoint = null;
-	private bool _CanUse = false;
-	private bool _InMenu = false;
-	private float _UpDownAxis;
+
+	int _CurrentSeedIdx = 0;
+	Dictionary<int, GameObject> _SpawnedSprouts = new Dictionary<int, GameObject>();
+
+	bool _CanUse = false;
+	bool _InMenu = false;
+	float _UpDownAxis;
 
 	// First number is coming out of the onion,
 	// Second number is total in the onion
 
-	private struct PikminAmount
+	struct PikminAmount
 	{
 		public int _InSquad;
 		public int _InOnion;
 	};
 
-	private PikminAmount _CurPikminAmounts;
-	private PikminAmount _OldPikminAmounts;
+	PikminAmount _CurPikminAmounts;
+	PikminAmount _OldPikminAmounts;
 
-	private float _InputTimer = 0;
+	float _InputTimer = 0;
 
 	#region Unity Functions
-	private void OnEnable() => _ActiveOnions.Add(this);
-	private void OnDisable() => _ActiveOnions.Remove(this);
-	private void OnDestroy() => _ActiveOnions.Remove(this);
+	void OnEnable() => OnionManager._OnionsInScene.Add(this);
+	void OnDisable() => OnionManager._OnionsInScene.Remove(this);
+	void OnDestroy() => OnionManager._OnionsInScene.Remove(this);
 
-	private void Awake()
+	void Awake()
 	{
 		_OnionCanvas.gameObject.SetActive(false);
 
@@ -110,7 +110,7 @@ public class Onion : MonoBehaviour
 		}
 	}
 
-	private void Update()
+	void Update()
 	{
 		// Handle in-menu input processing
 		if (_InMenu)
@@ -167,7 +167,7 @@ public class Onion : MonoBehaviour
 				_InputTimer -= Time.deltaTime;
 			}
 
-			
+
 
 			_InOnionText.text = $"{_CurPikminAmounts._InOnion}";
 			_InSquadText.text = $"{_CurPikminAmounts._InSquad}";
@@ -175,12 +175,15 @@ public class Onion : MonoBehaviour
 		}
 	}
 
-	public void OnMovement(InputAction.CallbackContext context) {
+	public void OnMovement(InputAction.CallbackContext context)
+	{
 		_UpDownAxis = context.ReadValue<Vector2>().y;
 	}
 
-	public void OnWhistle(InputAction.CallbackContext context) {
-		if (context.started && _InMenu) {
+	public void OnWhistle(InputAction.CallbackContext context)
+	{
+		if (context.started && _InMenu)
+		{
 			FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 			{
 				_OnionCanvas.gameObject.SetActive(false);
@@ -192,19 +195,25 @@ public class Onion : MonoBehaviour
 		}
 	}
 
-	public void OnPrimaryAction(InputAction.CallbackContext context) {
-		if (context.started && _CanUse) {
-			if (!_InMenu) {
+	public void OnPrimaryAction(InputAction.CallbackContext context)
+	{
+		if (context.started && _CanUse)
+		{
+			if (!_InMenu)
+			{
 				Player._Instance.Pause(PauseType.Paused);
-				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() => {
+				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
+				{
 					_OnionCanvas.gameObject.SetActive(true);
 
-					_CurPikminAmounts = new PikminAmount {
+					_CurPikminAmounts = new PikminAmount
+					{
 						_InSquad = PikminStatsManager.GetInSquad(_OnionColour),
 						_InOnion = PikminStatsManager.GetInOnion(_OnionColour)
 					};
 
-					_OldPikminAmounts = new PikminAmount {
+					_OldPikminAmounts = new PikminAmount
+					{
 						_InOnion = _CurPikminAmounts._InOnion,
 						_InSquad = _CurPikminAmounts._InSquad
 					};
@@ -215,7 +224,8 @@ public class Onion : MonoBehaviour
 				}));
 			}
 			else if (_CurPikminAmounts._InSquad != _OldPikminAmounts._InSquad ||
-				_CurPikminAmounts._InOnion != _OldPikminAmounts._InOnion) {
+				_CurPikminAmounts._InOnion != _OldPikminAmounts._InOnion)
+			{
 				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 				{
 					_OnionCanvas.gameObject.SetActive(false);
@@ -224,17 +234,23 @@ public class Onion : MonoBehaviour
 
 					int fieldDifference = _CurPikminAmounts._InSquad - _OldPikminAmounts._InSquad;
 
-					if (fieldDifference > 0) {
+					if (fieldDifference > 0)
+					{
 						StartCoroutine(IE_SpawnPikmin(fieldDifference));
-					} else if (fieldDifference < 0) {
+					}
+					else if (fieldDifference < 0)
+					{
 						Collider[] pikmin = Physics.OverlapSphere(_CarryEndpoint.position, 50f, _PikminMask);
-						if (pikmin.Length == 0) {
+						if (pikmin.Length == 0)
+						{
 							return;
 						}
 
-						for (int i = 0; i < Mathf.Abs(fieldDifference); i++) {
+						for (int i = 0; i < Mathf.Abs(fieldDifference); i++)
+						{
 							var pikai = pikmin[i].GetComponent<PikminAI>();
-							if (pikai._InSquad) {
+							if (pikai._InSquad)
+							{
 								pikai.RemoveFromSquad();
 								PikminStatsManager.Add(pikai._Data._PikminColour, pikai._CurrentMaturity, PikminStatSpecifier.InOnion);
 								PikminStatsManager.Remove(pikai._Data._PikminColour, pikai._CurrentMaturity, PikminStatSpecifier.OnField);
@@ -250,7 +266,7 @@ public class Onion : MonoBehaviour
 	}
 
 
-	private void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player"))
 		{
@@ -259,7 +275,7 @@ public class Onion : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerExit(Collider other)
+	void OnTriggerExit(Collider other)
 	{
 		if (other.CompareTag("Player"))
 		{
@@ -268,7 +284,7 @@ public class Onion : MonoBehaviour
 		}
 	}
 
-	private void OnDrawGizmosSelected()
+	void OnDrawGizmosSelected()
 	{
 		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 50, _MapMask, QueryTriggerInteraction.Ignore))
 		{
@@ -341,13 +357,20 @@ public class Onion : MonoBehaviour
 	/// <exception cref="NotImplementedException">Tried to spit a colour that hasn't been implemented</exception>
 	public void AddSproutsToSpit(int toProduce, PikminColour colour)
 	{
-		_ = colour switch
+		switch (colour)
 		{
-			PikminColour.Red => _SeedsToDisperse.x += toProduce,
-			PikminColour.Yellow => _SeedsToDisperse.y += toProduce,
-			PikminColour.Blue => _SeedsToDisperse.z += toProduce,
-			PikminColour.Size => throw new NotImplementedException(),
-			_ => throw new NotImplementedException()
+			case PikminColour.Red:
+				_SeedsToDisperse.x += toProduce;
+				break;
+			case PikminColour.Yellow:
+				_SeedsToDisperse.y += toProduce;
+				break;
+			case PikminColour.Blue:
+				_SeedsToDisperse.z += toProduce;
+				break;
+
+			default:
+				throw new NotImplementedException();
 		};
 
 		_Animator.SetBool("Spitting", true);
@@ -367,7 +390,7 @@ public class Onion : MonoBehaviour
 
 	#region IEnumerators
 	// For the spawning Pikmin sequence (from the in-game menu, not spitting)
-	private IEnumerator IE_SpawnPikmin(int amount)
+	IEnumerator IE_SpawnPikmin(int amount)
 	{
 		_CanUse = false;
 		yield return new WaitForSeconds(0.25f);
@@ -405,7 +428,7 @@ public class Onion : MonoBehaviour
 	}
 
 	// For handling the suction animation
-	private IEnumerator IE_SuctionAnimation(GameObject obj, int toProduce, PikminColour color)
+	IEnumerator IE_SuctionAnimation(GameObject obj, int toProduce, PikminColour color)
 	{
 		yield return null;
 
@@ -439,7 +462,7 @@ public class Onion : MonoBehaviour
 	#endregion
 
 	#region Utility Functions
-	private IEnumerator FadeInCanvas()
+	IEnumerator FadeInCanvas()
 	{
 		float t = 0;
 		float time = 0.5f;
@@ -451,7 +474,7 @@ public class Onion : MonoBehaviour
 		}
 	}
 
-	private IEnumerator FadeOutCanvas()
+	IEnumerator FadeOutCanvas()
 	{
 		float t = 0;
 		float time = 0.5f;
@@ -468,7 +491,7 @@ public class Onion : MonoBehaviour
 	/// </summary>
 	/// <param name="idx">The index of the Pikmin to be spawned, affects where it will spawn and if it is -1 then will use random value</param>
 	/// <returns>Position around a unit circle in 3D space (X, Z coords only)</returns>
-	private Vector3 GetRandomBaseSpawnPosition(int idx = -1)
+	Vector3 GetRandomBaseSpawnPosition(int idx = -1)
 	{
 		if (idx == -1)
 		{
@@ -484,7 +507,7 @@ public class Onion : MonoBehaviour
 	/// </summary>
 	/// <param name="colour">Colour of the Pikmin to spawn</param>
 	/// <param name="maturity">Maturity of the Pikmin to spawn</param>
-	private void TryCreatePikmin(PikminColour colour, PikminMaturity maturity)
+	void TryCreatePikmin(PikminColour colour, PikminMaturity maturity)
 	{
 		if (PikminStatsManager.GetTotalOnField() >= PikminStatsManager._MaxOnField)
 		{
@@ -533,7 +556,7 @@ public class Onion : MonoBehaviour
 	/// For spawning a sprout
 	/// </summary>
 	/// <param name="colour">The colour of the sprout to spawn</param>
-	private void TryCreateSprout(PikminColour colour)
+	void TryCreateSprout(PikminColour colour)
 	{
 		if (PikminStatsManager.GetTotalOnField() == PikminStatsManager._MaxOnField)
 		{

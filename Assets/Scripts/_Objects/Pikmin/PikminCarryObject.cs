@@ -115,6 +115,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 			return;
 		}
+		else if (!OnionManager.IsAnyOnionActiveInScene())
+		{
+			return;
+		}
 
 		if (!_Source.isPlaying)
 		{
@@ -266,15 +270,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		if (_CarryingPikmin.Count >= _CarryMinMax.x)
 		{
 			PikminColour colour = GameUtil.GetMajorityColour(_CarryingPikmin);
+			_TargetOnion = OnionManager.GetOnionOfColour(colour);
 
-			foreach (var onion in Onion._ActiveOnions)
-			{
-				if (onion.OnionColour == colour)
-				{
-					_TargetOnion = onion;
-					break;
-				}
-			}
+			Debug.Assert(_TargetOnion != null, $"Target Onion ({colour}) not found!");
+			Debug.Assert(_TargetOnion.OnionActive == true, $"Target Onion ({colour}) not active!");
 
 			if (_TargetOnion.OnionActive)
 			{
