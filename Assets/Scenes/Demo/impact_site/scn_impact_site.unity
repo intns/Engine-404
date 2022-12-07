@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 4
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -17042,31 +17042,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Player_Set
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387085006627562, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_Height
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387085006627562, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.34
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387085006627562, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0.54
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387085006627562, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_Center.z
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _ResetRotationSpeed
-      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6894162304972100195, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}

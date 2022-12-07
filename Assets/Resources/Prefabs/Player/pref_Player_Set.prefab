@@ -2020,12 +2020,12 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1
-  m_Radius: 0.704672
+  m_Radius: 0.34
   m_SlopeLimit: 35
   m_StepOffset: 0.15
   m_SkinWidth: 0.0005
   m_MinMoveDistance: 0
-  m_Center: {x: 0.000000008118531, y: 0.7, z: 0.2046716}
+  m_Center: {x: 0.000000008118531, y: 0.54, z: 0.08}
 --- !u!114 &4246387085006627564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2099,7 +2099,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   _LineRenderer: {fileID: 117167615383378679}
-  _Animator: {fileID: 6700862878076667457}
   _PikminPluckDistance: 3
   _PikminPluckLayer:
     serializedVersion: 2
@@ -2122,6 +2121,7 @@ MonoBehaviour:
   _UsingCrowdControl: 0
   _CanThrowPikmin: 1
   _SelectedThrowPikmin: 0
+  _PikminInHand: {fileID: 0}
 --- !u!1 &4246387085443966845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,7 +2615,7 @@ MonoBehaviour:
   _FOVChangeSpeed: 3.5
   _TriggerRotationSpeed: 15
   _TriggerSensitivity: 4.75
-  _ResetRotationSpeed: 2
+  _ResetRotationSpeed: 3.5
   _ResetLength: 1
 --- !u!82 &4246387086140531172
 AudioSource:
