@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: df4238e2bc587a848b6e50a63c5be4cf
 ModelImporter:
-  serializedVersion: 21202
+  serializedVersion: 22200
   internalIDToNameTable:
   - first:
       74: 481592065625503746
@@ -210,7 +210,22 @@ ModelImporter:
   - first:
       74: 2464788078928655550
     second: nodes_0|nodes_0|furimuku| (1)
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: body_orima
+    second: {fileID: 2100000, guid: 3a85969519d94344ca58e44a2ea7fc78, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: naka_orima
+    second: {fileID: 2100000, guid: 00a806ab7855746428c60222f0131411, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: soto_orima
+    second: {fileID: 2100000, guid: 37ac27ec9b7462049a5ec3d366feb063, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -2215,7 +2230,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 10
-    meshCompression: 0
+    meshCompression: 3
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
@@ -2246,6 +2261,7 @@ ModelImporter:
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 1
@@ -2278,6 +2294,8 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

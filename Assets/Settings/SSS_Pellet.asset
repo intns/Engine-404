@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2686e09ec7aef44bad2843e4416f057, type: 3}
   m_Name: SSS_Pellet
   m_EditorClassIdentifier: 
-  m_Version: 1
   profile:
     scatteringDistance: {r: 0.7490196, g: 0, b: 0, a: 1}
+    scatteringDistanceMultiplier: 1
     transmissionTint: {r: 534.0863, g: 534.0863, b: 534.0863, a: 1}
     texturingMode: 0
     transmissionMode: 1
@@ -22,3 +22,4 @@ MonoBehaviour:
     worldScale: 1
     ior: 1.197
     hash: 1076926570
+  m_Version: 2
