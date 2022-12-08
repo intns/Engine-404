@@ -230,6 +230,7 @@ public class PlayerPikminController : MonoBehaviour
 				Rigidbody rigidbody = _PikminInHand.GetComponent<Rigidbody>();
 				if (_ThrownVelocity != Vector3.zero)
 				{
+					rigidbody.isKinematic = false;
 					rigidbody.velocity = _ThrownVelocity;
 				}
 
