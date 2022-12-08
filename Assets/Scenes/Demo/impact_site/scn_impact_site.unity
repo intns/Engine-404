@@ -1538,6 +1538,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Onion
       objectReference: {fileID: 0}
+    - target: {fileID: 8067516413916732183, guid: 5cba03d57e3cd964787b1415ae9e99d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cba03d57e3cd964787b1415ae9e99d0, type: 3}
 --- !u!4 &195164880 stripped
@@ -3463,7 +3468,7 @@ PrefabInstance:
     - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
         type: 3}
       propertyPath: _DoSequence
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
         type: 3}
@@ -5579,7 +5584,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &748775421
 Transform:
   m_ObjectHideFlags: 0
@@ -10430,6 +10435,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Onion
+      objectReference: {fileID: 0}
+    - target: {fileID: 8067516413916732183, guid: 11558a63651dc2f40ad29da1299f548b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11558a63651dc2f40ad29da1299f548b, type: 3}
