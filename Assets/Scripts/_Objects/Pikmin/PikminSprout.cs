@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum PikminSproutState
@@ -11,9 +10,9 @@ public enum PikminSproutState
 
 public class PikminSproutPath
 {
-	private Vector3 startPosition, endPosition, distance;
-	private double height, width;
-	private double position, speed;
+	Vector3 startPosition, endPosition, distance;
+	double height, width;
+	double position, speed;
 
 	public PikminSproutPath(Vector3 startPosition, Vector3 endPosition, double speed, double height)
 	{
@@ -46,21 +45,21 @@ public class PikminSproutPath
 		return position >= 1.0;
 	}
 
-	private double GetYPosition()
+	double GetYPosition()
 	{
 		double yPosition = GetSquareRoot();
 		if (double.IsNaN(yPosition)) { yPosition = 0; }
 		return yPosition + distance.y * position;
 	}
 
-	private double GetSquareRoot()
+	double GetSquareRoot()
 	{
 		double fraction = Squared(position - width) / Squared(width);
 		double toBeSquareRooted = (1 - fraction) * Squared(height);
 		return Math.Sqrt(toBeSquareRooted);
 	}
 
-	private double Squared(double value)
+	double Squared(double value)
 	{
 		return Math.Pow(value, 2);
 	}
@@ -103,7 +102,7 @@ public class PikminSprout : MonoBehaviour
 
 	float _Timer = 0;
 
-	private void OnEnable()
+	void OnEnable()
 	{
 		_CurrentState = PikminSproutState.Dropping;
 
@@ -126,7 +125,7 @@ public class PikminSprout : MonoBehaviour
 		_TimeNeededForFlower += UnityEngine.Random.Range(60, -30);
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (GameManager.IsPaused)
 		{

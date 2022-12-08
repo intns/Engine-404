@@ -18,50 +18,50 @@ public class WhistleController : MonoBehaviour
      actually is, as opposed to just changing the decals localScale */
 
 	[Header("Components")]
-	[SerializeField] private GameObject _WhistleParticle = null;
-	[SerializeField] private Transform _ParticleParent = null;
-	[SerializeField] private AudioClip _BlowSound = null;
+	[SerializeField] GameObject _WhistleParticle = null;
+	[SerializeField] Transform _ParticleParent = null;
+	[SerializeField] AudioClip _BlowSound = null;
 	public Transform _Reticle = null;
 
 	[Header("Particles")]
-	[SerializeField] private int _ParticleDensity = 15;
-	[SerializeField] private float _ParticleRotationSpeed = 1;
-	[SerializeField] private float _ParticleRaycastAddedHeight = 100;
-	[SerializeField] private float _HeightOffset = 0.5f;
+	[SerializeField] int _ParticleDensity = 15;
+	[SerializeField] float _ParticleRotationSpeed = 1;
+	[SerializeField] float _ParticleRaycastAddedHeight = 100;
+	[SerializeField] float _HeightOffset = 0.5f;
 
 	[Header("Settings")]
-	[SerializeField] private bool _Pluckaphone = false;
+	[SerializeField] bool _Pluckaphone = false;
 	[Space]
-	[SerializeField] private float _StartingRadius = 1;
-	[SerializeField] private float _ExpandedRadius = 10;
-	[SerializeField] private float _PikminCallHeight = 0;
+	[SerializeField] float _StartingRadius = 1;
+	[SerializeField] float _ExpandedRadius = 10;
+	[SerializeField] float _PikminCallHeight = 0;
 	[Space]
-	[SerializeField] private float _MaxBlowTime = 3;
-	[SerializeField] private float _OffsetFromSurface = 0.5f;
+	[SerializeField] float _MaxBlowTime = 3;
+	[SerializeField] float _OffsetFromSurface = 0.5f;
 	[Space]
-	[SerializeField] private LayerMask _PikminMask = 0;
+	[SerializeField] LayerMask _PikminMask = 0;
 
 	[Header("Controller Settings")]
-	[SerializeField] private float _MaxDistFromPlayer = 5;
-	[SerializeField] private float _MoveSpeed = 5;
-	private Vector2 _Movement;
-	private Vector2 _OffsetFromPlayer = Vector2.zero;
+	[SerializeField] float _MaxDistFromPlayer = 5;
+	[SerializeField] float _MoveSpeed = 5;
+	Vector2 _Movement;
+	Vector2 _OffsetFromPlayer = Vector2.zero;
 
 	[Header("Raycast Settings")]
-	[SerializeField] private float _MaxDistance = Mathf.Infinity;
-	[SerializeField] private LayerMask _MapMask = 0;
+	[SerializeField] float _MaxDistance = Mathf.Infinity;
+	[SerializeField] LayerMask _MapMask = 0;
 
 	[Header("Debugging")]
-	[SerializeField] private uint _WhistleCircleSegments = 20;
-	private AudioSource _Source;
-	private GameObject[] _Particles;
-	private Camera _MainCamera;
-	private Transform _PlayerTransform;
-	private PlayerInput _PlayerInput;
-	private bool _Blowing = false;
-	private float _TimeBlowing = 0;
+	[SerializeField] uint _WhistleCircleSegments = 20;
+	AudioSource _Source;
+	GameObject[] _Particles;
+	Camera _MainCamera;
+	Transform _PlayerTransform;
+	PlayerInput _PlayerInput;
+	bool _Blowing = false;
+	float _TimeBlowing = 0;
 
-	private void Awake()
+	void Awake()
 	{
 		// Generate particles for blowing later on
 		_Particles = new GameObject[_ParticleDensity + 1];
@@ -84,7 +84,7 @@ public class WhistleController : MonoBehaviour
 		_PlayerInput = gameObject.GetComponentInParent<PlayerInput>();
 	}
 
-	private void Start()
+	void Start()
 	{
 		_PlayerTransform = Player._Instance.transform;
 
@@ -103,7 +103,8 @@ public class WhistleController : MonoBehaviour
 				}
 
 				// Check if there is a controller attached
-				if (_PlayerInput.currentControlScheme != "KeyboardAndMouse") {
+				if (_PlayerInput.currentControlScheme != "KeyboardAndMouse")
+				{
 					Vector3 directionVector = new Vector3(_Movement.x * _MoveSpeed, 0, _Movement.y * _MoveSpeed);
 					//Rotate the input vector into camera space so up is camera's up and right is camera's right
 					directionVector = _MainCamera.transform.rotation * directionVector;
@@ -134,7 +135,9 @@ public class WhistleController : MonoBehaviour
 						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
 						transform.position = _Reticle.position = target;
 					}
-				} else {
+				}
+				else
+				{
 					// Reliant on the mouse, so cannot be used with controllers
 					try
 					{
@@ -167,7 +170,7 @@ public class WhistleController : MonoBehaviour
 		}
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (GameManager.IsPaused || Player._Instance._MovementController._Paralysed)
 		{
@@ -222,16 +225,20 @@ public class WhistleController : MonoBehaviour
 		}
 	}
 
-	public void OnMovement(InputAction.CallbackContext context) {
+	public void OnMovement(InputAction.CallbackContext context)
+	{
 		_Movement = context.ReadValue<Vector2>();
 	}
 
-	public void OnWhistle(InputAction.CallbackContext context) {
-		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused) {
+	public void OnWhistle(InputAction.CallbackContext context)
+	{
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
+		{
 			return;
 		}
 
-		if (context.started) {
+		if (context.started)
+		{
 			transform.localScale = Vector3.one * _StartingRadius;
 			_Blowing = true;
 
@@ -240,7 +247,9 @@ public class WhistleController : MonoBehaviour
 
 			// Play the blow sound
 			_Source.Play();
-		} else if (context.canceled) {
+		}
+		else if (context.canceled)
+		{
 			EndBlow();
 		}
 	}
@@ -248,7 +257,7 @@ public class WhistleController : MonoBehaviour
 	/// <summary>
 	/// Displays debug information about the Whistle when selected in the editor
 	/// </summary>
-	private void OnDrawGizmosSelected()
+	void OnDrawGizmosSelected()
 	{
 		if (Application.isPlaying)
 		{
@@ -277,7 +286,7 @@ public class WhistleController : MonoBehaviour
 		}
 	}
 
-	private void EndBlow()
+	void EndBlow()
 	{
 		transform.localScale = Vector3.one * _StartingRadius;
 		_TimeBlowing = 0;
@@ -286,7 +295,7 @@ public class WhistleController : MonoBehaviour
 		_Source.Stop();
 	}
 
-	private void SetParticlesActive(bool isActive)
+	void SetParticlesActive(bool isActive)
 	{
 		for (int i = 0; i < _Particles.Length; i++)
 		{
@@ -297,7 +306,7 @@ public class WhistleController : MonoBehaviour
 	/// <summary>
 	/// Assigns the positions of the blow particles
 	/// </summary>
-	private void AssignParticlePositions()
+	void AssignParticlePositions()
 	{
 		Transform cacheTransform = transform;
 		for (int i = 0; i < _ParticleDensity + 1; i++)

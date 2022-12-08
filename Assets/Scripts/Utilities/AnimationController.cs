@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -66,7 +63,7 @@ class AnimationController
 
 	public Animator _ParentAnimator;
 
-	private List<AnimationClip> _Animations = new List<AnimationClip>();
-	private int _CurrentState = 0;
-	private bool _FinishCurrent = false;
+	List<AnimationClip> _Animations = new List<AnimationClip>();
+	int _CurrentState = 0;
+	bool _FinishCurrent = false;
 }

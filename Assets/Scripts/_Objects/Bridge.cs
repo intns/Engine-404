@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,7 +29,7 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 
 	AudioSource _Source = null;
 
-	private void Awake()
+	void Awake()
 	{
 		_Source = GetComponent<AudioSource>();
 
@@ -43,7 +42,7 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 
 	public PikminIntention IntentionType => PikminIntention.Attack;
 
-	private void OnDrawGizmos()
+	void OnDrawGizmos()
 	{
 		Mesh endPieceMesh = _EndPiece.GetComponentInChildren<MeshFilter>().sharedMesh;
 		Mesh midPieceMesh = _MidPiece.GetComponentInChildren<MeshFilter>().sharedMesh;
@@ -80,7 +79,7 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 		if (_CurrentHealth <= 0)
 		{
 			_CurrentHealth = _HealthUntilStep;
-			
+
 			if (_StepIndex >= _PieceCount)
 			{
 				_AttackPiece.SetActive(false);

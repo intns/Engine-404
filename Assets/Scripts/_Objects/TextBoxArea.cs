@@ -22,7 +22,7 @@ public class TextBoxArea : MonoBehaviour
 	bool _FinishedPageWrite = false;
 
 	#region Unity Functions
-	private void OnEnable()
+	void OnEnable()
 	{
 		_Canvas.gameObject.SetActive(false);
 		Debug.Assert(_Entry != null);
@@ -36,12 +36,12 @@ public class TextBoxArea : MonoBehaviour
 		PlayerPrefs.SetInt(_GlobalName, 0);
 	}
 
-	private void Awake()
+	void Awake()
 	{
 		_Transform = transform;
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (!_Enabled)
 		{
@@ -72,7 +72,7 @@ public class TextBoxArea : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider other)
 	{
 		if (!other.CompareTag("Player") || PlayerPrefs.GetInt(_GlobalName) == 1)
 		{
@@ -92,7 +92,7 @@ public class TextBoxArea : MonoBehaviour
 	#endregion
 
 	#region IEnumerators
-	private IEnumerator FadeInCanvas()
+	IEnumerator FadeInCanvas()
 	{
 		float t = 0;
 		float time = 0.5f;
@@ -110,7 +110,7 @@ public class TextBoxArea : MonoBehaviour
 		}
 	}
 
-	private IEnumerator FadeOutCanvas()
+	IEnumerator FadeOutCanvas()
 	{
 		float t = 0;
 		float time = 0.5f;
@@ -128,7 +128,7 @@ public class TextBoxArea : MonoBehaviour
 		_Canvas.gameObject.SetActive(false);
 	}
 
-	private IEnumerator WriteText(string toWrite)
+	IEnumerator WriteText(string toWrite)
 	{
 		_Text.text = string.Empty;
 

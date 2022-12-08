@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ANIM_ImpactSiteBoxPush : MonoBehaviour
@@ -8,7 +7,7 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 	Transform _Transform = null;
 	[SerializeField] CardboardBox _Box = null;
 
-	private void Awake()
+	void Awake()
 	{
 		_Transform = transform;
 		_Box._OnPush += () =>

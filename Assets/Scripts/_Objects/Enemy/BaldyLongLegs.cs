@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -260,7 +259,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	float _MoveSpeed = 0.0f;
 	float _CircleTimer = 0;
 	List<BaldyLongLegsFoot> _Feet = new List<BaldyLongLegsFoot>();
-	private EnemyDamageScript _DamageScript = null;
+	EnemyDamageScript _DamageScript = null;
 	Animator _Animator;
 
 	public Vector3 GetRaycastObjPosition(int legIdx)
@@ -268,7 +267,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 		return transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_LegTargets.Length, legIdx, _Offset) * _LegDistance, transform.position.y + 50);
 	}
 
-	private void Awake()
+	void Awake()
 	{
 		_Animator = GetComponent<Animator>();
 		_DamageScript = GetComponent<EnemyDamageScript>();
@@ -310,7 +309,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 		}
 	}
 
-	private void OnDrawGizmosSelected()
+	void OnDrawGizmosSelected()
 	{
 		if (_LegTargets.Length == 0)
 		{
@@ -324,7 +323,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 		}
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (GameManager.IsPaused)
 		{

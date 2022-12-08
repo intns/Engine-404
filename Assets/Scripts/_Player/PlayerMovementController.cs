@@ -106,7 +106,7 @@ public class PlayerMovementController : MonoBehaviour
 
 		// Only rotate if there isn't a Pikmin in hand, as it has priority
 		if (Player._Instance._PikminController._PikminInHand == null)
-		{ 
+		{
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(mDirection), _RotationSpeed * Time.deltaTime);
 		}
 

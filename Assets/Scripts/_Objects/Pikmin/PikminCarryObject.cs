@@ -1,66 +1,65 @@
-using System.Collections;
+using Pathfinding;
 using System.Collections.Generic;
 using UnityEngine;
-using Pathfinding;
 
 [RequireComponent(typeof(Seeker), typeof(Rigidbody))]
 public class PikminCarryObject : MonoBehaviour, IPikminCarry
 {
 	[Header("References")]
-	[SerializeField] private GameObject _CarryTextPrefab;
-	[SerializeField] private AudioClip _CarryNoiseClip;
+	[SerializeField] GameObject _CarryTextPrefab;
+	[SerializeField] AudioClip _CarryNoiseClip;
 
 	[Header("Settings")]
 	[SerializeField, Tooltip("Number on the left signifies the minimum amount to carry, number on the right is the maximum.")]
-	private Vector2Int _CarryMinMax = new Vector2Int(1, 2);
+	Vector2Int _CarryMinMax = new Vector2Int(1, 2);
 
 	[SerializeField, Tooltip("How close we have to be to the position to move onto the next position")]
-	private float _DistanceToNextPosition = 0.5f;
+	float _DistanceToNextPosition = 0.5f;
 
 	[SerializeField, Tooltip("How long does it take for the object to be carried after spawn?")]
-	private float _InvulnTimeAfterSpawn = 1.0f;
+	float _InvulnTimeAfterSpawn = 1.0f;
 
-	[SerializeField] private float _CarryCircleRadius = 1;
-	[SerializeField] private Vector3 _CarryCircleOffset = Vector3.zero;
-
-	[Space()]
-	[SerializeField] private float _AccelerationSpeed = 2;
-	[SerializeField] private float _BaseSpeed = 2;
-	[SerializeField] private float _SpeedAddedPerPikmin = 0.5f;
-	[SerializeField] private float _MaxSpeed = 3;
+	[SerializeField] float _CarryCircleRadius = 1;
+	[SerializeField] Vector3 _CarryCircleOffset = Vector3.zero;
 
 	[Space()]
-	[SerializeField] private PikminColour _ColourToGenerateFor = PikminColour.Size;
-	[SerializeField] private int _PikminToProduceMatchColour = 2;
-	[SerializeField] private int _PikminToProduceNonMatchColour = 1;
+	[SerializeField] float _AccelerationSpeed = 2;
+	[SerializeField] float _BaseSpeed = 2;
+	[SerializeField] float _SpeedAddedPerPikmin = 0.5f;
+	[SerializeField] float _MaxSpeed = 3;
+
+	[Space()]
+	[SerializeField] PikminColour _ColourToGenerateFor = PikminColour.Size;
+	[SerializeField] int _PikminToProduceMatchColour = 2;
+	[SerializeField] int _PikminToProduceNonMatchColour = 1;
 
 	[Header("Debugging")]
-	[SerializeField] private float _CurrentMoveSpeed = 0;
-	[SerializeField] private Vector3 _MoveVector = Vector3.zero;
-	[SerializeField] private Vector3 _NextDestination = Vector3.zero;
+	[SerializeField] float _CurrentMoveSpeed = 0;
+	[SerializeField] Vector3 _MoveVector = Vector3.zero;
+	[SerializeField] Vector3 _NextDestination = Vector3.zero;
 	[SerializeField] Vector3 _TargetPosition;
 
-	private CarryText _CarryText = null;
-	private Onion _TargetOnion = null;
-	private Rigidbody _Rigidbody = null;
-	private Seeker _Pathfinder = null;
+	CarryText _CarryText = null;
+	Onion _TargetOnion = null;
+	Rigidbody _Rigidbody = null;
+	Seeker _Pathfinder = null;
 	AudioSource _Source;
 
-	private float _CurrentSpeedTarget = 0;
+	float _CurrentSpeedTarget = 0;
 
-	private Path _CurrentPath = null;
-	private int _CurrentPathPosIdx = 0;
+	Path _CurrentPath = null;
+	int _CurrentPathPosIdx = 0;
 
-	private List<PikminAI> _CarryingPikmin = new List<PikminAI>();
-	private bool _IsBeingCarried = false;
-	private bool _ShutdownInProgress = false;
+	List<PikminAI> _CarryingPikmin = new List<PikminAI>();
+	bool _IsBeingCarried = false;
+	bool _ShutdownInProgress = false;
 	Vector3 _SpawnPosition = Vector3.zero;
 
-	private float _SpawnInvulnTimer = 0.0f;
+	float _SpawnInvulnTimer = 0.0f;
 
 	public bool IsMoving() => _IsBeingCarried;
 
-	private void Awake()
+	void Awake()
 	{
 		_Rigidbody = GetComponent<Rigidbody>();
 		_Pathfinder = GetComponent<Seeker>();
@@ -78,7 +77,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		InvokeRepeating(nameof(CheckPath), 0, 1f);
 	}
 
-	private void CheckPath()
+	void CheckPath()
 	{
 		if (!_IsBeingCarried || GameManager.IsPaused)
 		{
@@ -88,7 +87,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		_Pathfinder.StartPath(transform.position, _TargetPosition, OnPathCalculated);
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (GameManager.IsPaused)
 		{
@@ -184,7 +183,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 	}
 
-	private void FixedUpdate()
+	void FixedUpdate()
 	{
 		if (GameManager.IsPaused)
 		{
@@ -198,7 +197,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		_MoveVector = new Vector3(0, storedY, 0);
 	}
 
-	private void OnDrawGizmosSelected()
+	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
 		for (int i = 0; i < _CarryMinMax.x; i++)
@@ -213,12 +212,12 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 	}
 
-	private Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)
+	Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)
 	{
 		return transform.position + _CarryCircleOffset + (MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx)) * _CarryCircleRadius);
 	}
 
-	private void MoveTowards(Vector3 position)
+	void MoveTowards(Vector3 position)
 	{
 		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
 
@@ -228,7 +227,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		_MoveVector = newVelocity;
 	}
 
-	private void OnPathCalculated(Path p)
+	void OnPathCalculated(Path p)
 	{
 		// If we're about to delete the object, no point in updating it
 		if (_ShutdownInProgress) { return; }
@@ -241,7 +240,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 	}
 
-	private void UpdateText()
+	void UpdateText()
 	{
 		// If we're about to delete the object, no point in updating it
 		if (_ShutdownInProgress) { return; }

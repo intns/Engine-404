@@ -7,12 +7,10 @@
  * Created for: having a generalised manager for the seperate Player scripts
  */
 
-using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(PlayerPikminController),
 									typeof(AnimationController),
@@ -26,11 +24,11 @@ public class Player : MonoBehaviour, IHealth
 	public WhistleController _WhistleController = null;
 
 	[Header("Components")]
-	[SerializeField] private LineRenderer _WhistleLine = null;
+	[SerializeField] LineRenderer _WhistleLine = null;
 
 	[Header("Settings")]
-	[SerializeField] private float _MaxHealth = 100;
-	[SerializeField] private float _CurrentHealth = 100;
+	[SerializeField] float _MaxHealth = 100;
+	[SerializeField] float _CurrentHealth = 100;
 	[Space]
 	[SerializeField] float _AttackSphereRadius = 2.5f;
 	[SerializeField] float _AttackDamage = 2.5f;
@@ -54,18 +52,18 @@ public class Player : MonoBehaviour, IHealth
 	[SerializeField] AnimationClip _IdleAnimation;
 	[SerializeField] AnimationClip _AttackAnimation;
 
-	[SerializeField] private CharacterController _Controller;
+	[SerializeField] CharacterController _Controller;
 	bool _IsHit = false;
 	bool _Walking = false;
 
 	float _AttackTimer;
 
-	private void OnEnable()
+	void OnEnable()
 	{
 		_Instance = this;
 	}
 
-	private void Awake()
+	void Awake()
 	{
 		_MovementController = GetComponent<PlayerMovementController>();
 		_PikminController = GetComponent<PlayerPikminController>();
@@ -86,7 +84,7 @@ public class Player : MonoBehaviour, IHealth
 		}
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (!GameManager.IsPaused)
 		{
@@ -140,7 +138,7 @@ public class Player : MonoBehaviour, IHealth
 		}
 	}
 
-	private void OnDrawGizmosSelected()
+	void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere(transform.position + transform.forward, _AttackSphereRadius);
 		Handles.Label(transform.position + transform.forward + Vector3.up * _AttackSphereRadius, $"Attack Damage: {_AttackDamage}");

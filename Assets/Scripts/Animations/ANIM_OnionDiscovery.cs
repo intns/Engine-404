@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ANIM_OnionDiscovery : MonoBehaviour
 {
-	[SerializeField] private SkinnedMeshRenderer _BodyRenderer = null;
+	[SerializeField] SkinnedMeshRenderer _BodyRenderer = null;
 
 	[SerializeField] Transform _LookAtTarget = null;
 	[SerializeField] Animator _Animator = null;
@@ -94,7 +93,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 		gameObject.SetActive(false);
 	}
 
-	private void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player"))
 		{

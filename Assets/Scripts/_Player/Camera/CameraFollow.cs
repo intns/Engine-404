@@ -47,18 +47,27 @@ public class CameraFollow : MonoBehaviour
 	float _ResetLength = 1;
 
 	//[Header("Debugging")]
-	/*[SerializeField] */float _OrbitRadius = 0.0f;   // How far away to orbit
-	/*[SerializeField] */float _GroundOffset = 0.0f;  // How far off the ground
+	/*[SerializeField] */
+	float _OrbitRadius = 0.0f;   // How far away to orbit
+	/*[SerializeField] */
+	float _GroundOffset = 0.0f;  // How far off the ground
 	/*[Space()]*/
-	/*[SerializeField] */float _ResetTimer = 0.0f;             // Rotation reset timer
-	/*[SerializeField] */float _ControllerTriggerState = 0.0f; // State of controller triggers for reset
+	/*[SerializeField] */
+	float _ResetTimer = 0.0f;             // Rotation reset timer
+	/*[SerializeField] */
+	float _ControllerTriggerState = 0.0f; // State of controller triggers for reset
 	/*[Space()]*/
-	/*[SerializeField] */float _CurrentRotation = 0.0f; // Current rotation in degrees
-	/*[SerializeField] */float _TargetRotation = 0.0f;  // Current rotation in degrees
+	/*[SerializeField] */
+	float _CurrentRotation = 0.0f; // Current rotation in degrees
+	/*[SerializeField] */
+	float _TargetRotation = 0.0f;  // Current rotation in degrees
 	/*[Space()]*/
-	/*[SerializeField] */int _HolderIndex;        // Current struct index
-	/*[SerializeField] */bool _IsTopView = false; // Is top view or not
-	/*[SerializeField] */Vector3 _LookatPosition; // The position we're looking at
+	/*[SerializeField] */
+	int _HolderIndex;        // Current struct index
+	/*[SerializeField] */
+	bool _IsTopView = false; // Is top view or not
+	/*[SerializeField] */
+	Vector3 _LookatPosition; // The position we're looking at
 
 	// Misc. data
 	CameraPositionData _CurrentHolder = null;

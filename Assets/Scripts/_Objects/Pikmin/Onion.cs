@@ -58,7 +58,7 @@ public class Onion : MonoBehaviour
 
 	bool _CanUse = false;
 	bool _InMenu = false;
-	float _UpDownAxis;	
+	float _UpDownAxis;
 	float _InputTimer = 0;
 
 	PikminAmount _CurPikminAmounts;

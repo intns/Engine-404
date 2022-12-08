@@ -18,20 +18,20 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour
 {
 	[Header("Components")]
-	[SerializeField] private Transform _Canvas = null;
-	[SerializeField] private CanvasGroup _CanvasGroup = null;
-	[SerializeField] private Transform _TemplateButton = null;
+	[SerializeField] Transform _Canvas = null;
+	[SerializeField] CanvasGroup _CanvasGroup = null;
+	[SerializeField] Transform _TemplateButton = null;
 
 	[Header("Settings")]
-	[SerializeField] private float _FadeinBlackTime = 2;
-	[SerializeField] private float _FadeinUITime = 2;
-	[SerializeField] private float _FadeoutTime = 2;
+	[SerializeField] float _FadeinBlackTime = 2;
+	[SerializeField] float _FadeinUITime = 2;
+	[SerializeField] float _FadeoutTime = 2;
 
 	[Header("Audio")]
-	[SerializeField] private AudioClip _HoverAudio;
-	[SerializeField] private AudioClip _SelectAudio;
+	[SerializeField] AudioClip _HoverAudio;
+	[SerializeField] AudioClip _SelectAudio;
 
-	private IEnumerator FadeInCanvas()
+	IEnumerator FadeInCanvas()
 	{
 		float t = 0;
 		float time = _FadeinUITime;
@@ -43,7 +43,7 @@ public class MainMenuUI : MonoBehaviour
 		}
 	}
 
-	private void Awake()
+	void Awake()
 	{
 		_CanvasGroup.alpha = 0;
 
@@ -98,7 +98,7 @@ public class MainMenuUI : MonoBehaviour
 		AudioSource.PlayClipAtPoint(_HoverAudio, Camera.main.transform.position, 0.25f);
 	}
 
-	private IEnumerator FadeInDebugControls(List<Transform> objects)
+	IEnumerator FadeInDebugControls(List<Transform> objects)
 	{
 		List<Image> imageComponents = new List<Image>();
 		List<TextMeshProUGUI> textComponents = new List<TextMeshProUGUI>();

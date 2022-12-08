@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -116,7 +115,7 @@ public static class Perlin
 
 	#endregion
 
-	#region Private functions
+	#region functions
 
 	static float Fade(float t)
 	{
@@ -245,7 +244,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 	}
 
 	#region Unity Functions
-	private void Awake()
+	void Awake()
 	{
 		_Transform = transform;
 		_Animator = GetComponent<Animator>();
@@ -278,7 +277,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		Debug.Assert(AnimationState.DeathStunned == _AnimController.AddState(_DeathStunnedAnim));
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (GameManager.IsPaused)
 		{
@@ -361,7 +360,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 	}
 
 
-	private void OnDrawGizmos()
+	void OnDrawGizmos()
 	{
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireSphere(transform.position, _DetectionSphere);
@@ -390,7 +389,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 	#endregion
 
 	#region Utility Functions
-	private void HandleIdle()
+	void HandleIdle()
 	{
 		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, new(Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask)));
 		if (closestObj != null)
@@ -402,7 +401,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		_AnimController.ChangeState(AnimationState.Idle);
 	}
 
-	private void HandleWalking()
+	void HandleWalking()
 	{
 		Vector3 direction = new Vector3(Perlin.Noise(Time.time + _RngStartDir.x), 0, Perlin.Noise(Time.time / 2 + _RngStartDir.y)).normalized;
 		_WanderDirection = Vector3.Lerp(_WanderDirection, direction, 0.3f * Time.deltaTime);
@@ -456,7 +455,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		}
 	}
 
-	private void HandleStunned()
+	void HandleStunned()
 	{
 		_AnimController.ChangeState(AnimationState.Stun);
 		_MovementEngine.SetVelocity(Vector3.zero);
@@ -482,7 +481,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		ChangeState(States.StunEnd);
 	}
 
-	private void ChangeState(States newState)
+	void ChangeState(States newState)
 	{
 		States oldState = _CurrentState;
 

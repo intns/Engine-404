@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyDamageScript))]
@@ -12,7 +10,7 @@ public class BrambleGate : MonoBehaviour, IPikminAttack
 	// [Header("Settings")]
 
 	#region Unity Functions
-	private void Awake()
+	void Awake()
 	{
 		_Transform = transform;
 		_DamageScript = GetComponent<EnemyDamageScript>();

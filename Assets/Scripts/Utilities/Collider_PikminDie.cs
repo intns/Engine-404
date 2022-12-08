@@ -17,7 +17,7 @@ public class Collider_PikminDie : MonoBehaviour
 		}
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	void OnCollisionEnter(Collision collision)
 	{
 		if (!_Enabled)
 		{
@@ -30,7 +30,7 @@ public class Collider_PikminDie : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider other)
 	{
 		if (!_Enabled)
 		{

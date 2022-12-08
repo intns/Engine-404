@@ -52,12 +52,12 @@ public class DayTimeManager : MonoBehaviour
 
 	public static DayTimeManager _Instance = null;
 
-	private void OnEnable()
+	void OnEnable()
 	{
 		_Instance = this;
 	}
 
-	private void Awake()
+	void Awake()
 	{
 		_Source = GetComponent<AudioSource>();
 
@@ -66,12 +66,12 @@ public class DayTimeManager : MonoBehaviour
 		transform.rotation = _FromRot;
 	}
 
-	private void Start()
+	void Start()
 	{
 		_TimeElapsed.Start();
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (_StartEndDay)
 		{

@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class HealthWheel : MonoBehaviour, IPooledObject
 {
-	[SerializeField] private float _HealthSpeed = 7.5f;
+	[SerializeField] float _HealthSpeed = 7.5f;
 
 	[HideInInspector] public Transform _Parent = null;
 	[HideInInspector] public Vector3 _Offset = Vector3.up;
@@ -23,10 +23,10 @@ public class HealthWheel : MonoBehaviour, IPooledObject
 
 	public Gradient _ColorGradient;
 
-	private CanvasGroup _CanvasGroup;
+	CanvasGroup _CanvasGroup;
 
 	// Start is called before the first frame update
-	private void Start()
+	void Start()
 	{
 		_BillboardHealth = transform.Find("Health_Display").gameObject.GetComponent<Image>();
 		_BillboardHealth.fillAmount = _CurrentHealth;
@@ -73,7 +73,7 @@ public class HealthWheel : MonoBehaviour, IPooledObject
 	}
 
 	// Update is called once per frame
-	private void Update()
+	void Update()
 	{
 		// Might be inefficient, optimize if needed
 		_Canvas.enabled = _MaxHealth > _CurrentHealth;

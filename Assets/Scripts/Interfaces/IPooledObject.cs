@@ -5,7 +5,8 @@
  * Created for: Replaces the "Start" function on pooled objects so we can call a similar function every time an object's spawned.
  */
 
-public interface IPooledObject {
-  // Called when the ObjectPooler reuses a model
-  void OnObjectSpawn ();
+public interface IPooledObject
+{
+	// Called when the ObjectPooler reuses a model
+	void OnObjectSpawn();
 }

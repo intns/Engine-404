@@ -15,12 +15,12 @@ public class PelletPosy : MonoBehaviour, IPikminAttack
 	public float _TimeToSprout = 2.5f;
 
 	[Header("Debugging")]
-	[SerializeField] private State _State = State.Bud;
+	[SerializeField] State _State = State.Bud;
 
-	private Animator _Animator = null;
-	private EnemyDamageScript _DamageScript = null;
+	Animator _Animator = null;
+	EnemyDamageScript _DamageScript = null;
 
-	private void Awake()
+	void Awake()
 	{
 		_Animator = GetComponent<Animator>();
 		_DamageScript = GetComponent<EnemyDamageScript>();

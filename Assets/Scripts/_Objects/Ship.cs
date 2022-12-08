@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -16,13 +14,13 @@ public class Ship : MonoBehaviour
 	// [Header("Settings")]
 
 	#region Unity Functions
-	private void OnEnable()
+	void OnEnable()
 	{
 		_Instance = this;
 		SetEngineFlamesVFX(false);
 	}
 
-	private void Awake()
+	void Awake()
 	{
 		_Transform = transform;
 	}

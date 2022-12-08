@@ -111,7 +111,7 @@ public class PikminTypeStats
 
 	public override string ToString()
 	{
-		string str = $"\tCOLOUR\t{ _Colour}\n";
+		string str = $"\tCOLOUR\t{_Colour}\n";
 		str += _Leaf.ToString();
 		str += _Bud.ToString();
 		str += _Flower.ToString();

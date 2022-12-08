@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public enum RadarObjectType
@@ -17,7 +16,7 @@ public class RadarController : MonoBehaviour
 
 	public List<EntityBase> _RadarObjects;
 
-	private void Awake()
+	void Awake()
 	{
 		_Instance = this;
 	}

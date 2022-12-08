@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BaldyLongLegsSpawner : MonoBehaviour
@@ -11,14 +10,14 @@ public class BaldyLongLegsSpawner : MonoBehaviour
 	bool _Spawned = false;
 	Vector3 _SpawnPosition;
 
-	private void Awake()
+	void Awake()
 	{
 		_LongLegsObj.SetActive(false);
 		_BLL = _LongLegsObj.GetComponent<BaldyLongLegs>();
 		_SpawnPosition = transform.position + Vector3.up * _SpawnOffsetY;
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (GameManager.IsPaused)
 		{
@@ -31,7 +30,7 @@ public class BaldyLongLegsSpawner : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player") || other.CompareTag("Pikmin"))
 		{
@@ -45,7 +44,7 @@ public class BaldyLongLegsSpawner : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerExit(Collider other)
+	void OnTriggerExit(Collider other)
 	{
 		if (other.CompareTag("Player") || other.CompareTag("Pikmin"))
 		{
@@ -53,7 +52,7 @@ public class BaldyLongLegsSpawner : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerStay(Collider other)
+	void OnTriggerStay(Collider other)
 	{
 		if (other.CompareTag("Player") || other.CompareTag("Pikmin"))
 		{

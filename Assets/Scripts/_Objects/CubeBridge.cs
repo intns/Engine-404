@@ -11,49 +11,49 @@ using UnityEngine;
 public class CubeBridge : MonoBehaviour, IPikminAttack, IHealth
 {
 	[Header("Components")]
-	[SerializeField] private Transform _StartPoint = null;
-	[SerializeField] private Transform _EndPoint = null;
+	[SerializeField] Transform _StartPoint = null;
+	[SerializeField] Transform _EndPoint = null;
 
 	[Header("Bridge Parts")]
 	// Will be used to create the midpoints
-	[SerializeField] private GameObject _Midpiece = null;
-	[SerializeField] private Vector3 _RotationOffset = Vector3.zero;
+	[SerializeField] GameObject _Midpiece = null;
+	[SerializeField] Vector3 _RotationOffset = Vector3.zero;
 
 	// Used to create ending ramp and initial ramp
-	[SerializeField] private GameObject _EndsPiece = null;
+	[SerializeField] GameObject _EndsPiece = null;
 
 	// Will be used for the Pikmin to attack
-	[SerializeField] private GameObject _AttackablePiece = null;
+	[SerializeField] GameObject _AttackablePiece = null;
 
 	[Header("Settings")]
 	// The size of the steps we're going to take when iterating
-	[SerializeField] private float _StepSize = 1;
+	[SerializeField] float _StepSize = 1;
 	// The angle (in degrees) that the starting and ending ramp will be instantiated at
-	[SerializeField][Range(1, 89)] private float _AngleOfRamp = 25;
+	[SerializeField][Range(1, 89)] float _AngleOfRamp = 25;
 
-	[SerializeField] private float _HealthUntilStep = 10;
-	private float _CurrentHealth = 0;
+	[SerializeField] float _HealthUntilStep = 10;
+	float _CurrentHealth = 0;
 
 	// An added height that the midpoint will be instantiated at
-	private float _RampHeightOffset = 0;
+	float _RampHeightOffset = 0;
 
 	// Distance between the start point and the end point (X & Z)
-	private float _DistanceBetween = 0;
+	float _DistanceBetween = 0;
 
 	// How many times we'll have to iterate before reaching the destination
-	private int _StepsToFinish = 0;
+	int _StepsToFinish = 0;
 
 	// Stores all of the bridge pieces ([0] will be start ramp, [1] will be end ramp)
-	private readonly List<GameObject> _BridgePieces = new List<GameObject>();
+	readonly List<GameObject> _BridgePieces = new List<GameObject>();
 
 	// Stores the current position of the step and the step index
-	private Vector3 _CurrentStepPos = Vector3.zero;
-	private int _StepIndex = 0;
-	private readonly List<PikminAI> _AttackingPikmin = new List<PikminAI>();
+	Vector3 _CurrentStepPos = Vector3.zero;
+	int _StepIndex = 0;
+	readonly List<PikminAI> _AttackingPikmin = new List<PikminAI>();
 
 	public PikminIntention IntentionType => PikminIntention.Attack;
 
-	private void Awake()
+	void Awake()
 	{
 		_DistanceBetween = Mathf.Sqrt(MathUtil.DistanceTo(_StartPoint.position, _EndPoint.position));
 		// Calculate the amount of steps needed to stop building (- 2 because we build a start ramp and and end ramp)
@@ -81,7 +81,7 @@ public class CubeBridge : MonoBehaviour, IPikminAttack, IHealth
 		_CurrentStepPos = _StartPoint.position;
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (_CurrentHealth <= 0)
 		{
@@ -90,7 +90,7 @@ public class CubeBridge : MonoBehaviour, IPikminAttack, IHealth
 		}
 	}
 
-	private void Step()
+	void Step()
 	{
 		if (_StepIndex >= _StepsToFinish)
 		{
@@ -121,7 +121,7 @@ public class CubeBridge : MonoBehaviour, IPikminAttack, IHealth
 		_StepIndex++;
 	}
 
-	private void OnDrawGizmos()
+	void OnDrawGizmos()
 	{
 		// Draw the outline of the bridge
 		if (_Midpiece == null || _StartPoint == null || _EndPoint == null || _StepSize < 0)
@@ -149,7 +149,7 @@ public class CubeBridge : MonoBehaviour, IPikminAttack, IHealth
 		Gizmos.DrawMesh(endMesh, _StartPoint.position + (Vector3.up * rampHeightOffset),
 			Quaternion.Euler(lookAtEnd.eulerAngles.x - _AngleOfRamp, lookAtEnd.eulerAngles.y, lookAtEnd.eulerAngles.z),
 			_Midpiece.transform.localScale);
-		
+
 		// Draw ending ramp
 		Quaternion lookAtStart = Quaternion.LookRotation((_StartPoint.position - _EndPoint.position).normalized);
 		Gizmos.DrawMesh(endMesh, _EndPoint.position + (Vector3.up * rampHeightOffset),

@@ -188,7 +188,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		GameManager.OnPauseEvent += OnPauseEvent;
 	}
 
-	private void OnPauseEvent(PauseType t)
+	void OnPauseEvent(PauseType t)
 	{
 		if (t == PauseType.Paused)
 		{
@@ -314,7 +314,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	#region States
 
-	private void HandleAnimations()
+	void HandleAnimations()
 	{
 		_Animator.SetBool("Thrown", _CurrentState == PikminStates.Thrown);
 		_Animator.SetBool("Attacking", _CurrentState == PikminStates.Attacking);
@@ -484,7 +484,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 	}
 
-	private void HandleRunningTowards()
+	void HandleRunningTowards()
 	{
 		if (!_InSquad && _TargetObject == null)
 		{
@@ -630,7 +630,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		MoveTowards(closestPoint, false);
 	}
 
-	private void RepelPikminAndPlayers()
+	void RepelPikminAndPlayers()
 	{
 		if (_CurrentState != PikminStates.RunningTowards && _CurrentState != PikminStates.Idle)
 		{

@@ -7,14 +7,17 @@
 
 using UnityEngine;
 
-public class Billboard : MonoBehaviour {
-  private Camera _MainCamera;
+public class Billboard : MonoBehaviour
+{
+	Camera _MainCamera;
 
-  private void Awake () {
-    _MainCamera = Camera.main;
-  }
+	void Awake()
+	{
+		_MainCamera = Camera.main;
+	}
 
-  private void Update () {
-    transform.LookAt (transform.position + _MainCamera.transform.forward);
-  }
+	void Update()
+	{
+		transform.LookAt(transform.position + _MainCamera.transform.forward);
+	}
 }

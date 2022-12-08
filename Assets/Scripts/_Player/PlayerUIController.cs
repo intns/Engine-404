@@ -1,27 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerUIController : MonoBehaviour
 {
-	[SerializeField] private TextMeshProUGUI _DayText;
-	[SerializeField] private TextMeshProUGUI _SquadText;
-	[SerializeField] private TextMeshProUGUI _AreaText;
+	[SerializeField] TextMeshProUGUI _DayText;
+	[SerializeField] TextMeshProUGUI _SquadText;
+	[SerializeField] TextMeshProUGUI _AreaText;
 
 	[SerializeField] Image _CurrentPikminImage;
-	[SerializeField] private Sprite[] _PikminImages;
+	[SerializeField] Sprite[] _PikminImages;
 	Animation _PikminImageAnimation;
 
-	[SerializeField] private CanvasGroup _CanvasGroup;
+	[SerializeField] CanvasGroup _CanvasGroup;
 
 	[SerializeField] bool _DisplayValues = false;
 	int _InSquadAmount = 0;
 	int _InFieldAmount = 0;
 
 
-	private IEnumerator FadeInCanvas()
+	IEnumerator FadeInCanvas()
 	{
 		float t = 0;
 		float time = 1;
@@ -42,7 +41,7 @@ public class PlayerUIController : MonoBehaviour
 		_PikminImageAnimation.Play();
 	}
 
-	private IEnumerator FadeOutCanvas()
+	IEnumerator FadeOutCanvas()
 	{
 		float t = 0;
 		float time = 1;
@@ -61,7 +60,7 @@ public class PlayerUIController : MonoBehaviour
 	public void FadeInUI() => StartCoroutine(FadeInCanvas());
 	public void FadeOutUI() => StartCoroutine(FadeOutCanvas());
 
-	private void Awake()
+	void Awake()
 	{
 		if (!PlayerPrefs.HasKey("day"))
 		{
@@ -78,7 +77,7 @@ public class PlayerUIController : MonoBehaviour
 		FadeInUI();
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (_DisplayValues)
 		{

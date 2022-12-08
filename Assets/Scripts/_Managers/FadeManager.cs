@@ -44,7 +44,7 @@ public class FadeManager : MonoBehaviour
 		StartCoroutine(FadeInOut_Coroutine(fadeIn, fadeOut, midFade));
 	}
 
-	private IEnumerator FadeOut_Coroutine(float time, Action onFadeEnd)
+	IEnumerator FadeOut_Coroutine(float time, Action onFadeEnd)
 	{
 		_FadeImage.enabled = true;
 
@@ -65,7 +65,7 @@ public class FadeManager : MonoBehaviour
 		onFadeEnd.Invoke();
 	}
 
-	private IEnumerator FadeIn_Coroutine(float time, Action onFadeEnd)
+	IEnumerator FadeIn_Coroutine(float time, Action onFadeEnd)
 	{
 		_FadeImage.enabled = true;
 
@@ -85,7 +85,7 @@ public class FadeManager : MonoBehaviour
 		onFadeEnd.Invoke();
 	}
 
-	private IEnumerator FadeInOut_Coroutine(float fadeIn, float fadeOut, Action midFade)
+	IEnumerator FadeInOut_Coroutine(float fadeIn, float fadeOut, Action midFade)
 	{
 		// Fade in
 		_FadeImage.enabled = true;

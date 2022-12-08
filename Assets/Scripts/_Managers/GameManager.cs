@@ -35,7 +35,7 @@ public static class GameManager
 			_pauseType = value;
 		}
 	}
-	private static PauseType _pauseType = PauseType.Unpaused;
+	static PauseType _pauseType = PauseType.Unpaused;
 
 	public static bool _DebugGui = Application.isEditor; // Used for debugging
 	public static Language _Language = Language.English; // Used for alternate texts

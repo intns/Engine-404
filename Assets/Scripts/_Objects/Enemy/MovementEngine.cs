@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementEngine : MonoBehaviour
@@ -32,13 +30,13 @@ public class MovementEngine : MonoBehaviour
 	float _SmoothVelocityTimer = 0;
 
 	#region Unity Functions
-	private void Awake()
+	void Awake()
 	{
 		_Transform = transform;
 		_Rigidbody = GetComponent<Rigidbody>();
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (GameManager.IsPaused)
 		{
@@ -60,7 +58,7 @@ public class MovementEngine : MonoBehaviour
 		}
 	}
 
-	private void FixedUpdate()
+	void FixedUpdate()
 	{
 		if (GameManager.IsPaused)
 		{

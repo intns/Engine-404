@@ -26,16 +26,16 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 	[HideInInspector] public List<PikminAI> _AttachedPikmin = new List<PikminAI>();
 	[HideInInspector] public bool _Dead = false;
 	[HideInInspector] public HealthWheel _HWScript = null;
-	private float _CurrentHealth = 0;
+	float _CurrentHealth = 0;
 
 	public PikminIntention IntentionType => PikminIntention.Attack;
 
-	private void Awake()
+	void Awake()
 	{
 		_CurrentHealth = _MaxHealth;
 	}
 
-	private void Start()
+	void Start()
 	{
 		if (_Showcase == false)
 		{
@@ -51,7 +51,7 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 		}
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (GameManager.IsPaused)
 		{
@@ -79,7 +79,7 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 		}
 	}
 
-	private void OnDrawGizmosSelected()
+	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position + _HWOffset, _HWScale);

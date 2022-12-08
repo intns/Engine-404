@@ -1,29 +1,28 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
-using TMPro;
 
 public class DemoController : MonoBehaviour
 {
 	[SerializeField] bool _ResetPrefs = false;
 	[Space]
-	[SerializeField] private Volume _MainVP;
-	[SerializeField] private DayTimeManager _DayTimeManager;
-	[SerializeField] private string _MapName;
+	[SerializeField] Volume _MainVP;
+	[SerializeField] DayTimeManager _DayTimeManager;
+	[SerializeField] string _MapName;
 
 	[Header("Fade-in sequence")]
-	[SerializeField] private CanvasGroup _CanvasGroup;
-	[SerializeField] private Image _BlackImage = null;
-	[SerializeField] private TextMeshProUGUI _Text = null;
+	[SerializeField] CanvasGroup _CanvasGroup;
+	[SerializeField] Image _BlackImage = null;
+	[SerializeField] TextMeshProUGUI _Text = null;
 
 	[Header("Intro Sequence")]
 	[SerializeField] bool _DoSequence = false;
 	[SerializeField] Animator _CeresAnimator = null;
 
-	private void Awake()
+	void Awake()
 	{
 		_Text.text = "";
 
@@ -46,7 +45,7 @@ public class DemoController : MonoBehaviour
 		}
 	}
 
-	private void Start()
+	void Start()
 	{
 		if (_DoSequence)
 		{
@@ -68,7 +67,7 @@ public class DemoController : MonoBehaviour
 		}
 	}
 
-	private void OnDrawGizmos()
+	void OnDrawGizmos()
 	{
 		if (_ResetPrefs)
 		{

@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class CardboardBox : MonoBehaviour, IPikminPush
 {
@@ -40,7 +40,7 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 	public Action _OnPush { get; set; }
 
 	#region Unity Functions
-	private void Awake()
+	void Awake()
 	{
 		_Transform = transform;
 
@@ -58,7 +58,7 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 		}
 	}
 
-	private void OnDrawGizmos()
+	void OnDrawGizmos()
 	{
 		Gizmos.DrawSphere(transform.position, 2.5f);
 

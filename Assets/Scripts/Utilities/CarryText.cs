@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,22 +6,22 @@ public class CarryText : MonoBehaviour
 {
 	[Header("Settings")]
 	public float _HeightOffset = 5;
-	[SerializeField] private float _FadeDuration = 1;
-	[SerializeField] private TextMeshPro _TMP = null;
+	[SerializeField] float _FadeDuration = 1;
+	[SerializeField] TextMeshPro _TMP = null;
 	[HideInInspector] public Transform _FollowTarget = null;
-	[SerializeField] private Color _LastColor = Color.clear;
-	[SerializeField] private Color _TargetColor = Color.clear;
-	[SerializeField] private float _TimeSinceLastChange = 0;
+	[SerializeField] Color _LastColor = Color.clear;
+	[SerializeField] Color _TargetColor = Color.clear;
+	[SerializeField] float _TimeSinceLastChange = 0;
 
 	bool _Destroying = false;
 
-	private void Awake()
+	void Awake()
 	{
 		_TMP.text = "";
 		_LastColor = _TargetColor = _TMP.color = Color.clear;
 	}
 
-	private void Update()
+	void Update()
 	{
 		if (_FollowTarget == null)
 		{

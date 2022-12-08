@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,7 +8,7 @@ public class Collider_PikminSlip : MonoBehaviour
 	[SerializeField] float _PushForce = 300;
 	[SerializeField] bool _UseVerticalVel = true;
 
-	private void Update()
+	void Update()
 	{
 		if (_Parent != null)
 		{
@@ -37,7 +35,7 @@ public class Collider_PikminSlip : MonoBehaviour
 		}
 	}
 
-	private void OnCollisionStay(Collision collision)
+	void OnCollisionStay(Collision collision)
 	{
 		if (collision.gameObject.CompareTag("Pikmin"))
 		{
@@ -45,7 +43,7 @@ public class Collider_PikminSlip : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerStay(Collider other)
+	void OnTriggerStay(Collider other)
 	{
 		if (other.gameObject.CompareTag("Pikmin"))
 		{
