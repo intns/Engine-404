@@ -143,6 +143,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _SunLight: {fileID: 0}
   _TotalDayTime: 900
+  _ShipLiftCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _FromRotVec: {x: 125, y: 0, z: 0}
   _ToRotVec: {x: 170, y: 100, z: 0}
   _AudioEvents: []
@@ -193,13 +199,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aebfc2e33642174abb1039646f250c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ResetPrefs: 1
+  _ResetPrefs: 0
   _MainVP: {fileID: 0}
   _DayTimeManager: {fileID: 88255414712058415}
   _MapName: The Distant Reminder
   _CanvasGroup: {fileID: 88255416156318939}
   _BlackImage: {fileID: 88255415422224423}
   _Text: {fileID: 88255414978359769}
+  _DoSequence: 0
   _CeresAnimator: {fileID: 0}
 --- !u!1 &88255414978359771
 GameObject:

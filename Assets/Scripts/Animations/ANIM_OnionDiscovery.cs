@@ -68,7 +68,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-		_Onion.AddSproutsToSpit(1, _Onion.OnionColour);
+		_Onion.AddSproutsToSpit(1, _Onion.Colour);
 
 		t = 0;
 		length = 5;
@@ -88,7 +88,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			_Camera.GetComponent<CameraFollow>().enabled = true;
 		});
 
-		PlayerPrefs.SetInt("ONION_Discovered", 1);
+		OnionManager.SaveData.SetOnionDiscovered(_Onion.Colour, true);
 		_Onion.ANIM_EndDiscovery();
 
 		gameObject.SetActive(false);

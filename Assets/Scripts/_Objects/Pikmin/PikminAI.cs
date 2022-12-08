@@ -582,7 +582,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			Destroy(soul.gameObject, 5);
 		}
 
-		if (PikminStatsManager.GetTotalInOnion() + PikminStatsManager.GetTotalOnField() == 0)
+		if (PikminStatsManager.GetTotalInAllOnions() + PikminStatsManager.GetTotalOnField() == 0)
 		{
 			Player._Instance.PikminExtinction();
 		}

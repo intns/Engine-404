@@ -305,7 +305,7 @@ public static class PikminStatsManager
 	}
 
 	#region Getters
-	public static int GetOnField(PikminColour colour)
+	public static int GetTotalOnField(PikminColour colour)
 	{
 		return colour switch
 		{
@@ -315,7 +315,7 @@ public static class PikminStatsManager
 			_ => 0,
 		};
 	}
-	public static int GetInSquad(PikminColour colour)
+	public static int GetTotalInSquad(PikminColour colour)
 	{
 		return colour switch
 		{
@@ -326,7 +326,7 @@ public static class PikminStatsManager
 		};
 	}
 
-	public static int GetInOnion(PikminColour colour)
+	public static int GetTotalInOnion(PikminColour colour)
 	{
 		return colour switch
 		{
@@ -351,7 +351,7 @@ public static class PikminStatsManager
 
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static int GetTotalInOnion()
+	public static int GetTotalInAllOnions()
 	{
 		return _RedStats.GetTotalInOnion() + _YellowStats.GetTotalInOnion() + _BlueStats.GetTotalInOnion();
 	}

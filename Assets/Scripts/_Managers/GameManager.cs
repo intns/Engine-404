@@ -14,9 +14,9 @@ public enum Language
 
 public enum PauseType
 {
-	Paused,            // A 'full' pause
+	Paused,           // A 'full' pause
 	OnlyPikminActive, // Not fully paused because Pikmin AI can still work
-	Unpaused,          // Active game, no pause applied
+	Unpaused,         // Active game, no pause applied
 }
 
 public static class GameManager

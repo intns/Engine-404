@@ -23,6 +23,10 @@ public class DTM_Audio_Event
 	}
 }
 
+/// <summary>
+/// TODO: This isn't a manager, this is a day-time controller
+/// TODO: Implement days as savedata in the real daytime manager
+/// </summary>
 public class DayTimeManager : MonoBehaviour
 {
 	[Header("Components")]

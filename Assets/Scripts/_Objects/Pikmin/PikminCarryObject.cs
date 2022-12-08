@@ -115,7 +115,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 			return;
 		}
-		else if (!OnionManager.IsAnyOnionActiveInScene())
+		else if (!OnionManager.IsAnyOnionActiveInScene)
 		{
 			return;
 		}

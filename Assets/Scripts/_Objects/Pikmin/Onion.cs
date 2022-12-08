@@ -22,6 +22,12 @@ public class PikminSpawnData
 
 public class Onion : MonoBehaviour
 {
+	struct PikminAmount
+	{
+		public int _InSquad; // How many are meant to come out of the onion
+		public int _InOnion; // Total within the onion
+	};
+
 	[Header("References")]
 	[SerializeField] GameObject _PikminSprout = null;
 	[Space]
@@ -41,37 +47,27 @@ public class Onion : MonoBehaviour
 	[SerializeField] LayerMask _PikminMask = 0;
 	[SerializeField] float _PikminSuctionHeight = 4;
 	[SerializeField] float _PikminEjectionHeight = 5.5f;
-	[SerializeField] PikminColour _OnionColour = PikminColour.Red;
+	[SerializeField] PikminColour _Colour = PikminColour.Red;
 
 	[Header("Dispersal")]
 	[SerializeField] float _DisperseRadius = 12;
 	Vector3Int _SeedsToDisperse = Vector3Int.zero;
 
-	public PikminColour OnionColour { get { return _OnionColour; } set { } }
-	public bool OnionActive { get; set; }
-
-	public Transform _CarryEndpoint = null;
-
-	int _CurrentSeedIdx = 0;
 	Dictionary<int, GameObject> _SpawnedSprouts = new Dictionary<int, GameObject>();
+	int _CurrentSeedIdx = 0;
 
 	bool _CanUse = false;
 	bool _InMenu = false;
-	float _UpDownAxis;
-
-	// First number is coming out of the onion,
-	// Second number is total in the onion
-
-	struct PikminAmount
-	{
-		public int _InSquad;
-		public int _InOnion;
-	};
+	float _UpDownAxis;	
+	float _InputTimer = 0;
 
 	PikminAmount _CurPikminAmounts;
 	PikminAmount _OldPikminAmounts;
 
-	float _InputTimer = 0;
+	public PikminColour Colour { get { return _Colour; } private set { } }
+	public bool OnionActive { get; set; }
+
+	public Transform _CarryEndpoint = null;
 
 	#region Unity Functions
 	void OnEnable() => OnionManager._OnionsInScene.Add(this);
@@ -90,24 +86,24 @@ public class Onion : MonoBehaviour
 			_SpawnedSprouts.Add(i, null);
 		}
 
-		if (PlayerPrefs.GetInt("ONION_Discovered") == 1)
+		if (OnionManager.SaveData.IsOnionDiscovered(_Colour))
 		{
 			_DiscoverObject.SetActive(false);
 			OnionActive = true;
 
 			_Animator.SetTrigger("EmptyIdle");
 			_BodyRenderer.material.color = Color.white;
+			return;
 		}
-		else
-		{
-			PlayerPrefs.SetInt("ONION_Discovered", 0);
 
-			GetComponent<MeshRenderer>().enabled = false;
-			GetComponent<Collider>().enabled = false;
-			OnionActive = false;
+		// Onion is not found, so we'll set it as such
+		OnionManager.SaveData.SetOnionDiscovered(_Colour, false);
 
-			_BodyRenderer.material.color = new Color(0.4078f, 0.4078f, 0.4078f);
-		}
+		GetComponent<MeshRenderer>().enabled = false;
+		GetComponent<Collider>().enabled = false;
+		OnionActive = false;
+
+		_BodyRenderer.material.color = new Color(0.4078f, 0.4078f, 0.4078f);
 	}
 
 	void Update()
@@ -208,8 +204,8 @@ public class Onion : MonoBehaviour
 
 					_CurPikminAmounts = new PikminAmount
 					{
-						_InSquad = PikminStatsManager.GetInSquad(_OnionColour),
-						_InOnion = PikminStatsManager.GetInOnion(_OnionColour)
+						_InSquad = PikminStatsManager.GetTotalInSquad(_Colour),
+						_InOnion = PikminStatsManager.GetTotalInOnion(_Colour)
 					};
 
 					_OldPikminAmounts = new PikminAmount
@@ -248,7 +244,7 @@ public class Onion : MonoBehaviour
 
 						for (int i = 0; i < Mathf.Abs(fieldDifference); i++)
 						{
-							var pikai = pikmin[i].GetComponent<PikminAI>();
+							PikminAI pikai = pikmin[i].GetComponent<PikminAI>();
 							if (pikai._InSquad)
 							{
 								pikai.RemoveFromSquad();
@@ -395,7 +391,7 @@ public class Onion : MonoBehaviour
 		_CanUse = false;
 		yield return new WaitForSeconds(0.25f);
 
-		PikminTypeStats stats = PikminStatsManager.GetStats(_OnionColour);
+		PikminTypeStats stats = PikminStatsManager.GetStats(_Colour);
 		List<PikminMaturity> toSpawn = new List<PikminMaturity>();
 
 		for (int i = 0; i < amount; i++)
@@ -420,7 +416,7 @@ public class Onion : MonoBehaviour
 		for (int i = 0; i < amount; i++)
 		{
 			_CanUse = false;
-			TryCreatePikmin(_OnionColour, toSpawn[i]);
+			TryCreatePikmin(_Colour, toSpawn[i]);
 			yield return new WaitForSeconds(0.03f);
 		}
 
