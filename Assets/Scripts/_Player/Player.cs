@@ -158,6 +158,15 @@ public class Player : MonoBehaviour, IHealth
 	{
 		_AnimController.ChangeState(PlayerAnimation.Idle);
 
+		if (type == PauseType.Unpaused)
+		{
+			_UIController.FadeInUI(true);
+		}
+		else
+		{
+			_UIController.FadeOutUI();
+		}
+
 		_MovementController._Paralysed = type != PauseType.Unpaused;
 		GameManager.PauseType = type;
 	}

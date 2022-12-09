@@ -16,11 +16,11 @@ public class PlayerUIController : MonoBehaviour
 	[SerializeField] CanvasGroup _CanvasGroup;
 
 	[SerializeField] bool _DisplayValues = false;
-	int _InSquadAmount = 0;
-	int _InFieldAmount = 0;
+	int _InSquadAmount = -1;
+	int _InFieldAmount = -1;
 
 
-	IEnumerator FadeInCanvas()
+	IEnumerator FadeInCanvas(bool shouldUpdateOnFinish)
 	{
 		float t = 0;
 		float time = 1;
@@ -35,10 +35,11 @@ public class PlayerUIController : MonoBehaviour
 		}
 
 		_DisplayValues = true;
-		_DayText.GetComponent<Animation>().Play();
-		_SquadText.GetComponent<Animation>().Play();
-		_AreaText.GetComponent<Animation>().Play();
-		_PikminImageAnimation.Play();
+		
+		if (shouldUpdateOnFinish)
+		{
+			UpdateFullUI();
+		}
 	}
 
 	IEnumerator FadeOutCanvas()
@@ -57,11 +58,12 @@ public class PlayerUIController : MonoBehaviour
 		_DisplayValues = false;
 	}
 
-	public void FadeInUI() => StartCoroutine(FadeInCanvas());
+	public void FadeInUI(bool shouldUpdateOnFinish = false) => StartCoroutine(FadeInCanvas(shouldUpdateOnFinish));
 	public void FadeOutUI() => StartCoroutine(FadeOutCanvas());
 
 	void Awake()
 	{
+		// TODO: Settings manager!!!
 		if (!PlayerPrefs.HasKey("day"))
 		{
 			PlayerPrefs.SetInt("day", 0);
@@ -73,46 +75,61 @@ public class PlayerUIController : MonoBehaviour
 
 		_CurrentPikminImage.color = Color.clear;
 		_PikminImageAnimation = _CurrentPikminImage.GetComponent<Animation>();
-
-		FadeInUI();
 	}
 
 	void Update()
 	{
-		if (_DisplayValues)
+		if (!_DisplayValues)
 		{
-			int newInSquad = PikminStatsManager.GetTotalInSquad();
-			int newOnField = PikminStatsManager.GetTotalOnField();
+			return;
+		}
 
-			if (_InSquadAmount != newInSquad)
-			{
-				_SquadText.GetComponent<Animation>().Stop();
-				_SquadText.GetComponent<Animation>().Play();
-			}
+		UpdateUI();
+	}
 
-			if (_InFieldAmount != newOnField)
-			{
-				_AreaText.GetComponent<Animation>().Stop();
-				_AreaText.GetComponent<Animation>().Play();
-			}
+	#region Public functions
+	public void UpdateUI()
+	{
+		int newInSquad = PikminStatsManager.GetTotalInSquad();
+		int newOnField = PikminStatsManager.GetTotalOnField();
 
-			_InSquadAmount = newInSquad;
-			_InFieldAmount = newOnField;
+		if (_InSquadAmount != newInSquad)
+		{
+			_SquadText.GetComponent<Animation>().Stop();
+			_SquadText.GetComponent<Animation>().Play();
+		}
 
-			_SquadText.text = _InSquadAmount.ToString();
-			_AreaText.text = _InFieldAmount.ToString();
-			_DayText.text = PlayerPrefs.GetInt("day").ToString();
+		if (_InFieldAmount != newOnField)
+		{
+			_AreaText.GetComponent<Animation>().Stop();
+			_AreaText.GetComponent<Animation>().Play();
+		}
 
-			PikminColour colour = Player._Instance._PikminController._SelectedThrowPikmin;
-			if (colour != PikminColour.Size)
-			{
-				_CurrentPikminImage.color = Color.white;
-				_CurrentPikminImage.sprite = _PikminImages[(int)colour];
-			}
-			else
-			{
-				_CurrentPikminImage.color = Color.clear;
-			}
+		_InSquadAmount = newInSquad;
+		_InFieldAmount = newOnField;
+
+		_SquadText.text = _InSquadAmount.ToString();
+		_AreaText.text = _InFieldAmount.ToString();
+		_DayText.text = PlayerPrefs.GetInt("day").ToString();
+
+		PikminColour colour = Player._Instance._PikminController._SelectedThrowPikmin;
+		if (colour != PikminColour.Size)
+		{
+			_CurrentPikminImage.color = Color.white;
+			_CurrentPikminImage.sprite = _PikminImages[(int)colour];
+		}
+		else
+		{
+			_CurrentPikminImage.color = Color.clear;
 		}
 	}
+
+	public void UpdateFullUI()
+	{
+		UpdateUI();
+
+		_PikminImageAnimation.Play();
+		_DayText.GetComponent<Animation>().Play();
+	}
+	#endregion
 }

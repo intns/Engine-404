@@ -21,7 +21,6 @@ class AnimationController
 	/// <summary>
 	/// Changes the current state of the animator to that of animIdx
 	/// </summary>
-	/// <param name="animIdx"></param>
 	public void ChangeState(int animIdx, bool finishAnim = false, bool overRide = false)
 	{
 		if (_CurrentState == animIdx)
@@ -29,35 +28,27 @@ class AnimationController
 			return;
 		}
 
-		if (!overRide)
+		// If we aren't overriding and we're wanting to finish the current animation
+		if (!overRide && _FinishCurrent)
 		{
-			if (_FinishCurrent)
+			// Check the animator has finished the clip
+			AnimatorStateInfo stateInfo = _ParentAnimator.GetCurrentAnimatorStateInfo(0);
+
+			if (stateInfo.normalizedTime < 1)
 			{
-				// Check the animator has finished the clip
-				AnimatorStateInfo stateInfo = _ParentAnimator.GetCurrentAnimatorStateInfo(0);
-
-				if (stateInfo.normalizedTime < 1)
-				{
-					// It hasn't finished the clip yet, so we return and wait
-					return;
-				}
-
-				_FinishCurrent = false;
+				// It hasn't finished the clip yet, so we return and wait
+				return;
 			}
 
-			if (finishAnim)
-			{
-				_FinishCurrent = true;
-			}
+			_FinishCurrent = false;
 		}
-		else
+		else if (finishAnim)
 		{
-			_FinishCurrent = finishAnim;
+			_FinishCurrent = true;
 		}
-
 
 		_CurrentState = animIdx;
-		_ParentAnimator.Play(_Animations[animIdx].name, 0, 0.5f);
+		_ParentAnimator.CrossFadeInFixedTime(_Animations[animIdx].name, 0.25f);
 	}
 
 

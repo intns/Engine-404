@@ -55,7 +55,7 @@ public class TextBoxArea : MonoBehaviour
 				_Enabled = false;
 				PlayerPrefs.SetInt(_GlobalName, 1);
 				Player._Instance.Pause(PauseType.Unpaused);
-				Player._Instance._UIController.FadeInUI();
+				Player._Instance._UIController.FadeInUI(true);
 				StartCoroutine(FadeOutCanvas());
 			}
 			else

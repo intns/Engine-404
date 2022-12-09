@@ -112,7 +112,7 @@ Transform:
   - {fileID: 6208068524847770851}
   - {fileID: 3604087723300391386}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6700862876713022893
 MonoBehaviour:
@@ -155,13 +155,25 @@ MonoBehaviour:
           serializedVersion: 2
           m_Bits: 65536
         sortingCriteria: 23
+        overrideMode: 1
         overrideMaterial: {fileID: 2100000, guid: 65f8ad75e68ce894498724d982d6dccc,
           type: 2}
         overrideMaterialPassIndex: 0
         overrideMaterialPassName: Forward
+        overrideShader: {fileID: 0}
+        overrideShaderPassIndex: 0
+        overrideShaderPassName: Forward
         overrideDepthState: 1
         depthCompareFunction: 7
         depthWrite: 1
+        overrideStencil: 0
+        stencilReferenceValue: 64
+        stencilWriteMask: 192
+        stencilReadMask: 192
+        stencilCompareFunction: 8
+        stencilPassOperation: 0
+        stencilFailOperation: 0
+        stencilDepthFailOperation: 0
         shaderPass: 0
 --- !u!114 &851619351972655904
 MonoBehaviour:
@@ -488,6 +500,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &117167615383378679
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -623,16 +636,20 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 3
       m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 10
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 0
 --- !u!1 &1221193357443389525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,6 +1050,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &7035921970023993910
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1138,16 +1156,20 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 3
     numCornerVertices: 4
     numCapVertices: 4
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 0
 --- !u!1 &2350953167977465812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,6 +1308,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1611,6 +1634,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1920,9 +1944,17 @@ CharacterController:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4246387085006627573}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Height: 1
   m_Radius: 0.34
   m_SlopeLimit: 35
@@ -1950,8 +1982,8 @@ MonoBehaviour:
   _MaxHealth: 100
   _CurrentHealth: 100
   _AttackSphereRadius: 0.5
-  _AttackDamage: 1
-  _AttackCooldown: 1.5
+  _AttackDamage: 2.5
+  _AttackCooldown: 1
   _AnimController:
     _ParentAnimator: {fileID: 6700862878076667457}
   _WalkAnimation: {fileID: 7400000, guid: ac0c387a1b275034e9e188c82bf8080e, type: 2}
@@ -2013,7 +2045,7 @@ MonoBehaviour:
   _PikminThrowRadius: 20
   _AllMask:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 4294967295
   _PikminGrabRadius: 8
   _VerticalMaxGrabRadius: 2.5
   _WhistleTransform: {fileID: 4246387085443966847}
@@ -2329,9 +2361,17 @@ Camera:
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -2396,6 +2436,7 @@ MonoBehaviour:
   taaMotionVectorRejection: 0
   taaAntiHistoryRinging: 0
   taaBaseBlendFactor: 0.875
+  taaJitterScale: 1
   physicalParameters:
     m_Iso: 200
     m_ShutterSpeed: 0.005
@@ -2415,12 +2456,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   hasPersistentHistory: 0
+  screenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  screenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   allowDeepLearningSuperSampling: 1
   deepLearningSuperSamplingUseCustomQualitySettings: 0
   deepLearningSuperSamplingQuality: 0
   deepLearningSuperSamplingUseCustomAttributes: 0
   deepLearningSuperSamplingUseOptimalSettings: 1
   deepLearningSuperSamplingSharpening: 0
+  fsrOverrideSharpness: 0
+  fsrSharpness: 0.92
   exposureTarget: {fileID: 0}
   materialMipBias: 0
   m_RenderingPathCustomFrameSettings:
@@ -2443,7 +2488,7 @@ MonoBehaviour:
       data1: 33554432
       data2: 0
   defaultFrameSettings: 0
-  m_Version: 8
+  m_Version: 9
   m_ObsoleteRenderingPath: 0
   m_ObsoleteFrameSettings:
     overrides: 0
@@ -3787,6 +3832,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6700862877741665648}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e262400a60bfc524ebfd762a874ee035,
@@ -3943,8 +3989,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: -5979143866544461465, guid: df4238e2bc587a848b6e50a63c5be4cf,
-        type: 3}
+      objectReference: {fileID: 2100000, guid: 37ac27ec9b7462049a5ec3d366feb063, type: 2}
     - target: {fileID: 2106096013049003467, guid: e262400a60bfc524ebfd762a874ee035,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4041,6 +4086,13 @@ PrefabInstance:
       value: -90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e262400a60bfc524ebfd762a874ee035,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6700862878076667457}
   m_SourcePrefab: {fileID: 100100000, guid: e262400a60bfc524ebfd762a874ee035, type: 3}
 --- !u!1 &5782435662037891861 stripped
 GameObject:
@@ -4050,7 +4102,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &6700862878076667457
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4067,7 +4119,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!4 &6590039719338434991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e262400a60bfc524ebfd762a874ee035,

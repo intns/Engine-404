@@ -50,6 +50,8 @@ public class DemoController : MonoBehaviour
 		if (_DoSequence)
 		{
 			Player._Instance.Pause(PauseType.Paused);
+			Player._Instance._UIController.FadeOutUI();
+
 			StartCoroutine(IE_StartScene());
 		}
 		else
@@ -95,7 +97,6 @@ public class DemoController : MonoBehaviour
 
 		yield return new WaitForSeconds(1.25f);
 
-		_DayTimeManager.enabled = true;
 		StartCoroutine(IE_DoAnimation());
 
 		t = 0;
@@ -118,8 +119,17 @@ public class DemoController : MonoBehaviour
 		_BlackImage.enabled = false;
 		_CanvasGroup.alpha = 1;
 
-		yield return new WaitForSecondsRealtime(4);
-		Player._Instance.Pause(PauseType.Unpaused);
+		yield return new WaitForSecondsRealtime(4.5f);
+
+		// Update UI before the fade in occurs, due to animation
+		Player._Instance._UIController.UpdateFullUI();
+
+		FadeManager._Instance.FadeInOut(2.0f, 2.0f, () =>
+		{
+			Player._Instance.Pause(PauseType.Unpaused);
+			Player._Instance._UIController.FadeInUI();
+			_DayTimeManager.enabled = true;
+		});
 	}
 
 	IEnumerator IE_DoAnimation()
@@ -136,11 +146,11 @@ public class DemoController : MonoBehaviour
 		Vector3 position = Vector3.Lerp(main.position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 35, 5 * Time.deltaTime);
 
 		float t = 0;
-		float length = 7.5f;
+		float length = 8.0f;
 		while (t <= length)
 		{
 			// Rotate the camera to look at the Player
-			position = Vector3.Lerp(position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 35, 5 * Time.deltaTime);
+			position = Vector3.Lerp(position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 45, 5 * Time.deltaTime);
 
 			Quaternion rotation = Quaternion.Lerp(main.rotation,
 							Quaternion.LookRotation(MathUtil.DirectionFromTo(main.position, shipTransform.position + Vector3.up * 5, true)),
@@ -149,7 +159,7 @@ public class DemoController : MonoBehaviour
 			main.SetPositionAndRotation(position, rotation);
 
 			t += Time.deltaTime;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 
 		cameraFollow.enabled = true;

@@ -56,6 +56,9 @@ public class PlayerPikminController : MonoBehaviour
 	{
 		_LineRenderer.positionCount = _LinePositions.Length;
 		_ThrownVelocity = transform.forward;
+
+		// Player can't spawn with any Pikmin in squad
+		_SelectedThrowPikmin = PikminColour.Size;
 	}
 
 	void Update()
