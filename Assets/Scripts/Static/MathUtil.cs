@@ -108,6 +108,29 @@ public static class MathUtil
 		return Vector3.Normalize(direction);
 	}
 
+	/// <summary>
+	/// Calculates the normalized direction from a point towards another point with length
+	/// </summary>
+	/// <param name="from">The origin</param>
+	/// <param name="to">The destination</param>
+	/// <param name="useY">If we should use the Y axis vector</param>
+	/// <returns>A normalized direction around a unit circle</returns>
+	public static Vector3 DirectionFromTo(Vector3 from, Vector3 to, out float length, bool useY = false)
+	{
+		Vector3 direction = to - from;
+
+		// Only use the x and z coordinates if we don't want to use the y axis
+		if (!useY)
+		{
+			direction.y = 0;
+		}
+
+		length = direction.magnitude;
+
+		// Return a normalized version of the direction vector
+		return Vector3.Normalize(direction);
+	}
+
 	public static Transform GetClosestTransform(Vector3 pos, List<Transform> list, out int index, bool useY = true)
 	{
 		if (list == null || list.Count == 0)

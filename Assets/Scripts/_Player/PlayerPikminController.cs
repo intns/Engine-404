@@ -231,13 +231,14 @@ public class PlayerPikminController : MonoBehaviour
 				_PikminInHand.transform.LookAt(new Vector3(whistlePos.x, _PikminInHand.transform.position.y, whistlePos.z));
 
 				Rigidbody rigidbody = _PikminInHand.GetComponent<Rigidbody>();
+
+				EndThrow();
+
 				if (_ThrownVelocity != Vector3.zero)
 				{
-					rigidbody.isKinematic = false;
 					rigidbody.velocity = _ThrownVelocity;
 				}
 
-				EndThrow();
 				_CanPlayerAttack = true;
 			}
 		}
