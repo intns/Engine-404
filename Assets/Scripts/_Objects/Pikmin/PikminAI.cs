@@ -193,8 +193,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	{
 		if (t == PauseType.Paused)
 		{
-			_Animator.SetBool("Walking", false);
-			_Rigidbody.isKinematic = true;
+			if (_Animator != null && _Rigidbody != null)
+			{
+				_Animator.SetBool("Walking", false);
+				_Rigidbody.isKinematic = true;
+			}
 		}
 		else
 		{
