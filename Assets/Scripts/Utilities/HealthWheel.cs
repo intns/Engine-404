@@ -49,7 +49,7 @@ public class HealthWheel : MonoBehaviour, IPooledObject
 		float timer = 0.5f;
 		while (t < timer)
 		{
-			_CanvasGroup.alpha = Mathf.Lerp(1, 0, t / timer);
+			_CanvasGroup.alpha = 1 - MathUtil.EaseIn3(t / timer);
 			t += Time.deltaTime;
 			yield return null;
 		}
@@ -66,7 +66,7 @@ public class HealthWheel : MonoBehaviour, IPooledObject
 		float timer = 0.5f;
 		while (t < timer)
 		{
-			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / timer);
+			_CanvasGroup.alpha = MathUtil.EaseIn3(t / timer);
 			t += Time.deltaTime;
 			yield return null;
 		}

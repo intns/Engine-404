@@ -52,7 +52,7 @@ public class FadeManager : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			_FadeImage.color = new Color(0, 0, 0, t / time);
+			_FadeImage.color = new Color(0, 0, 0, MathUtil.EaseIn3(t / time));
 
 			yield return null;
 		}
@@ -73,7 +73,7 @@ public class FadeManager : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			_FadeImage.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, MathUtil.EaseOut3(t / time)));
+			_FadeImage.color = new Color(0, 0, 0, 1 - MathUtil.EaseOut3(t / time));
 
 			yield return null;
 		}
@@ -94,7 +94,7 @@ public class FadeManager : MonoBehaviour
 		while (t <= fadeIn)
 		{
 			t += Time.deltaTime;
-			_FadeImage.color = new Color(0, 0, 0, t / fadeIn);
+			_FadeImage.color = new Color(0, 0, 0, MathUtil.EaseIn3(t / fadeIn));
 
 			yield return null;
 		}
@@ -111,7 +111,7 @@ public class FadeManager : MonoBehaviour
 		while (t <= fadeOut)
 		{
 			t += Time.deltaTime;
-			_FadeImage.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, t / fadeOut));
+			_FadeImage.color = new Color(0, 0, 0, 1 - MathUtil.EaseIn3(t / fadeOut));
 			yield return null;
 		}
 

@@ -92,7 +92,7 @@ public class DemoController : MonoBehaviour
 		while (t <= 2)
 		{
 			t += Time.deltaTime;
-			_Text.color = Color.Lerp(Color.clear, Color.white, t / 2.0f);
+			_Text.color = Color.Lerp(Color.clear, Color.white, MathUtil.EaseIn3(t / 2.0f));
 			yield return new WaitForEndOfFrame();
 		}
 
@@ -104,7 +104,7 @@ public class DemoController : MonoBehaviour
 		while (t <= 2)
 		{
 			t += Time.deltaTime;
-			_Text.color = Color.Lerp(Color.white, Color.clear, t / 2.0f);
+			_Text.color = Color.Lerp(Color.white, Color.clear, MathUtil.EaseIn2(t / 2.0f));
 			yield return new WaitForEndOfFrame();
 		}
 
@@ -112,7 +112,7 @@ public class DemoController : MonoBehaviour
 		while (t <= 1.25f)
 		{
 			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(1, 0, t / 1.25f);
+			_CanvasGroup.alpha = 1 - MathUtil.EaseIn3(t / 1.25f);
 			yield return new WaitForEndOfFrame();
 		}
 

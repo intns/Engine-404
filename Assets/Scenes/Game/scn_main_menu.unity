@@ -641,6 +641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Canvas: {fileID: 1673190650}
+  _EngineLogo: {fileID: 1453925960}
   _PressStartCanvasGroup: {fileID: 1913865423}
   _StartText: {fileID: 243694174}
   _MainMenuCanvasGroup: {fileID: 405857917}
@@ -2513,7 +2514,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 820575275}
   m_LocalRotation: {x: 0.50075614, y: -0.4389597, z: -0.4305407, w: -0.60925555}
-  m_LocalPosition: {x: 92.1, y: -28.9, z: 108.3}
+  m_LocalPosition: {x: 80.8, y: -27.8, z: 109}
   m_LocalScale: {x: 3.498766, y: 3.498766, z: 3.498766}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3782,6 +3783,7 @@ GameObject:
   - component: {fileID: 1453925957}
   - component: {fileID: 1453925959}
   - component: {fileID: 1453925958}
+  - component: {fileID: 1453925960}
   m_Layer: 5
   m_Name: Engine-404
   m_TagString: Untagged
@@ -3848,6 +3850,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1453925956}
   m_CullTransparentMesh: 0
+--- !u!225 &1453925960
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453925956}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1523875065
 GameObject:
   m_ObjectHideFlags: 1

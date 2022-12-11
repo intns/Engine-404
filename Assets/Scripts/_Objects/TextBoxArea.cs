@@ -105,7 +105,7 @@ public class TextBoxArea : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(0, 1, MathUtil.EaseOut2(t / time));
+			_CanvasGroup.alpha = MathUtil.EaseOut3(t / time);
 			yield return null;
 		}
 	}
@@ -121,7 +121,7 @@ public class TextBoxArea : MonoBehaviour
 		{
 			t += Time.deltaTime;
 
-			_CanvasGroup.alpha = Mathf.Lerp(1, 0, MathUtil.EaseOut2(t / time));
+			_CanvasGroup.alpha = 1 - MathUtil.EaseOut3(t / time);
 			yield return null;
 		}
 

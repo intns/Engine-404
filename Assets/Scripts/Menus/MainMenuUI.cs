@@ -28,12 +28,13 @@ public class MainMenuUI : MonoBehaviour
 {
 	[Header("Components")]
 	[SerializeField] Transform _Canvas = null;
-
+	[SerializeField] CanvasGroup _EngineLogo = null;
+	[Space]
 	[SerializeField] CanvasGroup _PressStartCanvasGroup = null;
 	[SerializeField] TextMeshProUGUI _StartText = null;
-
+	[Space]
 	[SerializeField] CanvasGroup _MainMenuCanvasGroup = null;
-
+	[Space]
 	[SerializeField] Transform _TemplateButton = null;
 
 	[Header("Settings")]
@@ -54,6 +55,7 @@ public class MainMenuUI : MonoBehaviour
 	{
 		_PressStartCanvasGroup.alpha = 0;
 		_MainMenuCanvasGroup.alpha = 0;
+		_EngineLogo.alpha = 0;
 
 		_PressStartCanvasGroup.gameObject.SetActive(true);
 		_MainMenuCanvasGroup.gameObject.SetActive(false);
@@ -119,7 +121,7 @@ public class MainMenuUI : MonoBehaviour
 
 	public void CONTROLS_AnyButtonPress(CallbackContext ctx)
 	{
-		if (_State != MainMenuState.PressStart || _StartTextTimer < 7.5f)
+		if (_State != MainMenuState.PressStart || _StartTextTimer < 8.0f)
 		{
 			return;
 		}
@@ -161,7 +163,7 @@ public class MainMenuUI : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			cg.alpha = Mathf.Lerp(0, 1, t / time);
+			cg.alpha = MathUtil.EaseIn3(t / time);
 			yield return null;
 		}
 	}
@@ -173,7 +175,7 @@ public class MainMenuUI : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			cg.alpha = Mathf.Lerp(1, 0, t / time);
+			cg.alpha = MathUtil.EaseIn3(1 - t / time);
 			yield return null;
 		}
 
@@ -182,7 +184,18 @@ public class MainMenuUI : MonoBehaviour
 
 	IEnumerator FadeInStartText()
 	{
-		yield return FadeInCanvas(_PressStartCanvasGroup);
+		_PressStartCanvasGroup.gameObject.SetActive(true);
+
+		float t = 0;
+		float time = _FadeinUITime;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
+			_PressStartCanvasGroup.alpha = MathUtil.EaseIn3(t / time);
+			_EngineLogo.alpha = MathUtil.EaseIn3(t / time);
+			yield return null;
+		}
+
 		_StartText.GetComponent<Animation>().Play("Anim_cmn_pulse_1sec");
 	}
 

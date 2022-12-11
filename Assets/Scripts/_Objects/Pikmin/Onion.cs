@@ -465,7 +465,7 @@ public class Onion : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / time);
+			_CanvasGroup.alpha = t / time;
 			yield return null;
 		}
 	}
@@ -477,7 +477,7 @@ public class Onion : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(1, 0, t / time);
+			_CanvasGroup.alpha = 1 - t / time;
 			yield return null;
 		}
 	}

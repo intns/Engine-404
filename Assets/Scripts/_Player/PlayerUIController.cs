@@ -30,7 +30,7 @@ public class PlayerUIController : MonoBehaviour
 		{
 			t += Time.deltaTime;
 
-			_CanvasGroup.alpha = Mathf.Lerp(0, 1, MathUtil.EaseIn4(t / time));
+			_CanvasGroup.alpha = MathUtil.EaseIn4(t / time);
 			yield return null;
 		}
 
@@ -51,7 +51,7 @@ public class PlayerUIController : MonoBehaviour
 		while (t <= time)
 		{
 			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(1, 0, MathUtil.EaseIn4(t / time));
+			_CanvasGroup.alpha = 1 - MathUtil.EaseIn4(t / time);
 			yield return null;
 		}
 

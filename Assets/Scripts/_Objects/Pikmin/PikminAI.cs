@@ -555,7 +555,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 		if (MathUtil.DistanceTo(_Transform.position, pushPos, false) <= 1.0f)
 		{
-			_Transform.position = Vector3.Lerp(_Transform.position, pushPos, 12.5f * Time.deltaTime);
+			_Transform.position = Vector3.Lerp(_Transform.position, pushPos, 17.5f * Time.deltaTime);
 		}
 		else
 		{
@@ -834,7 +834,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_TargetObjectCollider = null;
 				break;
 			case PikminStates.Attacking:
-				_Transform.rotation = Quaternion.Euler(0, _Transform.rotation.eulerAngles.y, 0);
 				LatchOnto(null);
 
 				_DirectionVector = Vector3.down * 2;
@@ -844,6 +843,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 				_AttackingTransform = null;
 				_Attacking = null;
+
+				_Transform.eulerAngles = new Vector3(0, _Transform.eulerAngles.y, 0);
 				break;
 			case PikminStates.Carrying:
 				LatchOnto(null);
@@ -879,7 +880,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Idle:
 				LatchOnto(null);
 
-				transform.eulerAngles = new Vector3(0, _Transform.eulerAngles.y, 0);
+				_Transform.eulerAngles = new Vector3(0, _Transform.eulerAngles.y, 0);
 
 				_AudioSource.volume = 0.01f;
 				_AudioSource.clip = _Data._IdleNoise;

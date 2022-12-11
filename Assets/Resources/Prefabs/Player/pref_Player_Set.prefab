@@ -2553,12 +2553,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _DefaultData:
+  - _FOV: 18
+    _Offset: {x: 36, y: 14}
   - _FOV: 20
-    _Offset: {x: 24, y: 12}
-  - _FOV: 27.5
-    _Offset: {x: 26, y: 13}
-  - _FOV: 32.5
+    _Offset: {x: 40, y: 18.1}
+  - _FOV: 26
     _Offset: {x: 30, y: 18}
+  - _FOV: 28
+    _Offset: {x: 40, y: 20}
+  _UseTopView: 0
   _TopViewData:
   - _FOV: 20
     _Offset: {x: 22, y: 26}
@@ -2566,6 +2569,8 @@ MonoBehaviour:
     _Offset: {x: 24, y: 32}
   - _FOV: 40
     _Offset: {x: 28, y: 38}
+  - _FOV: 45
+    _Offset: {x: 34, y: 42}
   _ZoomAudio: {fileID: 8300000, guid: 492ddac1abd6cf9498fe0e4cfeb8218d, type: 3}
   _LookatFollowSpeed: 3.5
   _OrbitChangeSpeed: 1
@@ -4024,6 +4029,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 142.37375
+      objectReference: {fileID: 0}
+    - target: {fileID: 3230100092852899520, guid: e262400a60bfc524ebfd762a874ee035,
+        type: 3}
+      propertyPath: m_RendererPriority
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3230100092852899520, guid: e262400a60bfc524ebfd762a874ee035,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 259
       objectReference: {fileID: 0}
     - target: {fileID: 3727367404431238811, guid: e262400a60bfc524ebfd762a874ee035,
         type: 3}
