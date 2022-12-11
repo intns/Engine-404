@@ -41,40 +41,43 @@ public class TextBoxArea : MonoBehaviour
 		_Transform = transform;
 	}
 
-	void Update()
+	public void AButton()
+	{
+		if (!_Enabled || !_FinishedPageWrite)
+		{
+			return;
+		}
+
+		if (_PageIndex == _Entry._Pages.Count - 1)
+		{
+			_Enabled = false;
+			PlayerPrefs.SetInt(_GlobalName, 1);
+			Player._Instance.Pause(PauseType.Unpaused);
+			Player._Instance._UIController.FadeInUI(true);
+			StartCoroutine(FadeOutCanvas());
+		}
+		else
+		{
+			_PageIndex++;
+			_FinishedPageWrite = false;
+			StartCoroutine(WriteText(_Entry._Pages[_PageIndex]._Text));
+		}
+	}
+
+	public void BButton()
 	{
 		if (!_Enabled)
 		{
 			return;
 		}
 
-		if (Input.GetButtonDown("A Button") && _FinishedPageWrite)
-		{
-			if (_PageIndex == _Entry._Pages.Count - 1)
-			{
-				_Enabled = false;
-				PlayerPrefs.SetInt(_GlobalName, 1);
-				Player._Instance.Pause(PauseType.Unpaused);
-				Player._Instance._UIController.FadeInUI(true);
-				StartCoroutine(FadeOutCanvas());
-			}
-			else
-			{
-				_PageIndex++;
-				_FinishedPageWrite = false;
-				StartCoroutine(WriteText(_Entry._Pages[_PageIndex]._Text));
-			}
-		}
-
-		if (Input.GetButtonDown("B Button"))
-		{
-			_FinishedPageWrite = true;
-		}
+		_FinishedPageWrite = true;
 	}
 
-	void OnTriggerEnter(Collider other)
+	void OnTriggerStay(Collider other)
 	{
-		if (!other.CompareTag("Player") || PlayerPrefs.GetInt(_GlobalName) == 1)
+		if (!other.CompareTag("Player") || PlayerPrefs.GetInt(_GlobalName) == 1
+				|| GameManager.IsPaused)
 		{
 			return;
 		}
