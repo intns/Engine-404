@@ -22,6 +22,7 @@ public class Player : MonoBehaviour, IHealth
 	public PlayerPikminController _PikminController = null;
 	public PlayerUIController _UIController = null;
 	public WhistleController _WhistleController = null;
+	public GameObject _ModelObject = null;
 
 	[Header("Components")]
 	[SerializeField] LineRenderer _WhistleLine = null;
@@ -88,18 +89,18 @@ public class Player : MonoBehaviour, IHealth
 	{
 		if (!GameManager.IsPaused)
 		{
-			if (_Walking)
-			{
-				_AnimController.ChangeState(PlayerAnimation.Walk);
-			}
-			else if (_IsHit)
+			if (_IsHit)
 			{
 				_AnimController.ChangeState(PlayerAnimation.Damage, true);
 				_IsHit = false;
 			}
+			else if (_Walking)
+			{
+				_AnimController.ChangeState(PlayerAnimation.Walk);
+			}
 			else
 			{
-				_AnimController.ChangeState(PlayerAnimation.Idle, true);
+				_AnimController.ChangeState(PlayerAnimation.Idle);
 			}
 
 			// Handle health-related functions

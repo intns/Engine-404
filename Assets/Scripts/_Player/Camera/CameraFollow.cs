@@ -20,6 +20,7 @@ public class CameraFollow : MonoBehaviour
 {
 	[Header("Components")]
 	[SerializeField] CameraPositionData[] _DefaultData = null;
+	[SerializeField] bool _UseTopView = true;
 	[SerializeField] CameraPositionData[] _TopViewData = null;
 	[Space()]
 	[SerializeField] AudioClip _ZoomAudio = null;
@@ -172,7 +173,7 @@ public class CameraFollow : MonoBehaviour
 
 	public void OnTopDownView(InputAction.CallbackContext context)
 	{
-		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused || !_UseTopView)
 		{
 			return;
 		}

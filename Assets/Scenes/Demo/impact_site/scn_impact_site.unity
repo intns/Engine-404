@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.22294453, g: 0.5482307, b: 0.32132676, a: 1}
+  m_IndirectSpecularColor: {r: 0.2233713, g: 0.54840237, b: 0.32124713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3521,6 +3521,16 @@ PrefabInstance:
       propertyPath: _MainVP
       value: 
       objectReference: {fileID: 739088112}
+    - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
+        type: 3}
+      propertyPath: _DoSequence
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
+        type: 3}
+      propertyPath: _ResetPrefs
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
         type: 3}
       propertyPath: _CeresAnimator
@@ -17653,6 +17663,91 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Player_Set
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _UseTopView
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewData.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[0]._FOV
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[1]._FOV
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[2]._FOV
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[3]._FOV
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewData.Array.data[3]._FOV
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[0]._Offset.x
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[0]._Offset.y
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[1]._Offset.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[1]._Offset.y
+      value: 18.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[3]._Offset.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _DefaultData.Array.data[3]._Offset.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewData.Array.data[3]._Offset.x
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _TopViewData.Array.data[3]._Offset.y
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 6894162304972100195, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}

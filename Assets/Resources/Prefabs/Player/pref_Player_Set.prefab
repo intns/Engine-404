@@ -461,6 +461,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e805ca06-0cce-4351-bd84-7d83826ce65e
     m_ActionName: BasicControls/ResetCamera[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c3a14021-1503-453e-bd4d-61e215871ea1
+    m_ActionName: BasicControls/AnyButton[/Mouse/leftButton,/Mouse/press,/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: BasicControls
@@ -1978,6 +1982,7 @@ MonoBehaviour:
   _PikminController: {fileID: 4246387085006627566}
   _UIController: {fileID: 4380049253293421809}
   _WhistleController: {fileID: 4246387085443966846}
+  _ModelObject: {fileID: 6700862877741665655}
   _WhistleLine: {fileID: 7035921970023993910}
   _MaxHealth: 100
   _CurrentHealth: 100

@@ -14,12 +14,26 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.InputSystem.InputAction;
+
+public enum MainMenuState
+{
+	None = 0,
+
+	PressStart,
+	Menu
+}
 
 public class MainMenuUI : MonoBehaviour
 {
 	[Header("Components")]
 	[SerializeField] Transform _Canvas = null;
-	[SerializeField] CanvasGroup _CanvasGroup = null;
+
+	[SerializeField] CanvasGroup _PressStartCanvasGroup = null;
+	[SerializeField] TextMeshProUGUI _StartText = null;
+
+	[SerializeField] CanvasGroup _MainMenuCanvasGroup = null;
+
 	[SerializeField] Transform _TemplateButton = null;
 
 	[Header("Settings")]
@@ -31,54 +45,90 @@ public class MainMenuUI : MonoBehaviour
 	[SerializeField] AudioClip _HoverAudio;
 	[SerializeField] AudioClip _SelectAudio;
 
-	IEnumerator FadeInCanvas()
-	{
-		float t = 0;
-		float time = _FadeinUITime;
-		while (t <= time)
-		{
-			t += Time.deltaTime;
-			_CanvasGroup.alpha = Mathf.Lerp(0, 1, t / time);
-			yield return null;
-		}
-	}
+	[Header("Debugging")]
+	[SerializeField] MainMenuState _State = MainMenuState.None;
+
+	float _StartTextTimer = 0.0f;
 
 	void Awake()
 	{
-		_CanvasGroup.alpha = 0;
+		_PressStartCanvasGroup.alpha = 0;
+		_MainMenuCanvasGroup.alpha = 0;
 
-		FadeManager._Instance.FadeIn(_FadeinBlackTime, new Action(() =>
+		_PressStartCanvasGroup.gameObject.SetActive(true);
+		_MainMenuCanvasGroup.gameObject.SetActive(false);
+	}
+
+	void Start()
+	{
+		ChangeState(MainMenuState.PressStart);
+	}
+
+	void Update()
+	{
+		switch (_State)
 		{
-			if (Application.isEditor || Debug.isDebugBuild)
-			{
-				bool skippedCurrent = false;
-				List<Transform> objects = new List<Transform>();
-				// Generate options for every scene
-				for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+			case MainMenuState.None:
+				break;
+			case MainMenuState.PressStart:
+				_StartText.alpha = Mathf.Lerp(0.0f, 1.0f, MathUtil.EaseIn2(Mathf.Abs(Mathf.Sin(_StartTextTimer * 2))));
+
+				_StartTextTimer += Time.deltaTime;
+				break;
+			case MainMenuState.Menu:
+				break;
+			default:
+				break;
+		}
+	}
+
+	#region Misc Functions
+	void ChangeState(MainMenuState newState)
+	{
+		switch (newState)
+		{
+			case MainMenuState.None:
+				break;
+			case MainMenuState.PressStart:
+				_StartTextTimer = 0.0f;
+
+				FadeManager._Instance.FadeIn(_FadeinBlackTime, new Action(() =>
 				{
-					// Don't generate an option for the current scene
-					if (SceneUtility.GetScenePathByBuildIndex(i) == SceneManager.GetActiveScene().path)
-					{
-						skippedCurrent = true;
-						continue;
-					}
+					StartCoroutine(FadeInStartText());
+				}));
+				break;
+			case MainMenuState.Menu:
+				StartCoroutine(FadeOutCanvas(_PressStartCanvasGroup));
 
-					string sceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
-
-					Transform obj = Instantiate(_TemplateButton, _Canvas);
-					RectTransform rectTransform = obj.GetComponent<RectTransform>();
-					obj.GetComponentInChildren<TextMeshProUGUI>().text = sceneName;
-					obj.GetComponent<Button>().onClick.AddListener(() => FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene(sceneName)));
-					obj.GetComponent<RectTransform>().localPosition = new Vector3(rectTransform.localPosition.x, rectTransform.localPosition.y - ((skippedCurrent ? i - 1 : i) * 100));
-					obj.gameObject.SetActive(true);
-					objects.Add(obj);
+				if (Application.isEditor || Debug.isDebugBuild)
+				{
+					StartCoroutine(FadeInDebugControls());
 				}
 
-				StartCoroutine(FadeInDebugControls(objects));
-			}
+				StartCoroutine(FadeInCanvas(_MainMenuCanvasGroup));
+				break;
+			default:
+				break;
+		}
 
-			StartCoroutine(FadeInCanvas());
-		}));
+		_State = newState;
+	}
+	#endregion
+
+	#region Public Functions
+
+	public void CONTROLS_AnyButtonPress(CallbackContext ctx)
+	{
+		if (_State != MainMenuState.PressStart || _StartTextTimer < 7.5f)
+		{
+			return;
+		}
+
+		if (ctx.started)
+		{
+			_StartText.GetComponent<Animation>().Play("Anim_cmn_shrink");
+			ChangeState(MainMenuState.Menu);
+		}
 	}
 
 	public void PressPlay()
@@ -98,8 +148,69 @@ public class MainMenuUI : MonoBehaviour
 		AudioSource.PlayClipAtPoint(_HoverAudio, Camera.main.transform.position, 0.25f);
 	}
 
-	IEnumerator FadeInDebugControls(List<Transform> objects)
+	#endregion
+
+	#region IEnumerators
+
+	IEnumerator FadeInCanvas(CanvasGroup cg)
 	{
+		cg.gameObject.SetActive(true);
+
+		float t = 0;
+		float time = _FadeinUITime;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
+			cg.alpha = Mathf.Lerp(0, 1, t / time);
+			yield return null;
+		}
+	}
+
+	IEnumerator FadeOutCanvas(CanvasGroup cg)
+	{
+		float t = 0;
+		float time = _FadeinUITime;
+		while (t <= time)
+		{
+			t += Time.deltaTime;
+			cg.alpha = Mathf.Lerp(1, 0, t / time);
+			yield return null;
+		}
+
+		cg.gameObject.SetActive(false);
+	}
+
+	IEnumerator FadeInStartText()
+	{
+		yield return FadeInCanvas(_PressStartCanvasGroup);
+		_StartText.GetComponent<Animation>().Play("Anim_cmn_pulse_1sec");
+	}
+
+	IEnumerator FadeInDebugControls()
+	{
+		bool skippedCurrent = false;
+		List<Transform> objects = new List<Transform>();
+		// Generate options for every scene
+		for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+		{
+			// Don't generate an option for the current scene
+			if (SceneUtility.GetScenePathByBuildIndex(i) == SceneManager.GetActiveScene().path)
+			{
+				skippedCurrent = true;
+				continue;
+			}
+
+			string sceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
+
+			Transform obj = Instantiate(_TemplateButton, _Canvas);
+			RectTransform rectTransform = obj.GetComponent<RectTransform>();
+			obj.GetComponentInChildren<TextMeshProUGUI>().text = sceneName;
+			obj.GetComponent<Button>().onClick.AddListener(() => FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene(sceneName)));
+			obj.GetComponent<RectTransform>().localPosition = new Vector3(rectTransform.localPosition.x, rectTransform.localPosition.y - ((skippedCurrent ? i - 1 : i) * 100));
+			obj.gameObject.SetActive(true);
+			objects.Add(obj);
+		}
+
 		List<Image> imageComponents = new List<Image>();
 		List<TextMeshProUGUI> textComponents = new List<TextMeshProUGUI>();
 		for (int i = 0; i < objects.Count; i++)
@@ -130,4 +241,6 @@ public class MainMenuUI : MonoBehaviour
 		// Reparent because we want it to overlay everything
 		yield return null;
 	}
+
+	#endregion
 }

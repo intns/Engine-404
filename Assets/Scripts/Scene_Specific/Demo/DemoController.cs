@@ -51,6 +51,7 @@ public class DemoController : MonoBehaviour
 		{
 			Player._Instance.Pause(PauseType.Paused);
 			Player._Instance._UIController.FadeOutUI();
+			Player._Instance._ModelObject.SetActive(false);
 
 			StartCoroutine(IE_StartScene());
 		}
@@ -126,6 +127,7 @@ public class DemoController : MonoBehaviour
 
 		FadeManager._Instance.FadeInOut(2.0f, 2.0f, () =>
 		{
+			Player._Instance._ModelObject.SetActive(true);
 			Player._Instance.Pause(PauseType.Unpaused);
 			Player._Instance._UIController.FadeInUI();
 			_DayTimeManager.enabled = true;

@@ -48,7 +48,7 @@ class AnimationController
 		}
 
 		_CurrentState = animIdx;
-		_ParentAnimator.CrossFadeInFixedTime(_Animations[animIdx].name, 0.25f);
+		_ParentAnimator.CrossFade(_Animations[animIdx].name, 0.05f);
 	}
 
 

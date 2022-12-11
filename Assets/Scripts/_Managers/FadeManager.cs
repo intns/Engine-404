@@ -60,9 +60,9 @@ public class FadeManager : MonoBehaviour
 		_FadeImage.color = new Color(0, 0, 0, 255);
 		_FadeImage.enabled = true;
 
-		yield return null;
+		yield return new WaitForSecondsRealtime(0.2f);
 
-		onFadeEnd.Invoke();
+		onFadeEnd?.Invoke();
 	}
 
 	IEnumerator FadeIn_Coroutine(float time, Action onFadeEnd)
@@ -80,9 +80,9 @@ public class FadeManager : MonoBehaviour
 		_FadeImage.color = new Color(0, 0, 0, 0);
 		_FadeImage.enabled = false;
 
-		yield return null;
+		yield return new WaitForSecondsRealtime(0.2f);
 
-		onFadeEnd.Invoke();
+		onFadeEnd?.Invoke();
 	}
 
 	IEnumerator FadeInOut_Coroutine(float fadeIn, float fadeOut, Action midFade)
@@ -100,12 +100,12 @@ public class FadeManager : MonoBehaviour
 		}
 		_FadeImage.color = new Color(0, 0, 0, 255);
 
-		yield return null;
+		yield return new WaitForSecondsRealtime(0.1f);
 
 		// Black screen at point of invoke
-		midFade.Invoke();
+		midFade?.Invoke();
 
-		yield return null;
+		yield return new WaitForSecondsRealtime(0.1f);
 
 		t = 0;
 		while (t <= fadeOut)
@@ -118,6 +118,6 @@ public class FadeManager : MonoBehaviour
 		_FadeImage.color = new Color(0, 0, 0, 0);
 		_FadeImage.enabled = false;
 
-		yield return null;
+		yield return new WaitForSecondsRealtime(0.1f);
 	}
 }

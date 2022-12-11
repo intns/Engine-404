@@ -5,6 +5,7 @@
  */
 
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -546,14 +547,19 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			return;
 		}
 
-		if (MathUtil.DistanceTo(_Transform.position, pushPos, false) > 0.5f)
-		{
-			MoveTowards(pushPos, false);
-		}
-		else if (!_PushReady)
+		if (!_PushReady)
 		{
 			_Pushing.OnPikminReady(this);
 			_PushReady = true;
+		}
+
+		if (MathUtil.DistanceTo(_Transform.position, pushPos, false) <= 1.0f)
+		{
+			_Transform.position = Vector3.Lerp(_Transform.position, pushPos, 12.5f * Time.deltaTime);
+		}
+		else
+		{
+			MoveTowards(pushPos, false);
 		}
 	}
 
@@ -744,16 +750,17 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 		if (_TargetObjectCollider != null)
 		{
+			Vector3 thisPos = _Transform.position;
 			Vector3 nextPos = _TargetObjectCollider.ClosestPoint(pos);
-			Vector3 direct = MathUtil.DirectionFromTo(_Transform.position, nextPos, !useY);
+			Vector3 direct = MathUtil.DirectionFromTo(thisPos, nextPos, !useY);
 
-			if (Physics.Raycast(_Transform.position, direct, out RaycastHit info, 1.5f + _LatchNormalOffset)
+			if (Physics.Raycast(thisPos, direct, out RaycastHit info, 1.5f + _LatchNormalOffset)
 				&& info.transform == _LatchedTransform)
 			{
 				Vector3 resultPos = nextPos + (info.normal * _LatchNormalOffset);
 				if (Physics.OverlapSphere(resultPos, 0.5f, _MapMask).Length == 0)
 				{
-					pos = resultPos;
+					pos = Vector3.Lerp(thisPos, resultPos, 35 * Time.deltaTime);
 				}
 			}
 		}
@@ -814,7 +821,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			return;
 		}
 
-		// from OLD -> new
+		// cleaning up from OLD
 		switch (_CurrentState)
 		{
 			case PikminStates.RunningTowards:
@@ -860,7 +867,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 		_CurrentState = newState;
 
-		// from old -> NEW
+		// initialising NEW
 		switch (newState)
 		{
 			case PikminStates.Thrown:
@@ -871,6 +878,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				break;
 			case PikminStates.Idle:
 				LatchOnto(null);
+
+				transform.eulerAngles = new Vector3(0, _Transform.eulerAngles.y, 0);
+
 				_AudioSource.volume = 0.01f;
 				_AudioSource.clip = _Data._IdleNoise;
 				_AudioSource.Play();
