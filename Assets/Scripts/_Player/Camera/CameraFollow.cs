@@ -88,11 +88,9 @@ public class CameraFollow : MonoBehaviour
 			Debug.Break();
 		}
 
-		// Initialise to the one below middle
-		_HolderIndex = Mathf.FloorToInt(_DefaultData.Length / 2.0f);
+		_HolderIndex = 0;
 		_CurrentHolder = _DefaultData[_HolderIndex];
 
-		// Setup the camera for the scene load
 		_MainCamera.fieldOfView = _CurrentHolder._FOV;
 		_OrbitRadius = _CurrentHolder._Offset.x;
 		_GroundOffset = _CurrentHolder._Offset.y + _PlayerPosition.position.y;
@@ -159,7 +157,8 @@ public class CameraFollow : MonoBehaviour
 
 	public void OnZoom(InputAction.CallbackContext context)
 	{
-		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused)
+		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused
+			|| !DemoStats._DiscoveredOnionCutsceneDone)
 		{
 			return;
 		}

@@ -343,6 +343,7 @@ public class Onion : MonoBehaviour
 		GetComponent<MeshRenderer>().enabled = true;
 		GetComponent<Collider>().enabled = true;
 		OnionActive = true;
+		DemoStats._DiscoveredOnionCutsceneDone = true;
 	}
 
 	/// <summary>

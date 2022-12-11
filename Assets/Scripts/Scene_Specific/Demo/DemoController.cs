@@ -5,6 +5,11 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
 
+public static class DemoStats
+{
+	public static bool _DiscoveredOnionCutsceneDone = false;
+}
+
 public class DemoController : MonoBehaviour
 {
 	[SerializeField] bool _ResetPrefs = false;
@@ -129,7 +134,6 @@ public class DemoController : MonoBehaviour
 		{
 			Player._Instance._ModelObject.SetActive(true);
 			Player._Instance.Pause(PauseType.Unpaused);
-			Player._Instance._UIController.FadeInUI();
 			_DayTimeManager.enabled = true;
 		});
 	}
