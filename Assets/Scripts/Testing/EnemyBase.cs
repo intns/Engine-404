@@ -7,7 +7,7 @@ public enum EnemyFlags
 }
 
 [System.Serializable]
-public class EnemyBase : EntityBase
+public class EnemyBase : Entity
 {
 	public EnemyFlags Flags { get; set; }
 

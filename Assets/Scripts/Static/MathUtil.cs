@@ -167,4 +167,43 @@ public static class MathUtil
 	public static float EaseOut2(float t) => Flip(Flip(t) * Flip(t));
 	public static float EaseOut3(float t) => Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t));
 	public static float EaseOut4(float t) => Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t));
+
+	/// <summary>
+	/// Rounds an angle to 0 - 2PI
+	/// </summary>
+	/// <param name="a"></param>
+	/// <returns></returns>
+	public static float RoundAngle(float a)
+	{
+		if (a < 0.0f)
+		{
+			a += M_TAU;
+		}
+
+		if (a >= M_TAU)
+		{
+			a -= M_TAU;
+		}
+
+		return a;
+	}
+
+	public static float AngleXZ(Vector3 a, Vector3 b)
+	{
+		float x = a.x - b.x;
+		float z = a.z - b.z;
+		return RoundAngle(Mathf.Atan2(x, z));
+	}
+
+	public static float AngleDistance(float angle1, float angle2)
+	{
+		float angle = RoundAngle(angle1 - angle2);
+
+		if (angle >= Mathf.PI)
+		{
+			angle = -RoundAngle(MathUtil.M_TAU - angle);
+		}
+
+		return angle;
+	}
 }

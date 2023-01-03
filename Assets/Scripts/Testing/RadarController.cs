@@ -14,7 +14,7 @@ public class RadarController : MonoBehaviour
 {
 	public static RadarController _Instance;
 
-	public List<EntityBase> _RadarObjects;
+	public List<Entity> _RadarObjects;
 
 	void Awake()
 	{
