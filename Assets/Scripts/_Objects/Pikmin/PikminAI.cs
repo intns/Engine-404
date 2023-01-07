@@ -634,7 +634,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_FireTimer += Time.deltaTime;
 
 		// RIP
-		if (_FireTimer > 5.0f)
+		if (_FireTimer > _Data._FireDeathTimer)
 		{
 			Die();
 			return;
@@ -1103,7 +1103,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	public void InteractFire()
 	{
-		if (_Data._PikminColour == PikminColour.Red)
+		if (!_Data._IsAffectedByFire)
 		{
 			return;
 		}

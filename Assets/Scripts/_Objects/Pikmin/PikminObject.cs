@@ -51,6 +51,10 @@ public class PikminObject : ScriptableObject
 	[Header("Attacking")]
 	public float _AttackDamage = 2.5f;
 
+	[Header("Fire")]
+	public bool _IsAffectedByFire = true;
+	public float _FireDeathTimer = 5.0f;
+
 	[Header("Audio")]
 	public float _AudioVolume = 1;
 
