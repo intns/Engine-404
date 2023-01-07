@@ -138,15 +138,15 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 	public void OnPikminLeave(PikminAI p)
 	{
+		// Clear out the appropriate push point
+		foreach (PushPoint point in _PushPoints.Where(point => point._Pusher == p))
+		{
+			point._Pusher = null;
+			break;
+		}
+
 		if (_AttachedPiki.Contains(p))
 		{
-			// Clear out the appropriate push point
-			foreach (PushPoint point in _PushPoints.Where(point => point._Pusher == p))
-			{
-				point._Pusher = null;
-				break;
-			}
-
 			_AttachedPiki.Remove(p);
 		}
 

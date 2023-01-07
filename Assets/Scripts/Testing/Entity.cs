@@ -9,7 +9,9 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	[Header("Components")]
 	[SerializeField, Range(0.0f, 360.0f)] float _RotationSpeed = 10.0f;
 	[SerializeField, Range(0.0f, 1.0f)] float _RotationAcceleration = 0.1f;
-	[SerializeField, Range(0.1f, 5.0f)] float _DamageAnimationFactor = 1.0f;
+	[Space]
+	[SerializeField, Range(0.05f, 3.0f)] float _HorizontalDamageAnimFactor = 1.0f;
+	[SerializeField, Range(0.05f, 3.0f)] float _VerticalDamageAnimFactor = 1.0f;
 
 	[Header("Health Wheel")]
 	[SerializeField] GameObject _HealthWheelPrefab = null;
@@ -135,7 +137,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 			return;
 		}
 
-		float scaleDuration = 0.5f;
+		float scaleDuration = 0.4f;
 
 		_DamageAnimationTimer += Time.deltaTime;
 
@@ -143,14 +145,14 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		if (_DamageAnimationTimer <= scaleDuration)
 		{
 			float t = _DamageAnimationTimer / scaleDuration;
-			horizontalMod = (1.0f - t) * Mathf.Sin(t * MathUtil.M_TAU);
+			horizontalMod = (1.0f - t) * Mathf.Sin(t * MathUtil.M_TAU) * _VerticalDamageAnimFactor;
 		}
 		else
 		{
 			_DamageAnimationTimer = 0.0f;
 		}
 
-		float xzScale = horizontalMod * (_DamageAnimationFactor * 0.2f);
+		float xzScale = horizontalMod * (_HorizontalDamageAnimFactor * 0.2f);
 		_Transform.localScale = new(_StartSize.x - xzScale, (horizontalMod * 0.25f) + _StartSize.y, _StartSize.z - xzScale);
 	}
 

@@ -95,8 +95,9 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &6852038927153467832
 MonoBehaviour:
@@ -162,14 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a67fe6fb846ef41baf1dccf824f1f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _HealthSpeed: 7.5
-  _Parent: {fileID: 0}
-  _Offset: {x: 0, y: 1, z: 0}
-  _InUse: 0
-  _MaxHealth: 0
-  _CurrentHealth: 0
-  _BillboardHealth: {fileID: 0}
-  _Canvas: {fileID: 0}
+  _ChangeSpeed: 7.5
+  _FadeTime: 0.5
   _ColorGradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
@@ -197,8 +192,16 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  _Parent: {fileID: 0}
+  _Offset: {x: 0, y: 1, z: 0}
+  _InUse: 0
+  _MaxHealth: 0
+  _CurrentHealth: 0
+  _BillboardHealth: {fileID: 0}
+  _Canvas: {fileID: 0}
 --- !u!225 &2561403605036685168
 CanvasGroup:
   m_ObjectHideFlags: 0

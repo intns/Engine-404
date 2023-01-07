@@ -331,11 +331,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _RotationSpeed: 10
   _RotationAcceleration: 0.1
+  _HorizontalDamageAnimFactor: 0.25
+  _VerticalDamageAnimFactor: 0.25
   _HealthWheelPrefab: {fileID: 722451351670197914, guid: 611e1e55a27ea104dadc717baf15d4e1,
     type: 3}
   _HealthWheelOffset: {x: 0.25, y: 6, z: 0.25}
   _HealthWheelScale: 1.5
-  _MaxHealth: 40
+  _MaxHealth: 5000
   _DeathObjectOffset: {x: 0, y: 0, z: 0}
   _DeathObjectPrefabs:
   - {fileID: 4853071827087637658, guid: ae524c549db4f3d448d6e364307f6b63, type: 3}

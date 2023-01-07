@@ -7,6 +7,7 @@
 using System;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.VFX;
 using Random = UnityEngine.Random;
 
 public enum PikminStates
@@ -41,6 +42,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	[Header("Components")]
 	// Holds everything that makes a Pikmin unique
 	public PikminObject _Data = null;
+	[SerializeField] VisualEffect _FireVFX = null;
 
 	[Header("Behaviour")]
 	[SerializeField] float _LatchNormalOffset = 0.5f;
@@ -172,6 +174,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_AudioSource.volume = _Data._AudioVolume;
 
 		_ThrowTrailRenderer.enabled = false;
+		_FireVFX.Stop();
 
 		_IdleTimer = Random.Range(0.02f, _IdleTickRate - (_IdleTickRate / 10));
 
@@ -387,8 +390,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminIntention.Push:
 				if (!IsGrounded())
 				{
-					_Intention = PikminIntention.Idle;
-					ChangeState(PikminStates.Idle);
 					return;
 				}
 
@@ -899,6 +900,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.OnFire:
 				_FireTimer = 0.0f;
 				_WanderAngle = Random.Range(0.0f, 360.0f);
+				_FireVFX.Stop();
 				break;
 			case PikminStates.Attacking:
 				LatchOnto(null);
@@ -948,6 +950,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_FireTimer = 0.0f;
 				_WanderAngle = Random.Range(0.0f, 360.0f);
 				RemoveFromSquad(PikminStates.OnFire);
+				_FireVFX.Play();
 				break;
 			case PikminStates.Idle:
 				LatchOnto(null);

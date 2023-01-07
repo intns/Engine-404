@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1.0897242, g: 1.2654268, b: 0.70808846, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -137,11 +137,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (22)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -206,6 +201,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -391,17 +391,17 @@ PrefabInstance:
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.809994
+      value: 35.80999
       objectReference: {fileID: 0}
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.2088304
+      value: 5.177589
       objectReference: {fileID: 0}
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -27.429998
+      value: -27.42999
       objectReference: {fileID: 0}
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
@@ -574,6 +574,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -643,11 +648,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (10)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -777,6 +777,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -847,11 +851,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (24)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -871,6 +870,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -941,11 +945,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (13)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -971,6 +970,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -1041,11 +1044,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (29)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1069,11 +1067,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (8)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -1140,6 +1133,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1159,6 +1157,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -1219,11 +1231,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1247,11 +1254,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (28)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -1317,6 +1319,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1446,6 +1453,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -1516,11 +1527,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (21)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1540,6 +1546,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -1600,11 +1620,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1628,11 +1643,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -1698,6 +1708,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1890,6 +1905,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -1960,11 +1980,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (23)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1984,6 +1999,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -2054,11 +2073,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (13)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2078,6 +2092,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -2138,11 +2166,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2162,6 +2185,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -2232,11 +2260,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (14)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2256,6 +2279,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -2316,11 +2353,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (10)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2344,11 +2376,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (11)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -2414,6 +2441,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2590,6 +2622,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -2659,11 +2695,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (32)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2778,6 +2809,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -2847,11 +2883,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (31)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2971,11 +3002,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (23)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -3041,6 +3067,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3070,11 +3101,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (33)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -3141,6 +3167,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3164,11 +3195,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (21)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -3235,6 +3261,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3254,6 +3285,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -3324,11 +3360,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3348,6 +3379,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -3417,11 +3452,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (27)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3521,6 +3551,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -3591,11 +3626,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3619,11 +3649,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -3689,6 +3714,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4079,11 +4109,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (30)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -4148,6 +4173,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4262,6 +4292,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -4331,11 +4366,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (27)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4455,11 +4485,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -4524,6 +4549,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4638,6 +4668,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -4708,11 +4743,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (20)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4738,6 +4768,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -4808,11 +4843,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (19)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4836,11 +4866,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (6)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -4907,6 +4932,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4926,6 +4956,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -4985,11 +5029,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5134,11 +5173,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (10)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -5204,6 +5238,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5227,11 +5266,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (24)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -5297,6 +5331,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5660,11 +5699,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (13)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -5729,6 +5763,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5801,6 +5840,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -5871,11 +5915,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5899,11 +5938,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (27)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -5970,6 +6004,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5993,11 +6032,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (18)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -6064,6 +6098,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6083,6 +6122,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -6152,11 +6196,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (16)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6309,6 +6348,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1373113601}
+  - {fileID: 1173755877}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6324,11 +6364,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (16)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -6395,6 +6430,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6414,6 +6454,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -6484,11 +6529,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (17)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6508,6 +6548,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -6578,11 +6623,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (29)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6602,6 +6642,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -6671,11 +6716,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (9)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6784,6 +6824,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -6853,11 +6897,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (11)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6972,6 +7011,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -7042,11 +7085,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (30)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7066,6 +7104,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -7136,11 +7179,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (25)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7164,11 +7202,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (26)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -7235,6 +7268,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7245,115 +7283,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
     type: 3}
   m_PrefabInstance: {fileID: 917797662}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &920298988
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1053264052}
-    m_Modifications:
-    - target: {fileID: 1273234133456166788, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: _Flags
-      value: 23
-      objectReference: {fileID: 0}
-    - target: {fileID: 1273234133456166788, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: _PlaceOnFloor
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1273234133456166788, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: _InteractionLayers.m_Bits
-      value: 1152
-      objectReference: {fileID: 0}
-    - target: {fileID: 1559592660543825051, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_Name
-      value: pref_Geyser Variant (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 10.507782
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 10.507782
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 10.507783
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -65.19995
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 42.199974
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 4.268
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -5.213
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -0.841
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 14349897a953ecf4f84c4e9694931da4, type: 3}
---- !u!4 &920298989 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
-    type: 3}
-  m_PrefabInstance: {fileID: 920298988}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &941617974
 PrefabInstance:
@@ -7367,11 +7296,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (15)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -7437,6 +7361,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8379,6 +8308,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -8449,11 +8382,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (31)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8501,7 +8429,6 @@ Transform:
   - {fileID: 1638370315}
   - {fileID: 1571050410}
   - {fileID: 153003983}
-  - {fileID: 920298989}
   m_Father: {fileID: 1532408464}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8745,6 +8672,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -8815,11 +8747,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8843,11 +8770,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (29)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -8914,6 +8836,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8937,11 +8864,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (9)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -9007,6 +8929,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9138,6 +9065,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -9208,11 +9140,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (26)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9236,11 +9163,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (19)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -9307,6 +9229,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9332,6 +9259,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -9402,11 +9333,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (26)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9426,6 +9352,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -9496,11 +9426,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (12)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9520,6 +9445,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -9580,11 +9519,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9616,7 +9550,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1173755873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9631,7 +9565,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _RotationSpeed: 10
   _RotationAcceleration: 0.1
-  _DamageAnimationFactor: 1
+  _HorizontalDamageAnimFactor: 1.5
+  _VerticalDamageAnimFactor: 1.5
   _HealthWheelPrefab: {fileID: 722451351670197914, guid: 611e1e55a27ea104dadc717baf15d4e1,
     type: 3}
   _HealthWheelOffset: {x: 0, y: 5, z: 0}
@@ -9642,7 +9577,7 @@ MonoBehaviour:
   - {fileID: 3845477201539155994, guid: dd1f9acce7bbade4a91413b2c74445f7, type: 3}
   - {fileID: 4943918768778943652, guid: 80e619207e546854786da5f1faafa140, type: 3}
   _PlaceOnFloor: 0
-  _Flags: 0
+  _Flags: 23
 --- !u!65 &1173755874
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9721,13 +9656,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173755872}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -58.4, y: 5.67, z: 44.7}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.5307617, y: -3.9746838, z: 5.9872475}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 748775421}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1173755878
 Rigidbody:
@@ -9764,6 +9699,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -9834,11 +9773,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (22)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9858,6 +9792,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -9927,11 +9866,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (22)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10224,6 +10158,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -10284,11 +10232,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10308,6 +10251,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -10377,11 +10325,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (6)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10481,6 +10424,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -10550,11 +10497,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (18)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10889,11 +10831,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -10958,6 +10895,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11072,6 +11014,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -11141,11 +11088,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (30)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11250,6 +11192,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -11319,11 +11266,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11474,6 +11416,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -11544,11 +11490,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (16)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11568,6 +11509,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -11637,11 +11582,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (17)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11750,6 +11690,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -11819,11 +11763,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (23)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11899,6 +11838,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -11969,11 +11913,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11993,6 +11932,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -12063,11 +12007,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (21)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12087,6 +12026,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -12157,11 +12101,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12181,6 +12120,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -12251,11 +12194,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (15)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12279,11 +12217,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (31)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -12349,6 +12282,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12481,11 +12419,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (12)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -12550,6 +12483,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12815,6 +12753,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -12884,11 +12827,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (32)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13840,6 +13778,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -13909,11 +13851,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (25)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14128,11 +14065,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -14197,6 +14129,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14326,6 +14263,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -14396,11 +14338,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (18)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14420,6 +14357,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -14490,11 +14431,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (14)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14552,6 +14488,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -14621,11 +14562,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (15)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14739,11 +14675,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (32)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -14808,6 +14739,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15083,6 +15019,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -15153,11 +15094,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (28)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15177,6 +15113,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -15256,6 +15206,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -15326,11 +15280,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (20)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15350,6 +15299,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -15409,11 +15372,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15490,6 +15448,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -15559,11 +15522,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (12)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15700,11 +15658,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (17)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -15770,6 +15723,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15793,11 +15751,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (25)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -15863,6 +15816,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16084,11 +16042,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (20)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -16154,6 +16107,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16173,6 +16131,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.045996763
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -16233,11 +16205,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16257,6 +16224,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -16326,11 +16298,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (11)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16445,6 +16412,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -16514,11 +16485,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (28)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16832,11 +16798,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -16902,6 +16863,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16927,6 +16893,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -16997,11 +16968,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17025,11 +16991,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Blue_Pikmin (14)
-      objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -17095,6 +17056,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17476,6 +17442,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -17545,11 +17516,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (24)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17781,11 +17747,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -17850,6 +17811,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18146,6 +18112,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -18215,11 +18185,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (19)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
