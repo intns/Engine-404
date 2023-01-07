@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 1.0897242, g: 1.2654268, b: 0.70808846, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9631,6 +9631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _RotationSpeed: 10
   _RotationAcceleration: 0.1
+  _DamageAnimationFactor: 1
   _HealthWheelPrefab: {fileID: 722451351670197914, guid: 611e1e55a27ea104dadc717baf15d4e1,
     type: 3}
   _HealthWheelOffset: {x: 0, y: 5, z: 0}

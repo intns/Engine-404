@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
 
-public class EntityFlags
-{
-
-}
 
 [System.Serializable]
 public class Entity : MonoBehaviour, IPikminAttack, IHealth
@@ -14,6 +9,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	[Header("Components")]
 	[SerializeField, Range(0.0f, 360.0f)] float _RotationSpeed = 10.0f;
 	[SerializeField, Range(0.0f, 1.0f)] float _RotationAcceleration = 0.1f;
+	[SerializeField, Range(0.1f, 5.0f)] float _DamageAnimationFactor = 1.0f;
 
 	[Header("Health Wheel")]
 	[SerializeField] GameObject _HealthWheelPrefab = null;
@@ -90,17 +86,27 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		Gizmos.DrawWireSphere(transform.position + _HealthWheelOffset, _HealthWheelScale);
 
 		Gizmos.color = Color.red;
-		foreach (GameObject obj in _DeathObjectPrefabs)
+		if (_DeathObjectPrefabs.Length > 0)
 		{
-			MeshFilter filter = obj.GetComponentInChildren<MeshFilter>();
-			Mesh mesh;
-			if (filter != null && (mesh = filter.sharedMesh) != null)
+			int tries = 0;
+			for (int i = 0; i < _DeathObjectPrefabs.Length; i++)
 			{
-				Gizmos.DrawWireMesh(mesh, transform.position + _DeathObjectOffset);
-			}
-			else
-			{
-				Gizmos.DrawWireSphere(transform.position + _DeathObjectOffset, 1);
+				if (tries++ > 1000)
+				{
+					break;
+				}
+
+				GameObject obj = _DeathObjectPrefabs[i];
+				MeshFilter filter = obj.GetComponentInChildren<MeshFilter>();
+				Mesh mesh;
+				if (filter != null && (mesh = filter.sharedMesh) != null)
+				{
+					Gizmos.DrawWireMesh(mesh, transform.position + _DeathObjectOffset);
+				}
+				else
+				{
+					Gizmos.DrawWireSphere(transform.position + _DeathObjectOffset, 1);
+				}
 			}
 		}
 
@@ -130,7 +136,6 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		}
 
 		float scaleDuration = 0.5f;
-		float factor = 1.0f;
 
 		_DamageAnimationTimer += Time.deltaTime;
 
@@ -145,7 +150,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 			_DamageAnimationTimer = 0.0f;
 		}
 
-		float xzScale = horizontalMod * (factor * 0.2f);
+		float xzScale = horizontalMod * (_DamageAnimationFactor * 0.2f);
 		_Transform.localScale = new(_StartSize.x - xzScale, (horizontalMod * 0.25f) + _StartSize.y, _StartSize.z - xzScale);
 	}
 
