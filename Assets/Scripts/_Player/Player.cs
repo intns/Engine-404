@@ -58,6 +58,7 @@ public class Player : MonoBehaviour, IHealth
 	bool _Walking = false;
 
 	float _AttackTimer = 0.0f;
+	float _DamageCooldown = 0.0f;
 
 	void OnEnable()
 	{
@@ -77,6 +78,7 @@ public class Player : MonoBehaviour, IHealth
 
 		// Resets the health back to the max if changed in the editor
 		_CurrentHealth = _MaxHealth;
+		_DamageCooldown = 0.0f;
 
 		// Lock to the floor to start the scene
 		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
@@ -87,6 +89,11 @@ public class Player : MonoBehaviour, IHealth
 
 	void Update()
 	{
+		if (_DamageCooldown >= 0)
+		{
+			_DamageCooldown -= Time.deltaTime;
+		}
+
 		if (!GameManager.IsPaused)
 		{
 			if (_IsHit)
@@ -240,22 +247,32 @@ public class Player : MonoBehaviour, IHealth
 		return _CurrentHealth += give;
 	}
 
-	public float SubtractHealth(float take)
+	void DamageHealth()
 	{
 		_IsHit = true;
-		_AnimController.ChangeState(PlayerAnimation.Damage, true);
-		return _CurrentHealth -= take;
+		_AnimController.ChangeState(PlayerAnimation.Damage, true, true);
+		Camera.main.GetComponent<CameraFollow>().Shake(50.0f);
+		_DamageCooldown = 3.0f;
+	}
+
+	public float SubtractHealth(float take)
+	{
+		if (_DamageCooldown < 0)
+		{
+			DamageHealth();
+			_CurrentHealth -= take;
+		}
+
+		return _CurrentHealth;
 	}
 
 	public void SetHealth(float set)
 	{
 		if (_CurrentHealth > set)
 		{
-			_AnimController.ChangeState(PlayerAnimation.Damage, true);
-			_IsHit = true;
+			DamageHealth();
+			_CurrentHealth = set;
 		}
-
-		_CurrentHealth = set;
 	}
 
 	#endregion

@@ -16,7 +16,7 @@ public enum PikminColour
 	Yellow,
 	Blue,
 
-	Size // Also used as a "NONE" variable
+	Size
 }
 
 public enum PikminMaturity

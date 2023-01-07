@@ -51,7 +51,6 @@ class AnimationController
 		_ParentAnimator.CrossFade(_Animations[animIdx].name, 0.05f);
 	}
 
-
 	public Animator _ParentAnimator;
 
 	List<AnimationClip> _Animations = new List<AnimationClip>();

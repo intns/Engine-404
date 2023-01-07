@@ -18,6 +18,7 @@ public enum PikminStates
 
 	Carrying,
 	Push,
+	SuckNectar,
 
 	// Holding/Throwing States
 	BeingHeld,
@@ -96,6 +97,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	[Space, Header("On Fire")]
 	[SerializeField] float _FireTimer = 0.0f;
 	[SerializeField] float _WanderAngle = 0.0f;
+
+	[Space, Header("Suck Nectar")]
+	[SerializeField] float _SuckNectarTimer = 0.0f;
+	[SerializeField] Transform _NectarTransform = null;
 
 	[Space, Header("Stats")]
 	[SerializeField] PikminStatSpecifier _CurrentStatSpecifier = default;
@@ -252,6 +257,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.OnFire:
 				HandleOnFire();
 				break;
+			case PikminStates.SuckNectar:
+				HandleSuckNectar();
+				break;
 			case PikminStates.Dead:
 				HandleDeath();
 				break;
@@ -277,7 +285,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		HandleAnimations();
 	}
 
-
 	void FixedUpdate()
 	{
 		if (GameManager.IsPaused && GameManager.PauseType != PauseType.OnlyPikminActive)
@@ -299,7 +306,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				break;
 		}
 
-		RepelPikminAndPlayers();
+		if (_CurrentState == PikminStates.RunningTowards || _CurrentState == PikminStates.Idle)
+		{
+			RepelPikminAndPlayers();
+		}
 
 		if (!Latch_IsLatchedOntoObject() || _CurrentState == PikminStates.Push)
 		{
@@ -596,6 +606,30 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 	}
 
+	void HandleSuckNectar()
+	{
+		if (_CurrentMaturity == PikminMaturity.Flower)
+		{
+			ChangeState(PikminStates.Idle);
+			return;
+		}
+
+		_SuckNectarTimer += Time.deltaTime;
+		if (_SuckNectarTimer > Nectar.NECTAR_DRINK_TIME)
+		{
+			SetMaturity(_CurrentMaturity + 1);
+			ChangeState(PikminStates.Idle);
+			return;
+		}
+
+		if (_NectarTransform != null)
+		{
+			_RotationAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _NectarTransform.position)).eulerAngles.y;
+			_DirectionVector = Vector3.zero;
+			_AddedVelocity = Vector3.zero;
+		}
+	}
+
 	void HandleDeath()
 	{
 		RemoveFromSquad(PikminStates.Dead);
@@ -704,11 +738,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	void RepelPikminAndPlayers()
 	{
-		if (_CurrentState != PikminStates.RunningTowards && _CurrentState != PikminStates.Idle)
-		{
-			return;
-		}
-
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, _AvoidSphereSize, _PlayerAndPikminLayer);
 		foreach (Collider collider in objects)
 		{
@@ -897,6 +926,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_TargetObject = null;
 				_TargetObjectCollider = null;
 				break;
+			case PikminStates.SuckNectar:
+				_SuckNectarTimer = 0.0f;
+				_NectarTransform = null;
+				break;
 			case PikminStates.OnFire:
 				_FireTimer = 0.0f;
 				_WanderAngle = Random.Range(0.0f, 360.0f);
@@ -1048,7 +1081,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	public void AddToSquad()
 	{
-		if (_InSquad || _CurrentState == PikminStates.Dead || _CurrentState == PikminStates.Thrown
+		if (_InSquad || _CurrentState == PikminStates.Dead || _CurrentState == PikminStates.SuckNectar || _CurrentState == PikminStates.Thrown
 			|| (_CurrentState == PikminStates.Push && !_Pushing.IsPikminSpotAvailable()))
 		{
 			return;
@@ -1106,7 +1139,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	public void InteractFire()
 	{
-		if (!_Data._IsAffectedByFire)
+		if (!_Data._IsAffectedByFire && _CurrentState != PikminStates.OnFire)
 		{
 			return;
 		}
@@ -1172,6 +1205,23 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	public bool Latch_IsLatchedOntoObject()
 	{
 		return _LatchedTransform != null;
+	}
+
+	public bool NectarStart(Transform nectarTransform)
+	{
+		if (_CurrentMaturity == PikminMaturity.Size - 1
+			&& _CurrentState != PikminStates.OnFire
+			&& _CurrentState != PikminStates.Carrying
+			&& _CurrentState != PikminStates.BeingHeld
+			&& _CurrentState != PikminStates.Attacking)
+		{
+			return false;
+		}
+
+		RemoveFromSquad();
+		ChangeState(PikminStates.SuckNectar);
+		_NectarTransform = nectarTransform;
+		return true;
 	}
 	#endregion
 }

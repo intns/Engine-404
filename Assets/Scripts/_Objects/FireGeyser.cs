@@ -91,7 +91,6 @@ public class FireGeyser : Entity
 		{
 			FireGeyser obj = (FireGeyser)ent;
 
-
 			obj._Timer += Time.deltaTime;
 			if (obj.GetCurrentHealth() > 0.0f && obj._Timer <= obj.GetActiveAttackTime())
 			{
@@ -100,11 +99,6 @@ public class FireGeyser : Entity
 			}
 
 			obj.FireFX_Stop();
-			/*if (!obj.FireFX_IsFinished())
-			{
-				return;
-			}*/
-
 			if (obj.GetCurrentHealth() > 0.0f)
 			{
 				obj._FSM.SetState((int)FSMStates.Waiting, ent);
