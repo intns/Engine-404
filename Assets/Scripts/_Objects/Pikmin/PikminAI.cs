@@ -445,7 +445,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			if (currentIntention == PikminIntention.Attack &&
 				!collider.GetComponentInParent<IPikminAttack>().IsAttackAvailable())
 			{
-				return;
+				continue;
 			}
 
 			if (currentIntention == PikminIntention.Carry)
