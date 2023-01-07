@@ -265,7 +265,12 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		p.LatchOnto(transform);
 		p.ChangeState(PikminStates.Carrying);
 		_CarryingPikmin.Add(p);
-		_CarryingPikmin[^1]._LatchedOffset = _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryMinMax.y, _CarryingPikmin.Count)) * _CarryCircleRadius;
+
+		// Circle offset + ((circle pos with qualtiy 'carry max' at the index 'pikmin count') * circle size)
+		_CarryingPikmin[^1].Latch_SetOffset(
+			_CarryCircleOffset
+			+ MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryMinMax.y, _CarryingPikmin.Count))
+			* _CarryCircleRadius);
 
 		if (_CarryingPikmin.Count >= _CarryMinMax.x)
 		{
@@ -325,7 +330,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		UpdateText();
 	}
 
-	public bool PikminSpotAvailable()
+	public bool IsPikminSpotAvailable()
 	{
 		return _SpawnInvulnTimer >= _InvulnTimeAfterSpawn && _CarryingPikmin.Count < _CarryMinMax.y;
 	}

@@ -131,7 +131,7 @@ VFXRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
 --- !u!1001 &1830045377253366218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148,52 +148,52 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 5.14331
+      value: 5.2138567
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 5.14331
+      value: 5.2138567
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5.14331
+      value: 5.213857
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -62.654
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 70.446
+      value: 5.103326
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 102.442
+      value: -24.67
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99825805
+      value: 0.99339837
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.03752983
+      value: -0.01465658
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.04517444
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.005628589
+      value: 0.11377575
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
@@ -269,10 +269,14 @@ MonoBehaviour:
   _MaxHealth: 50
   _DeathObjectOffset: {x: 0, y: 0, z: 0}
   _DeathObjectPrefabs: []
-  _Flags: 7
+  _PlaceOnFloor: 0
+  _Flags: 23
   _FireVFX: {fileID: 1251556996548805835}
   _TimePerAttack: 3
   _ActiveAttackTime: 3
+  _InteractionLayers:
+    serializedVersion: 2
+    m_Bits: 1152
   _Timer: 0
 --- !u!64 &110654881
 MeshCollider:

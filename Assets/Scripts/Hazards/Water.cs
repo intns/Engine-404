@@ -21,7 +21,7 @@ public class Water : MonoBehaviour
 		// Handle Pikmin entering the water
 		if (other.CompareTag("Pikmin"))
 		{
-			other.GetComponent<PikminAI>().WaterEnter();
+			other.GetComponent<PikminAI>().Water_Enter();
 			return;
 		}
 
@@ -36,7 +36,7 @@ public class Water : MonoBehaviour
 	{
 		if (other.CompareTag("Pikmin"))
 		{
-			other.GetComponent<PikminAI>().WaterLeave();
+			other.GetComponent<PikminAI>().Water_Leave();
 		}
 	}
 }

@@ -175,9 +175,10 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 	public Vector3 GetPushPosition(PikminAI ai)
 	{
 		// Check if the AI is already in the pushing list
-		foreach (var v in _PushPoints.Where(v => v._Pusher == ai))
+		PushPoint usedPushPos = _PushPoints.FirstOrDefault(v => v._Pusher == ai);
+		if (usedPushPos != null)
 		{
-			return v._Transform.position;
+			return usedPushPos._Transform.position;
 		}
 
 		// Pikmin is not in pushing list, so we'll find the closest point
@@ -211,9 +212,14 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 		return closest._Transform.position;
 	}
 
-	public bool PikminSpotAvailable()
+	public bool IsPikminSpotAvailable()
 	{
 		return _AttachedPiki.Count < _PikminToPush && !_Pushed;
+	}
+
+	public Vector3 GetMovementDirection()
+	{
+		return MathUtil.DirectionFromTo(_Transform.position, _EndPosition.position);
 	}
 	#endregion
 }

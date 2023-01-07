@@ -16,5 +16,5 @@ public interface IPikminCarry : IPikminInteractable
 	bool IsMoving();
 
 	// Returns whether or not the current amount of Pikmin carrying is > the maximum amount allowed
-	bool PikminSpotAvailable();
+	bool IsPikminSpotAvailable();
 }

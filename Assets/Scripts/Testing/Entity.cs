@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 public class EntityFlags
 {
@@ -22,6 +23,9 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	[SerializeField] float _MaxHealth = 3500;
 	[SerializeField] Vector3 _DeathObjectOffset = Vector3.zero;
 	[SerializeField] GameObject[] _DeathObjectPrefabs = null;
+
+	[Header("Editor")]
+	[SerializeField] bool _PlaceOnFloor = false;
 
 	[Flags]
 	public enum EntityFlags
@@ -98,6 +102,16 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 			{
 				Gizmos.DrawWireSphere(transform.position + _DeathObjectOffset, 1);
 			}
+		}
+
+		if (_PlaceOnFloor)
+		{
+			if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
+			{
+				transform.SetPositionAndRotation(hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
+			}
+
+			_PlaceOnFloor = false;
 		}
 	}
 

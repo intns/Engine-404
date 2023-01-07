@@ -15,5 +15,8 @@ public interface IPikminPush : IPikminInteractable
 
 
 	// Returns if there is a spot for the Pikmin to move towards
-	bool PikminSpotAvailable();
+	bool IsPikminSpotAvailable();
+
+	// Get the direction the object is going to move towards
+	public Vector3 GetMovementDirection();
 }
