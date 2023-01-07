@@ -25,6 +25,7 @@ public class BrambleGate : MonoBehaviour, IPikminAttack
 
 	#region Pikmin Attacking Implementation
 	public PikminIntention IntentionType => PikminIntention.Attack;
+	bool IPikminAttack.IsAttackAvailable() => true;
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{
@@ -46,6 +47,7 @@ public class BrambleGate : MonoBehaviour, IPikminAttack
 		// Should be called last in case the 
 		_DamageScript.SubtractHealth(damage);
 	}
+
 	#endregion
 
 	#region Public Functions

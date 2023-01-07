@@ -10,6 +10,23 @@ public static class GameUtil
 	/// <returns>The majority colour of the Pikmin in the list</returns>
 	public static PikminColour GetMajorityColour(List<PikminAI> pikmin)
 	{
+		/*if (pikmin.Count == 0)
+		{
+			return PikminColour.Red;
+		}
+
+		List<int> counts = new((int)PikminColour.Size);
+		for (int i = 0; i < pikmin.Count; i++)
+		{
+			counts[(int)pikmin[i].GetColour()]++;
+		}
+
+		List<int> colors = new((int)PikminColour.Size);
+		for (int i = 0; i < (int)PikminColour.Size; i++)
+		{
+			colors[i] = i;
+		}*/
+
 		int red = 0;
 		int ylw = 0;
 		int blu = 0;
@@ -46,12 +63,8 @@ public static class GameUtil
 		{
 			return PikminColour.Yellow;
 		}
-		else if (pikmin.Count > 0)
-		{
-			return pikmin[0]._Data._PikminColour;
-		}
 
-		return PikminColour.Red;
+		return pikmin[0]._Data._PikminColour;
 	}
 
 

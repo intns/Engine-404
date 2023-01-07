@@ -158,7 +158,7 @@ public class CameraFollow : MonoBehaviour
 	public void OnZoom(InputAction.CallbackContext context)
 	{
 		if (Player._Instance._MovementController._Paralysed || GameManager.IsPaused
-			|| !DemoStats._DiscoveredOnionCutsceneDone)
+			|| !DemoSettings._DiscoveredOnionCutsceneDone)
 		{
 			return;
 		}

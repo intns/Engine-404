@@ -154,7 +154,14 @@ public class BaldyLongLegsFoot
 				Collider[] colls = Physics.OverlapSphere(_Target.position + _Values._FootColliderOffset, _Values._FootColliderSize, _Values._FootStompInteractMask);
 				for (int i = 0; i < colls.Length; i++)
 				{
-					colls[i].GetComponent<PikminAI>().Die(0.05f);
+					if (colls[i].TryGetComponent(out PikminAI ai))
+					{
+						ai.Die(0.5f);
+					}
+					else if (colls[i].TryGetComponent(out Player p))
+					{
+						p.Squish();
+					}
 				}
 			}
 
@@ -497,6 +504,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 	#region Pikmin Attacking Implementation
 	public PikminIntention IntentionType => PikminIntention.Attack;
+	bool IPikminAttack.IsAttackAvailable() => true;
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{

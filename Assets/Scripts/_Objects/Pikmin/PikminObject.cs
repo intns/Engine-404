@@ -15,6 +15,7 @@ public enum PikminColour
 	Red = 0,
 	Yellow,
 	Blue,
+
 	Size // Also used as a "NONE" variable
 }
 

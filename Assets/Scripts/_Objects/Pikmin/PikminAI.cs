@@ -23,6 +23,7 @@ public enum PikminStates
 	Thrown,
 
 	Dead,
+	OnFire,
 	Waiting,
 }
 
@@ -89,6 +90,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	[Space, Header("Pushing")]
 	IPikminPush _Pushing = null;
 	[SerializeField] bool _PushReady = false;
+
+	[Space, Header("On Fire")]
+	[SerializeField] float _FireTimer = 0.0f;
+	[SerializeField] float _WanderAngle = 0.0f;
 
 	[Space, Header("Stats")]
 	[SerializeField] PikminStatSpecifier _CurrentStatSpecifier = default;
@@ -237,6 +242,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Push:
 				HandlePushing();
 				break;
+			case PikminStates.OnFire:
+				HandleOnFire();
+				break;
 			case PikminStates.Dead:
 				HandleDeath();
 				break;
@@ -259,11 +267,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				break;
 		}
 
-		if (_CurrentState != PikminStates.RunningTowards)
-		{
-			_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, 0, 0.05f);
-		}
-
 		HandleAnimations();
 	}
 
@@ -277,17 +280,16 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 		MaintainLatch();
 
-		if (_CurrentState == PikminStates.BeingHeld ||
-			_CurrentState == PikminStates.Thrown ||
-			_CurrentState == PikminStates.Attacking ||
-			_CurrentState == PikminStates.Carrying)
+		switch (_CurrentState)
 		{
-			return;
-		}
-
-		if (_CurrentState == PikminStates.RunningTowards)
-		{
-			HandleRunningTowards();
+			case PikminStates.BeingHeld:
+			case PikminStates.Thrown:
+			case PikminStates.Attacking:
+			case PikminStates.Carrying:
+				return;
+			case PikminStates.RunningTowards:
+				HandleRunningTowards();
+				break;
 		}
 
 		RepelPikminAndPlayers();
@@ -329,7 +331,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.RunningTowards:
 				{
 					Vector2 horizonalVelocity = new Vector2(_Rigidbody.velocity.x, _Rigidbody.velocity.z);
-					_Animator.SetBool("Walking", horizonalVelocity.magnitude >= 0.2f);
+					_Animator.SetBool("Walking", horizonalVelocity.magnitude >= 0.1f);
+
+					// Keep Pikmin upright
+					Vector3 euler = _Transform.eulerAngles;
+					_Transform.rotation = Quaternion.Euler(0, euler.y, 0);
 					break;
 				}
 
@@ -352,6 +358,13 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			case PikminIntention.Attack:
 				_Attacking = _TargetObject.GetComponentInParent<IPikminAttack>();
+				if (!_Attacking.IsAttackAvailable())
+				{
+					_Intention = PikminIntention.Idle;
+					ChangeState(PikminStates.Idle);
+					return;
+				}
+
 				_Attacking.OnAttackStart(this);
 
 				_AttackingTransform = _TargetObject;
@@ -428,7 +441,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 			PikminIntention currentIntention = interactableComponent.IntentionType;
 
-			// Fast-track carrying!
+			if (currentIntention == PikminIntention.Attack &&
+				!collider.GetComponentInParent<IPikminAttack>().IsAttackAvailable())
+			{
+				return;
+			}
+
 			if (currentIntention == PikminIntention.Carry)
 			{
 				IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
@@ -599,6 +617,27 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		// Remove the object
 		Destroy(gameObject);
 	}
+
+	void HandleOnFire()
+	{
+		_FireTimer += Time.deltaTime;
+
+		// RIP
+		if (_FireTimer > 5.0f)
+		{
+			Die();
+			return;
+		}
+
+		float yRotation = Mathf.Lerp(_Transform.eulerAngles.y, _WanderAngle, 1.5f * Time.deltaTime);
+		if (Mathf.Abs(yRotation - _WanderAngle) <= 15.0f)
+		{
+			_WanderAngle = Random.Range(0.0f, 360.0f);
+		}
+		_Transform.rotation = Quaternion.Euler(0, yRotation, 0);
+
+		MoveTowards(_Transform.forward, false);
+	}
 	#endregion
 
 	#region Misc
@@ -735,14 +774,13 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			return closestPoint;
 		}
-		else
-		{
-			return target.position;
-		}
+
+		return target.position;
 	}
 
 	void MaintainLatch()
 	{
+
 		if (_LatchedTransform == null)
 		{
 			return;
@@ -778,7 +816,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	#endregion
 
-	#region Public Functions
+	#region Public Function
 	public PikminColour GetColour() => _Data._PikminColour;
 
 	public int CompareTo(object obj)
@@ -836,6 +874,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_TargetObject = null;
 				_TargetObjectCollider = null;
 				break;
+			case PikminStates.OnFire:
+				_FireTimer = 0.0f;
+				_WanderAngle = Random.Range(0.0f, 360.0f);
+				break;
 			case PikminStates.Attacking:
 				LatchOnto(null);
 
@@ -879,6 +921,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				break;
 			case PikminStates.Carrying:
 				PlaySoundForced(_Data._CarryAddNoise);
+				break;
+			case PikminStates.OnFire:
+				_FireTimer = 0.0f;
+				_WanderAngle = Random.Range(0.0f, 360.0f);
 				break;
 			case PikminStates.Idle:
 				LatchOnto(null);
@@ -960,12 +1006,14 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				}
 			}
 
+			_Transform.parent = _LatchedTransform;
 			_LatchedOffset = _Transform.position - _LatchedTransform.position;
 		}
 		else
 		{
 			_Rigidbody.isKinematic = false;
 			_Collider.isTrigger = false;
+			_Transform.parent = null;
 
 			_Transform.eulerAngles = new Vector3(0, _Transform.eulerAngles.y, _Transform.eulerAngles.z);
 		}
@@ -1027,6 +1075,16 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	public void WaterLeave()
 	{
 		Debug.Log("Left water");
+	}
+
+	public void InteractFire()
+	{
+		if (_Data._PikminColour == PikminColour.Red)
+		{
+			return;
+		}
+
+		ChangeState(PikminStates.OnFire);
 	}
 
 	public bool IsGrounded(float distTo = 0.2f)

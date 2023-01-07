@@ -35,6 +35,7 @@ public class PelletPosy : MonoBehaviour, IPikminAttack
 
 	#region Pikmin Attacking Implementation
 	public PikminIntention IntentionType => PikminIntention.Attack;
+	bool IPikminAttack.IsAttackAvailable() => true;
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{

@@ -533,6 +533,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 	#region Public Functions
 	public PikminIntention IntentionType => PikminIntention.Attack;
+	bool IPikminAttack.IsAttackAvailable() => true;
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{
@@ -592,8 +593,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 		foreach (var coll in objects)
 		{
-			PikminAI ai = coll.GetComponent<PikminAI>();
-			if (ai != null)
+			if (coll.TryGetComponent(out PikminAI ai))
 			{
 				ai.Die(0);
 			}

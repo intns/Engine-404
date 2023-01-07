@@ -54,6 +54,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	bool _IsBeingCarried = false;
 	bool _ShutdownInProgress = false;
 	Vector3 _SpawnPosition = Vector3.zero;
+	Vector3 _CirclePosition = Vector3.zero;
 
 	float _SpawnInvulnTimer = 0.0f;
 
@@ -268,15 +269,24 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		if (_CarryingPikmin.Count >= _CarryMinMax.x)
 		{
-			PikminColour colour = GameUtil.GetMajorityColour(_CarryingPikmin);
-			_TargetOnion = OnionManager.GetOnionOfColour(colour);
-
-			Debug.Assert(_TargetOnion != null, $"Target Onion ({colour}) not found!");
-			Debug.Assert(_TargetOnion.OnionActive == true, $"Target Onion ({colour}) not active!");
-
-			if (_TargetOnion.OnionActive)
+			if (OnionManager.IsAnyOnionActiveInScene)
 			{
+				PikminColour colour = GameUtil.GetMajorityColour(_CarryingPikmin);
+				_TargetOnion = OnionManager.GetOnionOfColour(colour);
+
+				Debug.Assert(_TargetOnion != null, $"Target Onion ({colour}) not found!");
+				Debug.Assert(_TargetOnion.OnionActive == true, $"Target Onion ({colour}) not active!");
+
 				_TargetPosition = _TargetOnion._CarryEndpoint.position;
+			}
+			else
+			{
+				if (_CirclePosition == Vector3.zero)
+				{
+					_CirclePosition = transform.position;
+				}
+
+				_TargetPosition = _CirclePosition;
 			}
 
 			// Enable AI

@@ -131,15 +131,15 @@ MonoBehaviour:
   stickyNoteInfos: []
   categories:
   - name: Flames
-    collapsed: 1
+    collapsed: 0
   - name: Smoke
-    collapsed: 1
+    collapsed: 0
   uiBounds:
     serializedVersion: 2
     x: -174
     y: -240
     width: 2206
-    height: 2623
+    height: 2618
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1407,7 +1407,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":1024.0,"g":0.0,"b":0.0,"a":1.0},"time":0.06764324754476547},{"color":{"r":18.01047706604004,"g":0.7769225835800171,"b":0.0,"a":1.0},"time":0.2500038146972656},{"color":{"r":29.615686416625978,"g":1.5058823823928834,"b":0.0,"a":1.0},"time":0.5499961972236633},{"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":1.0,"time":0.05999847501516342},{"alpha":0.7764706015586853,"time":0.5676508545875549},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":1024.0,"g":0.0,"b":0.0,"a":1.0},"time":0.06764324754476547},{"color":{"r":576.3352661132813,"g":24.861522674560548,"b":0.0,"a":1.0},"time":0.2500038146972656},{"color":{"r":29.615686416625978,"g":1.5058823823928834,"b":0.0,"a":1.0},"time":0.5499961972236633},{"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":1.0,"time":0.05999847501516342},{"alpha":0.7764706015586853,"time":0.5676508545875549},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: 

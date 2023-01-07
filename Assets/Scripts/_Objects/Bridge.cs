@@ -41,6 +41,7 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 	}
 
 	public PikminIntention IntentionType => PikminIntention.Attack;
+	bool IPikminAttack.IsAttackAvailable() => true;
 
 	void OnDrawGizmos()
 	{

@@ -169,6 +169,7 @@ public class CubeBridge : MonoBehaviour, IPikminAttack, IHealth
 	}
 
 	#region Pikmin Attacking Implementation
+	bool IPikminAttack.IsAttackAvailable() => true;
 
 	public void OnAttackRecieve(float damage)
 	{

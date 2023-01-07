@@ -5,9 +5,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
 
-public static class DemoStats
+public static class DemoSettings
 {
-	public static bool _DiscoveredOnionCutsceneDone = false;
+	public static bool _DiscoveredOnionCutsceneDone = true;
 }
 
 public class DemoController : MonoBehaviour

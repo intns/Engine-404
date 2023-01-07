@@ -13,4 +13,7 @@ public interface IPikminAttack : IPikminInteractable
 
 	// Called when the Pikmin hits the object
 	void OnAttackRecieve(float damage);
+
+	// Called to see if the object is able to be attacked at that moment
+	bool IsAttackAvailable();
 }

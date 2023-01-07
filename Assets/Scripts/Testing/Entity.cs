@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.VersionControl.Asset;
+
+public class EntityFlags
+{
+
+}
 
 [System.Serializable]
 public class Entity : MonoBehaviour, IPikminAttack, IHealth
@@ -10,40 +15,90 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	[SerializeField, Range(0.0f, 1.0f)] float _RotationAcceleration = 0.1f;
 
 	[Header("Health Wheel")]
-	[SerializeField] GameObject _HWObject = null;
-	[SerializeField] Vector3 _HWOffset = Vector3.up;
-	[SerializeField] float _HWScale = 1;
-
-
+	[SerializeField] GameObject _HealthWheelPrefab = null;
+	[SerializeField] Vector3 _HealthWheelOffset = Vector3.up;
+	[SerializeField] float _HealthWheelScale = 1;
+	[Space()]
 	[SerializeField] float _MaxHealth = 3500;
-	[SerializeField] Vector3 _DeadOffset = Vector3.zero;
-	[SerializeField] GameObject _DeadObject = null;
+	[SerializeField] Vector3 _DeathObjectOffset = Vector3.zero;
+	[SerializeField] GameObject[] _DeathObjectPrefabs = null;
 
-	float _CurrentHealth = 0.0f;
-	float _DamageAnimationTimer = 0.0f;
+	[Flags]
+	public enum EntityFlags
+	{
+		None = 0,
+		IsHealthEnabled = 1,      // Should we update the health wheel and 'die'?
+		IsDamageAnimEnabled = 2,  // Should we do the wobble animation?
+		IsVulnerable = 4,         // Can we take (subtract health) damage?
+		ToDestroyOnDeath = 8,     // Should we destroy the object on death?
+		IsAttackAvailable = 16,   // Should we allow Pikmin to run towards and latch to attack?
+	}
 
-	bool _IsTakingDamage = false;
+	public EntityFlags _Flags;
 
-	List<PikminAI> _AttachedPikmin = new List<PikminAI>();
-	HealthWheel _HWScript = null;
-	Transform _Transform = null;
+	protected Vector3 _StartSize = Vector3.zero;
+
+	protected float _CurrentHealth = 0.0f;
+	protected float _DamageAnimationTimer = 0.0f;
+
+	protected bool _IsTakingDamage = false;
+
+	protected List<PikminAI> _AttachedPikmin = new List<PikminAI>();
+	protected HealthWheel _HealthWheelScript = null;
+	protected Transform _Transform = null;
 
 	public virtual void Awake()
 	{
 		_Transform = transform;
+		_StartSize = _Transform.localScale;
+		_CurrentHealth = _MaxHealth;
 
-		_HWScript = Instantiate(_HWObject, transform.position + _HWOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
-		_HWScript._Parent = transform;
-		_HWScript._Offset = _HWOffset;
-		_HWScript._InUse = true;
-		_HWScript._MaxHealth = _MaxHealth;
-		_HWScript._CurrentHealth = _MaxHealth;
-		_HWScript.transform.localScale = Vector3.one * _HWScale;
+		// Health is enabled, we are vulnerable to attacks, damage animation is enabled, and destroy on death
+		_Flags = EntityFlags.IsHealthEnabled | EntityFlags.IsVulnerable
+			| EntityFlags.IsDamageAnimEnabled | EntityFlags.ToDestroyOnDeath
+			| EntityFlags.IsAttackAvailable;
+
+		_HealthWheelScript = Instantiate(_HealthWheelPrefab, transform.position + _HealthWheelOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
+		_HealthWheelScript._Parent = transform;
+		_HealthWheelScript._Offset = _HealthWheelOffset;
+		_HealthWheelScript._InUse = true;
+		_HealthWheelScript._MaxHealth = _MaxHealth;
+		_HealthWheelScript._CurrentHealth = _MaxHealth;
+		_HealthWheelScript.transform.localScale = Vector3.one * _HealthWheelScale;
 	}
 
 	public virtual void Update()
 	{
-		ScaleDamageAnimation();
+		if (_Flags.HasFlag(EntityFlags.IsDamageAnimEnabled))
+		{
+			ScaleDamageAnimation();
+		}
+
+		if (_Flags.HasFlag(EntityFlags.IsHealthEnabled))
+		{
+			HandleHealth();
+		}
+	}
+
+	public virtual void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position + _HealthWheelOffset, _HealthWheelScale);
+
+		Gizmos.color = Color.red;
+		foreach (GameObject obj in _DeathObjectPrefabs)
+		{
+			MeshFilter filter = obj.GetComponentInChildren<MeshFilter>();
+			Mesh mesh;
+			if (filter != null && (mesh = filter.sharedMesh) != null)
+			{
+				Gizmos.DrawWireMesh(mesh, transform.position + _DeathObjectOffset);
+			}
+			else
+			{
+				Gizmos.DrawWireSphere(transform.position + _DeathObjectOffset, 1);
+			}
+		}
 	}
 
 	#region Private Methods
@@ -56,29 +111,63 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 				_DamageAnimationTimer += Time.deltaTime;
 			}
 
+			_IsTakingDamage = false;
 			return;
 		}
 
-		float horizontalMod = 0.0f;
-		float scaleDuration = 0.35f;
+		float scaleDuration = 0.5f;
 		float factor = 1.0f;
 
 		_DamageAnimationTimer += Time.deltaTime;
 
-		if (_DamageAnimationTimer > scaleDuration)
+		float horizontalMod = 0.0f;
+		if (_DamageAnimationTimer <= scaleDuration)
 		{
-			_DamageAnimationTimer = 0.0f;
+			float t = _DamageAnimationTimer / scaleDuration;
+			horizontalMod = (1.0f - t) * Mathf.Sin(t * MathUtil.M_TAU);
 		}
 		else
 		{
-			float s = Mathf.Sin((_DamageAnimationTimer / scaleDuration) * MathUtil.M_TAU);
-			float t = 1.0f - (_DamageAnimationTimer / scaleDuration);
-			horizontalMod = t * s;
+			_DamageAnimationTimer = 0.0f;
 		}
 
 		float xzScale = horizontalMod * (factor * 0.2f);
+		_Transform.localScale = new(_StartSize.x - xzScale, (horizontalMod * 0.25f) + _StartSize.y, _StartSize.z - xzScale);
+	}
 
-		_Transform.localScale = new(1.0f - xzScale, horizontalMod * 0.25f + 1.0f, 1.0f - xzScale);
+	private void HandleHealth()
+	{
+		if (_CurrentHealth > 0)
+		{
+			return;
+		}
+
+		int tries = 0;
+		while (_AttachedPikmin.Count > 0)
+		{
+			if (tries > 10000)
+			{
+				Debug.LogError("The Pikmin won't get off me!");
+				break;
+			}
+
+			_AttachedPikmin[0].ChangeState(PikminStates.Idle);
+			tries++;
+		}
+
+		for (int i = 0; i < _DeathObjectPrefabs.Length; i++)
+		{
+			Vector3 newPosition = transform.position + _DeathObjectOffset;
+
+			newPosition += MathUtil.XZToXYZ(MathUtil.PositionInUnit(_DeathObjectPrefabs.Length, i)) * 1.5f;
+
+			Instantiate(_DeathObjectPrefabs[i], newPosition, Quaternion.identity);
+		}
+
+		if (_Flags.HasFlag(EntityFlags.ToDestroyOnDeath))
+		{
+			Destroy(gameObject);
+		}
 	}
 	#endregion
 
@@ -117,6 +206,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 
 	#region Attacking
 	public PikminIntention IntentionType => PikminIntention.Attack;
+	public bool IsAttackAvailable() => _Flags.HasFlag(EntityFlags.IsAttackAvailable);
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{
@@ -143,11 +233,10 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 
 		// Should be called last in case the 
 		SubtractHealth(damage);
-		_HWScript._CurrentHealth = GetCurrentHealth();
+		_HealthWheelScript._CurrentHealth = GetCurrentHealth();
 	}
 	#endregion
 	#region IHealth
-	// 'Getter' functions
 	public float GetCurrentHealth()
 	{
 		return _CurrentHealth;
@@ -158,19 +247,25 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		return _MaxHealth;
 	}
 
-	// 'Setter' functions
 	public float AddHealth(float give)
 	{
-		return _CurrentHealth += give;
+		SetHealth(_CurrentHealth + give);
+		return _CurrentHealth;
 	}
 
 	public float SubtractHealth(float take)
 	{
-		return _CurrentHealth -= take;
+		if (_Flags.HasFlag(EntityFlags.IsVulnerable))
+		{
+			SetHealth(_CurrentHealth - take);
+		}
+
+		return _CurrentHealth;
 	}
 
 	public void SetHealth(float set)
 	{
+		_HealthWheelScript._CurrentHealth = set;
 		_CurrentHealth = set;
 	}
 	#endregion

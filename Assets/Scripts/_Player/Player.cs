@@ -57,7 +57,7 @@ public class Player : MonoBehaviour, IHealth
 	bool _IsHit = false;
 	bool _Walking = false;
 
-	float _AttackTimer;
+	float _AttackTimer = 0.0f;
 
 	void OnEnable()
 	{
@@ -153,6 +153,11 @@ public class Player : MonoBehaviour, IHealth
 	public void PikminExtinction()
 	{
 		StartCoroutine(IE_PikminExtinctionSequence());
+	}
+
+	public void Squish()
+	{
+		_MovementController._Paralysed = true;
 	}
 
 	public void Pause(PauseType type)
