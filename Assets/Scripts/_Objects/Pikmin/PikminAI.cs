@@ -339,6 +339,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 					break;
 				}
 
+			case PikminStates.OnFire:
 			case PikminStates.Push:
 			case PikminStates.Carrying:
 				_Animator.SetBool("Walking", true);
@@ -629,24 +630,24 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			return;
 		}
 
-		float yRotation = Mathf.Lerp(_Transform.eulerAngles.y, _WanderAngle, 1.5f * Time.deltaTime);
-		if (Mathf.Abs(yRotation - _WanderAngle) <= 15.0f)
+		Quaternion towards = Quaternion.Euler(0.0f, _WanderAngle, 0.0f);
+		_Transform.rotation = Quaternion.RotateTowards(_Transform.rotation, towards, 4 * Time.deltaTime);
+		if (Quaternion.Angle(_Transform.rotation, towards) < 5.0f)
 		{
 			_WanderAngle = Random.Range(0.0f, 360.0f);
 		}
-		_Transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
-		MoveTowards(_Transform.forward, false);
+		MoveTowards(_Transform.position + _Transform.forward, false, false);
 	}
 	#endregion
 
 	#region Misc
-	void MoveTowards(Vector3 position, bool stopEarly = true)
+	void MoveTowards(Vector3 position, bool stopEarly = true, bool rotateTowards = true)
 	{
 		// Rotate to look at the object we're moving towards
 		Vector3 delta = MathUtil.DirectionFromTo(_Transform.position, position);
 
-		if (delta != Vector3.zero)
+		if (delta != Vector3.zero && rotateTowards)
 		{
 			_Transform.rotation = _InSquad
 								// Rotate towards player
@@ -745,7 +746,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			&& _CurrentState != PikminStates.Push
 			&& _CurrentState != PikminStates.Carrying
 			&& _CurrentState != PikminStates.Attacking
-			&& _CurrentState != PikminStates.Thrown)
+			&& _CurrentState != PikminStates.Thrown
+			&& _CurrentState != PikminStates.OnFire)
 		{
 			AddToSquad();
 		}
@@ -780,7 +782,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	void MaintainLatch()
 	{
-
 		if (_LatchedTransform == null)
 		{
 			return;
@@ -925,6 +926,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.OnFire:
 				_FireTimer = 0.0f;
 				_WanderAngle = Random.Range(0.0f, 360.0f);
+				RemoveFromSquad(PikminStates.OnFire);
 				break;
 			case PikminStates.Idle:
 				LatchOnto(null);

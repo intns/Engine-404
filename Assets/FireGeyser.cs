@@ -100,10 +100,10 @@ public class FireGeyser : Entity
 			}
 
 			obj.FireFX_Stop();
-			if (!obj.FireFX_IsFinished())
+			/*if (!obj.FireFX_IsFinished())
 			{
 				return;
-			}
+			}*/
 
 			if (obj.GetCurrentHealth() > 0.0f)
 			{
@@ -202,18 +202,18 @@ public class FireGeyser : Entity
 				Handles.Label(_Transform.position + Vector3.up * 5.0f, _FSM.GetCurrentState()._Name);
 			}
 
-			Handles.Label(_Transform.position + Vector3.up * 4.0f + _Transform.right * 5.0f, _Flags.ToString());
+			Handles.Label(_Transform.position + Vector3.up * 4.0f, _Flags.ToString());
 		}
 	}
 
 	#region Public Functions
-	public float GetTimePerAttack() { return _TimePerAttack; }
+	public float GetTimePerAttack() { return _TimePerAttack + Random.Range(0.5f, 2.5f); }
 
-	public float GetActiveAttackTime() { return _ActiveAttackTime; }
+	public float GetActiveAttackTime() { return _ActiveAttackTime + Random.Range(0.5f, 1.5f); }
 
 	public bool FireFX_IsFinished()
 	{
-		return _FireVFX.aliveParticleCount <= 10;
+		return _FireVFX.aliveParticleCount <= 25;
 	}
 
 	public void FireFX_CheckCollision()
