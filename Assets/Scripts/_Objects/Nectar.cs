@@ -97,7 +97,7 @@ public class Nectar : MonoBehaviour
 
 		if (other.CompareTag("Pikmin") && other.TryGetComponent(out PikminAI ai))
 		{
-			if (ai.NectarStart(_Transform))
+			if (ai.InteractNectar(_Transform))
 			{
 				_SipsLeft--;
 				_IsBeingDrunk = true;
@@ -121,7 +121,7 @@ public class Nectar : MonoBehaviour
 		}
 
 		if (other.CompareTag("Pikmin") && other.TryGetComponent(out PikminAI ai)
-			&& ai._CurrentState != PikminStates.SuckNectar && ai.NectarStart(_Transform))
+			&& ai._CurrentState != PikminStates.SuckNectar && ai.InteractNectar(_Transform))
 		{
 			_SipsLeft--;
 			_IsBeingDrunk = true;

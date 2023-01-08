@@ -13,10 +13,12 @@ using Random = UnityEngine.Random;
 public enum PikminStates
 {
 	Idle,
-	RunningTowards,
-	Attacking,
+	RunTowards,
 
-	Carrying,
+	// TODO: Attacking on ground (jump to latch)
+	Attack,
+
+	Carry,
 	Push,
 	SuckNectar,
 
@@ -26,6 +28,7 @@ public enum PikminStates
 
 	Dead,
 	OnFire,
+	Squish, // When a wolly-hop slams onto it
 	Waiting,
 }
 
@@ -101,6 +104,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	[Space, Header("Suck Nectar")]
 	[SerializeField] float _SuckNectarTimer = 0.0f;
 	[SerializeField] Transform _NectarTransform = null;
+
+	[Space, Header("Pressed")]
+	[SerializeField] float _PressedTimer = 0.0f;
 
 	[Space, Header("Stats")]
 	[SerializeField] PikminStatSpecifier _CurrentStatSpecifier = default;
@@ -248,7 +254,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Idle:
 				HandleIdle();
 				break;
-			case PikminStates.Attacking:
+			case PikminStates.Attack:
 				HandleAttacking();
 				break;
 			case PikminStates.Push:
@@ -259,6 +265,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				break;
 			case PikminStates.SuckNectar:
 				HandleSuckNectar();
+				break;
+			case PikminStates.Squish:
+				HandleSquish();
 				break;
 			case PikminStates.Dead:
 				HandleDeath();
@@ -274,9 +283,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_HeldAudioTimer += Time.deltaTime;
 				break;
 
-			case PikminStates.Carrying:
+			case PikminStates.Carry:
 			case PikminStates.Thrown:
-			case PikminStates.RunningTowards:
+			case PikminStates.RunTowards:
 			case PikminStates.Waiting:
 			default:
 				break;
@@ -298,15 +307,17 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			case PikminStates.BeingHeld:
 			case PikminStates.Thrown:
-			case PikminStates.Attacking:
-			case PikminStates.Carrying:
+			case PikminStates.Attack:
+			case PikminStates.Squish:
+			case PikminStates.Dead:
+			case PikminStates.Carry:
 				return;
-			case PikminStates.RunningTowards:
+			case PikminStates.RunTowards:
 				HandleRunningTowards();
 				break;
 		}
 
-		if (_CurrentState == PikminStates.RunningTowards && (_Intention != PikminIntention.Attack) || _CurrentState == PikminStates.Idle)
+		if (_CurrentState == PikminStates.RunTowards && (_Intention != PikminIntention.Attack) || _CurrentState == PikminStates.Idle)
 		{
 			RepelPikminAndPlayers();
 		}
@@ -347,12 +358,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	void HandleAnimations()
 	{
 		_Animator.SetBool("Thrown", _CurrentState == PikminStates.Thrown);
-		_Animator.SetBool("Attacking", _CurrentState == PikminStates.Attacking);
+		_Animator.SetBool("Attacking", _CurrentState == PikminStates.Attack);
 
 		switch (_CurrentState)
 		{
 			case PikminStates.Idle:
-			case PikminStates.RunningTowards:
+			case PikminStates.RunTowards:
 				{
 					Vector2 horizonalVelocity = new Vector2(_Rigidbody.velocity.x, _Rigidbody.velocity.z);
 					_Animator.SetBool("Walking", horizonalVelocity.magnitude >= 0.1f);
@@ -361,7 +372,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 			case PikminStates.OnFire:
 			case PikminStates.Push:
-			case PikminStates.Carrying:
+			case PikminStates.Carry:
 				_Animator.SetBool("Walking", true);
 				break;
 
@@ -391,7 +402,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_AttackingTransform = _TargetObject;
 
 				LatchOnto(_AttackingTransform);
-				ChangeState(PikminStates.Attacking);
+				ChangeState(PikminStates.Attack);
 				break;
 			case PikminIntention.Carry:
 				_Carrying = _TargetObject.GetComponentInParent<IPikminCarry>();
@@ -522,7 +533,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		if (closestCol != null)
 		{
 			// We can move to the target object, and it is an interactable, so set our target object
-			ChangeState(PikminStates.RunningTowards);
+			ChangeState(PikminStates.RunTowards);
 			_TargetObject = closestCol.transform;
 			_TargetObjectCollider = closestCol;
 		}
@@ -628,6 +639,20 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			_RotationAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _NectarTransform.position)).eulerAngles.y;
 			_DirectionVector = Vector3.zero;
 			_AddedVelocity = Vector3.zero;
+		}
+	}
+
+	void HandleSquish()
+	{
+		RemoveFromSquad(PikminStates.Squish);
+
+		if (_PressedTimer > 0.0f)
+		{
+			_PressedTimer -= Time.deltaTime;
+		}
+		else
+		{
+			Die();
 		}
 	}
 
@@ -784,7 +809,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				ChangeState(PikminStates.Idle);
 			}
 		}
-		else if (_CurrentState == PikminStates.RunningTowards)
+		else if (_CurrentState == PikminStates.RunTowards)
 		{
 			// If we've been running towards something, we've touched it and now we
 			// can carryout our intention
@@ -797,8 +822,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 		else if (collision.CompareTag("Player")
 			&& _CurrentState != PikminStates.Push
-			&& _CurrentState != PikminStates.Carrying
-			&& _CurrentState != PikminStates.Attacking
+			&& _CurrentState != PikminStates.Carry
+			&& _CurrentState != PikminStates.Attack
 			&& _CurrentState != PikminStates.Thrown
 			&& _CurrentState != PikminStates.OnFire)
 		{
@@ -841,7 +866,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 
 		Vector3 pos = _LatchedTransform.position + _LatchedOffset;
-		bool useY = _CurrentState == PikminStates.Carrying;
+		bool useY = _CurrentState == PikminStates.Carry;
 
 		if (_TargetObjectCollider != null)
 		{
@@ -918,7 +943,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		// cleaning up from OLD
 		switch (_CurrentState)
 		{
-			case PikminStates.RunningTowards:
+			case PikminStates.RunTowards:
 				_Animator.SetBool("Walking", false);
 				_TargetObject = null;
 				_TargetObjectCollider = null;
@@ -936,7 +961,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				_WanderAngle = Random.Range(0.0f, 360.0f);
 				_FireVFX.Stop();
 				break;
-			case PikminStates.Attacking:
+			case PikminStates.Attack:
 				LatchOnto(null);
 
 				_DirectionVector = Vector3.down * 2;
@@ -949,7 +974,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 				_Transform.eulerAngles = new Vector3(0, _EulerAngles.y, 0);
 				break;
-			case PikminStates.Carrying:
+			case PikminStates.Carry:
 				LatchOnto(null);
 				_Carrying?.OnCarryLeave(this);
 				_Carrying = null;
@@ -977,8 +1002,21 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			case PikminStates.Thrown:
 				_ThrowTrailRenderer.enabled = true;
 				break;
-			case PikminStates.Carrying:
+			case PikminStates.Carry:
 				PlaySoundForced(_Data._CarryAddNoise);
+				break;
+			case PikminStates.Squish:
+				_Rigidbody.isKinematic = true;
+
+				_PressedTimer = 1.5f;
+
+				_Transform.localScale = new Vector3(2, 0.01f, 2);
+				_DirectionVector = Vector3.zero;
+
+				if (Physics.Raycast(_Transform.position, Vector3.down, out RaycastHit info, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
+				{
+					_Transform.position = info.point;
+				}
 				break;
 			case PikminStates.OnFire:
 				_FireTimer = 0.0f;
@@ -1083,7 +1121,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	public void AddToSquad()
 	{
-		if (_InSquad || _CurrentState == PikminStates.Dead || _CurrentState == PikminStates.SuckNectar || _CurrentState == PikminStates.Thrown
+		if (_InSquad || _CurrentState == PikminStates.Dead || _CurrentState == PikminStates.Squish
+			|| _CurrentState == PikminStates.SuckNectar || _CurrentState == PikminStates.Thrown
 			|| (_CurrentState == PikminStates.Push && !_Pushing.IsPikminSpotAvailable()))
 		{
 			return;
@@ -1092,7 +1131,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_InSquad = true;
 		_CurrentStatSpecifier = PikminStatSpecifier.InSquad;
 
-		ChangeState(PikminStates.RunningTowards);
+		ChangeState(PikminStates.RunTowards);
 
 		PikminStatsManager.AddToSquad(this, _Data._PikminColour, _CurrentMaturity);
 		PikminStatsManager.ReassignFormation();
@@ -1209,13 +1248,13 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		return _LatchedTransform != null;
 	}
 
-	public bool NectarStart(Transform nectarTransform)
+	public bool InteractNectar(Transform nectarTransform)
 	{
 		if (_CurrentMaturity == PikminMaturity.Size - 1
 			&& _CurrentState != PikminStates.OnFire
-			&& _CurrentState != PikminStates.Carrying
+			&& _CurrentState != PikminStates.Carry
 			&& _CurrentState != PikminStates.BeingHeld
-			&& _CurrentState != PikminStates.Attacking)
+			&& _CurrentState != PikminStates.Attack)
 		{
 			return false;
 		}
@@ -1224,6 +1263,17 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		ChangeState(PikminStates.SuckNectar);
 		_NectarTransform = nectarTransform;
 		return true;
+	}
+
+	public void InteractPressed()
+	{
+		if (_CurrentState == PikminStates.Dead || _CurrentState == PikminStates.Squish
+			|| Latch_IsLatchedOntoObject())
+		{
+			return;
+		}
+
+		ChangeState(PikminStates.Squish);
 	}
 	#endregion
 }

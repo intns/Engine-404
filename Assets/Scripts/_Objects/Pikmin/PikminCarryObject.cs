@@ -263,7 +263,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 
 		p.LatchOnto(transform);
-		p.ChangeState(PikminStates.Carrying);
+		p.ChangeState(PikminStates.Carry);
 		_CarryingPikmin.Add(p);
 
 		// Circle offset + ((circle pos with qualtiy 'carry max' at the index 'pikmin count') * circle size)
