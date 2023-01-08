@@ -215,7 +215,7 @@ Transform:
   - {fileID: 6837907023827560833}
   - {fileID: 6923971292595485314}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 65
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &8459520912960126154
 Rigidbody:
@@ -305,8 +305,8 @@ MonoBehaviour:
   _StoppingDistance: 0.25
   _IdleTickRate: 0.3
   _AvoidSphereSize: 0.5
-  _PlayerPushScale: 200
-  _PikminPushScale: 20
+  _PlayerPushScale: 150
+  _PikminPushScale: 10
   _InteractableMask:
     serializedVersion: 2
     m_Bits: 8192
@@ -331,6 +331,8 @@ MonoBehaviour:
   _PushReady: 0
   _FireTimer: 0
   _WanderAngle: 0
+  _SuckNectarTimer: 0
+  _NectarTransform: {fileID: 0}
   _CurrentStatSpecifier: 0
   _CurrentMoveSpeed: 0
   _AddedVelocity: {x: 0, y: 0, z: 0}
@@ -883,7 +885,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7138139346427754000}
-  m_LocalRotation: {x: -0.70177674, y: 0.045996767, z: 0.7109038, w: -0.0031021787}
+  m_LocalRotation: {x: -0.70177674, y: 0.045996763, z: 0.7109038, w: -0.0031021782}
   m_LocalPosition: {x: -2.5200012, y: 0.00000018207356, z: 1.52}
   m_LocalScale: {x: 1.0000077, y: 1, z: 1.0000105}
   m_ConstrainProportionsScale: 0

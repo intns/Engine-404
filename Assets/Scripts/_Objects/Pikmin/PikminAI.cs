@@ -306,7 +306,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				break;
 		}
 
-		if (_CurrentState == PikminStates.RunningTowards || _CurrentState == PikminStates.Idle)
+		if (_CurrentState == PikminStates.RunningTowards && (_Intention != PikminIntention.Attack) || _CurrentState == PikminStates.Idle)
 		{
 			RepelPikminAndPlayers();
 		}
@@ -468,18 +468,26 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				continue;
 			}
 
-			if (currentIntention == PikminIntention.Carry)
+			// Determine if we can see the item
+			Vector3 direction = MathUtil.DirectionFromTo(_Transform.position, collider.ClosestPoint(_Transform.position));
+			if (!Physics.Raycast(_Transform.position, direction, out RaycastHit hit, _Data._SearchRadius,
+				_AllMask, QueryTriggerInteraction.Ignore)
+				|| hit.collider != collider)
 			{
-				IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
-
-				if (!toCarry.IsPikminSpotAvailable())
+				// FALLBACK: we'll use the global origin instead of the closest point
+				direction = MathUtil.DirectionFromTo(_Transform.position, collider.transform.position);
+				if (!Physics.Raycast(_Transform.position, direction, out hit, _Data._SearchRadius,
+					_AllMask, QueryTriggerInteraction.Ignore)
+					|| hit.collider != collider)
 				{
-					continue;
+					if (Mathf.Abs(_Transform.position.y - collider.transform.position.y) > 1.5f)
+					{
+						continue;
+					}
 				}
-
-				_Carrying = toCarry;
 			}
-			else if (currentIntention == PikminIntention.Push)
+
+			if (currentIntention == PikminIntention.Push)
 			{
 				IPikminPush toPush = collider.GetComponentInParent<IPikminPush>();
 
@@ -490,23 +498,16 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 				_Pushing = toPush;
 			}
-			else
+			else if (currentIntention == PikminIntention.Carry)
 			{
-				// Determine if the collider is on the same level as us
-				Vector3 direction = MathUtil.DirectionFromTo(_Transform.position, collider.ClosestPoint(_Transform.position));
-				if (!Physics.Raycast(_Transform.position, direction, out RaycastHit hit, _Data._SearchRadius,
-					_AllMask, QueryTriggerInteraction.Ignore)
-					|| hit.collider != collider)
+				IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
+
+				if (!toCarry.IsPikminSpotAvailable())
 				{
-					// FALLBACK: we'll use the global origin position instead of the closest point
-					direction = MathUtil.DirectionFromTo(_Transform.position, collider.transform.position);
-					if (!Physics.Raycast(_Transform.position, direction, out hit, _Data._SearchRadius,
-						_AllMask, QueryTriggerInteraction.Ignore)
-						|| hit.collider != collider)
-					{
-						continue;
-					}
+					continue;
 				}
+
+				_Carrying = toCarry;
 			}
 
 			float distance = MathUtil.DistanceTo(_Transform.position, collider.transform.position);
