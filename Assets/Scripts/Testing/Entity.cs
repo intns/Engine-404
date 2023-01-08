@@ -39,7 +39,9 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		RegenerateHealth = 32,    // Should we regenerate health over time?
 	}
 
-	public EntityFlags _Flags;
+	public EntityFlags _Flags = EntityFlags.IsHealthEnabled | EntityFlags.IsVulnerable
+			| EntityFlags.IsDamageAnimEnabled | EntityFlags.ToDestroyOnDeath
+			| EntityFlags.IsAttackAvailable;
 
 	protected Vector3 _StartSize = Vector3.zero;
 
@@ -58,11 +60,6 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		_Transform = transform;
 		_StartSize = _Transform.localScale;
 		_CurrentHealth = _MaxHealth;
-
-		// Health is enabled, we are vulnerable to attacks, damage animation is enabled, and destroy on death
-		_Flags = EntityFlags.IsHealthEnabled | EntityFlags.IsVulnerable
-			| EntityFlags.IsDamageAnimEnabled | EntityFlags.ToDestroyOnDeath
-			| EntityFlags.IsAttackAvailable;
 
 		_HealthWheelScript = Instantiate(_HealthWheelPrefab, transform.position + _HealthWheelOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
 		_HealthWheelScript._Parent = transform;
@@ -97,7 +94,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		Gizmos.DrawWireSphere(transform.position + _HealthWheelOffset, _HealthWheelScale);
 
 		Gizmos.color = Color.red;
-		if (_DeathObjectPrefabs.Length > 0)
+		if (_DeathObjectPrefabs != null && _DeathObjectPrefabs.Length > 0)
 		{
 			int tries = 0;
 			for (int i = 0; i < _DeathObjectPrefabs.Length; i++)
@@ -218,6 +215,28 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		float rotAccel = _RotationAcceleration;
 
 		Vector3 targetPos = target.position;
+		Vector3 pos = _Transform.position;
+
+		float angleDist = MathUtil.AngleDistance(MathUtil.AngleXZ(targetPos, pos), GetFaceDirection());
+
+		float limit = (Mathf.Deg2Rad * rotSpeed) * Mathf.PI;
+		float approxSpeed = angleDist * rotAccel;
+		if (Mathf.Abs(approxSpeed) > limit)
+		{
+			approxSpeed = (approxSpeed > 0.0f) ? limit : -limit;
+		}
+
+		float faceDir = MathUtil.RoundAngle(approxSpeed + GetFaceDirection());
+		_Transform.eulerAngles = new Vector3(0, faceDir * Mathf.Rad2Deg, 0);
+		return angleDist;
+	}
+
+	public float ChangeFaceDirection(Vector3 target)
+	{
+		float rotSpeed = _RotationSpeed;
+		float rotAccel = _RotationAcceleration;
+
+		Vector3 targetPos = target;
 		Vector3 pos = _Transform.position;
 
 		float angleDist = MathUtil.AngleDistance(MathUtil.AngleXZ(targetPos, pos), GetFaceDirection());

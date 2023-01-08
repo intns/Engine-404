@@ -8,6 +8,8 @@ public class PlayerUIController : MonoBehaviour
 	[SerializeField] TextMeshProUGUI _DayText;
 	[SerializeField] TextMeshProUGUI _SquadText;
 	[SerializeField] TextMeshProUGUI _AreaText;
+	[SerializeField] Image _HealthWheel;
+	[SerializeField] Gradient _ColorGradient = null;
 
 	[SerializeField] Image _CurrentPikminImage;
 	[SerializeField] Sprite[] _PikminImages;
@@ -91,6 +93,13 @@ public class PlayerUIController : MonoBehaviour
 			UpdateUI();
 			_TickTimer = 0.0f;
 		}
+
+		float currHealth = Player._Instance.GetCurrentHealth();
+		float maxHealth = Player._Instance.GetMaxHealth();
+		float ratio = currHealth / maxHealth;
+
+		_HealthWheel.fillAmount = Mathf.Lerp(_HealthWheel.fillAmount, ratio, 2.0f * Time.deltaTime);
+		_HealthWheel.color = _ColorGradient.Evaluate(ratio);
 	}
 
 	#region Public functions

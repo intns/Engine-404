@@ -1265,7 +1265,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		return true;
 	}
 
-	public void InteractPressed()
+	public void Squish()
 	{
 		if (_CurrentState == PikminStates.Dead || _CurrentState == PikminStates.Squish
 			|| Latch_IsLatchedOntoObject())

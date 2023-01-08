@@ -34,17 +34,12 @@ public class BaldyLongLegsFoot
 	BaldyLongLegs _Parent = null;
 	Transform _Target = null;
 
-	Collider _DeathCollider = null;
-	Collider_PikminDie _DieCollider = null;
-
 	int _LegIdx = 0;
 
 	BLL_Values _Values;
 
 	float _LiftTimer = 0;
 	float _RNGTime = 0;
-
-	float _DeathCollTimer = 0;
 
 	Vector3 _NewPosition = Vector3.zero;
 	Vector3 _TargetPosition = Vector3.zero;
@@ -62,10 +57,6 @@ public class BaldyLongLegsFoot
 		_RaycastObj.name = $"name={target.name} idx={legIdx}";
 		_Parent = parentLegs;
 
-		_DeathCollider = dColl;
-		_DeathCollider.enabled = true;
-		_DieCollider = _DeathCollider.GetComponent<Collider_PikminDie>();
-
 		_Target = target;
 		_StompFX = _Target.GetChild(0).GetComponentInChildren<VisualEffect>();
 		_TrailFX = _Target.GetChild(1).GetComponentInChildren<VisualEffect>();
@@ -74,8 +65,6 @@ public class BaldyLongLegsFoot
 		_TrailFX.Stop();
 
 		_LegIdx = legIdx;
-
-		_DeathCollTimer = 0.0f;
 	}
 
 	public float GetDistanceFromParent()
@@ -138,25 +127,22 @@ public class BaldyLongLegsFoot
 			_Target.rotation = Quaternion.Euler(euler);
 
 			_LiftTimer += Time.deltaTime;
-			if (_LiftTimer + 0.13f >= _RNGTime)
+			if (_LiftTimer + 0.1f >= _RNGTime)
 			{
 				_StompFX.Play();
 				_TrailFX.Stop();
 
-				if (_LiftTimer + 0.07f >= _RNGTime)
+				if (_LiftTimer + 0.06f >= _RNGTime)
 				{
 					_Camera.Shake(2);
 				}
-
-				_DieCollider._Enabled = true;
-				_DeathCollTimer = 0;
 
 				Collider[] colls = Physics.OverlapSphere(_Target.position + _Values._FootColliderOffset, _Values._FootColliderSize, _Values._FootStompInteractMask);
 				for (int i = 0; i < colls.Length; i++)
 				{
 					if (colls[i].TryGetComponent(out PikminAI ai))
 					{
-						ai.Die(0.5f);
+						ai.Squish();
 					}
 					else if (colls[i].TryGetComponent(out Player p))
 					{
@@ -168,13 +154,6 @@ public class BaldyLongLegsFoot
 		}
 		else
 		{
-			_DeathCollTimer += Time.deltaTime;
-
-			if (_DeathCollTimer <= 0.15f)
-			{
-				_DieCollider._Enabled = false;
-			}
-
 			for (int i = 0; i < _OtherFeet.Count; i++)
 			{
 				if (_OtherFeet[i].IsMoving())
@@ -193,7 +172,6 @@ public class BaldyLongLegsFoot
 			}
 
 			_LiftTimer = 0;
-			_DeathCollTimer = 0;
 			_RNGTime = Random.Range(_Values._LegLiftTimeRange.x, _Values._LegLiftTimeRange.y);
 			_TrailFX.Play();
 
@@ -216,13 +194,6 @@ public class BaldyLongLegsFoot
 		}
 
 		_LiftTimer = _RNGTime;
-	}
-
-	public void Die()
-	{
-		_DeathCollider.enabled = false;
-		_DieCollider._Enabled = false;
-		_DieCollider.gameObject.SetActive(false);
 	}
 
 	public void PlayStompFX()
@@ -373,11 +344,6 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 						pik.ChangeState(PikminStates.Idle);
 						pik._AddedVelocity = MathUtil.DirectionFromTo(transform.position, pik.transform.position) * 5;
-					}
-
-					for (int i = 0; i < _Feet.Count; i++)
-					{
-						_Feet[i].Die();
 					}
 				}
 

@@ -225,7 +225,7 @@ public class FireGeyser : Entity
 			}
 			else if (c.TryGetComponent(out Player player))
 			{
-				player.SubtractHealth(2.5f);
+				player.SubtractHealth(10.0f);
 			}
 		}
 		

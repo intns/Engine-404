@@ -31,7 +31,7 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 		float maxFov = 55;
 		float minFov = 30;
 
-		Color fadedColor = new Color(0.4078f, 0.4078f, 0.4078f);
+		Color fadedColor = new(0.4078f, 0.4078f, 0.4078f);
 
 		Vector3 originCameraPos = _Camera.transform.position;
 

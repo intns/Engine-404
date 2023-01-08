@@ -251,8 +251,8 @@ public class Player : MonoBehaviour, IHealth
 	{
 		_IsHit = true;
 		_AnimController.ChangeState(PlayerAnimation.Damage, true, true);
-		Camera.main.GetComponent<CameraFollow>().Shake(50.0f);
-		_DamageCooldown = 3.0f;
+		Camera.main.GetComponent<CameraFollow>().Shake(5.0f);
+		_DamageCooldown = 2.5f;
 	}
 
 	public float SubtractHealth(float take)
