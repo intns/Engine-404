@@ -17,6 +17,7 @@ public class HealthWheel : MonoBehaviour
 	[HideInInspector] public Canvas _Canvas = null;
 
 	float _Timer = 0.0f;
+	float _HealthTimer = 0.0f;
 	bool _IsFadeIn = false;
 	bool _IsFadeOut = false;
 	CanvasGroup _CanvasGroup = null;
@@ -39,6 +40,8 @@ public class HealthWheel : MonoBehaviour
 
 	void Update()
 	{
+		// TODO: Fade away if health hasn't changed in 10 seconds
+
 		// If we've lost health, and we haven't spawned in yet, enable view
 		if (!_IsFadeIn && _CurrentHealth < _MaxHealth && _CanvasGroup.alpha == 0.0f)
 		{

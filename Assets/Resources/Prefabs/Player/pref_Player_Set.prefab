@@ -347,6 +347,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TextBoxArea, Assembly-CSharp
+        m_MethodName: AButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 967672ad-0d0d-4a7d-b1d9-31204d417069
     m_ActionName: BasicControls/PrimaryAction[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -387,6 +399,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: WhistleController, Assembly-CSharp
         m_MethodName: OnWhistle
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TextBoxArea, Assembly-CSharp
+        m_MethodName: BButton
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2556,11 +2580,11 @@ MonoBehaviour:
   - _FOV: 18
     _Offset: {x: 36, y: 14}
   - _FOV: 20
-    _Offset: {x: 40, y: 18.1}
+    _Offset: {x: 40, y: 16}
   - _FOV: 26
-    _Offset: {x: 30, y: 18}
+    _Offset: {x: 42.5, y: 18}
   - _FOV: 28
-    _Offset: {x: 40, y: 20}
+    _Offset: {x: 45, y: 20}
   _UseTopView: 0
   _TopViewData:
   - _FOV: 20

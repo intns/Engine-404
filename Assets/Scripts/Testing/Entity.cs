@@ -10,6 +10,8 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	[SerializeField, Range(0.0f, 360.0f)] float _RotationSpeed = 10.0f;
 	[SerializeField, Range(0.0f, 1.0f)] float _RotationAcceleration = 0.1f;
 	[Space]
+	[SerializeField, Range(0.0f, 1.0f)] float _LifeRegenerationRatio = 0.01f;
+	[Space]
 	[SerializeField, Range(0.05f, 3.0f)] float _HorizontalDamageAnimFactor = 1.0f;
 	[SerializeField, Range(0.05f, 3.0f)] float _VerticalDamageAnimFactor = 1.0f;
 
@@ -34,12 +36,14 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		IsVulnerable = 4,         // Can we take (subtract health) damage?
 		ToDestroyOnDeath = 8,     // Should we destroy the object on death?
 		IsAttackAvailable = 16,   // Should we allow Pikmin to run towards and latch to attack?
+		RegenerateHealth = 32,    // Should we regenerate health over time?
 	}
 
 	public EntityFlags _Flags;
 
 	protected Vector3 _StartSize = Vector3.zero;
 
+	[SerializeField]
 	protected float _CurrentHealth = 0.0f;
 	protected float _DamageAnimationTimer = 0.0f;
 
@@ -79,6 +83,11 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		if (_Flags.HasFlag(EntityFlags.IsHealthEnabled))
 		{
 			HandleHealth();
+		}
+
+		if (_Flags.HasFlag(EntityFlags.RegenerateHealth))
+		{
+			RegenerateHealth();
 		}
 	}
 
@@ -190,6 +199,11 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 			Destroy(gameObject);
 		}
 	}
+
+	private void RegenerateHealth()
+	{
+		AddHealth(_MaxHealth * _LifeRegenerationRatio);
+	}
 	#endregion
 
 	#region Public Methods
@@ -271,6 +285,12 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	public float AddHealth(float give)
 	{
 		SetHealth(_CurrentHealth + give);
+
+		if (_CurrentHealth > _MaxHealth)
+		{
+			_CurrentHealth = _MaxHealth;
+		}
+
 		return _CurrentHealth;
 	}
 

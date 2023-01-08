@@ -308,8 +308,7 @@ public class Onion : MonoBehaviour
 	/// </summary>
 	public void ANIM_TryCreateSprout()
 	{
-		// Onion spits out in 3s
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			// X is red, Y is yellow, Z is blue
 			int totalToDisperse = _SeedsToDisperse.x + _SeedsToDisperse.y + _SeedsToDisperse.z;
@@ -418,7 +417,7 @@ public class Onion : MonoBehaviour
 		{
 			_CanUse = false;
 			TryCreatePikmin(_Colour, toSpawn[i]);
-			yield return new WaitForSeconds(0.03f);
+			yield return new WaitForSeconds(0.02f);
 		}
 
 		_CanUse = true;

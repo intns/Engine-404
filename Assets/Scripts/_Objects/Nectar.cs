@@ -3,25 +3,24 @@ using UnityEngine;
 
 public class Nectar : MonoBehaviour
 {
+	// Pikmin 2 Style - drunk
+	// Pikmin 3 Style - sips
+
 	[Header("Settings")]
 	[SerializeField] float _HorizontalDamageAnimFactor = 1.0f;
 	[SerializeField] float _VerticalDamageAnimFactor = 1.0f;
 	[Space]
-	[SerializeField, Tooltip("If not small sips per piki, then drink whole")]
-	bool _UseSips = true;
-	
+	[SerializeField] bool _UseSips = true;
 	[SerializeField] int _SipsUntilDeath = 10;
 
 	[Header("Debugging")]
-	[SerializeField] Transform _Transform = null;
-	[SerializeField] Vector3 _StartSize = Vector3.zero;
-	[Space]
-	[SerializeField] float _InteractionTimer = 0.0f;
-	[SerializeField] bool _Interacted = false;
-	[Space]
-	[SerializeField] int _SipsLeft = 0;
-	[SerializeField] float _DrinkTimer = 0.0f;
-	[SerializeField] bool _IsBeingDrunk = false;
+	Transform _Transform = null;
+	Vector3 _StartSize = Vector3.zero;
+	float _InteractionTimer = 0.0f;
+	bool _Interacted = false;
+	int _SipsLeft = 0;
+	float _DrinkTimer = 0.0f;
+	bool _IsBeingDrunk = false;
 
 	public static float NECTAR_DRINK_TIME = 5.0f;
 
@@ -35,7 +34,28 @@ public class Nectar : MonoBehaviour
 
 	void Update()
 	{
-		if (_Interacted)
+		if (!_Interacted)
+		{
+			Vector3 targetScale = _StartSize;
+			if (_UseSips)
+			{
+				targetScale *= _SipsLeft / (float)_SipsUntilDeath;
+			}
+			else if (_IsBeingDrunk)
+			{
+				_DrinkTimer += Time.deltaTime;
+				targetScale *= 1 - (_DrinkTimer / NECTAR_DRINK_TIME);
+			}
+			_Transform.localScale = Vector3.Lerp(_Transform.localScale, targetScale, 5 * Time.deltaTime);
+
+			_StartSize = _Transform.localScale;
+
+			if (targetScale.sqrMagnitude <= 0.05f)
+			{
+				Destroy(gameObject);
+			}
+		}
+		else
 		{
 			if (_InteractionTimer == 0.0f)
 			{
@@ -65,23 +85,6 @@ public class Nectar : MonoBehaviour
 
 			float xzScale = horizontalMod * (_HorizontalDamageAnimFactor * 0.2f);
 			_Transform.localScale = new(_StartSize.x - xzScale, (horizontalMod * 0.25f) + _StartSize.y, _StartSize.z - xzScale);
-		}
-
-		Vector3 targetScale = _StartSize;
-		if (_UseSips)
-		{
-			targetScale *= _SipsLeft / (float)_SipsUntilDeath;
-		}
-		else if (_IsBeingDrunk)
-		{
-			_DrinkTimer += Time.deltaTime;
-			targetScale *= 1 - (_DrinkTimer / NECTAR_DRINK_TIME);
-		}
-		_Transform.localScale = Vector3.Lerp(_Transform.localScale, targetScale, 5 * Time.deltaTime);
-		
-		if (targetScale.sqrMagnitude <= 0.05f)
-		{
-			Destroy(gameObject);
 		}
 	}
 

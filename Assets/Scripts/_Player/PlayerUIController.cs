@@ -18,6 +18,7 @@ public class PlayerUIController : MonoBehaviour
 	[SerializeField] bool _DisplayValues = false;
 	int _InSquadAmount = -1;
 	int _InFieldAmount = -1;
+	float _TickTimer = 0.0f;
 
 
 	IEnumerator FadeInCanvas(bool shouldUpdateOnFinish)
@@ -35,7 +36,7 @@ public class PlayerUIController : MonoBehaviour
 		}
 
 		_DisplayValues = true;
-		
+
 		if (shouldUpdateOnFinish)
 		{
 			UpdateFullUI();
@@ -84,7 +85,12 @@ public class PlayerUIController : MonoBehaviour
 			return;
 		}
 
-		UpdateUI();
+		_TickTimer += Time.deltaTime;
+		if (_TickTimer > 0.2f)
+		{
+			UpdateUI();
+			_TickTimer = 0.0f;
+		}
 	}
 
 	#region Public functions

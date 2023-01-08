@@ -845,7 +845,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 		if (_TargetObjectCollider != null)
 		{
-			Vector3 thisPos = _Transform.position;
+			/*Vector3 thisPos = _Transform.position;
 			Vector3 nextPos = _TargetObjectCollider.ClosestPoint(pos);
 			Vector3 direct = MathUtil.DirectionFromTo(thisPos, nextPos, !useY);
 
@@ -857,7 +857,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				{
 					pos = Vector3.Lerp(thisPos, resultPos, 35 * Time.deltaTime);
 				}
-			}
+			}*/
 		}
 		else
 		{
@@ -1029,6 +1029,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_TargetObject = null;
 		ChangeState(PikminStates.Thrown);
 
+		_RotationAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_PlayerTransform.position, _Transform.position)).eulerAngles.y;
 		PlaySoundForced(_Data._ThrowNoise);
 
 		PikminStatsManager.RemoveFromSquad(this, _Data._PikminColour, _CurrentMaturity);

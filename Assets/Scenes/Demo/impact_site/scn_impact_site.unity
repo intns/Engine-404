@@ -137,15 +137,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -205,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -552,7 +557,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -612,17 +617,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -729,12 +739,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -796,6 +806,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -818,7 +833,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -878,17 +893,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -917,17 +937,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -989,6 +1009,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1013,15 +1038,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -1081,7 +1111,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1109,12 +1139,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -1176,6 +1206,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1200,15 +1235,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -1268,7 +1308,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1375,12 +1415,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -1442,6 +1482,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1461,6 +1506,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021778
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.04599676
+      objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_RootOrder
@@ -1521,6 +1580,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1545,15 +1609,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -1613,7 +1682,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1809,7 +1878,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -1869,17 +1938,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1907,12 +1981,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -1974,6 +2048,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2006,12 +2085,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -2073,6 +2152,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2095,7 +2179,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -2155,17 +2239,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2193,12 +2282,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -2260,6 +2349,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2284,15 +2378,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -2352,7 +2451,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2531,17 +2630,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -2602,6 +2701,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (32)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2719,7 +2823,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -2779,17 +2883,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (31)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2909,15 +3018,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -2977,7 +3091,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3009,15 +3123,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -3077,7 +3196,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3103,15 +3222,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -3171,7 +3295,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3195,7 +3319,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -3255,17 +3379,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3288,17 +3417,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -3359,6 +3488,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3461,7 +3595,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -3521,17 +3655,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3557,15 +3696,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -3625,7 +3769,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3845,16 +3989,6 @@ PrefabInstance:
       objectReference: {fileID: 1403253618}
     - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
         type: 3}
-      propertyPath: _DoSequence
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
-        type: 3}
-      propertyPath: _ResetPrefs
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
-        type: 3}
       propertyPath: _CeresAnimator
       value: 
       objectReference: {fileID: 547563696}
@@ -3987,11 +4121,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2380755958031488594, guid: 294fc44b5aeb24b4c90a343bf25572a7,
-        type: 3}
-      propertyPath: _PlaceOnFloor
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4172643792057292528, guid: 294fc44b5aeb24b4c90a343bf25572a7,
         type: 3}
       propertyPath: m_Name
@@ -4021,15 +4150,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -4089,7 +4223,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4207,7 +4341,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -4267,17 +4401,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4397,15 +4536,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -4465,7 +4609,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4583,7 +4727,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -4643,17 +4787,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4767,7 +4916,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -4827,17 +4976,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4863,15 +5017,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -4931,7 +5090,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4959,12 +5118,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -5026,6 +5185,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5076,7 +5240,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696301629}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -60.5, y: -19.3, z: 57.7}
+  m_LocalPosition: {x: -60.5, y: -22.2, z: 57.7}
   m_LocalScale: {x: 2.5203, y: 2.5203, z: 2.5203}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5169,15 +5333,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -5237,7 +5406,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5263,15 +5432,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -5331,7 +5505,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5696,15 +5870,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -5764,7 +5943,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5840,7 +6019,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -5900,17 +6079,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5936,15 +6120,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -6004,7 +6193,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6030,15 +6219,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -6098,7 +6292,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6122,7 +6316,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -6182,17 +6376,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6362,15 +6561,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -6430,7 +6634,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6454,7 +6658,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -6514,17 +6718,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6548,7 +6757,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -6608,17 +6817,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (29)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6642,7 +6856,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -6702,17 +6916,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6828,12 +7047,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -6894,6 +7113,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7010,17 +7234,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -7082,6 +7306,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7104,7 +7333,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -7164,17 +7393,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7200,15 +7434,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -7268,7 +7507,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7294,15 +7533,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -7362,7 +7606,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8307,17 +8551,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -8378,6 +8622,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (31)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8672,7 +8921,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -8732,17 +8981,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8906,15 +9160,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -8974,7 +9233,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9000,15 +9259,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -9068,7 +9332,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9203,7 +9467,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -9263,17 +9527,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9299,15 +9568,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -9367,7 +9641,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9380,12 +9654,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1156198220}
   m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &1162446774 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 2776239852797905287, guid: 63a5cb360eb74dd4ea5b10239af5fdcf,
-    type: 3}
-  m_PrefabInstance: {fileID: 2776239852068338225}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1162479398
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9396,17 +9664,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -9468,6 +9736,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9494,12 +9767,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -9561,6 +9834,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9587,12 +9865,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -9654,6 +9932,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9700,19 +9983,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _RotationSpeed: 10
   _RotationAcceleration: 0.1
+  _LifeRegenerationRatio: 0.005
   _HorizontalDamageAnimFactor: 1.5
   _VerticalDamageAnimFactor: 1.5
   _HealthWheelPrefab: {fileID: 722451351670197914, guid: 611e1e55a27ea104dadc717baf15d4e1,
     type: 3}
   _HealthWheelOffset: {x: 0, y: 5, z: 0}
   _HealthWheelScale: 2.62
-  _MaxHealth: 500
+  _MaxHealth: 50
   _DeathObjectOffset: {x: 0, y: 0, z: 0}
   _DeathObjectPrefabs:
-  - {fileID: 3845477201539155994, guid: dd1f9acce7bbade4a91413b2c74445f7, type: 3}
-  - {fileID: 4943918768778943652, guid: 80e619207e546854786da5f1faafa140, type: 3}
+  - {fileID: 5257347922307558217, guid: 6537e41b3fcf33a40a12b1604a732c77, type: 3}
   _PlaceOnFloor: 0
-  _Flags: 23
+  _Flags: -1
+  _CurrentHealth: 0
 --- !u!65 &1173755874
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9792,7 +10076,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173755872}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.5307617, y: -3.9746838, z: 5.9872475}
+  m_LocalPosition: {x: 28.529999, y: -3.7533212, z: 9.349987}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9841,12 +10125,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -9908,6 +10192,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9930,7 +10219,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -9990,17 +10279,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10306,12 +10600,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -10373,6 +10667,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10395,7 +10694,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -10455,17 +10754,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10572,12 +10876,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -10638,6 +10942,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10864,6 +11173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _RotationSpeed: 10
   _RotationAcceleration: 0.1
+  _LifeRegenerationRatio: 0.01
   _HorizontalDamageAnimFactor: 1
   _VerticalDamageAnimFactor: 1
   _HealthWheelPrefab: {fileID: 0}
@@ -10874,6 +11184,7 @@ MonoBehaviour:
   _DeathObjectPrefabs: []
   _PlaceOnFloor: 0
   _Flags: 0
+  _CurrentHealth: 0
   _DeathVFX: {fileID: 0}
   _MovementSpeed: 5
   _MoveDirection: {x: 0, y: 0, z: 0}
@@ -11026,15 +11337,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -11094,7 +11410,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11212,7 +11528,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -11272,17 +11588,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (30)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11390,7 +11711,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -11450,17 +11771,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11618,12 +11944,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -11685,6 +12011,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11711,12 +12042,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -11777,6 +12108,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11892,12 +12228,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -11958,6 +12294,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12036,7 +12377,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -12096,17 +12437,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12130,7 +12476,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -12190,17 +12536,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12224,7 +12575,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -12284,17 +12635,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12322,12 +12678,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -12389,6 +12745,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12413,15 +12774,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -12481,7 +12847,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12614,15 +12980,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -12682,7 +13053,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12951,7 +13322,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -13011,17 +13382,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (32)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13866,17 +14242,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -13937,6 +14313,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14151,6 +14532,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021778
+      objectReference: {fileID: 0}
+    - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.04599676
+      objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_RootOrder
@@ -14204,6 +14600,11 @@ PrefabInstance:
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -14307,7 +14708,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -14367,17 +14768,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14405,12 +14811,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -14472,6 +14878,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14532,7 +14943,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -14592,17 +15003,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14716,15 +15132,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -14784,7 +15205,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15063,7 +15484,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -15123,17 +15544,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15254,12 +15680,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -15321,6 +15747,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15347,12 +15778,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -15413,6 +15844,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15492,7 +15928,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -15552,17 +15988,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15699,15 +16140,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -15767,7 +16213,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15793,15 +16239,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -15861,7 +16312,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16083,15 +16534,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -16151,7 +16607,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16179,12 +16635,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -16246,6 +16702,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Red_Pikmin (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16268,7 +16729,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -16328,17 +16789,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16455,17 +16921,17 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1398576478, guid: d636024a11f2752488a4c6cc4cda3800, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -16526,6 +16992,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16839,15 +17310,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -16907,7 +17383,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16947,7 +17423,7 @@ PrefabInstance:
     - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
@@ -17007,17 +17483,22 @@ PrefabInstance:
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17043,15 +17524,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -17111,7 +17597,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17493,6 +17979,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1373113601}
     m_Modifications:
+    - target: {fileID: 4655394820156071936, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5515578958658450731, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_RootOrder
@@ -17548,10 +18039,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0031021778
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225390495830753856, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.04599676
+      objectReference: {fileID: 0}
     - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
         type: 3}
       propertyPath: m_Name
       value: pref_Yellow_Pikmin (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849604122809354040, guid: eb3c56cda8bd18b458d851f0edfe4ff1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17783,15 +18289,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: pref_Blue_Pikmin (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 452519838753892773, guid: 5360fcc780acbd24fb33251e4dcd4f63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 724013013163205520, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 3466916008439634870, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
@@ -17851,7 +18362,7 @@ PrefabInstance:
     - target: {fileID: 7191518347069219045, guid: 5360fcc780acbd24fb33251e4dcd4f63,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18130,12 +18641,12 @@ PrefabInstance:
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.0031021782
+      value: -0.0031021778
       objectReference: {fileID: 0}
     - target: {fileID: 2881273875330015168, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.045996763
+      value: 0.04599676
       objectReference: {fileID: 0}
     - target: {fileID: 5426502746068526330, guid: d636024a11f2752488a4c6cc4cda3800,
         type: 3}
@@ -18196,6 +18707,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Red_Pikmin (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9013275876603614953, guid: d636024a11f2752488a4c6cc4cda3800,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18412,11 +18928,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2972575735973305767, guid: 63a5cb360eb74dd4ea5b10239af5fdcf,
-        type: 3}
-      propertyPath: _FireVFX
-      value: 
-      objectReference: {fileID: 1162446774}
     - target: {fileID: 3046199980956709779, guid: 63a5cb360eb74dd4ea5b10239af5fdcf,
         type: 3}
       propertyPath: m_Name
@@ -18603,26 +19114,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
       propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 1869295052}
@@ -18631,66 +19122,6 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1869295052}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: AButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: BButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: TextBoxArea, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: TextBoxArea, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 851619351972655904, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _UseTopView
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _DefaultData.Array.data[1]._Offset.y
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _DefaultData.Array.data[2]._Offset.x
-      value: 42.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4246387086140531171, guid: a4e570be87d7aca479ee34c405cc44de,
-        type: 3}
-      propertyPath: _DefaultData.Array.data[3]._Offset.x
-      value: 45
-      objectReference: {fileID: 0}
     - target: {fileID: 6894162304972100195, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
       propertyPath: m_RootOrder

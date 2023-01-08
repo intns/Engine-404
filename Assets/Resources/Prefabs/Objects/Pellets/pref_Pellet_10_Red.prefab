@@ -128,10 +128,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5257347922307558217}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 5000
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -152,8 +163,9 @@ MonoBehaviour:
   _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
     type: 3}
   _CarryNoiseClip: {fileID: 8300000, guid: 82f0bada0276e0845b8d9ef9b6cb33d5, type: 3}
-  _CarryMinMax: {x: 10, y: 15}
+  _CarryMinMax: {x: 10, y: 20}
   _DistanceToNextPosition: 5
+  _InvulnTimeAfterSpawn: 1
   _CarryCircleRadius: 2.67
   _CarryCircleOffset: {x: -0.06, y: -0.95, z: 0.06}
   _AccelerationSpeed: 8
@@ -162,7 +174,7 @@ MonoBehaviour:
   _MaxSpeed: 4
   _ColourToGenerateFor: 0
   _PikminToProduceMatchColour: 10
-  _PikminToProduceNonMatchColour: 10
+  _PikminToProduceNonMatchColour: 6
   _CurrentMoveSpeed: 0
   _MoveVector: {x: 0, y: 0, z: 0}
   _NextDestination: {x: 0, y: 0, z: 0}
@@ -405,9 +417,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5911989158313929878}
   m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5979683799763284640, guid: 1af2541b1de49234aa86309ea584a2c0, type: 3}

@@ -202,7 +202,7 @@ public class PikminSprout : MonoBehaviour
 		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
 	}
 
-	public void OnSpawn(PikminSpawnData data)
+	public void OnSpawn(PikminSpawnData data, bool spawnInFloor = false)
 	{
 		_SpawnData = data;
 
@@ -225,7 +225,17 @@ public class PikminSprout : MonoBehaviour
 		settings.startColor = GameUtil.PikminColorToColor(data._Colour);
 
 		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
-		StartCoroutine(IE_DropAnimation());
+		if (!spawnInFloor)
+		{
+			StartCoroutine(IE_DropAnimation());
+		}
+		else
+		{
+			PikminSproutPath path = new(_SpawnData._OriginPosition,
+	_SpawnData._EndPosition, _DropSpeed, _PeakHeight);
+			transform.position = path.GetEndPosition();
+			_CurrentState = PikminSproutState.Planted;
+		}
 	}
 
 	public bool CanPluck()

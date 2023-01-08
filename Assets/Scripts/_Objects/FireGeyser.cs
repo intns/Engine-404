@@ -175,6 +175,7 @@ public class FireGeyser : Entity
 		_FSM.AddState(new WaitingState((int)FSMStates.Waiting));
 		_FSM.AddState(new AttackState((int)FSMStates.Attacking));
 		_FSM.AddState(new DeathState((int)FSMStates.Death));
+
 		_FSM.SetState((int)FSMStates.Waiting, this);
 	}
 
