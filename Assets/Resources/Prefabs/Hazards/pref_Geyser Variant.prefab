@@ -79,7 +79,7 @@ VisualEffect:
       m_Array: []
     m_Int:
       m_Array:
-      - m_Value: 115
+      - m_Value: 95
         m_Name: FlamesSpawnRate
         m_Overridden: 1
     m_Matrix4x4f:
@@ -153,7 +153,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
@@ -163,27 +163,27 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36.079994
+      value: -53.14
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.151798
+      value: 2.89136
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -36.94999
+      value: 33.829998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99105984
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.01714535
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
@@ -193,27 +193,27 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.13231222
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 9.038
+      value: 4.268
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -36.305
+      value: -5.213
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 15.7
+      value: -0.841
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_Name
-      value: pref_Geyser Variant (4)
+      value: pref_Geyser Variant (5)
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9927db25464b2504f849625637496d67,
         type: 3}
@@ -262,6 +262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _RotationSpeed: 10
   _RotationAcceleration: 0.1
+  _LifeRegenerationRatio: 0.01
   _HorizontalDamageAnimFactor: 1
   _VerticalDamageAnimFactor: 1
   _HealthWheelPrefab: {fileID: 722451351670197914, guid: 611e1e55a27ea104dadc717baf15d4e1,
@@ -273,6 +274,7 @@ MonoBehaviour:
   _DeathObjectPrefabs: []
   _PlaceOnFloor: 0
   _Flags: 23
+  _CurrentHealth: 0
   _FireVFX: {fileID: 1251556996548805835}
   _TimePerAttack: 3
   _ActiveAttackTime: 3

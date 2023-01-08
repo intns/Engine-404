@@ -338,17 +338,17 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 	void OnCollisionEnter(Collision collision)
 	{
-		OnCollisionHandle(collision.collider);
+		OnCollisionHandle(collision);
 	}
 
 	void OnCollisionStay(Collision collision)
 	{
-		OnCollisionHandle(collision.collider);
+		OnCollisionHandle(collision);
 	}
 
 	void OnCollisionExit(Collision collision)
 	{
-		OnCollisionHandle(collision.collider);
+		OnCollisionHandle(collision);
 	}
 
 	#endregion
@@ -787,24 +787,43 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 	}
 
-	void OnCollisionHandle(Collider collision)
+	void OnCollisionHandle(Collision collision)
 	{
 		if (_InSquad)
 		{
 			return;
 		}
 
+		Collider collider = collision.collider;
+
 		if (_CurrentState == PikminStates.Thrown)
 		{
 			// Just landed from a throw, check if we're on something we interact with
-			if (collision.CompareTag("PikminInteract"))
+			if (collider.CompareTag("PikminInteract"))
 			{
-				_TargetObject = collision.transform;
-				_TargetObjectCollider = collision;
-				_Intention = collision.GetComponentInParent<IPikminInteractable>().IntentionType;
-				CarryoutIntention();
+				// Handle squishing
+				IPikminSquish squish = collider.GetComponentInParent<IPikminSquish>();
+				if (squish == null)
+				{
+					_TargetObject = collision.transform;
+					_TargetObjectCollider = collider;
+					_Intention = collider.GetComponentInParent<IPikminInteractable>().IntentionType;
+					CarryoutIntention();
+				}
+				else
+				{
+					Vector3 closestPoint = collider.ClosestPoint(_Transform.position);
+
+					float spot = Vector3.Dot(Vector3.up, MathUtil.DirectionFromTo(_Transform.position, closestPoint, true));
+					if (spot <= -0.65f)
+					{
+						squish.OnSquish(this);
+					}
+
+					ChangeState(PikminStates.Idle);
+				}
 			}
-			else if (!collision.CompareTag("Pikmin") && !collision.CompareTag("Player"))
+			else if (!collider.CompareTag("Pikmin") && !collider.CompareTag("Player"))
 			{
 				ChangeState(PikminStates.Idle);
 			}
@@ -813,14 +832,14 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		{
 			// If we've been running towards something, we've touched it and now we
 			// can carryout our intention
-			if (_TargetObjectCollider != null && _TargetObjectCollider == collision
+			if (_TargetObjectCollider != null && _TargetObjectCollider == collider
 				&& _TargetObjectCollider.gameObject.layer != _RunTowardsMask)
 			{
 				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
 				CarryoutIntention();
 			}
 		}
-		else if (collision.CompareTag("Player")
+		else if (collider.CompareTag("Player")
 			&& _CurrentState != PikminStates.Push
 			&& _CurrentState != PikminStates.Carry
 			&& _CurrentState != PikminStates.Attack

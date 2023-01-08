@@ -284,10 +284,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		}
 
 		_IsTakingDamage = true;
-
-		// Should be called last in case the 
 		SubtractHealth(damage);
-		_HealthWheelScript._CurrentHealth = GetCurrentHealth();
 	}
 	#endregion
 	#region IHealth
@@ -325,7 +322,11 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 
 	public void SetHealth(float set)
 	{
-		_HealthWheelScript._CurrentHealth = set;
+		if (_HealthWheelScript != null)
+		{
+			_HealthWheelScript._CurrentHealth = set;
+		}
+
 		_CurrentHealth = set;
 	}
 	#endregion

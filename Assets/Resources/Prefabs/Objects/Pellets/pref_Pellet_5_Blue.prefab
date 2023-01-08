@@ -5,6 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -2793859736506533239, guid: dd1f9acce7bbade4a91413b2c74445f7,
@@ -41,6 +42,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Pellet_5_Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950368, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: m_Drag
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950368, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950368, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950368, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
@@ -143,4 +164,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 7e62dec510a308f41bbb9ef3387007ec, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd1f9acce7bbade4a91413b2c74445f7, type: 3}
