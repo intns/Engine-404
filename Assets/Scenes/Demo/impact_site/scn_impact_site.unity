@@ -590,6 +590,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 111037287}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e960dd315da98cb42bafac996c40b637,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 111037288}
   m_SourcePrefab: {fileID: 100100000, guid: e960dd315da98cb42bafac996c40b637, type: 3}
 --- !u!4 &111037285 stripped
 Transform:
@@ -624,6 +628,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 27.658958, y: 11.907459, z: 5.672412}
   m_Center: {x: -0.27675793, y: 5.45373, z: -0.050961737}
+--- !u!114 &111037288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111037286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  uniqueID: 4768160350396265197
+  updateError: 1
+  checkTime: 0.2
 --- !u!1001 &111387650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3166,7 +3186,7 @@ PrefabInstance:
     - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
         type: 3}
       propertyPath: _ResetPrefs
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
         type: 3}
@@ -5172,7 +5192,7 @@ PrefabInstance:
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 71.95
+      value: 72.152
       objectReference: {fileID: 0}
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
@@ -7531,6 +7551,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1075138290}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e960dd315da98cb42bafac996c40b637,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1075138291}
   m_SourcePrefab: {fileID: 100100000, guid: e960dd315da98cb42bafac996c40b637, type: 3}
 --- !u!4 &1075138288 stripped
 Transform:
@@ -7565,6 +7589,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 27.658958, y: 11.907459, z: 5.672412}
   m_Center: {x: -0.27675793, y: 5.45373, z: -0.050961737}
+--- !u!114 &1075138291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075138289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  uniqueID: 6848296539646928751
+  updateError: 1
+  checkTime: 0.2
 --- !u!1001 &1105416292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11229,7 +11269,7 @@ PrefabInstance:
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 71.95
+      value: 72.138
       objectReference: {fileID: 0}
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
@@ -15291,6 +15331,7 @@ GameObject:
   - component: {fileID: 543450652321285856}
   - component: {fileID: 1378738446}
   - component: {fileID: 1378738447}
+  - component: {fileID: 919132148384980059}
   m_Layer: 0
   m_Name: pref_CardboardBox
   m_TagString: Untagged
@@ -15298,6 +15339,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132148384980059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148384980058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  uniqueID: 3504921986569023454
+  updateError: 1
+  checkTime: 0.2
 --- !u!1 &1188256222626658931
 GameObject:
   m_ObjectHideFlags: 0
