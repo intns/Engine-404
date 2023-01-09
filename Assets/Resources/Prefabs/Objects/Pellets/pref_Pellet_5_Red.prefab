@@ -336,6 +336,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4151343531540337642}
   - component: {fileID: 4151343531540337643}
+  - component: {fileID: 6943525113885177638}
+  - component: {fileID: 5754749453939346760}
   m_Layer: 13
   m_Name: Collider
   m_TagString: PikminInteract
@@ -380,6 +382,52 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8392838232986735976, guid: aac46c45523870c43a988184a3790b59, type: 3}
+--- !u!136 &6943525113885177638
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151343531540337637}
+  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.75
+  m_Height: 2.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: -0.009326816}
+--- !u!136 &5754749453939346760
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151343531540337637}
+  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.75
+  m_Height: 2.7
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: -0.009326816}
 --- !u!1 &8046210487221419007
 GameObject:
   m_ObjectHideFlags: 0

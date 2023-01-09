@@ -302,6 +302,7 @@ public class FlintBeetle : Entity, IPikminSquish
 			}
 
 			_FSM.SetState((int)FSMStates.Burrow, this);
+			return;
 		}
 
 		if (_AmountUntilBurrow != -1)

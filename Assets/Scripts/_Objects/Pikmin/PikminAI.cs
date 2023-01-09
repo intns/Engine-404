@@ -841,11 +841,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			}
 		}
 		else if (collider.CompareTag("Player")
-			&& _CurrentState != PikminStates.Push
-			&& _CurrentState != PikminStates.Carry
-			&& _CurrentState != PikminStates.Attack
-			&& _CurrentState != PikminStates.Thrown
-			&& _CurrentState != PikminStates.OnFire)
+			&& (_CurrentState == PikminStates.Idle
+			|| _CurrentState == PikminStates.RunTowards))
 		{
 			AddToSquad();
 		}
@@ -1141,11 +1138,22 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 	public void AddToSquad()
 	{
-		if (_InSquad || _CurrentState == PikminStates.Dead || _CurrentState == PikminStates.Squish
-			|| _CurrentState == PikminStates.SuckNectar || _CurrentState == PikminStates.Thrown
-			|| (_CurrentState == PikminStates.Push && !_Pushing.IsPikminSpotAvailable()))
+		if (_InSquad)
 		{
 			return;
+		}
+
+		switch (_CurrentState)
+		{
+			case PikminStates.Dead:
+			case PikminStates.Squish:
+			case PikminStates.SuckNectar:
+			case PikminStates.Thrown:
+			case PikminStates.Push when !_Pushing.IsPikminSpotAvailable():
+				return;
+
+			default:
+				break;
 		}
 
 		_InSquad = true;

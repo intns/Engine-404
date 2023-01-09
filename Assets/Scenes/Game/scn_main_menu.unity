@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.14733507, g: 0.3800965, b: 0.22227195, a: 1}
+  m_IndirectSpecularColor: {r: 0.20837668, g: 0.5375796, b: 0.31436244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -589,6 +589,8 @@ Animation:
   m_Animations:
   - {fileID: 7400000, guid: 6e93b153aa1c2dd459db17a99e5ccc5e, type: 2}
   - {fileID: 7400000, guid: 163c69d51d9858b47a5f1337d2f8118e, type: 2}
+  - {fileID: 7400000, guid: 10a63c4e2171f476ebbb916e892e2b20, type: 2}
+  - {fileID: 7400000, guid: 2c5da2a5ffc09404f900e1f99c151531, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -3306,7 +3308,6 @@ GameObject:
   - component: {fileID: 1258384128}
   - component: {fileID: 1258384127}
   - component: {fileID: 1258384130}
-  - component: {fileID: 1258384131}
   - component: {fileID: 1258384133}
   m_Layer: 0
   m_Name: Camera
@@ -3521,26 +3522,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258384126}
   m_Enabled: 1
---- !u!95 &1258384131
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258384126}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f61eeb557ec57324c88e85f221763de1, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &1258384133
 MonoBehaviour:
   m_ObjectHideFlags: 0
