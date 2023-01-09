@@ -15,7 +15,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerPikminController),
 									typeof(AnimationController),
 									typeof(PlayerMovementController))]
-public class Player : MonoBehaviour, IHealth
+public class Player : MonoBehaviour, IHealth, IInteraction
 {
 	public static Player _Instance;
 	public PlayerMovementController _MovementController = null;
@@ -162,11 +162,6 @@ public class Player : MonoBehaviour, IHealth
 		StartCoroutine(IE_PikminExtinctionSequence());
 	}
 
-	public void Squish()
-	{
-		_MovementController._Paralysed = true;
-	}
-
 	public void Pause(PauseType type)
 	{
 		_AnimController.ChangeState(PlayerAnimation.Idle);
@@ -273,6 +268,16 @@ public class Player : MonoBehaviour, IHealth
 			DamageHealth();
 			_CurrentHealth = set;
 		}
+	}
+
+	public void ActFire(Transform origin)
+	{
+		SubtractHealth(_MaxHealth / 6.0f);
+	}
+
+	public void ActSquish()
+	{
+		SubtractHealth(_MaxHealth / 4.0f);
 	}
 
 	#endregion

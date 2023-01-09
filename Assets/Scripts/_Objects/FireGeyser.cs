@@ -178,11 +178,6 @@ public class FireGeyser : Entity
 
 	public float GetActiveAttackTime() { return _ActiveAttackTime + Random.Range(0.5f, 1.5f); }
 
-	public bool FireFX_IsFinished()
-	{
-		return _FireVFX.aliveParticleCount <= 25;
-	}
-
 	public void FireFX_CheckCollision()
 	{
 		Collider[] colls = Physics.OverlapCapsule(
@@ -191,13 +186,9 @@ public class FireGeyser : Entity
 
 		foreach (Collider c in colls)
 		{
-			if (c.TryGetComponent(out PikminAI ai))
+			if (c.TryGetComponent(out IInteraction i))
 			{
-				ai.InteractFire();
-			}
-			else if (c.TryGetComponent(out Player player))
-			{
-				player.SubtractHealth(10.0f);
+				i.ActFire(_Transform);
 			}
 		}
 		
@@ -206,7 +197,7 @@ public class FireGeyser : Entity
 		{
 			if (i <= _AttachedPikmin.Count)
 			{
-				_AttachedPikmin[i].InteractFire();
+				_AttachedPikmin[i].ActFire(_Transform);
 			}
 		}
 	}

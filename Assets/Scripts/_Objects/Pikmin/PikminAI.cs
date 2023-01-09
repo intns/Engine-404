@@ -41,7 +41,7 @@ public enum PikminIntention
 	Idle, // AKA None
 }
 
-public class PikminAI : MonoBehaviour, IHealth, IComparable
+public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 {
 	[Header("Components")]
 	// Holds everything that makes a Pikmin unique
@@ -1198,16 +1198,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		Debug.Log("Left water");
 	}
 
-	public void InteractFire()
-	{
-		if (!_Data._IsAffectedByFire && _CurrentState != PikminStates.OnFire)
-		{
-			return;
-		}
-
-		ChangeState(PikminStates.OnFire);
-	}
-
 	public bool IsGrounded(float distTo = 0.2f)
 	{
 		return Physics.Raycast(_Transform.position, Vector3.down, distTo, _MapMask, QueryTriggerInteraction.Ignore);
@@ -1285,7 +1275,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		return true;
 	}
 
-	public void Squish()
+	public void ActSquish()
 	{
 		if (_CurrentState == PikminStates.Dead || _CurrentState == PikminStates.Squish
 			|| Latch_IsLatchedOntoObject())
@@ -1294,6 +1284,16 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 
 		ChangeState(PikminStates.Squish);
+	}
+
+	public void ActFire(Transform origin)
+	{
+		if (!_Data._IsAffectedByFire && _CurrentState != PikminStates.OnFire)
+		{
+			return;
+		}
+
+		ChangeState(PikminStates.OnFire);
 	}
 	#endregion
 }

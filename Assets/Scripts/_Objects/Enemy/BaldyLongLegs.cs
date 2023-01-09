@@ -138,15 +138,11 @@ public class BaldyLongLegsFoot
 				}
 
 				Collider[] colls = Physics.OverlapSphere(_Target.position + _Values._FootColliderOffset, _Values._FootColliderSize, _Values._FootStompInteractMask);
-				for (int i = 0; i < colls.Length; i++)
+				foreach (Collider v in colls)
 				{
-					if (colls[i].TryGetComponent(out PikminAI ai))
+					if (v.TryGetComponent(out IInteraction interaction))
 					{
-						ai.Squish();
-					}
-					else if (colls[i].TryGetComponent(out Player p))
-					{
-						p.Squish();
+						interaction.ActSquish();
 					}
 				}
 			}
