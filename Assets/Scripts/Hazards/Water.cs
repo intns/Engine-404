@@ -18,17 +18,9 @@ public class Water : MonoBehaviour
 			//Debug.Log("Object came into water at velocity of " + rbComponent.velocity.ToString());
 		}
 
-		// Handle Pikmin entering the water
-		if (other.CompareTag("Pikmin"))
+		if (other.TryGetComponent(out IInteraction i))
 		{
-			other.GetComponent<PikminAI>().Water_Enter();
-			return;
-		}
-
-		if (other.CompareTag("Player"))
-		{
-			// TODO - handle Playe entering water
-			return;
+			i.ActWater();
 		}
 	}
 

@@ -269,7 +269,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		// Circle offset + ((circle pos with qualtiy 'carry max' at the index 'pikmin count') * circle size)
 		_CarryingPikmin[^1].Latch_SetOffset(
 			_CarryCircleOffset
-			+ MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryMinMax.y, _CarryingPikmin.Count))
+			+ MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryMinMax.y, _CarryingPikmin.IndexOf(p)))
 			* _CarryCircleRadius);
 
 		if (_CarryingPikmin.Count >= _CarryMinMax.x)

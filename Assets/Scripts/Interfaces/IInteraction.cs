@@ -2,6 +2,7 @@
 
 public interface IInteraction
 {
-	public void ActFire(Transform origin);
+	public void ActFire();
 	public void ActSquish();
+	public void ActWater();
 } 

@@ -270,7 +270,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		}
 	}
 
-	public void ActFire(Transform origin)
+	public void ActFire()
 	{
 		SubtractHealth(_MaxHealth / 6.0f);
 	}
@@ -278,6 +278,11 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	public void ActSquish()
 	{
 		SubtractHealth(_MaxHealth / 4.0f);
+	}
+
+	public void ActWater()
+	{
+
 	}
 
 	#endregion

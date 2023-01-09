@@ -1193,14 +1193,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		ChangeState(PikminStates.Dead);
 	}
 
-	public void Water_Enter()
-	{
-		if (_Data._PikminColour != PikminColour.Blue)
-		{
-			Die(0.5f);
-		}
-	}
-
 	public void Water_Leave()
 	{
 		Debug.Log("Left water");
@@ -1294,7 +1286,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		ChangeState(PikminStates.Squish);
 	}
 
-	public void ActFire(Transform origin)
+	public void ActFire()
 	{
 		if (!_Data._IsAffectedByFire && _CurrentState != PikminStates.OnFire)
 		{
@@ -1302,6 +1294,20 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		}
 
 		ChangeState(PikminStates.OnFire);
+	}
+
+	public void ActWater()
+	{
+		if (_Data._PikminColour != PikminColour.Blue)
+		{
+			Die(0.5f);
+			return;
+		}
+
+		if (_CurrentState == PikminStates.OnFire)
+		{
+			ChangeState(PikminStates.Idle);
+		}
 	}
 	#endregion
 }

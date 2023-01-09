@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
-public class FlintBeetle : Entity, IPikminSquish
+public class FlintBeetle : Entity, IPikminSquish, IInteraction
 {
 	public class StateInvisible : BasicFSMState<Entity>
 	{
@@ -68,18 +68,20 @@ public class FlintBeetle : Entity, IPikminSquish
 		public override void Execute(Entity ent)
 		{
 			FlintBeetle obj = (FlintBeetle)ent;
-			obj.MoveTowards(_RandomAngle);
 
-			if (Physics.Raycast(obj._Transform.position, obj._Transform.forward, 4.5f, obj._MapMask))
+			obj._LifetimeTimer += Time.deltaTime;
+			obj.MoveTowards(_RandomAngle);
+			obj.CheckForBurrow();
+
+			if (Physics.Raycast(obj._Transform.position, obj._Transform.forward, 3.5f, obj._MapMask)
+				&& obj._Rigidbody.velocity.sqrMagnitude <= 5.0f)
 			{
-				obj._FaceDirection = Random.Range(-360.0f, 360.0f);
+				obj._FaceDirection = 360 - obj._FaceDirection;
 				obj._FSM.SetState((int)FSMStates.Wait, ent);
 				return;
 			}
 
 			_MoveTimer += Time.deltaTime;
-			obj._LifetimeTimer += Time.deltaTime;
-
 			if (_MoveTimer >= _RandomLength)
 			{
 				obj._FSM.SetState((int)FSMStates.Wait, ent);
@@ -117,9 +119,10 @@ public class FlintBeetle : Entity, IPikminSquish
 		{
 			FlintBeetle obj = (FlintBeetle)ent;
 
-			_WaitTimer += Time.deltaTime;
+			obj.CheckForBurrow();
 			obj._LifetimeTimer += Time.deltaTime;
 
+			_WaitTimer += Time.deltaTime;
 			if (_WaitTimer >= _WaitLength)
 			{
 				obj._FSM.SetState((int)FSMStates.Move, ent);
@@ -157,7 +160,6 @@ public class FlintBeetle : Entity, IPikminSquish
 		{
 			FlintBeetle obj = (FlintBeetle)ent;
 
-			obj.ReleaseItem();
 			obj._FSM.SetState((int)FSMStates.Move, ent);
 		}
 
@@ -208,10 +210,17 @@ public class FlintBeetle : Entity, IPikminSquish
 	[SerializeField] float _ActivationRadius = 5.0f;
 	[SerializeField] LayerMask _ActivationMask = default;
 	[SerializeField] LayerMask _MapMask = default;
+	[Space]
+	[SerializeField] SkinnedMeshRenderer _Renderer;
+	[SerializeField] Material _NormalMaterial;
+	[SerializeField] Material _FireMaterial;
 
 	BasicFSM<Entity> _FSM;
 	Animator _Animator = null;
 	Rigidbody _Rigidbody;
+
+	[SerializeField] bool _IsFire = false;
+	[SerializeField] float _FireTimer = 0.0f;
 
 	float _LifetimeTimer = 0.0f;
 
@@ -225,6 +234,8 @@ public class FlintBeetle : Entity, IPikminSquish
 	{
 		_Rigidbody = GetComponent<Rigidbody>();
 		_Animator = GetComponent<Animator>();
+
+		_FireTimer = 1.0f;
 
 		_FSM = new();
 		_FSM.AddState(new StateInvisible((int)FSMStates.Invisible));
@@ -248,6 +259,14 @@ public class FlintBeetle : Entity, IPikminSquish
 			_FSM.SetState((int)FSMStates.Burrow, this);
 		}
 
+		if (_FireTimer < 1.0f)
+		{
+			Material source = _IsFire ? _NormalMaterial : _FireMaterial;
+			Material target = !_IsFire ? _NormalMaterial : _FireMaterial;
+			_Renderer.materials[2].Lerp(source, target, _FireTimer / 1.0f);
+			_FireTimer += Time.deltaTime;
+		}
+
 		ApplyScaling();
 	}
 
@@ -257,7 +276,7 @@ public class FlintBeetle : Entity, IPikminSquish
 
 		if (_MoveDirection != Vector3.zero)
 		{
-			_Rigidbody.velocity = _MoveDirection;
+			_Rigidbody.velocity = _MoveDirection + Vector3.down;
 			_MoveDirection = Vector3.Lerp(_MoveDirection, Vector3.zero, 12.5f * Time.fixedDeltaTime);
 		}
 	}
@@ -279,6 +298,23 @@ public class FlintBeetle : Entity, IPikminSquish
 		}
 	}
 
+	void OnCollisionEnter(Collision collision) => OnCollisionHandle(collision);
+
+	void OnCollisionStay(Collision collision) => OnCollisionHandle(collision);
+
+	void OnCollisionHandle(Collision collision)
+	{
+		if (!_IsFire)
+		{
+			return;
+		}
+
+		if (collision.transform.TryGetComponent(out IInteraction i))
+		{
+			i.ActFire();
+		}
+	}
+
 	void ApplyScaling()
 	{
 		_CurrentScale = Mathf.Lerp(_CurrentScale, _TargetScale, 6.5f * Time.deltaTime);
@@ -294,22 +330,10 @@ public class FlintBeetle : Entity, IPikminSquish
 
 	public void ReleaseItem()
 	{
-		if (_AmountUntilBurrow == 0)
-		{
-			if (_FSM.GetCurrentState()._Index == (int)FSMStates.Burrow)
-			{
-				return;
-			}
-
-			_FSM.SetState((int)FSMStates.Burrow, this);
-			return;
-		}
-
 		if (_AmountUntilBurrow != -1)
 		{
 			_AmountUntilBurrow--;
 		}
-
 
 		GameObject go = Instantiate(_ThrownItem, _Transform.position + (Vector3.up * 2.5f), Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0.0f));
 		go.GetComponent<Rigidbody>().velocity = (Vector3.up * 35.0f) + (MathUtil.XZToXYZ(Random.insideUnitCircle) * 50.0f);
@@ -323,34 +347,80 @@ public class FlintBeetle : Entity, IPikminSquish
 		}
 	}
 
+	public void CheckForBurrow()
+	{
+		if (_AmountUntilBurrow != 0)
+		{
+			return;
+		}
+
+		if (_FSM.IsCurrentStateID((int)FSMStates.Burrow))
+		{
+			return;
+		}
+
+		_FSM.SetState((int)FSMStates.Burrow, this);
+		return;
+	}
+
 	public void ANIM_BurrowFinish()
 	{
+		while (_AttachedPikmin.Count != 0)
+		{
+			PikminAI ai = _AttachedPikmin[0];
+			if (Physics.Raycast(ai.transform.position, Vector3.down, out RaycastHit info, float.PositiveInfinity, _MapMask))
+			{
+				ai.transform.position = info.point + Vector3.up;
+			}
+			_AttachedPikmin[0].ChangeState(PikminStates.Idle);
+		}
+
 		Die();
 	}
 
 	public void MoveTowards(float angle)
 	{
 		LookTowards(angle);
-		_MoveDirection = _Transform.right * 7.0f;
+		_MoveDirection = _Transform.right * 10.0f;
 	}
 
-	public new void OnAttackEnd(PikminAI pikmin)
-	{
-		_AttachedPikmin.Remove(pikmin);
-	}
+	public new void OnAttackEnd(PikminAI pikmin) => _AttachedPikmin.Remove(pikmin);
 
-	public new void OnAttackStart(PikminAI pikmin)
-	{
-		_AttachedPikmin.Add(pikmin);
-	}
+	public new void OnAttackStart(PikminAI pikmin) => _AttachedPikmin.Add(pikmin);
 
-	public new void OnAttackRecieve(float damage)
-	{
-	}
+	public new void OnAttackRecieve(float damage) { }
 
 	public void OnSquish(PikminAI ai)
 	{
-		_FSM.SetState((int)FSMStates.Squished, this);
+		if (!_FSM.IsCurrentStateID((int)FSMStates.Squished))
+		{
+			AnimatorStateInfo info = _Animator.GetCurrentAnimatorStateInfo(0);
+			bool isFlipAnim = info.IsName("Armature_FlipForwardsAnimation") || info.IsName("Armature_FlipBackwardsAnimation");
+			if (!isFlipAnim)
+			{
+				_FSM.SetState((int)FSMStates.Squished, this);
+			}
+		}
+	}
+
+	public void ActFire()
+	{
+		if (!_IsFire)
+		{
+			_IsFire = true;
+			_FireTimer = 0.0f;
+		}
+	}
+
+	public void ActSquish() { }
+
+	public void ActWater()
+	{
+		if (_IsFire)
+		{
+			_IsFire = false;
+			_FireTimer = 0.0f;
+		}
 	}
 	#endregion
 }

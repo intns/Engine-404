@@ -128,7 +128,7 @@ public class MainMenuUI : MonoBehaviour
 
 		if (ctx.started)
 		{
-			_StartText.GetComponent<Animation>().Play("Anim_cmn_shrink");
+			_StartText.GetComponent<Animation>().Play("anim_gui_shrink");
 			ChangeState(MainMenuState.Menu);
 		}
 	}
@@ -196,7 +196,7 @@ public class MainMenuUI : MonoBehaviour
 			yield return null;
 		}
 
-		_StartText.GetComponent<Animation>().Play("Anim_cmn_pulse_1sec");
+		_StartText.GetComponent<Animation>().Play("anim_gui_pulse_1sec");
 	}
 
 	IEnumerator FadeInDebugControls()

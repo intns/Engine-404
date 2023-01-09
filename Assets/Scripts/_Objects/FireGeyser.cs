@@ -188,7 +188,7 @@ public class FireGeyser : Entity
 		{
 			if (c.TryGetComponent(out IInteraction i))
 			{
-				i.ActFire(_Transform);
+				i.ActFire();
 			}
 		}
 		
@@ -197,7 +197,7 @@ public class FireGeyser : Entity
 		{
 			if (i <= _AttachedPikmin.Count)
 			{
-				_AttachedPikmin[i].ActFire(_Transform);
+				_AttachedPikmin[i].ActFire();
 			}
 		}
 	}

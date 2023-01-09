@@ -61,6 +61,16 @@ public class BasicFSM<T>
 		return _States != null && _States.Count > 0 && _CurrentState <= _States.Count;
 	}
 
+	public bool IsCurrentStateID(int idx)
+	{
+		if (!IsCurrentStateValid())
+		{
+			return false;
+		}
+
+		return GetCurrentState()._Index == idx;
+	}
+
 	public BasicFSMState<T> GetCurrentState()
 	{
 		return _States[_CurrentState];
