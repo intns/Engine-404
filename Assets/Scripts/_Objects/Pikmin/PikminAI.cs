@@ -576,7 +576,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 	}
 
-	void HandleAttacking()
+	void HandleAttack()
 	{
 		// The object we were attacking has died, so we can go back to being idle
 		if (_Attacking == null || _AttackingTransform == null)
