@@ -51,7 +51,7 @@ public class P2CodeTest : Entity
 		base.Update();
 
 		_FSM.ExecuteState(this);
-		ChangeFaceDirection(Player._Instance.transform);
+		LookTowards(Player._Instance.transform.position);
 	}
 
 	public override void OnDrawGizmosSelected()

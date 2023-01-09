@@ -15,7 +15,7 @@ public enum PikminStates
 	Idle,
 	RunTowards,
 
-	// TODO: Attacking on ground (jump to latch)
+	StandingAttack,
 	Attack,
 
 	Carry,
@@ -118,7 +118,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 	[SerializeField] Vector3 _EulerAngles = Vector3.zero;
 	[Space]
 	[SerializeField] float _RagdollTime = 0.0f;
-	[SerializeField] float _RotationAngle = 0.0f;
+	[SerializeField] float _FaceDirectionAngle = 0.0f;
 	[Space]
 	[SerializeField] LayerMask _MapMask;
 	[SerializeField] LayerMask _AllMask;
@@ -244,7 +244,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		if (_Transform.position.y < _MinimumY)
 		{
 			_Rigidbody.velocity = Vector3.zero;
-			_Transform.position = _PlayerTransform.position;
+			_Transform.position = _PlayerTransform.position + Vector3.up * 5.0f;
 		}
 
 		MaintainLatch();
@@ -255,10 +255,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				HandleIdle();
 				break;
 			case PikminStates.Attack:
-				HandleAttacking();
+				HandleAttack();
 				break;
 			case PikminStates.Push:
-				HandlePushing();
+				HandlePush();
 				break;
 			case PikminStates.OnFire:
 				HandleOnFire();
@@ -317,7 +317,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 				break;
 		}
 
-		if (_CurrentState == PikminStates.RunTowards && (_Intention != PikminIntention.Attack) || _CurrentState == PikminStates.Idle)
+		if (_CurrentState == PikminStates.RunTowards && (_Intention != PikminIntention.Attack)
+			|| _CurrentState == PikminStates.Idle)
 		{
 			RepelPikminAndPlayers();
 		}
@@ -325,7 +326,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		if (!Latch_IsLatchedOntoObject() || _CurrentState == PikminStates.Push)
 		{
 			float yRotation = _EulerAngles.y;
-			yRotation = Mathf.LerpAngle(yRotation, _RotationAngle, _Data._RotationSpeed * Time.fixedDeltaTime);
+			yRotation = Mathf.LerpAngle(yRotation, _FaceDirectionAngle, _Data._RotationSpeed * Time.fixedDeltaTime);
 			_Transform.rotation = Quaternion.Euler(0.0f, yRotation, 0.0f);
 		}
 
@@ -585,7 +586,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		}
 	}
 
-	void HandlePushing()
+	void HandlePush()
 	{
 		if (_Pushing == null)
 		{
@@ -604,7 +605,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		if (MathUtil.DistanceTo(_Transform.position, destination, false) <= 0.02f)
 		{
 			MoveTowards(destination, true, false);
-			_RotationAngle = Quaternion.LookRotation(_Pushing.GetMovementDirection()).eulerAngles.y;
+			_FaceDirectionAngle = Quaternion.LookRotation(_Pushing.GetMovementDirection()).eulerAngles.y;
 
 			if (!_PushReady)
 			{
@@ -636,7 +637,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 
 		if (_NectarTransform != null)
 		{
-			_RotationAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _NectarTransform.position)).eulerAngles.y;
+			_FaceDirectionAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _NectarTransform.position)).eulerAngles.y;
 			_DirectionVector = Vector3.zero;
 			_AddedVelocity = Vector3.zero;
 		}
@@ -701,8 +702,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			return;
 		}
 
-		_RotationAngle = Mathf.LerpAngle(_RotationAngle, _WanderAngle, 3.0f * Time.deltaTime);
-		if (Mathf.DeltaAngle(_RotationAngle, _WanderAngle) < 1.0f)
+		_FaceDirectionAngle = Mathf.LerpAngle(_FaceDirectionAngle, _WanderAngle, 3.0f * Time.deltaTime);
+		if (Mathf.DeltaAngle(_FaceDirectionAngle, _WanderAngle) < 1.0f)
 		{
 			_WanderAngle = Random.Range(-360.0f, 360.0f);
 		}
@@ -722,11 +723,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 			// Look at the player
 			if (_InSquad)
 			{
-				_RotationAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _PlayerTransform.position)).eulerAngles.y;
+				_FaceDirectionAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _PlayerTransform.position)).eulerAngles.y;
 			}
 			else
 			{
-				_RotationAngle = Quaternion.LookRotation(delta).eulerAngles.y;
+				_FaceDirectionAngle = Quaternion.LookRotation(delta).eulerAngles.y;
 			}
 		}
 
@@ -887,26 +888,26 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		Vector3 pos = _LatchedTransform.position + _LatchedOffset;
 		bool useY = _CurrentState == PikminStates.Carry;
 
-		if (_TargetObjectCollider != null)
-		{
-			/*Vector3 thisPos = _Transform.position;
-			Vector3 nextPos = _TargetObjectCollider.ClosestPoint(pos);
-			Vector3 direct = MathUtil.DirectionFromTo(thisPos, nextPos, !useY);
-
-			if (Physics.Raycast(thisPos, direct, out RaycastHit info, 1.5f + _LatchNormalOffset)
-				&& info.transform == _LatchedTransform)
-			{
-				Vector3 resultPos = nextPos + (info.normal * _LatchNormalOffset);
-				if (Physics.OverlapSphere(resultPos, 0.5f, _MapMask).Length == 0)
+		/*		if (_TargetObjectCollider != null)
 				{
-					pos = Vector3.Lerp(thisPos, resultPos, 35 * Time.deltaTime);
+					Vector3 thisPos = _Transform.position;
+					Vector3 nextPos = _TargetObjectCollider.ClosestPoint(pos);
+					Vector3 direct = MathUtil.DirectionFromTo(thisPos, nextPos, !useY);
+
+					if (Physics.Raycast(thisPos, direct, out RaycastHit info, 1.5f + _LatchNormalOffset)
+						&& info.transform == _LatchedTransform)
+					{
+						Vector3 resultPos = nextPos + (info.normal * _LatchNormalOffset);
+						if (Physics.OverlapSphere(resultPos, 0.5f, _MapMask).Length == 0)
+						{
+							pos = Vector3.Lerp(thisPos, resultPos, 35 * Time.deltaTime);
+						}
+					}
 				}
-			}*/
-		}
-		else
-		{
-			_TargetObjectCollider = _LatchedTransform.GetComponent<Collider>();
-		}
+				else
+				{
+					_TargetObjectCollider = _LatchedTransform.GetComponent<Collider>();
+				}*/
 
 		Vector3 directionFromPosToObj = MathUtil.DirectionFromTo(pos, _LatchedTransform.position, !useY);
 		_Transform.SetPositionAndRotation(pos, Quaternion.LookRotation(directionFromPosToObj));
@@ -1069,7 +1070,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_Animator.SetBool("Holding", true);
 
 		ChangeState(PikminStates.BeingHeld);
-		_RotationAngle = _PlayerTransform.eulerAngles.y;
+		_FaceDirectionAngle = _PlayerTransform.eulerAngles.y;
 	}
 
 	// We've been thrown!
@@ -1086,7 +1087,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable
 		_TargetObject = null;
 		ChangeState(PikminStates.Thrown);
 
-		_RotationAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_PlayerTransform.position, _Transform.position)).eulerAngles.y;
+		_FaceDirectionAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_PlayerTransform.position, _Transform.position)).eulerAngles.y;
 		PlaySoundForced(_Data._ThrowNoise);
 
 		PikminStatsManager.RemoveFromSquad(this, _Data._PikminColour, _CurrentMaturity);

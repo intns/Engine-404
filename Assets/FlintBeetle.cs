@@ -1,5 +1,6 @@
 using System.Xml.Linq;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -69,7 +70,16 @@ public class FlintBeetle : Entity, IPikminSquish
 			FlintBeetle obj = (FlintBeetle)ent;
 			obj.MoveTowards(_RandomAngle);
 
+			if (Physics.Raycast(obj._Transform.position, obj._Transform.forward, 4.5f, obj._MapMask))
+			{
+				obj._FaceDirection = Random.Range(-360.0f, 360.0f);
+				obj._FSM.SetState((int)FSMStates.Wait, ent);
+				return;
+			}
+
 			_MoveTimer += Time.deltaTime;
+			obj._LifetimeTimer += Time.deltaTime;
+
 			if (_MoveTimer >= _RandomLength)
 			{
 				obj._FSM.SetState((int)FSMStates.Wait, ent);
@@ -97,7 +107,7 @@ public class FlintBeetle : Entity, IPikminSquish
 			FlintBeetle obj = (FlintBeetle)ent;
 
 			_WaitTimer = 0.0f;
-			_WaitLength = Random.Range(1.0f, 4.0f);
+			_WaitLength = Random.Range(0.5f, 2.0f);
 
 			obj._Animator.SetBool("IsPopup", false);
 			obj._Animator.SetBool("IsWaiting", true);
@@ -108,6 +118,8 @@ public class FlintBeetle : Entity, IPikminSquish
 			FlintBeetle obj = (FlintBeetle)ent;
 
 			_WaitTimer += Time.deltaTime;
+			obj._LifetimeTimer += Time.deltaTime;
+
 			if (_WaitTimer >= _WaitLength)
 			{
 				obj._FSM.SetState((int)FSMStates.Move, ent);
@@ -133,11 +145,11 @@ public class FlintBeetle : Entity, IPikminSquish
 
 			if (Random.Range(0.0f, 1.0f) < 0.5f)
 			{
-				obj._Animator.SetTrigger("IsFlip1");
+				obj._Animator.Play("Armature_FlipForwardsAnimation");
 			}
 			else
 			{
-				obj._Animator.SetTrigger("IsFlip2");
+				obj._Animator.Play("Armature_FlipBackwardsAnimation");
 			}
 		}
 
@@ -155,26 +167,55 @@ public class FlintBeetle : Entity, IPikminSquish
 		}
 	}
 
-	enum FSMStates
+	public class StateBurrow : BasicFSMState<Entity>
+	{
+		public StateBurrow(int stateIndex) : base(stateIndex, "Burrowing")
+		{
+		}
+
+		public override void Start(Entity ent, StateArg arg)
+		{
+			FlintBeetle obj = (FlintBeetle)ent;
+
+			obj._Animator.SetBool("IsBurrow", true);
+		}
+
+		public override void Execute(Entity ent)
+		{
+			FlintBeetle obj = (FlintBeetle)ent;
+		}
+
+		public override void Cleanup(Entity ent)
+		{
+			FlintBeetle obj = (FlintBeetle)ent;
+		}
+	}
+
+	enum FSMStates : int
 	{
 		Invisible = 0,
 		Move,
 		Wait,
-		Squished
+		Squished,
+		Burrow,
 	}
 
 	[Header("Settings")]
+	[SerializeField, Tooltip("Set to -1 for infinite")] int _AmountUntilBurrow = 3;
 	[SerializeField] GameObject _ThrownItem = null;
+	[SerializeField] float _LifetimeLength = 45.0f;
 	[Space]
 	[SerializeField] float _ActivationRadius = 5.0f;
 	[SerializeField] LayerMask _ActivationMask = default;
+	[SerializeField] LayerMask _MapMask = default;
 
 	BasicFSM<Entity> _FSM;
 	Animator _Animator = null;
 	Rigidbody _Rigidbody;
 
+	float _LifetimeTimer = 0.0f;
+
 	Vector3 _MoveDirection = Vector3.zero;
-	float _RotationAngle = 0.0f;
 
 	Vector3 _StartingScale = Vector3.zero;
 	float _TargetScale = 0.001f;
@@ -190,34 +231,41 @@ public class FlintBeetle : Entity, IPikminSquish
 		_FSM.AddState(new StateMove((int)FSMStates.Move));
 		_FSM.AddState(new StateWait((int)FSMStates.Wait));
 		_FSM.AddState(new StateSquished((int)FSMStates.Squished));
+		_FSM.AddState(new StateBurrow((int)FSMStates.Burrow));
 		_FSM.SetState((int)FSMStates.Invisible, this);
 
 		_Transform = transform;
 		_StartingScale = _Transform.localScale;
+		_FaceDirection = Random.Range(-360.0f, 360.0f);
 	}
 
 	public new void Update()
 	{
 		_FSM.ExecuteState(this);
+
+		if (_LifetimeTimer > _LifetimeLength)
+		{
+			_FSM.SetState((int)FSMStates.Burrow, this);
+		}
+
 		ApplyScaling();
 	}
 
-	public void FixedUpdate()
+	public new void FixedUpdate()
 	{
-		float storedY = _Rigidbody.velocity.y;
-		_Rigidbody.velocity = _MoveDirection;
-		_MoveDirection = Vector3.up * storedY;
+		base.FixedUpdate();
 
 		if (_MoveDirection != Vector3.zero)
 		{
-			float yRotation = _Transform.eulerAngles.y;
-			yRotation = Mathf.LerpAngle(yRotation, _RotationAngle, 7.5f * Time.fixedDeltaTime);
-			_Transform.rotation = Quaternion.Euler(0.0f, yRotation, 0.0f);
+			_Rigidbody.velocity = _MoveDirection;
+			_MoveDirection = Vector3.Lerp(_MoveDirection, Vector3.zero, 12.5f * Time.fixedDeltaTime);
 		}
 	}
 
 	public new void OnDrawGizmosSelected()
 	{
+		base.OnDrawGizmosSelected();
+
 		Gizmos.DrawWireSphere(transform.position, _ActivationRadius);
 
 		if (_Transform != null)
@@ -246,20 +294,43 @@ public class FlintBeetle : Entity, IPikminSquish
 
 	public void ReleaseItem()
 	{
+		if (_AmountUntilBurrow == 0)
+		{
+			if (_FSM.GetCurrentState()._Index == (int)FSMStates.Burrow)
+			{
+				return;
+			}
+
+			_FSM.SetState((int)FSMStates.Burrow, this);
+		}
+
+		if (_AmountUntilBurrow != -1)
+		{
+			_AmountUntilBurrow--;
+		}
+
+
 		GameObject go = Instantiate(_ThrownItem, _Transform.position + (Vector3.up * 2.5f), Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0.0f));
 		go.GetComponent<Rigidbody>().velocity = (Vector3.up * 35.0f) + (MathUtil.XZToXYZ(Random.insideUnitCircle) * 50.0f);
 	}
 
-	public void MoveTowards(float angle)
+	public void ANIM_RunLoop()
 	{
-		_RotationAngle = angle;
-		_MoveDirection = _Transform.right * 5.0f;
+		if (_FSM.GetCurrentState()._Index == (int)FSMStates.Move)
+		{
+			_Animator.Play("Armature_RunAnimation", 0, 0.4f);
+		}
 	}
 
-	public void Die()
+	public void ANIM_BurrowFinish()
 	{
-		Destroy(_HealthWheelScript.gameObject);
-		Destroy(gameObject);
+		Die();
+	}
+
+	public void MoveTowards(float angle)
+	{
+		LookTowards(angle);
+		_MoveDirection = _Transform.right * 7.0f;
 	}
 
 	public new void OnAttackEnd(PikminAI pikmin)

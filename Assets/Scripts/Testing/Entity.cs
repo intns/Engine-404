@@ -6,6 +6,19 @@ using UnityEngine;
 [System.Serializable]
 public class Entity : MonoBehaviour, IPikminAttack, IHealth
 {
+	[Flags]
+	public enum EntityFlags
+	{
+		None = 0,
+		IsHealthEnabled = 1,      // Should we update the health wheel and 'die'?
+		IsDamageAnimEnabled = 2,  // Should we do the wobble animation?
+		IsVulnerable = 4,         // Can we take (subtract health) damage?
+		ToDestroyOnDeath = 8,     // Should we destroy the object on death?
+		IsAttackAvailable = 16,   // Should we allow Pikmin to run towards and latch to attack?
+		RegenerateHealth = 32,    // Should we regenerate health over time?
+		UseFaceDirection = 64,    // Should we use the face direction to rotate?
+	}
+
 	[Header("Components")]
 	[SerializeField, Range(0.0f, 360.0f)] float _RotationSpeed = 10.0f;
 	[SerializeField, Range(0.0f, 1.0f)] float _RotationAcceleration = 0.1f;
@@ -27,29 +40,18 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	[Header("Editor")]
 	[SerializeField] bool _PlaceOnFloor = false;
 
-	[Flags]
-	public enum EntityFlags
-	{
-		None = 0,
-		IsHealthEnabled = 1,      // Should we update the health wheel and 'die'?
-		IsDamageAnimEnabled = 2,  // Should we do the wobble animation?
-		IsVulnerable = 4,         // Can we take (subtract health) damage?
-		ToDestroyOnDeath = 8,     // Should we destroy the object on death?
-		IsAttackAvailable = 16,   // Should we allow Pikmin to run towards and latch to attack?
-		RegenerateHealth = 32,    // Should we regenerate health over time?
-	}
-
 	public EntityFlags _Flags = EntityFlags.IsHealthEnabled | EntityFlags.IsVulnerable
 			| EntityFlags.IsDamageAnimEnabled | EntityFlags.ToDestroyOnDeath
 			| EntityFlags.IsAttackAvailable;
 
+	protected float _FaceDirection = 0.0f;
 	protected Vector3 _StartSize = Vector3.zero;
 
 	[SerializeField]
 	protected float _CurrentHealth = 0.0f;
 	protected float _DamageAnimationTimer = 0.0f;
-
 	protected bool _IsTakingDamage = false;
+
 
 	protected List<PikminAI> _AttachedPikmin = new List<PikminAI>();
 	protected HealthWheel _HealthWheelScript = null;
@@ -60,6 +62,8 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		_Transform = transform;
 		_StartSize = _Transform.localScale;
 		_CurrentHealth = _MaxHealth;
+
+		_FaceDirection = _Transform.eulerAngles.y;
 
 		_HealthWheelScript = Instantiate(_HealthWheelPrefab, transform.position + _HealthWheelOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
 		_HealthWheelScript._Parent = transform;
@@ -72,6 +76,12 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 
 	public virtual void Update()
 	{
+		// Hell...
+		if (_Transform.position.y < -500)
+		{
+			Destroy(gameObject);
+		}
+
 		if (_Flags.HasFlag(EntityFlags.IsDamageAnimEnabled))
 		{
 			ScaleDamageAnimation();
@@ -85,6 +95,19 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		if (_Flags.HasFlag(EntityFlags.RegenerateHealth))
 		{
 			RegenerateHealth();
+		}
+	}
+
+	public virtual void FixedUpdate()
+	{
+		if (_Flags.HasFlag(EntityFlags.UseFaceDirection))
+		{
+			float faceDir = GetFaceDirection();
+			if (Mathf.Abs(faceDir - _FaceDirection) > 0.01f)
+			{
+				faceDir = Mathf.LerpAngle(faceDir, _FaceDirection, 7.5f * Time.fixedDeltaTime);
+				_Transform.rotation = Quaternion.Euler(0.0f, faceDir, 0.0f);
+			}
 		}
 	}
 
@@ -206,51 +229,27 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	#region Public Methods
 	public float GetFaceDirection()
 	{
-		return _Transform.eulerAngles.y * Mathf.Deg2Rad;
+		return _Transform.eulerAngles.y;
 	}
 
-	public float ChangeFaceDirection(Transform target)
+	public void Die(bool fadeHealthWheel = true)
 	{
-		float rotSpeed = _RotationSpeed;
-		float rotAccel = _RotationAcceleration;
-
-		Vector3 targetPos = target.position;
-		Vector3 pos = _Transform.position;
-
-		float angleDist = MathUtil.AngleDistance(MathUtil.AngleXZ(targetPos, pos), GetFaceDirection());
-
-		float limit = (Mathf.Deg2Rad * rotSpeed) * Mathf.PI;
-		float approxSpeed = angleDist * rotAccel;
-		if (Mathf.Abs(approxSpeed) > limit)
+		if (!fadeHealthWheel)
 		{
-			approxSpeed = (approxSpeed > 0.0f) ? limit : -limit;
+			Destroy(_HealthWheelScript.gameObject);
 		}
 
-		float faceDir = MathUtil.RoundAngle(approxSpeed + GetFaceDirection());
-		_Transform.eulerAngles = new Vector3(0, faceDir * Mathf.Rad2Deg, 0);
-		return angleDist;
+		Destroy(gameObject);
 	}
 
-	public float ChangeFaceDirection(Vector3 target)
+	public void LookTowards(float angle)
 	{
-		float rotSpeed = _RotationSpeed;
-		float rotAccel = _RotationAcceleration;
+		_FaceDirection = angle;
+	}
 
-		Vector3 targetPos = target;
-		Vector3 pos = _Transform.position;
-
-		float angleDist = MathUtil.AngleDistance(MathUtil.AngleXZ(targetPos, pos), GetFaceDirection());
-
-		float limit = (Mathf.Deg2Rad * rotSpeed) * Mathf.PI;
-		float approxSpeed = angleDist * rotAccel;
-		if (Mathf.Abs(approxSpeed) > limit)
-		{
-			approxSpeed = (approxSpeed > 0.0f) ? limit : -limit;
-		}
-
-		float faceDir = MathUtil.RoundAngle(approxSpeed + GetFaceDirection());
-		_Transform.eulerAngles = new Vector3(0, faceDir * Mathf.Rad2Deg, 0);
-		return angleDist;
+	public void LookTowards(Vector3 position)
+	{
+		_FaceDirection = MathUtil.AngleXZ(_Transform.position, position) * Mathf.Rad2Deg;
 	}
 
 	public void SetupRadarObject()
