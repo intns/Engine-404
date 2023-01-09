@@ -43,7 +43,7 @@ public class PlayerMovementController : MonoBehaviour
 	void Awake()
 	{
 		_Controller = GetComponent<CharacterController>();
-		_Controller.detectCollisions = false;
+		// _Controller.detectCollisions = false;
 
 		_SlideRayDist = (_Controller.height * .5f) + _Controller.radius;
 		_SlideLimit = _Controller.slopeLimit - .1f;

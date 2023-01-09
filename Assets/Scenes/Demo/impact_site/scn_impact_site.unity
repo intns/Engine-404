@@ -9906,7 +9906,7 @@ MonoBehaviour:
   _EndPosition: {fileID: 583128730}
   _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
     type: 3}
-  _PikminToPush: 20
+  _PikminToPush: 10
   _TimePerPush: 2
   _StepCount: 12
   _PushMoveCurve:
@@ -9943,7 +9943,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _PushStartPosition: {fileID: 6328603898649311964}
-  _DistancePerPikmin: 0.45
+  _DistancePerPikmin: 1
 --- !u!1001 &1388807805
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15561,7 +15561,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5333269605910967518}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 4.48, y: 0.615, z: 2.977}
+  m_LocalPosition: {x: 4.6, y: 0.615, z: 2.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
