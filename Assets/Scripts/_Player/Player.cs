@@ -115,22 +115,6 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 			{
 				Die();
 			}
-
-			// BUGFIX: Whistle line clips backwards and all sorts if you don't check the length
-			if (MathUtil.DistanceTo(transform.position, _WhistleController._Reticle.position) < 5)
-			{
-				_WhistleLine.SetPosition(0, Vector3.zero);
-				_WhistleLine.SetPosition(1, Vector3.zero);
-			}
-			else
-			{
-				// Offset the whistle line from the player position and then the reticle position
-				Vector3 dir1 = MathUtil.DirectionFromTo(transform.position, _WhistleController._Reticle.position, true);
-				Vector3 dir2 = MathUtil.DirectionFromTo(_WhistleController._Reticle.position, transform.position, true);
-
-				_WhistleLine.SetPosition(0, transform.position + dir1);
-				_WhistleLine.SetPosition(1, _WhistleController._Reticle.position + dir2);
-			}
 		}
 		else
 		{
@@ -160,6 +144,25 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	public void PikminExtinction()
 	{
 		StartCoroutine(IE_PikminExtinctionSequence());
+	}
+
+	public void SetWhistleLine(Vector3 destination)
+	{
+		// BUGFIX: Whistle line clips backwards and all sorts if you don't check the length
+		if (MathUtil.DistanceTo(transform.position, destination) < 5.0f)
+		{
+			_WhistleLine.SetPosition(0, Vector3.zero);
+			_WhistleLine.SetPosition(1, Vector3.zero);
+		}
+		else
+		{
+			// Offset the whistle line from the player position and then the reticle position
+			Vector3 dir1 = MathUtil.DirectionFromTo(transform.position, destination, true);
+			Vector3 dir2 = MathUtil.DirectionFromTo(destination, transform.position, true);
+
+			_WhistleLine.SetPosition(0, transform.position + dir1);
+			_WhistleLine.SetPosition(1, destination + dir2);
+		}
 	}
 
 	public void Pause(PauseType type)

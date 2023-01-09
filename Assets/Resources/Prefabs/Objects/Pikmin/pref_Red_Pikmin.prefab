@@ -771,7 +771,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8995407233621106174}
-  m_LocalRotation: {x: -0.70177674, y: 0.045996763, z: 0.7109038, w: -0.0031021782}
+  m_LocalRotation: {x: -0.70177674, y: 0.045996755, z: 0.7109038, w: -0.0031021773}
   m_LocalPosition: {x: -2.5200012, y: 0.00000018207356, z: 1.52}
   m_LocalScale: {x: 1.0000077, y: 1, z: 1.0000105}
   m_ConstrainProportionsScale: 0
@@ -816,7 +816,7 @@ Transform:
   - {fileID: 3315742269374022514}
   - {fileID: 1964934988681414094}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1023579018677027718
 Rigidbody:
@@ -934,13 +934,14 @@ MonoBehaviour:
   _WanderAngle: 0
   _SuckNectarTimer: 0
   _NectarTransform: {fileID: 0}
+  _PressedTimer: 0
   _CurrentStatSpecifier: 0
   _CurrentMoveSpeed: 0
   _AddedVelocity: {x: 0, y: 0, z: 0}
   _DirectionVector: {x: 0, y: 0, z: 0}
   _EulerAngles: {x: 0, y: 0, z: 0}
   _RagdollTime: 0
-  _RotationAngle: 0
+  _FaceDirectionAngle: 0
   _MapMask:
     serializedVersion: 2
     m_Bits: 512

@@ -95,6 +95,8 @@ public class WhistleController : MonoBehaviour
 	{
 		while (enabled)
 		{
+			Vector3 targetReticlePos = _Reticle.position;
+
 			if (!GameManager.IsPaused)
 			{
 				if (!_Reticle.gameObject.activeInHierarchy)
@@ -105,16 +107,14 @@ public class WhistleController : MonoBehaviour
 				// Check if there is a controller attached
 				if (_PlayerInput.currentControlScheme != "KeyboardAndMouse")
 				{
-					Vector3 directionVector = new Vector3(_Movement.x * _MoveSpeed, 0, _Movement.y * _MoveSpeed);
+					Vector3 directionVector = new(_Movement.x * _MoveSpeed, 0, _Movement.y * _MoveSpeed);
 					//Rotate the input vector into camera space so up is camera's up and right is camera's right
 					directionVector = _MainCamera.transform.rotation * directionVector;
 
 					_OffsetFromPlayer.x += directionVector.x;
 					_OffsetFromPlayer.y += directionVector.z;
 
-					float totalDistanceSquared = (_OffsetFromPlayer.x * _OffsetFromPlayer.x) +
-						(_OffsetFromPlayer.y * _OffsetFromPlayer.y);
-
+					float totalDistanceSquared = _OffsetFromPlayer.sqrMagnitude;
 					if (totalDistanceSquared > _MaxDistFromPlayer * _MaxDistFromPlayer)
 					{
 						float totalDistance = _MaxDistFromPlayer / Mathf.Sqrt(totalDistanceSquared);
@@ -122,18 +122,18 @@ public class WhistleController : MonoBehaviour
 						_OffsetFromPlayer.y *= totalDistance;
 					}
 
-					Vector3 currentPosition = new Vector3(_PlayerTransform.position.x + _OffsetFromPlayer.x,
+					Vector3 currentPosition = new(_PlayerTransform.position.x + _OffsetFromPlayer.x,
 						transform.position.y,
 						_PlayerTransform.position.z + _OffsetFromPlayer.y);
 
 					// Assign our position to the reticles position to the new position!
-					transform.position = _Reticle.position = currentPosition;
+					transform.position = targetReticlePos = currentPosition;
 
 					currentPosition.y += _ParticleRaycastAddedHeight;
 					if (Physics.Raycast(currentPosition, Vector3.down, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
 					{
 						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
-						transform.position = _Reticle.position = target;
+						transform.position = targetReticlePos = target;
 					}
 				}
 				else
@@ -145,7 +145,7 @@ public class WhistleController : MonoBehaviour
 						if (Physics.Raycast(ray, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
 						{
 							Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
-							transform.position = _Reticle.position = target;
+							transform.position = targetReticlePos = target;
 						}
 					}
 					catch
@@ -165,6 +165,9 @@ public class WhistleController : MonoBehaviour
 					_Reticle.gameObject.SetActive(false);
 				}
 			}
+
+			_Reticle.position = Vector3.Lerp(_Reticle.position, targetReticlePos, 0.75f);
+			Player._Instance.SetWhistleLine(_Reticle.position);
 
 			yield return null;
 		}
