@@ -42,6 +42,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 			| EntityFlags.IsAttackAvailable;
 
 	protected float _FaceDirection = 0.0f;
+	protected Vector3 _EulerAngles = Vector3.zero;
 	protected Vector3 _StartSize = Vector3.zero;
 
 	[SerializeField]
@@ -68,6 +69,8 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 
 	public virtual void Update()
 	{
+		_EulerAngles = _Transform.eulerAngles;
+
 		// Hell...
 		if (_Transform.position.y < -500)
 		{
@@ -221,7 +224,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	#region Public Methods
 	public float GetFaceDirection()
 	{
-		return _Transform.eulerAngles.y;
+		return _EulerAngles.y;
 	}
 
 	public void Die(bool fadeHealthWheel = true)

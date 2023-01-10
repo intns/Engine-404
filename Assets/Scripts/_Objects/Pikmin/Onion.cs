@@ -198,6 +198,7 @@ public class Onion : MonoBehaviour
 			if (!_InMenu)
 			{
 				Player._Instance.Pause(PauseType.Paused);
+				StartCoroutine(FadeInCanvas());
 				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 				{
 					_OnionCanvas.gameObject.SetActive(true);
@@ -215,8 +216,6 @@ public class Onion : MonoBehaviour
 					};
 
 					_InMenu = true;
-
-					StartCoroutine(FadeInCanvas());
 				}));
 			}
 			else if (_CurPikminAmounts._InSquad != _OldPikminAmounts._InSquad ||

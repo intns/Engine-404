@@ -1,10 +1,5 @@
-using System.Xml.Linq;
 using UnityEditor;
-using UnityEditor.Rendering;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class FlintBeetle : Entity, IPikminSquish, IInteraction
 {
@@ -56,7 +51,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 		{
 			FlintBeetle obj = (FlintBeetle)ent;
 
-			_RandomAngle = Random.Range(-360.0f, 360.0f);
+				_RandomAngle = Random.Range(-360.0f, 360.0f);
 			_RandomLength = Random.Range(3.0f, 6.0f);
 
 			_MoveTimer = 0.0f;
@@ -73,12 +68,18 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			obj.MoveTowards(_RandomAngle);
 			obj.CheckForBurrow();
 
-			if (Physics.Raycast(obj._Transform.position, obj._Transform.forward, 3.5f, obj._MapMask)
-				&& obj._Rigidbody.velocity.sqrMagnitude <= 5.0f)
+			if (Physics.Raycast(obj._Transform.position + Vector3.up, obj._Transform.forward,
+						out RaycastHit hit, 5.5f, obj._MapMask, QueryTriggerInteraction.Ignore))
 			{
-				obj._FaceDirection = 360 - obj._FaceDirection;
-				obj._FSM.SetState((int)FSMStates.Wait, ent);
-				return;
+				// Check angle of the wall
+				float wallAngle = Vector3.Angle(Vector3.up, hit.normal);
+
+				if (wallAngle > 65.0f)
+				{
+					obj._FaceDirection = Random.Range(-360.0f, 360.0f);
+					obj._FSM.SetState((int)FSMStates.Wait, ent);
+					return;
+				}
 			}
 
 			_MoveTimer += Time.deltaTime;
