@@ -20,9 +20,6 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	}
 
 	[Header("Components")]
-	[SerializeField, Range(0.0f, 360.0f)] float _RotationSpeed = 10.0f;
-	[SerializeField, Range(0.0f, 1.0f)] float _RotationAcceleration = 0.1f;
-	[Space]
 	[SerializeField, Range(0.0f, 1.0f)] float _LifeRegenerationRatio = 0.01f;
 	[Space]
 	[SerializeField, Range(0.05f, 3.0f)] float _HorizontalDamageAnimFactor = 1.0f;
@@ -66,12 +63,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		_FaceDirection = _Transform.eulerAngles.y;
 
 		_HealthWheelScript = Instantiate(_HealthWheelPrefab, transform.position + _HealthWheelOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
-		_HealthWheelScript._Parent = transform;
-		_HealthWheelScript._Offset = _HealthWheelOffset;
-		_HealthWheelScript._InUse = true;
-		_HealthWheelScript._MaxHealth = _MaxHealth;
-		_HealthWheelScript._CurrentHealth = _MaxHealth;
-		_HealthWheelScript.transform.localScale = Vector3.one * _HealthWheelScale;
+		_HealthWheelScript.Setup(_Transform, _HealthWheelOffset, Vector3.one * _HealthWheelScale, _MaxHealth);
 	}
 
 	public virtual void Update()
@@ -323,7 +315,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	{
 		if (_HealthWheelScript != null)
 		{
-			_HealthWheelScript._CurrentHealth = set;
+			_HealthWheelScript.SetCurrentHealth(set);
 		}
 
 		_CurrentHealth = set;

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,19 +9,19 @@ public class HealthWheel : MonoBehaviour
 	[SerializeField] float _FadeTime = 0.5f;
 	[SerializeField] Gradient _ColorGradient = null;
 
-	[HideInInspector] public Transform _Parent = null;
-	[HideInInspector] public Vector3 _Offset = Vector3.up;
-	[HideInInspector] public bool _InUse = false;
-	[HideInInspector] public float _MaxHealth = 0.0f;
-	[HideInInspector] public float _CurrentHealth = 0.0f;
-	[HideInInspector] public Image _BillboardHealth = null;
-	[HideInInspector] public Canvas _Canvas = null;
-
-	float _Timer = 0.0f;
-	float _HealthTimer = 0.0f;
-	bool _IsFadeIn = false;
-	bool _IsFadeOut = false;
 	CanvasGroup _CanvasGroup = null;
+	Image _BillboardHealth = null;
+	Canvas _Canvas = null;
+
+	Vector3 _Offset = Vector3.up;
+	Transform _Parent = null;
+
+	float _CurrentHealth = 0.0f;
+	float _MaxHealth = 0.0f;
+
+	bool _IsFadeOut = false;
+	bool _IsFadeIn = false;
+	float _Timer = 0.0f;
 
 	void Awake()
 	{
@@ -72,7 +73,7 @@ public class HealthWheel : MonoBehaviour
 			_Timer = 0.0f;
 			_IsFadeOut = true;
 		}
-		
+
 		if (_Parent != null)
 		{
 			transform.position = Vector3.Lerp(transform.position, _Parent.position + _Offset, 0.25f);
@@ -91,5 +92,19 @@ public class HealthWheel : MonoBehaviour
 				Destroy(gameObject); // fucking bugs, working on this for 5 hours, fuck this
 			}
 		}
+	}
+
+	public void Setup(Transform parent, Vector3 offset, Vector3 localScale, float maxHealth)
+	{
+		_Parent = parent;
+		transform.localScale = localScale;
+
+		_Offset = offset;
+		_CurrentHealth = _MaxHealth = maxHealth;
+	}
+
+	public void SetCurrentHealth(float health)
+	{
+		_CurrentHealth = health;
 	}
 }

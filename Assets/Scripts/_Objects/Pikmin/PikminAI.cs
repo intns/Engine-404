@@ -706,7 +706,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		// RIP
 		if (_FireTimer > _Data._FireDeathTimer)
 		{
-			Die();
+			Die(0.5f);
 			return;
 		}
 

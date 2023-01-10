@@ -259,12 +259,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		_CurrentHealth = _MaxHealth;
 
 		_HWScript = Instantiate(_HWObject, transform.position + _HWOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
-		_HWScript._Parent = transform;
-		_HWScript._Offset = _HWOffset;
-		_HWScript._InUse = true;
-		_HWScript._MaxHealth = _MaxHealth;
-		_HWScript._CurrentHealth = _MaxHealth;
-		_HWScript.transform.localScale = Vector3.one * _HWScale;
+		_HWScript.Setup(_Transform, _HWOffset, Vector3.one * _HWScale, _MaxHealth);
 
 		_AnimController._ParentAnimator = _Animator;
 		Debug.Assert(AnimationState.Idle == _AnimController.AddState(_IdleAnim));
@@ -562,7 +557,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 		// Should be called last in case the 
 		SubtractHealth(damage);
-		_HWScript._CurrentHealth = GetCurrentHealth();
+		_HWScript.SetCurrentHealth(_CurrentHealth);
 
 		if (GetCurrentHealth() <= 0)
 		{

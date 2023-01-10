@@ -41,13 +41,7 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 		{
 			// Find a health wheel that hasn't been claimed already
 			_HWScript = Instantiate(_HWObject, transform.position + _HWOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
-			// Apply all of the required variables 
-			_HWScript._Parent = transform;
-			_HWScript._Offset = _HWOffset;
-			_HWScript._InUse = true;
-			_HWScript._MaxHealth = _MaxHealth;
-			_HWScript._CurrentHealth = _MaxHealth;
-			_HWScript.transform.localScale = Vector3.one * _HWScale;
+			_HWScript.Setup(transform, _HWOffset, Vector3.one * _HWScale, _MaxHealth);
 		}
 	}
 
@@ -124,7 +118,7 @@ public class EnemyDamageScript : MonoBehaviour, IHealth
 	public float SubtractHealth(float take)
 	{
 		_CurrentHealth -= take;
-		_HWScript._CurrentHealth = GetCurrentHealth();
+		_HWScript.SetCurrentHealth(_CurrentHealth);
 		return _CurrentHealth;
 	}
 
