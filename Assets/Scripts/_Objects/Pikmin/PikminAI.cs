@@ -175,6 +175,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		_Transform = transform;
 	}
 
+	void OnDisable()
+	{
+		GameManager.OnPauseEvent -= OnPauseEvent;
+	}
+
 	void Awake()
 	{
 		_Rigidbody = GetComponent<Rigidbody>();
@@ -222,7 +227,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		}
 		else
 		{
-			_Rigidbody.isKinematic = false;
+			if (_Rigidbody != null)
+			{
+				_Rigidbody.isKinematic = false;
+			}
 		}
 	}
 
@@ -259,9 +267,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				break;
 			case PikminStates.Push:
 				HandlePush();
-				break;
-			case PikminStates.OnFire:
-				HandleOnFire();
 				break;
 			case PikminStates.SuckNectar:
 				HandleSuckNectar();
@@ -312,6 +317,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			case PikminStates.Dead:
 			case PikminStates.Carry:
 				return;
+			case PikminStates.OnFire:
+				HandleOnFire();
+				break;
 			case PikminStates.RunTowards:
 				HandleRunningTowards();
 				break;
@@ -693,7 +701,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 	void HandleOnFire()
 	{
-		_FireTimer += Time.deltaTime;
+		_FireTimer += Time.fixedDeltaTime;
 
 		// RIP
 		if (_FireTimer > _Data._FireDeathTimer)
@@ -702,7 +710,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			return;
 		}
 
-		_FaceDirectionAngle = Mathf.LerpAngle(_FaceDirectionAngle, _WanderAngle, 3.0f * Time.deltaTime);
+		_FaceDirectionAngle = Mathf.LerpAngle(_FaceDirectionAngle, _WanderAngle, 3.0f * Time.fixedDeltaTime);
 		if (Mathf.DeltaAngle(_FaceDirectionAngle, _WanderAngle) < 1.0f)
 		{
 			_WanderAngle = Random.Range(-360.0f, 360.0f);

@@ -275,6 +275,11 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 
 	public void ActFire()
 	{
+		if (_DamageCooldown < 0)
+		{
+			Camera.main.GetComponent<CameraFollow>().Shake(1.0f);
+		}
+
 		SubtractHealth(_MaxHealth / 6.0f);
 	}
 
