@@ -26,7 +26,7 @@ public class PikminSproutPath
 
 	public Vector3 GetPosition()
 	{
-		position += GetSpeed() * Time.fixedDeltaTime;
+		position += GetSpeed() * Time.deltaTime;
 		return startPosition + new Vector3((float)position * distance.x, (float)GetYPosition(), (float)position * distance.z);
 	}
 
