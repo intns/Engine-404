@@ -147,7 +147,7 @@ public class Onion : MonoBehaviour
 							}
 
 							_ResultAmount._InOnion = Mathf.Max(_ResultAmount._InOnion - 1, 0);
-							_ResultAmount._InSquad++;
+							_ResultAmount._InSquad = Mathf.Max(_ResultAmount._InSquad + 1, PikminStatsManager._MaxOnField);
 						}
 						break;
 					default:
