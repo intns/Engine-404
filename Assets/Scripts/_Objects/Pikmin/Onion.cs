@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -61,8 +62,8 @@ public class Onion : MonoBehaviour
 	float _UpDownAxis;
 	float _InputTimer = 0;
 
-	PikminAmount _CurPikminAmounts;
-	PikminAmount _OldPikminAmounts;
+	PikminAmount _OriginalAmount;
+	PikminAmount _ResultAmount;
 
 	public PikminColour Colour { get { return _Colour; } private set { } }
 	public bool OnionActive { get; set; }
@@ -117,7 +118,7 @@ public class Onion : MonoBehaviour
 				{
 					// Up on the stick / W
 					case > 0.25f:
-						if (_CurPikminAmounts._InSquad > 0)
+						if (_ResultAmount._InSquad > 0)
 						{
 							if (_UpDownAxis > 0.8f)
 							{
@@ -128,13 +129,13 @@ public class Onion : MonoBehaviour
 								_InputTimer = 0.1f;
 							}
 
-							_CurPikminAmounts._InSquad--;
-							_CurPikminAmounts._InOnion++;
+							_ResultAmount._InSquad = Mathf.Max(_ResultAmount._InSquad - 1, 0);
+							_ResultAmount._InOnion++;
 						}
 						break;
 					// Down on the stick / S
 					case < -0.25f:
-						if (_CurPikminAmounts._InOnion > 0)
+						if (_ResultAmount._InOnion > 0)
 						{
 							if (_UpDownAxis < -0.8f)
 							{
@@ -145,13 +146,8 @@ public class Onion : MonoBehaviour
 								_InputTimer = 0.1f;
 							}
 
-							int totalAdd = _CurPikminAmounts._InSquad - _OldPikminAmounts._InSquad;
-							if (_CurPikminAmounts._InSquad + 1 <= PikminStatsManager._MaxOnField
-								&& totalAdd + PikminStatsManager.GetTotalOnField() < PikminStatsManager._MaxOnField)
-							{
-								_CurPikminAmounts._InOnion--;
-								_CurPikminAmounts._InSquad++;
-							}
+							_ResultAmount._InOnion = Mathf.Max(_ResultAmount._InOnion - 1, 0);
+							_ResultAmount._InSquad++;
 						}
 						break;
 					default:
@@ -163,10 +159,8 @@ public class Onion : MonoBehaviour
 				_InputTimer -= Time.deltaTime;
 			}
 
-
-
-			_InOnionText.text = $"{_CurPikminAmounts._InOnion}";
-			_InSquadText.text = $"{_CurPikminAmounts._InSquad}";
+			_InOnionText.text = $"{_ResultAmount._InOnion}";
+			_InSquadText.text = $"{_ResultAmount._InSquad}";
 			_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
 		}
 	}
@@ -203,58 +197,52 @@ public class Onion : MonoBehaviour
 				{
 					_OnionCanvas.gameObject.SetActive(true);
 
-					_CurPikminAmounts = new PikminAmount
+					_OriginalAmount = new()
 					{
-						_InSquad = PikminStatsManager.GetTotalInSquad(_Colour),
-						_InOnion = PikminStatsManager.GetTotalInOnion(_Colour)
+						_InOnion = PikminStatsManager.GetTotalInOnion(_Colour),
+						_InSquad = PikminStatsManager.GetTotalInSquad(_Colour)
 					};
 
-					_OldPikminAmounts = new PikminAmount
-					{
-						_InOnion = _CurPikminAmounts._InOnion,
-						_InSquad = _CurPikminAmounts._InSquad
-					};
+					_ResultAmount = _OriginalAmount;
 
 					_InMenu = true;
 				}));
 			}
-			else if (_CurPikminAmounts._InSquad != _OldPikminAmounts._InSquad ||
-				_CurPikminAmounts._InOnion != _OldPikminAmounts._InOnion)
+			else if (_ResultAmount._InSquad != _OriginalAmount._InSquad && _ResultAmount._InOnion != _OriginalAmount._InOnion)
 			{
+				StartCoroutine(FadeOutCanvas());
 				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 				{
 					_OnionCanvas.gameObject.SetActive(false);
 					Player._Instance.Pause(PauseType.Unpaused);
 					_InMenu = false;
 
-					int fieldDifference = _CurPikminAmounts._InSquad - _OldPikminAmounts._InSquad;
+					// 10 - 5 == 5 pikmin coming out
+					// 5 - 10 == 5 pikmin going in
+					int fieldDifference = _ResultAmount._InSquad - _OriginalAmount._InSquad;
+					bool isSpawning = fieldDifference > 0;
+					bool isTaking = fieldDifference < 0;
 
-					if (fieldDifference > 0)
+					if (isSpawning)
 					{
 						StartCoroutine(IE_SpawnPikmin(fieldDifference));
 					}
-					else if (fieldDifference < 0)
+					else if (isTaking)
 					{
-						Collider[] pikmin = Physics.OverlapSphere(_CarryEndpoint.position, 50f, _PikminMask);
-						if (pikmin.Length == 0)
-						{
-							return;
-						}
+						List<PikminAI> pikmin = PikminStatsManager._InSquad.Where(x => x.GetColour() == _Colour).ToList();
+						int amount = Mathf.Abs(fieldDifference);
 
-						for (int i = 0; i < Mathf.Abs(fieldDifference); i++)
+						Debug.Assert(amount <= pikmin.Count, "Pikmin squad doesn't have as many Pikmin as the Onion wants to take");
+
+						for (int i = 0; i < amount; i++)
 						{
-							PikminAI pikai = pikmin[i].GetComponent<PikminAI>();
-							if (pikai._InSquad)
-							{
-								pikai.RemoveFromSquad();
-								PikminStatsManager.Add(pikai._Data._PikminColour, pikai._CurrentMaturity, PikminStatSpecifier.InOnion);
-								PikminStatsManager.Remove(pikai._Data._PikminColour, pikai._CurrentMaturity, PikminStatSpecifier.OnField);
-								Destroy(pikmin[i].gameObject);
-							}
+							PikminAI ai = pikmin[i].GetComponent<PikminAI>();
+							ai.RemoveFromSquad();
+							PikminStatsManager.Add(ai._Data._PikminColour, ai._CurrentMaturity, PikminStatSpecifier.InOnion);
+							PikminStatsManager.Remove(ai._Data._PikminColour, ai._CurrentMaturity, PikminStatSpecifier.OnField);
+							Destroy(ai.gameObject);
 						}
 					}
-
-					StartCoroutine(FadeOutCanvas());
 				}));
 			}
 		}
@@ -391,7 +379,7 @@ public class Onion : MonoBehaviour
 		yield return new WaitForSeconds(0.25f);
 
 		PikminTypeStats stats = PikminStatsManager.GetStats(_Colour);
-		List<PikminMaturity> toSpawn = new List<PikminMaturity>();
+		List<PikminMaturity> toSpawn = new();
 
 		for (int i = 0; i < amount; i++)
 		{
@@ -460,7 +448,7 @@ public class Onion : MonoBehaviour
 	IEnumerator FadeInCanvas()
 	{
 		float t = 0;
-		float time = 0.5f;
+		float time = 0.25f;
 		while (t <= time)
 		{
 			t += Time.deltaTime;
@@ -472,7 +460,7 @@ public class Onion : MonoBehaviour
 	IEnumerator FadeOutCanvas()
 	{
 		float t = 0;
-		float time = 0.5f;
+		float time = 0.25f;
 		while (t <= time)
 		{
 			t += Time.deltaTime;
@@ -519,15 +507,16 @@ public class Onion : MonoBehaviour
 
 		// Get offset on a circle, converted to 3d coords
 		Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+		Vector3 endPos = hit.point + basePos * _DisperseRadius;
 
 		// Spawn the sprout just above the onion
-		GameObject pikmin = Instantiate(_PikminSprout, hit.point + basePos * _DisperseRadius, Quaternion.identity);
+		GameObject pikmin = Instantiate(_PikminSprout, endPos, Quaternion.identity);
 		PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
 
 		PikminSpawnData data = new()
 		{
 			_OriginPosition = pikmin.transform.position,
-			_EndPosition = hit.point + basePos * _DisperseRadius,
+			_EndPosition = endPos + Vector3.up * 4,
 			_Colour = colour,
 		};
 

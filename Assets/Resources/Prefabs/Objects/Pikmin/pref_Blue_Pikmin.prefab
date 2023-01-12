@@ -215,7 +215,7 @@ Transform:
   - {fileID: 6837907023827560833}
   - {fileID: 6923971292595485314}
   m_Father: {fileID: 0}
-  m_RootOrder: 65
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &8459520912960126154
 Rigidbody:
@@ -300,7 +300,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Data: {fileID: 11400000, guid: 0b84675161ac2f44cac1d648732027a7, type: 2}
+  _HeadBoneTransform: {fileID: 6755249790040152125}
   _FireVFX: {fileID: 3484293732827748374}
+  _AttackVFX: {fileID: 8926484042661614526, guid: 48a282b93383d564bbc5c93f20f3f52e,
+    type: 3}
   _LatchNormalOffset: 0.5
   _StoppingDistance: 0.25
   _IdleTickRate: 0.3
@@ -333,13 +336,14 @@ MonoBehaviour:
   _WanderAngle: 0
   _SuckNectarTimer: 0
   _NectarTransform: {fileID: 0}
+  _PressedTimer: 0
   _CurrentStatSpecifier: 0
   _CurrentMoveSpeed: 0
   _AddedVelocity: {x: 0, y: 0, z: 0}
   _DirectionVector: {x: 0, y: 0, z: 0}
   _EulerAngles: {x: 0, y: 0, z: 0}
   _RagdollTime: 0
-  _RotationAngle: 0
+  _FaceDirectionAngle: 0
   _MapMask:
     serializedVersion: 2
     m_Bits: 512

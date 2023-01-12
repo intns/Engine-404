@@ -172,6 +172,8 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 		}
 	}
 
+	// TODO: Fix bug with Pikmin running towards and changing state while running, causing
+	// jittering
 	public Vector3 GetPushPosition(PikminAI ai)
 	{
 		// Check if the AI is already in the pushing list

@@ -46,7 +46,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	[Header("Components")]
 	// Holds everything that makes a Pikmin unique
 	public PikminObject _Data = null;
+	[SerializeField] Transform _HeadBoneTransform = null;
 	[SerializeField] VisualEffect _FireVFX = null;
+	[SerializeField] VisualEffectAsset _AttackVFX = null;
 
 	[Header("Behaviour")]
 	[SerializeField] float _LatchNormalOffset = 0.5f;
@@ -128,6 +130,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	public Vector3 _LatchedOffset = Vector3.zero;
 	[SerializeField] float _HeldAudioTimer = 0.0f;
 
+	VisualEffect _AttackVFXInstance = null;
+
 	public bool _InSquad { get; private set; } = false;
 	#endregion
 
@@ -172,6 +176,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	{
 		GameObject fObject = new($"{name}_{GetInstanceID()}_formation_pos");
 		_FormationPosition = fObject.transform;
+
+		_AttackVFXInstance = new GameObject().AddComponent<VisualEffect>();
+		_AttackVFXInstance.transform.localScale = Vector3.one * 3.0f;
+		_AttackVFXInstance.visualEffectAsset = _AttackVFX;
+
 		_Transform = transform;
 	}
 
@@ -1216,6 +1225,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	{
 		if (_Attacking != null)
 		{
+			_AttackVFXInstance.transform.position = _HeadBoneTransform.position - (_HeadBoneTransform.forward / 5);
+			_AttackVFXInstance.Play();
+
 			_Attacking.OnAttackRecieve(_Data._AttackDamage);
 			PlaySoundForced(_Data._AttackHitNoise);
 		}
