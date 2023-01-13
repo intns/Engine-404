@@ -756,8 +756,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Data: {fileID: 11400000, guid: 3db7dda9683fc2141b4bb4fd3e588be6, type: 2}
+  _HeadBoneTransform: {fileID: 2674725637939414368}
   _FireVFX: {fileID: 646281800520161637}
-  _AttackVFX: {fileID: 0}
+  _AttackVFX: {fileID: 8926484042661614526, guid: 48a282b93383d564bbc5c93f20f3f52e,
+    type: 3}
   _LatchNormalOffset: 0.5
   _StoppingDistance: 0.25
   _IdleTickRate: 0.3

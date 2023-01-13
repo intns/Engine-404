@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.13561536, g: 0.28956106, b: 0.16844405, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -736,6 +736,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pref_Fiery_Blowhog
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cfdc744e2aadd6d489761793b0c67516,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2675867044847764558, guid: cfdc744e2aadd6d489761793b0c67516,
         type: 3}
@@ -7086,7 +7091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 3.9999826
+  m_Intensity: 7.5
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -7112,11 +7117,11 @@ MonoBehaviour:
   m_AreaLightCookie: {fileID: 0}
   m_IESPoint: {fileID: 0}
   m_IESSpot: {fileID: 0}
-  m_IncludeForRayTracing: 1
+  m_IncludeForRayTracing: 0
   m_AreaLightShadowCone: 120
   m_UseScreenSpaceShadows: 0
   m_InteractsWithSky: 0
-  m_AngularDiameter: 9.06
+  m_AngularDiameter: 40.4
   m_FlareSize: 2
   m_FlareTint: {r: 1, g: 1, b: 1, a: 1}
   m_FlareFalloff: 4
@@ -7147,19 +7152,19 @@ MonoBehaviour:
   m_MaxDepthBias: 0.001
   m_ShadowResolution:
     m_Override: 512
-    m_UseOverride: 1
+    m_UseOverride: 0
     m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
   m_UseContactShadow:
-    m_Override: 0
-    m_UseOverride: 0
-    m_Level: 1
+    m_Override: 1
+    m_UseOverride: 1
+    m_Level: 2
   m_RayTracedContactShadow: 0
   m_ShadowTint: {r: 0, g: 0, b: 0, a: 1}
   m_PenumbraTint: 0
-  m_NormalBias: 0.75
+  m_NormalBias: 1.05
   m_SlopeBias: 0.5
   m_ShadowUpdateMode: 0
   m_AlwaysDrawDynamicShadows: 0
@@ -7183,7 +7188,7 @@ MonoBehaviour:
   m_ShadowVariant: 0
   m_ShadowPrecision: 0
   useOldInspector: 0
-  useVolumetric: 1
+  useVolumetric: 0
   featuresFoldout: 1
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
@@ -7208,13 +7213,13 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.98191476, b: 0.7764706, a: 1}
-  m_Intensity: 3.9999826
+  m_Intensity: 7.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -7247,17 +7252,17 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 4269
+  m_ColorTemperature: 4255.55
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
-  m_ShadowAngle: 9.06
+  m_ShadowAngle: 40.4
 --- !u!1001 &1027372719
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8909,6 +8914,83 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1192240980}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1217903339
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2118839075, guid: eae61279283c81f4290de26f1ba1667e, type: 3}
+      propertyPath: _IsFire
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250917959656504793, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_Name
+      value: pref_Flint_Beetle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -66.32929
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 41.126114
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7173723
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.69669
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -88.324
+      objectReference: {fileID: 0}
+    - target: {fileID: 1880243967514847075, guid: eae61279283c81f4290de26f1ba1667e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: eae61279283c81f4290de26f1ba1667e, type: 3}
 --- !u!1001 &1232770717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16094,6 +16176,61 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531169, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: field of view
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531169, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: m_FOVAxisMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531169, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: near clip plane
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531169, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531183, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: stopNaNs
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531183, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: dithering
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531183, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: antialiasing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531183, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: clearColorMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531183, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: fullscreenPassthrough
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531183, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: allowDynamicResolution
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387086140531183, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: customRenderingSettings
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5644949083514797447, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}

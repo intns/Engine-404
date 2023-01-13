@@ -172,10 +172,12 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		if (type == PauseType.Unpaused)
 		{
 			_UIController.FadeInUI(true);
+			_WhistleLine.enabled = true;
 		}
 		else
 		{
 			_UIController.FadeOutUI();
+			_WhistleLine.enabled = false;
 		}
 
 		_MovementController._Paralysed = type != PauseType.Unpaused;

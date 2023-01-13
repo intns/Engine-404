@@ -136,8 +136,8 @@ public class DayTimeManager : MonoBehaviour
 
 		while (t < timer)
 		{
-			shipTransform.position = Vector3.Lerp(shipStartPosition, shipEndPosition, _ShipLiftCurve.Evaluate(t / timer));
-			mcTransform.position = Vector3.Lerp(mcTransform.position, shipTransform.position + fixedPosOffset, 2.5f * Time.deltaTime);
+			shipTransform.position = Vector3.Lerp(shipStartPosition, shipEndPosition, _ShipLiftCurve.Evaluate(t / timer) * 35.0f * Time.fixedDeltaTime);
+			mcTransform.position = Vector3.Lerp(mcTransform.position, shipTransform.position + fixedPosOffset, 2.5f * Time.fixedDeltaTime);
 
 			if (started == false && t > 7.5f)
 			{

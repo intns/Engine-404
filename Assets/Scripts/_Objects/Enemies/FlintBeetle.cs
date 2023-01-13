@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class FlintBeetle : Entity, IPikminSquish, IInteraction
 {
@@ -215,6 +216,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 	[SerializeField] SkinnedMeshRenderer _Renderer;
 	[SerializeField] Material _NormalMaterial;
 	[SerializeField] Material _FireMaterial;
+	[SerializeField] VisualEffect _FireDistortionVFX;
 
 	BasicFSM<Entity> _FSM;
 	Animator _Animator = null;
@@ -236,7 +238,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 		_Rigidbody = GetComponent<Rigidbody>();
 		_Animator = GetComponent<Animator>();
 
-		_FireTimer = 1.0f;
+		_FireDistortionVFX.Stop();
 
 		_FSM = new();
 		_FSM.AddState(new StateInvisible((int)FSMStates.Invisible));
@@ -266,6 +268,17 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			Material target = !_IsFire ? _NormalMaterial : _FireMaterial;
 			_Renderer.materials[2].Lerp(source, target, _FireTimer / 1.0f);
 			_FireTimer += Time.deltaTime;
+			if (_FireTimer >= 1.0f)
+			{
+				if (_IsFire)
+				{
+					_FireDistortionVFX.Play();
+				}
+				else
+				{
+					_FireDistortionVFX.Stop();
+				}
+			}
 		}
 
 		ApplyScaling();
