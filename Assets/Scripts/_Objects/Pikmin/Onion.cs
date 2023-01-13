@@ -146,8 +146,14 @@ public class Onion : MonoBehaviour
 								_InputTimer = 0.1f;
 							}
 
-							_ResultAmount._InOnion = Mathf.Max(_ResultAmount._InOnion - 1, 0);
-							_ResultAmount._InSquad = Mathf.Max(_ResultAmount._InSquad + 1, PikminStatsManager._MaxOnField);
+							int amount = (_ResultAmount._InSquad + 1) - _OriginalAmount._InSquad;
+							int toSpawn = Mathf.Abs(amount);
+							if ( amount < 0 ||
+								PikminStatsManager.GetTotalOnField() + toSpawn <= PikminStatsManager._MaxOnField)
+							{
+								_ResultAmount._InOnion = Mathf.Max(_ResultAmount._InOnion - 1, 0);
+								_ResultAmount._InSquad++;
+							}
 						}
 						break;
 					default:
@@ -249,7 +255,7 @@ public class Onion : MonoBehaviour
 	}
 
 
-	void OnTriggerEnter(Collider other)
+	void OnTriggerStay(Collider other)
 	{
 		if (other.CompareTag("Player"))
 		{
