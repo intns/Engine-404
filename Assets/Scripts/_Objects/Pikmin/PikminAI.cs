@@ -693,7 +693,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		// Create the soul gameobject, and play the death noise
 		if (_DeathParticle != null)
 		{
-			ParticleSystem soul = Instantiate(_DeathParticle, _Transform.position, Quaternion.Euler(-90, 0, 0)).GetComponent<ParticleSystem>();
+			ParticleSystem soul = Instantiate(_DeathParticle, _Transform.position + Vector3.up * 1.25f, Quaternion.Euler(-90, 0, 0)).GetComponent<ParticleSystem>();
 			ParticleSystem.MainModule soulEffect = soul.main;
 			soulEffect.startColor = _Data._DeathSpiritPikminColour;
 			Destroy(soul.gameObject, 5);

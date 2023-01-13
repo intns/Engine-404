@@ -12,6 +12,8 @@ public class P2CodeTest : Entity
 
 	public class IdleState : BasicFSMState<Entity>
 	{
+		float _Timer = 0.0f;
+
 		public IdleState(int stateIndex) : base(stateIndex, "Idle State")
 		{
 		}
@@ -24,7 +26,20 @@ public class P2CodeTest : Entity
 		public override void Execute(Entity ent)
 		{
 			P2CodeTest obj = (P2CodeTest)ent;
-			Debug.Log("Idle Execute");
+
+			_Timer += Time.deltaTime;
+			if (_Timer > 5.0f)
+			{
+				_Timer = 0.0f;
+
+				if (obj._AttachedPikmin.Count != 0)
+				{
+					while (obj._AttachedPikmin[0])
+					{
+						obj._AttachedPikmin[0].Die();
+					}
+				}
+			}
 		}
 
 		public override void Cleanup(Entity ent)
