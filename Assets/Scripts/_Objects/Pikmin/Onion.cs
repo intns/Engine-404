@@ -148,7 +148,7 @@ public class Onion : MonoBehaviour
 
 							int amount = (_ResultAmount._InSquad + 1) - _OriginalAmount._InSquad;
 							int toSpawn = Mathf.Abs(amount);
-							if ( amount < 0 ||
+							if (amount < 0 ||
 								PikminStatsManager.GetTotalOnField() + toSpawn <= PikminStatsManager._MaxOnField)
 							{
 								_ResultAmount._InOnion = Mathf.Max(_ResultAmount._InOnion - 1, 0);
@@ -522,7 +522,7 @@ public class Onion : MonoBehaviour
 		PikminSpawnData data = new()
 		{
 			_OriginPosition = pikmin.transform.position,
-			_EndPosition = endPos + Vector3.up * 4,
+			_EndPosition = endPos,
 			_Colour = colour,
 		};
 
@@ -537,8 +537,17 @@ public class Onion : MonoBehaviour
 			sproutData.PromoteMaturity();
 		}
 
-		sproutData.OnPluck();
+		PikminAI ai = sproutData.OnPluck();
 		Destroy(sproutData.gameObject);
+
+		if (Physics.Raycast(endPos + Vector3.up * 50, Vector3.down, out RaycastHit info, float.PositiveInfinity, _MapMask))
+		{
+			ai.transform.position = info.point + Vector3.up * 1.5f;
+		}
+		else
+		{
+			ai.transform.position = endPos + Vector3.up * 5.0f;
+		}
 	}
 
 
