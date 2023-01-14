@@ -205,7 +205,21 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 		if (closest == null)
 		{
-			return _PushPoints.First(x => x._Pusher == null || x._Pusher._CurrentState != PikminStates.Push)._Transform.position;
+			foreach (var point in _PushPoints)
+			{
+				if (point._Pusher == null)
+				{
+					return point._Transform.position;
+				}
+				else if (point._Pusher._CurrentState != PikminStates.Push)
+				{
+					point._Pusher = null;
+					return point._Transform.position;
+				}
+			}
+
+			ai.ChangeState(PikminStates.Idle);
+			return Vector3.zero;
 		}
 
 		// Found a point, the new pusher is this Pikmin!
