@@ -771,6 +771,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		{
 			case PikminIntention.Push when _Pushing != null:
 				destination = _Pushing.GetPushPosition(this);
+				if (_CurrentState == PikminStates.Idle)
+				{
+					return;
+				}
 				break;
 			default:
 				destination = ClosestPointOnTarget(_TargetObject, _TargetObjectCollider, _Data._SearchRadius);
