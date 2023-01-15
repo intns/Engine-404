@@ -70,12 +70,18 @@ public class PlayerPikminController : MonoBehaviour
 				EndThrow();
 			}
 
+			_ControlFormation = false;
+			PikminStatsManager.ReassignFormation();
 			return;
 		}
 
 		if (PikminStatsManager.GetTotalInSquad() > 0)
 		{
 			if (_SelectedThrowPikmin == PikminColour.Size)
+			{
+				_SelectedThrowPikmin = GameUtil.GetMajorityColour(PikminStatsManager._InSquad);
+			}
+			else if (PikminStatsManager.GetTotalInSquad(_SelectedThrowPikmin) == 0)
 			{
 				_SelectedThrowPikmin = GameUtil.GetMajorityColour(PikminStatsManager._InSquad);
 			}
@@ -126,7 +132,7 @@ public class PlayerPikminController : MonoBehaviour
 			return;
 		}
 
-		PikminStatsManager._Disbanding = true;
+		PikminStatsManager._IsDisbanding = true;
 
 		// Remove each Pikmin from the squad
 		while (PikminStatsManager._InSquad.Count > 0)
@@ -134,7 +140,7 @@ public class PlayerPikminController : MonoBehaviour
 			PikminStatsManager._InSquad[0].RemoveFromSquad();
 		}
 
-		PikminStatsManager._Disbanding = false;
+		PikminStatsManager._IsDisbanding = false;
 		_CanPlayerAttack = true;
 	}
 
@@ -546,9 +552,7 @@ public class PlayerPikminController : MonoBehaviour
 				Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 				if (Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
 				{
-					Vector3 direction = hit.point - _FormationCenter.transform.position;
-					direction.y = 0;
-					direction.Normalize();
+					Vector3 direction = MathUtil.DirectionFromTo(_FormationCenter.transform.position, hit.point);
 
 					_DirectionToMouse.x = direction.x;
 					_DirectionToMouse.y = direction.z;

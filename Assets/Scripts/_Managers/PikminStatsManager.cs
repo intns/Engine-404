@@ -185,7 +185,7 @@ public static class PikminStatsManager
 	public static PikminTypeStats _YellowStats = new(PikminColour.Yellow);
 
 	public static List<PikminAI> _InSquad = new();
-	public static bool _Disbanding = false;
+	public static bool _IsDisbanding = false;
 
 	// Clears the Squad
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -293,7 +293,7 @@ public static class PikminStatsManager
 	//Sets up formations for the pikmin to use
 	public static void ReassignFormation()
 	{
-		if (_Disbanding)
+		if (_IsDisbanding)
 		{
 			return;
 		}
