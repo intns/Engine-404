@@ -39,8 +39,6 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 
 	public class StateMove : BasicFSMState<Entity>
 	{
-		float _RandomAngle = 0.0f;
-
 		float _RandomLength = 0.0f;
 		float _MoveTimer = 0.0f;
 
@@ -52,8 +50,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 		{
 			FlintBeetle obj = (FlintBeetle)ent;
 
-				_RandomAngle = Random.Range(-360.0f, 360.0f);
-			_RandomLength = Random.Range(3.0f, 6.0f);
+			_RandomLength = Random.Range(1.0f, 2.5f);
 
 			_MoveTimer = 0.0f;
 
@@ -66,18 +63,18 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			FlintBeetle obj = (FlintBeetle)ent;
 
 			obj._LifetimeTimer += Time.deltaTime;
-			obj.MoveTowards(_RandomAngle);
+			obj.MoveForwards();
 			obj.CheckForBurrow();
 
-			if (Physics.Raycast(obj._Transform.position + Vector3.up, obj._Transform.forward,
-						out RaycastHit hit, 5.5f, obj._MapMask, QueryTriggerInteraction.Ignore))
+			if (Physics.Raycast(obj._Transform.position + Vector3.up, obj._Transform.right,
+						out RaycastHit hit, 1.5f, obj._MapMask, QueryTriggerInteraction.Ignore))
 			{
 				// Check angle of the wall
 				float wallAngle = Vector3.Angle(Vector3.up, hit.normal);
 
 				if (wallAngle > 65.0f)
 				{
-					obj._FaceDirection = Random.Range(-360.0f, 360.0f);
+					obj._FaceDirection = Random.Range(-1000.0f, 1000.0f);
 					obj._FSM.SetState((int)FSMStates.Wait, ent);
 					return;
 				}
@@ -86,6 +83,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			_MoveTimer += Time.deltaTime;
 			if (_MoveTimer >= _RandomLength)
 			{
+				obj._FaceDirection = Random.Range(-1000.0f, 1000.0f);
 				obj._FSM.SetState((int)FSMStates.Wait, ent);
 			}
 		}
@@ -182,6 +180,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			FlintBeetle obj = (FlintBeetle)ent;
 
 			obj._Animator.SetBool("IsBurrow", true);
+			Camera.main.GetComponent<CameraFollow>().Shake(5);
 		}
 
 		public override void Execute(Entity ent)
@@ -250,7 +249,8 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 
 		_Transform = transform;
 		_StartingScale = _Transform.localScale;
-		_FaceDirection = Random.Range(-360.0f, 360.0f);
+		_FaceDirection = Random.Range(0.0f, 360.0f);
+		_FireTimer = 0.0f;
 	}
 
 	public new void Update()
@@ -267,6 +267,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			Material source = _IsFire ? _NormalMaterial : _FireMaterial;
 			Material target = !_IsFire ? _NormalMaterial : _FireMaterial;
 			_Renderer.materials[2].Lerp(source, target, _FireTimer / 1.0f);
+
 			_FireTimer += Time.deltaTime;
 			if (_FireTimer >= 1.0f)
 			{
@@ -392,9 +393,8 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 		Die();
 	}
 
-	public void MoveTowards(float angle)
+	public void MoveForwards()
 	{
-		LookTowards(angle);
 		_MoveDirection = _Transform.right * 10.0f;
 	}
 

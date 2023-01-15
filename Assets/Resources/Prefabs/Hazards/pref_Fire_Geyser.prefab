@@ -143,7 +143,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
@@ -163,37 +163,37 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.27
+      value: -66.12998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.18
+      value: 2.8913615
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -25.3
+      value: 41.40999
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9933473
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.014826537
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.11419849
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9927db25464b2504f849625637496d67,
         type: 3}
@@ -213,7 +213,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9927db25464b2504f849625637496d67,
         type: 3}
       propertyPath: m_Name
-      value: pref_Geyser Variant
+      value: pref_Geyser
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9927db25464b2504f849625637496d67,
         type: 3}
@@ -260,8 +260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56fcda29a824f1a4f94303b678bdb506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _RotationSpeed: 10
-  _RotationAcceleration: 0.1
   _LifeRegenerationRatio: 0.01
   _HorizontalDamageAnimFactor: 1
   _VerticalDamageAnimFactor: 1

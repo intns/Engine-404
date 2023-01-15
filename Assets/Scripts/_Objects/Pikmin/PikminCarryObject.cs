@@ -222,8 +222,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	{
 		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
 
-		Vector3 directionToPos = MathUtil.DirectionFromTo(transform.position, position);
-		Vector3 newVelocity = directionToPos * _CurrentMoveSpeed;
+		Vector3 newVelocity = MathUtil.DirectionFromTo(transform.position, position) * _CurrentMoveSpeed;
 		newVelocity.y = _Rigidbody.velocity.y;
 		_MoveVector = newVelocity;
 	}

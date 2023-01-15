@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.13561536, g: 0.28956106, b: 0.16844405, a: 1}
+  m_IndirectSpecularColor: {r: 0.13878204, g: 0.29898885, b: 0.17656328, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3838,16 +3838,6 @@ PrefabInstance:
       propertyPath: _MainVP
       value: 
       objectReference: {fileID: 1403253618}
-    - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
-        type: 3}
-      propertyPath: _DoSequence
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
-        type: 3}
-      propertyPath: _ResetPrefs
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 88255414737738078, guid: 94150e0195867a14e810589cda2189b9,
         type: 3}
       propertyPath: _CeresAnimator
@@ -7718,7 +7708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 7.5
+  m_Intensity: 8.26
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -7780,7 +7770,7 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 1
+    m_Level: 2
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
@@ -7791,8 +7781,8 @@ MonoBehaviour:
   m_RayTracedContactShadow: 0
   m_ShadowTint: {r: 0, g: 0, b: 0, a: 1}
   m_PenumbraTint: 0
-  m_NormalBias: 1.05
-  m_SlopeBias: 0.5
+  m_NormalBias: 4.05
+  m_SlopeBias: 0
   m_ShadowUpdateMode: 0
   m_AlwaysDrawDynamicShadows: 0
   m_UpdateShadowOnLightMovement: 0
@@ -7839,8 +7829,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.98191476, b: 0.7764706, a: 1}
-  m_Intensity: 7.5
+  m_Color: {r: 1, g: 0.97724265, b: 0.740566, a: 1}
+  m_Intensity: 8.26
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -7883,7 +7873,7 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 4255.55
+  m_ColorTemperature: 6131
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -13340,15 +13330,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1273234133456166788, guid: 14349897a953ecf4f84c4e9694931da4,
-        type: 3}
-      propertyPath: _PlaceOnFloor
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1559592660543825051, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
       propertyPath: m_Name
-      value: pref_Geyser Variant
+      value: pref_Geyser
       objectReference: {fileID: 0}
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
@@ -13358,7 +13343,7 @@ PrefabInstance:
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -66.12999
+      value: -66.12998
       objectReference: {fileID: 0}
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
@@ -13368,7 +13353,7 @@ PrefabInstance:
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 41.409992
+      value: 41.40999
       objectReference: {fileID: 0}
     - target: {fileID: 2229028852254195233, guid: 14349897a953ecf4f84c4e9694931da4,
         type: 3}
