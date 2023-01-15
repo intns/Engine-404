@@ -76,6 +76,13 @@ public class CameraFollow : MonoBehaviour
 	Camera _MainCamera = null;
 	Transform _PlayerPosition = null;
 
+	public static CameraFollow _Instance;
+
+	private void OnEnable()
+	{
+		_Instance = this;
+	}
+
 	void Start()
 	{
 		_MainCamera = Camera.main;

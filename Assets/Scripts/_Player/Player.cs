@@ -251,7 +251,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	{
 		_IsHit = true;
 		_AnimController.ChangeState(PlayerAnimation.Damage, true, true);
-		Camera.main.GetComponent<CameraFollow>().Shake(5.0f);
+		CameraFollow._Instance.Shake(5.0f);
 		_DamageCooldown = 2.5f;
 	}
 
@@ -279,7 +279,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	{
 		if (_DamageCooldown < 0)
 		{
-			Camera.main.GetComponent<CameraFollow>().Shake(1.0f);
+			CameraFollow._Instance.Shake(1.0f);
 		}
 
 		SubtractHealth(_MaxHealth / 6.0f);

@@ -85,7 +85,7 @@ public class BaldyLongLegsFoot
 
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
 
-		_Camera = Camera.main.GetComponent<CameraFollow>();
+		_Camera = CameraFollow._Instance;
 		_TargetPosition = _Target.position;
 
 		Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);

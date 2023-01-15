@@ -180,7 +180,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			FlintBeetle obj = (FlintBeetle)ent;
 
 			obj._Animator.SetBool("IsBurrow", true);
-			Camera.main.GetComponent<CameraFollow>().Shake(5);
+			CameraFollow._Instance.Shake(2);
 		}
 
 		public override void Execute(Entity ent)
@@ -349,6 +349,8 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 		{
 			_AmountUntilBurrow--;
 		}
+
+		CameraFollow._Instance.Shake(1);
 
 		GameObject go = Instantiate(_ThrownItem, _Transform.position + (Vector3.up * 2.5f), Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0.0f));
 		go.GetComponent<Rigidbody>().velocity = (Vector3.up * 35.0f) + (MathUtil.XZToXYZ(Random.insideUnitCircle) * 50.0f);

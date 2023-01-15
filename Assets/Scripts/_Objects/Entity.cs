@@ -98,9 +98,9 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		if (_Flags.HasFlag(EntityFlags.UseFaceDirection))
 		{
 			float faceDir = GetFaceDirection();
-			if (Mathf.Abs(faceDir - _FaceDirection) > 0.01f)
+			if (Mathf.DeltaAngle(faceDir, _FaceDirection) > 0.01f)
 			{
-				faceDir = Mathf.LerpAngle(faceDir, _FaceDirection, 7.5f * Time.fixedDeltaTime);
+				faceDir = Mathf.Lerp(faceDir, _FaceDirection, 2.5f * Time.fixedDeltaTime);
 				_Transform.rotation = Quaternion.Euler(0.0f, faceDir, 0.0f);
 			}
 		}
