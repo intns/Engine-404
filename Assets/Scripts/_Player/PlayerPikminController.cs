@@ -159,6 +159,8 @@ public class PlayerPikminController : MonoBehaviour
 		else if (context.canceled)
 		{
 			_ControlFormation = false;
+			_UsingCrowdControl = false;
+
 			PikminStatsManager.ReassignFormation();
 		}
 	}
