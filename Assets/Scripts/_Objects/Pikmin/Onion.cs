@@ -371,9 +371,9 @@ public class Onion : MonoBehaviour
 	/// <param name="toSuck">The Game Object to suck up</param>
 	/// <param name="toProduce">The amount of Pikmin it will produce</param>
 	/// <param name="colour">The colour of the Pikmin it will produce</param>
-	public void StartSuction(GameObject toSuck, int toProduce, PikminColour colour)
+	public void StartSuction(GameObject toSuck, int toProduce)
 	{
-		StartCoroutine(IE_SuctionAnimation(toSuck, toProduce, colour));
+		StartCoroutine(IE_SuctionAnimation(toSuck, toProduce));
 	}
 	#endregion
 
@@ -417,7 +417,7 @@ public class Onion : MonoBehaviour
 	}
 
 	// For handling the suction animation
-	IEnumerator IE_SuctionAnimation(GameObject obj, int toProduce, PikminColour color)
+	IEnumerator IE_SuctionAnimation(GameObject obj, int toProduce)
 	{
 		yield return null;
 
@@ -443,7 +443,7 @@ public class Onion : MonoBehaviour
 
 		Destroy(obj);
 
-		AddSproutsToSpit(toProduce, color);
+		AddSproutsToSpit(toProduce, _Colour);
 
 		yield return new WaitForEndOfFrame();
 		_Animator.SetBool("SuctionHit", false);

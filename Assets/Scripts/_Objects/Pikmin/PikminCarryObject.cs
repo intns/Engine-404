@@ -139,11 +139,11 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			if (targetColour == _ColourToGenerateFor
 				|| _ColourToGenerateFor == PikminColour.Size)
 			{
-				_TargetOnion.StartSuction(gameObject, _PikminToProduceMatchColour, targetColour);
+				_TargetOnion.StartSuction(gameObject, _PikminToProduceMatchColour);
 			}
 			else
 			{
-				_TargetOnion.StartSuction(gameObject, _PikminToProduceNonMatchColour, targetColour);
+				_TargetOnion.StartSuction(gameObject, _PikminToProduceNonMatchColour);
 			}
 
 			if (_CarryText != null && _CarryText.gameObject != null)

@@ -1010,12 +1010,15 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				_AttackingTransform = null;
 				_Attacking = null;
 
+				_FaceDirectionAngle = _EulerAngles.y;
 				_Transform.eulerAngles = new Vector3(0, _EulerAngles.y, 0);
 				break;
 			case PikminStates.Carry:
 				LatchOnto(null);
 				_Carrying?.OnCarryLeave(this);
 				_Carrying = null;
+				
+				_FaceDirectionAngle = _EulerAngles.y;
 				break;
 			case PikminStates.Push:
 				_Pushing?.OnPikminLeave(this);
