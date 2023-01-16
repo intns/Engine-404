@@ -239,6 +239,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Onion, Assembly-CSharp
+        m_MethodName: OnMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c764dee1-0ce6-48bf-8bc6-05d6bcbcd04e
     m_ActionName: BasicControls/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
@@ -359,6 +371,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Onion, Assembly-CSharp
+        m_MethodName: OnPrimaryAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 967672ad-0d0d-4a7d-b1d9-31204d417069
     m_ActionName: BasicControls/PrimaryAction[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -408,9 +432,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TextBoxArea, Assembly-CSharp
-        m_MethodName: BButton
-        m_Mode: 1
+        m_TargetAssemblyTypeName: Onion, Assembly-CSharp
+        m_MethodName: OnWhistle
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1131,8 +1155,8 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 2
   m_Materials:
   - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -2501,7 +2525,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 70
+  field of view: 50
   orthographic: 0
   orthographic size: 7.6
   m_Depth: -1
@@ -2548,8 +2572,8 @@ MonoBehaviour:
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 1
   SMAAQuality: 2
-  dithering: 1
-  stopNaNs: 1
+  dithering: 0
+  stopNaNs: 0
   taaSharpenStrength: 0.6
   TAAQuality: 1
   taaHistorySharpening: 0.35
@@ -4378,6 +4402,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Olimar
+      objectReference: {fileID: 0}
+    - target: {fileID: 1344566383245818819, guid: e262400a60bfc524ebfd762a874ee035,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1344566383245818819, guid: e262400a60bfc524ebfd762a874ee035,
         type: 3}

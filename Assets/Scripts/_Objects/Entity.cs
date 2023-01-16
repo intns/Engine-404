@@ -20,7 +20,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	}
 
 	[Header("Components")]
-	[SerializeField, Range(0.0f, 1.0f)] float _LifeRegenerationRatio = 0.01f;
+	[SerializeField, Range(0.0f, 0.1f)] float _LifeRegenerationRatio = 0.0f;
 	[Space]
 	[SerializeField, Range(0.05f, 3.0f)] float _HorizontalDamageAnimFactor = 1.0f;
 	[SerializeField, Range(0.05f, 3.0f)] float _VerticalDamageAnimFactor = 1.0f;
@@ -100,8 +100,8 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 			float faceDir = GetFaceDirection();
 			if (Mathf.DeltaAngle(faceDir, _FaceDirection) > 0.01f)
 			{
-				faceDir = Mathf.Lerp(faceDir, _FaceDirection, 2.5f * Time.fixedDeltaTime);
-				_Transform.rotation = Quaternion.Euler(0.0f, faceDir, 0.0f);
+				faceDir = Mathf.Lerp(faceDir, _FaceDirection, 7.5f * Time.fixedDeltaTime);
+				_Transform.rotation = Quaternion.Lerp(_Transform.rotation, Quaternion.Euler(0.0f, faceDir, 0.0f), 7.5f * Time.fixedDeltaTime);
 			}
 		}
 	}

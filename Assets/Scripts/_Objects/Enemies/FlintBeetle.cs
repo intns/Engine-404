@@ -83,7 +83,6 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			_MoveTimer += Time.deltaTime;
 			if (_MoveTimer >= _RandomLength)
 			{
-				obj._FaceDirection = Random.Range(-1000.0f, 1000.0f);
 				obj._FSM.SetState((int)FSMStates.Wait, ent);
 			}
 		}
@@ -99,6 +98,8 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 	{
 		float _WaitTimer = 0.0f;
 		float _WaitLength = 0.0f;
+
+		bool _HasRotated = false;
 
 		public StateWait(int stateIndex) : base(stateIndex, "Wait State")
 		{
@@ -127,12 +128,18 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			{
 				obj._FSM.SetState((int)FSMStates.Move, ent);
 			}
+			else if (_WaitTimer >= _WaitLength / 2.0f && !_HasRotated)
+			{
+				_HasRotated = true;
+				obj._FaceDirection = Random.Range(-1000.0f, 1000.0f);
+			}
 		}
 
 		public override void Cleanup(Entity ent)
 		{
 			FlintBeetle obj = (FlintBeetle)ent;
 			obj._Animator.SetBool("IsWaiting", false);
+			_HasRotated = false;
 		}
 	}
 

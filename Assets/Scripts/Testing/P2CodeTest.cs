@@ -31,13 +31,11 @@ public class P2CodeTest : Entity
 			if (_Timer > 5.0f)
 			{
 				_Timer = 0.0f;
-
-				if (obj._AttachedPikmin.Count != 0)
+				PikminAI ai;
+				for (; obj._AttachedPikmin.Count > 0; obj._AttachedPikmin.Remove(ai))
 				{
-					while (obj._AttachedPikmin[0])
-					{
-						obj._AttachedPikmin[0].Die();
-					}
+					ai = obj._AttachedPikmin[0];
+					ai.Die();
 				}
 			}
 		}
