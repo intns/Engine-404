@@ -416,7 +416,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				}
 
 				_Attacking.OnAttackStart(this);
-
 				_AttackingTransform = _TargetObject;
 
 				LatchOnto(_AttackingTransform);
@@ -1235,7 +1234,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			_AttackVFXInstance.transform.position = _HeadBoneTransform.position - (_HeadBoneTransform.forward / 5);
 			_AttackVFXInstance.Play();
 
-			_Attacking.OnAttackRecieve(_Data._AttackDamage);
+			_Attacking.OnAttackRecieve(_Data._AttackDamage, _AttackingTransform);
 			PlaySoundForced(_Data._AttackHitNoise);
 		}
 	}

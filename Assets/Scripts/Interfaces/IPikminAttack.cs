@@ -4,6 +4,8 @@
  * Created on: 30/4/2020 (dd/mm/yy)
  */
 
+using UnityEngine;
+
 public interface IPikminAttack : IPikminInteractable
 {
 	// Called when the Pikmin starts attacking the object, like when latched
@@ -12,7 +14,7 @@ public interface IPikminAttack : IPikminInteractable
 	void OnAttackEnd(PikminAI pikmin);
 
 	// Called when the Pikmin hits the object
-	void OnAttackRecieve(float damage);
+	void OnAttackRecieve(float damage, Transform hitPart);
 
 	// Called to see if the object is able to be attacked at that moment
 	bool IsAttackAvailable();

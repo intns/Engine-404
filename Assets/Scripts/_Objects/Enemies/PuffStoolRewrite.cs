@@ -41,14 +41,14 @@ public class PuffStoolRewrite : Entity
 		base.OnAttackEnd(pikmin);
 	}
 
-	public new void OnAttackRecieve(float damage)
+	public new void OnAttackRecieve(float damage, Transform hitPart)
 	{
 		if (_Animator == null)
 		{
 			return;
 		}
 
-		base.OnAttackRecieve(damage);
+		base.OnAttackRecieve(damage, hitPart);
 	}
 	#endregion
 
