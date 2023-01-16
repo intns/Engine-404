@@ -1,0 +1,63 @@
+using UnityEngine;
+using UnityEditor;
+using System.Collections.Generic;
+using System.Linq;
+
+public class TEST_Waypoint : MonoBehaviour
+{
+	public List<TEST_Waypoint> _Destinations = new();
+	public TEST_Waypoint _Next;
+
+	void OnDrawGizmos()
+	{
+		Handles.Label(transform.position + Vector3.up, name);
+
+		if (Selection.Contains(gameObject))
+		{
+			Gizmos.color = Color.green;
+			if (_Next != null)
+			{
+				Gizmos.DrawLine(transform.position, _Next.transform.position);
+			}
+
+			int bail = 0;
+			for (TEST_Waypoint n = this; n != null && n._Next != null; n = n._Next)
+			{
+				if (bail++ > 50)
+				{
+					break;
+				}
+
+				Gizmos.DrawLine(n.transform.position, n._Next.transform.position);
+			}
+		}
+
+		foreach (TEST_Waypoint marker in _Destinations)
+		{
+			if (Selection.Contains(gameObject))
+				Gizmos.color = Color.red;
+			else
+				Gizmos.color = Color.blue;
+
+			if (!Selection.Contains(marker.gameObject)) { 
+				Gizmos.DrawLine(transform.position + Vector3.up, marker.transform.position + Vector3.up);
+			}
+		}
+	}
+
+	public void CalculateClosest()
+	{
+		List<Transform> children = transform.parent.GetComponentsInChildren<Transform>().Where(c => c != transform).ToList();
+		Transform closest = MathUtil.GetClosestTransform(transform.position, children, out int index);
+		TEST_Waypoint closestWP = closest.GetComponent<TEST_Waypoint>();
+
+		_Destinations.Clear();
+		_Destinations.Add(closestWP);
+		_Next = closestWP;
+	}
+
+	public void GenerateID()
+	{
+		name = $"WP_{transform.GetSiblingIndex()}";
+	}
+}
