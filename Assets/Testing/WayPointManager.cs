@@ -1,9 +1,15 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
+using System.Linq;
 
 public class WayPointManager : MonoBehaviour
 {
 	public TEST_Waypoint _Home;
+
+	[Header("Debugging")]
+	[SerializeField] List<TEST_Waypoint> _Network;
+
 	public static WayPointManager _Instance;
 
 	void OnEnable()
@@ -11,10 +17,24 @@ public class WayPointManager : MonoBehaviour
 		_Instance = this;
 	}
 
+	void Awake()
+	{
+		_Network = GetComponentsInChildren<TEST_Waypoint>().ToList();
+	}
+
+	public TEST_Waypoint GetWaypointTowards(Vector3 currentPosition)
+	{
+		TEST_Waypoint target = _Network.OrderBy(curWP =>
+		{
+			return Vector3.Distance(currentPosition, curWP.transform.position);
+		}).First();
+
+		return target;
+	}
+
 	public void CalculateDistance(bool clear)
 	{
-		TEST_Waypoint[] Waypoints = GetComponentsInChildren<TEST_Waypoint>();
-		foreach (TEST_Waypoint way in Waypoints)
+		foreach (TEST_Waypoint way in _Network)
 		{
 			EditorUtility.SetDirty(way);
 			if (way == _Home || clear)
