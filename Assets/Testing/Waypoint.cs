@@ -11,6 +11,7 @@ public class TEST_Waypoint : MonoBehaviour
 	void OnDrawGizmos()
 	{
 		Handles.Label(transform.position + Vector3.up, name);
+		Gizmos.DrawSphere(transform.position, transform.localScale.magnitude/2.0f);
 
 		if (Selection.Contains(gameObject))
 		{

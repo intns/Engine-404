@@ -6,6 +6,7 @@ using System.Linq;
 public class WayPointManager : MonoBehaviour
 {
 	public TEST_Waypoint _Home;
+	public LayerMask _MapMask;
 
 	[Header("Debugging")]
 	[SerializeField] List<TEST_Waypoint> _Network;

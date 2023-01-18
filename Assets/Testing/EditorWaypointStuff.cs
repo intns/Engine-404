@@ -14,13 +14,11 @@ public class EditorWaypointManager : Editor
 		if (GUILayout.Button("Calculate Distance"))
 		{
 			way.CalculateDistance(false);
-			Debug.Log("Complete");
 		}
 
 		if (GUILayout.Button("Clear Paths"))
 		{
 			way.CalculateDistance(true);
-			Debug.Log("ClearedPaths");
 		}
 
 		if (GUILayout.Button("Generate IDs"))
@@ -28,7 +26,26 @@ public class EditorWaypointManager : Editor
 			TEST_Waypoint[] wps = way.GetComponentsInChildren<TEST_Waypoint>();
 			foreach (TEST_Waypoint wp in wps)
 			{
+				if (way._Home == wp)
+				{
+					wp.name = "WP_HOME";
+					continue;
+				}
+
 				wp.GenerateID();
+			}
+		}
+
+		if (GUILayout.Button("Place On Map"))
+		{
+			TEST_Waypoint[] wps = way.GetComponentsInChildren<TEST_Waypoint>();
+			foreach (TEST_Waypoint wp in wps)
+			{
+				if (Physics.Raycast(wp.transform.position + Vector3.up * 1000.0f, Vector3.down, out RaycastHit info, float.PositiveInfinity, way._MapMask, QueryTriggerInteraction.Ignore))
+				{
+					wp.transform.position = info.point + Vector3.up * 2.5f;
+					EditorUtility.SetDirty(wp.transform);
+				}
 			}
 		}
 	}
