@@ -97,8 +97,6 @@ public class CubeBridge : MonoBehaviour, IPikminAttack, IHealth
 			_AttackablePiece.SetActive(false);
 			_BridgePieces[1].SetActive(true);
 
-			AstarPath.active.ScanAsync();
-
 			while (_AttackingPikmin.Count != 0)
 			{
 				_AttackingPikmin[0].ChangeState(PikminStates.Idle);

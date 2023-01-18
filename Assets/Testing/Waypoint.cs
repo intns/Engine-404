@@ -5,7 +5,7 @@ using System.Linq;
 
 public class TEST_Waypoint : MonoBehaviour
 {
-	public List<TEST_Waypoint> _Destinations = new();
+	public List<TEST_Waypoint> _Destinations;
 	public TEST_Waypoint _Next;
 
 	void OnDrawGizmos()
@@ -51,9 +51,13 @@ public class TEST_Waypoint : MonoBehaviour
 		Transform closest = MathUtil.GetClosestTransform(transform.position, children, out int index);
 		TEST_Waypoint closestWP = closest.GetComponent<TEST_Waypoint>();
 
-		_Destinations.Clear();
-		_Destinations.Add(closestWP);
+		_Destinations = new(1)
+		{
+			closestWP
+		};
 		_Next = closestWP;
+
+		EditorUtility.SetDirty(this);
 	}
 
 	public void GenerateID()

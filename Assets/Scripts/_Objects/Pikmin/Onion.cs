@@ -87,7 +87,7 @@ public class Onion : MonoBehaviour
 			_SpawnedSprouts.Add(i, null);
 		}
 
-		if (OnionManager.SaveData.IsOnionDiscovered(_Colour))
+		/*if (OnionManager.SaveData.IsOnionDiscovered(_Colour))*/
 		{
 			_DiscoverObject.SetActive(false);
 			OnionActive = true;

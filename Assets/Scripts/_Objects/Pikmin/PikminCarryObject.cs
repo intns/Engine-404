@@ -1,8 +1,7 @@
-using Pathfinding;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Seeker), typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 public class PikminCarryObject : MonoBehaviour, IPikminCarry
 {
 	[Header("References")]
@@ -36,25 +35,19 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[Header("Debugging")]
 	[SerializeField] float _CurrentMoveSpeed = 0;
 	[SerializeField] Vector3 _MoveVector = Vector3.zero;
-	[SerializeField] Vector3 _NextDestination = Vector3.zero;
 	[SerializeField] Vector3 _TargetPosition;
 
 	CarryText _CarryText = null;
 	Onion _TargetOnion = null;
 	Rigidbody _Rigidbody = null;
-	Seeker _Pathfinder = null;
+	TEST_Waypoint _CurrentWaypoint = null;
 	AudioSource _Source;
 
 	float _CurrentSpeedTarget = 0;
 
-	Path _CurrentPath = null;
-	int _CurrentPathPosIdx = 0;
-
 	List<PikminAI> _CarryingPikmin = new List<PikminAI>();
 	bool _IsBeingCarried = false;
 	bool _ShutdownInProgress = false;
-	Vector3 _SpawnPosition = Vector3.zero;
-	Vector3 _CirclePosition = Vector3.zero;
 
 	float _SpawnInvulnTimer = 0.0f;
 
@@ -63,7 +56,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	void Awake()
 	{
 		_Rigidbody = GetComponent<Rigidbody>();
-		_Pathfinder = GetComponent<Seeker>();
 		_Source = GetComponent<AudioSource>();
 		_Source.clip = _CarryNoiseClip;
 
@@ -72,20 +64,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		GameObject carryText = Instantiate(_CarryTextPrefab, transform.position, Quaternion.identity);
 		_CarryText = carryText.GetComponent<CarryText>();
 		_CarryText._FollowTarget = transform;
-
-		_SpawnPosition = transform.position;
-
-		InvokeRepeating(nameof(CheckPath), 0, 1f);
-	}
-
-	void CheckPath()
-	{
-		if (!_IsBeingCarried || GameManager.IsPaused)
-		{
-			return;
-		}
-
-		_Pathfinder.StartPath(transform.position, _TargetPosition, OnPathCalculated);
 	}
 
 	void Update()
@@ -125,63 +103,71 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			_Source.Play();
 		}
 
-		MoveTowards(_NextDestination);
+		MoveTowards(_TargetPosition);
 
-		if (MathUtil.DistanceTo(transform.position, _TargetPosition, false) < _DistanceToNextPosition)
+		if (_CurrentWaypoint._Next == null)
 		{
-			_ShutdownInProgress = true;
-			PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
-			while (_CarryingPikmin.Count > 0)
+			if (MathUtil.DistanceTo(transform.position, _CurrentWaypoint.transform.position, false) < _DistanceToNextPosition)
 			{
-				_CarryingPikmin[0].ChangeState(PikminStates.Idle);
-			}
-
-			if (targetColour == _ColourToGenerateFor
-				|| _ColourToGenerateFor == PikminColour.Size)
-			{
-				_TargetOnion.StartSuction(gameObject, _PikminToProduceMatchColour);
-			}
-			else
-			{
-				_TargetOnion.StartSuction(gameObject, _PikminToProduceNonMatchColour);
-			}
-
-			if (_CarryText != null && _CarryText.gameObject != null)
-			{
-				Destroy(_CarryText.gameObject);
-			}
-
-			_Rigidbody.isKinematic = true;
-
-			Collider[] colliders = gameObject.GetComponentsInChildren<Collider>(false);
-			foreach (Collider coll in colliders)
-			{
-				coll.enabled = false;
-			}
-
-			enabled = false;
-			return;
-		}
-		else if (_CurrentPath != null && _CurrentPath.vectorPath.Count != 0)
-		{
-			if (MathUtil.DistanceTo(transform.position, _CurrentPath.vectorPath[_CurrentPathPosIdx], false) < _DistanceToNextPosition)
-			{
-				_CurrentPathPosIdx++;
-				if (_CurrentPathPosIdx >= _CurrentPath.vectorPath.Count)
-				{
-					// we've reached the final point and yet still not at the onion, recalculate!
-					_Pathfinder.StartPath(transform.position, _TargetPosition, OnPathCalculated);
-				}
-				else
-				{
-					_NextDestination = _CurrentPath.vectorPath[_CurrentPathPosIdx];
-				}
+				OnionSuckProcedure();
 			}
 		}
 		else
 		{
-			_NextDestination = (transform.position + _TargetPosition) / 2;
+			float distToWp = MathUtil.DistanceTo(transform.position, _CurrentWaypoint.transform.position, false);
+
+			const float K_MIN_SMOOTH_DIST = 10.0f;
+			if (distToWp <= K_MIN_SMOOTH_DIST)
+			{
+				_CurrentWaypoint = _CurrentWaypoint._Next;
+				_TargetPosition = _CurrentWaypoint.transform.position;
+			}
+
+			/*
+			const float K_MAX_SMOOTH_DIST = 25;
+			else if (distToWp <= K_MAX_SMOOTH_DIST)
+			{
+				float t = Mathf.InverseLerp(K_MIN_SMOOTH_DIST, K_MAX_SMOOTH_DIST, distToWp);
+				Debug.Log(t);
+
+				_TargetPosition = Vector3.Lerp(_CurrentWaypoint.transform.position, _CurrentWaypoint._Next.transform.position, t);
+			}*/
 		}
+	}
+
+	private void OnionSuckProcedure()
+	{
+		_ShutdownInProgress = true;
+		PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
+		while (_CarryingPikmin.Count > 0)
+		{
+			_CarryingPikmin[0].ChangeState(PikminStates.Idle);
+		}
+
+		if (targetColour == _ColourToGenerateFor
+			|| _ColourToGenerateFor == PikminColour.Size)
+		{
+			_TargetOnion.StartSuction(gameObject, _PikminToProduceMatchColour);
+		}
+		else
+		{
+			_TargetOnion.StartSuction(gameObject, _PikminToProduceNonMatchColour);
+		}
+
+		if (_CarryText != null && _CarryText.gameObject != null)
+		{
+			Destroy(_CarryText.gameObject);
+		}
+
+		_Rigidbody.isKinematic = true;
+
+		Collider[] colliders = gameObject.GetComponentsInChildren<Collider>(false);
+		foreach (Collider coll in colliders)
+		{
+			coll.enabled = false;
+		}
+
+		enabled = false;
 	}
 
 	void FixedUpdate()
@@ -227,19 +213,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		_MoveVector = newVelocity;
 	}
 
-	void OnPathCalculated(Path p)
-	{
-		// If we're about to delete the object, no point in updating it
-		if (_ShutdownInProgress) { return; }
-
-		_CurrentPath = p;
-		_CurrentPathPosIdx = 0;
-		if (_CurrentPath.error)
-		{
-			Debug.Log(_CurrentPath.errorLog);
-		}
-	}
-
 	void UpdateText()
 	{
 		// If we're about to delete the object, no point in updating it
@@ -280,21 +253,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 				Debug.Assert(_TargetOnion != null, $"Target Onion ({colour}) not found!");
 				Debug.Assert(_TargetOnion.OnionActive == true, $"Target Onion ({colour}) not active!");
-
-				_TargetPosition = _TargetOnion._CarryEndpoint.position;
-			}
-			else
-			{
-				if (_CirclePosition == Vector3.zero)
-				{
-					_CirclePosition = transform.position;
-				}
-
-				_TargetPosition = _CirclePosition;
 			}
 
-			// Enable AI
-			Path path = _Pathfinder.StartPath(transform.position, _TargetPosition, OnPathCalculated);
+			_CurrentWaypoint = WayPointManager._Instance.GetWaypointTowards(transform.position);
+			_TargetPosition = _CurrentWaypoint.transform.position;
 			_IsBeingCarried = true;
 
 			_CurrentSpeedTarget += _SpeedAddedPerPikmin;

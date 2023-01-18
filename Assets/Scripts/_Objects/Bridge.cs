@@ -93,7 +93,6 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 					_AttackingPikmin[0].ChangeState(PikminStates.Idle);
 				}
 
-				AstarPath.active.ScanAsync();
 				enabled = false;
 				return;
 			}
