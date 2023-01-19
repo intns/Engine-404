@@ -18,7 +18,7 @@ public class TEST_Waypoint : MonoBehaviour
 			Gizmos.color = Color.green;
 			if (_Next != null)
 			{
-				Gizmos.DrawLine(transform.position, _Next.transform.position);
+				 Gizmos.DrawLine(transform.position, _Next.transform.position);
 			}
 
 			int bail = 0;
@@ -29,7 +29,7 @@ public class TEST_Waypoint : MonoBehaviour
 					break;
 				}
 
-				Gizmos.DrawLine(n.transform.position, n._Next.transform.position);
+				 Gizmos.DrawLine(n.transform.position, n._Next.transform.position);
 			}
 		}
 
@@ -40,8 +40,8 @@ public class TEST_Waypoint : MonoBehaviour
 			else
 				Gizmos.color = Color.blue;
 
-			if (!Selection.Contains(marker.gameObject)) { 
-				Gizmos.DrawLine(transform.position + Vector3.up, marker.transform.position + Vector3.up);
+			if (!Selection.Contains(marker.gameObject)) {
+				 Gizmos.DrawLine(transform.position + Vector3.up, marker.transform.position + Vector3.up);
 			}
 		}
 	}

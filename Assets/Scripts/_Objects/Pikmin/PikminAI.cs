@@ -1016,7 +1016,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				LatchOnto(null);
 				_Carrying?.OnCarryLeave(this);
 				_Carrying = null;
-				
+
 				_FaceDirectionAngle = _EulerAngles.y;
 				break;
 			case PikminStates.Push:
@@ -1214,11 +1214,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 		_RagdollTime = ragdollTimer;
 		ChangeState(PikminStates.Dead);
-	}
-
-	public void Water_Leave()
-	{
-		Debug.Log("Left water");
 	}
 
 	public bool IsGrounded(float distTo = 0.2f)

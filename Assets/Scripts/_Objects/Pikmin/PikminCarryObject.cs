@@ -244,7 +244,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			+ MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryMinMax.y, _CarryingPikmin.IndexOf(p)))
 			* _CarryCircleRadius);
 
-		if (_CarryingPikmin.Count >= _CarryMinMax.x)
+		if (_CarryingPikmin.Count >= _CarryMinMax.x && !_IsBeingCarried)
 		{
 			if (OnionManager.IsAnyOnionActiveInScene)
 			{
