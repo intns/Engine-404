@@ -5,7 +5,6 @@
  */
 
 using System;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.VFX;
 using Random = UnityEngine.Random;
@@ -1115,46 +1114,60 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	}
 
 	/// <summary>
-	/// Latches the Pikmin onto an object
+	/// Latches the Pikmin onto an object.
 	/// </summary>
-	/// <param name="obj">Object</param>
-	/// <param name="onlyY">Rotate only to look at things</param>
+	/// <param name="obj">Object to latch onto.</param>
 	public void LatchOnto(Transform obj)
 	{
+		// Already latched onto the same object
+		if (obj == _LatchedTransform)
+		{
+			return;
+		}
+
 		_LatchedTransform = obj;
 		_TargetObject = obj;
 
 		if (obj != null)
 		{
+			// Disable physics simulation for the Pikmin.
 			_Rigidbody.isKinematic = true;
 			_Collider.isTrigger = true;
 
-			_TargetObject = obj;
+			// Get the collider of the target object.
 			_TargetObjectCollider = obj.GetComponent<Collider>();
 
+			// If the Pikmin is not grounded, adjust its position and rotation.
 			if (!IsGrounded())
 			{
+				// Find the closest point on the target object and calculate the direction.
 				Vector3 closestPosition = ClosestPointOnTarget(_TargetObject, _TargetObjectCollider);
 				Vector3 dirToClosestPos = MathUtil.DirectionFromTo(_Transform.position, closestPosition, true);
-				if (Physics.Raycast(_Transform.position, dirToClosestPos, out RaycastHit info, 1.5f, _InteractableMask, QueryTriggerInteraction.Collide)
-					&& info.collider == _TargetObjectCollider)
-				{
-					Vector3 point = info.point;
 
+				// Raycast to check if the Pikmin is obstructed by the target object.
+				if (Physics.Raycast(_Transform.position, dirToClosestPos, out RaycastHit info, 1.5f, _InteractableMask, QueryTriggerInteraction.Collide) &&
+						info.collider == _TargetObjectCollider)
+				{
+					// Adjust the Pikmin's position and rotation to latch onto the target object.
+					Vector3 point = info.point;
 					_Transform.LookAt(point);
 					_Transform.position = point + info.normal * _LatchNormalOffset;
 				}
 			}
 
+			// Set the latched object as the parent and calculate the offset.
 			_Transform.parent = _LatchedTransform;
 			_LatchedOffset = _Transform.position - _LatchedTransform.position;
 		}
 		else
 		{
+			// Enable physics simulation for the Pikmin.
 			_Rigidbody.isKinematic = false;
 			_Collider.isTrigger = false;
 			_Transform.parent = null;
+			_TargetObjectCollider = null;
 
+			// Reset the Pikmin's rotation, keeping the Y and Z angles intact.
 			_Transform.eulerAngles = new Vector3(0, _EulerAngles.y, _EulerAngles.z);
 		}
 	}
