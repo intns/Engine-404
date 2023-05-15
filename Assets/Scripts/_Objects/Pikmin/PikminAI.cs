@@ -5,6 +5,7 @@
  */
 
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.VFX;
 using Random = UnityEngine.Random;
@@ -75,7 +76,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	[SerializeField] Transform _LeafSpawn = null;
 	[SerializeField] PikminMaturity _StartingMaturity = PikminMaturity.Leaf;
 	GameObject[] _HeadModels = null;
-	public PikminMaturity _CurrentMaturity { get; set; } = PikminMaturity.Leaf;
+	public PikminMaturity _CurrentMaturity { get; set; } = PikminMaturity.Size;
 
 	#region Debugging Variables
 	[Header("==Debugging==")]
@@ -173,14 +174,14 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	#region Unity Methods
 	void OnEnable()
 	{
-		GameObject fObject = new($"{name}_{GetInstanceID()}_formation_pos");
-		_FormationPosition = fObject.transform;
+		_FormationPosition = new GameObject($"{name}_{GetInstanceID()}_formation_pos").transform;
 
 		_AttackVFXInstance = new GameObject().AddComponent<VisualEffect>();
 		_AttackVFXInstance.transform.localScale = Vector3.one * 3.0f;
 		_AttackVFXInstance.visualEffectAsset = _AttackVFX;
 
 		_Transform = transform;
+		GameManager.OnPauseEvent += OnPauseEvent;
 	}
 
 	void OnDisable()
@@ -193,8 +194,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		_Rigidbody = GetComponent<Rigidbody>();
 		_Animator = GetComponent<Animator>();
 		_Collider = GetComponent<CapsuleCollider>();
-
 		_AudioSource = GetComponent<AudioSource>();
+
 		_AudioSource.volume = _Data._AudioVolume;
 
 		_ThrowTrailRenderer.enabled = false;
@@ -206,21 +207,26 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		PikminStatsManager.Add(_Data._PikminColour, _CurrentMaturity, _CurrentStatSpecifier);
 
 		_HeadModels = new GameObject[(int)PikminMaturity.Size];
-		_HeadModels[0] = Instantiate(_Data._Leaf);
-		_HeadModels[0].transform.parent = _LeafSpawn;
-		_HeadModels[0].transform.localPosition = Vector3.zero;
+		for (int i = 0; i < _HeadModels.Length; i++)
+		{
+			switch (i)
+			{
+				case 0:
+					_HeadModels[i] = Instantiate(_Data._Leaf);
+					break;
+				case 1:
+					_HeadModels[i] = Instantiate(_Data._Bud);
+					break;
+				case 2:
+					_HeadModels[i] = Instantiate(_Data._Flower);
+					break;
+			}
 
-		_HeadModels[1] = Instantiate(_Data._Bud);
-		_HeadModels[1].transform.parent = _LeafSpawn;
-		_HeadModels[1].transform.localPosition = Vector3.zero;
-
-		_HeadModels[2] = Instantiate(_Data._Flower);
-		_HeadModels[2].transform.parent = _LeafSpawn;
-		_HeadModels[2].transform.localPosition = Vector3.zero;
+			_HeadModels[i].transform.parent = _LeafSpawn;
+			_HeadModels[i].transform.localPosition = Vector3.zero;
+		}
 
 		SetMaturity(_StartingMaturity);
-
-		GameManager.OnPauseEvent += OnPauseEvent;
 	}
 
 	void OnPauseEvent(PauseType t)
@@ -286,14 +292,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				HandleDeath();
 				break;
 			case PikminStates.BeingHeld:
-				if (_HeldAudioTimer >= 0.5f)
-				{
-					_AudioSource.pitch = Random.Range(0.75f, 1.25f);
-					PlaySound(_Data._HeldNoise, Random.Range(0, 0.15f));
-					_HeldAudioTimer = 0;
-				}
-
-				_HeldAudioTimer += Time.deltaTime;
+				HandleBeingHeld();
 				break;
 
 			case PikminStates.Carry:
@@ -341,16 +340,15 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 		if (!Latch_IsLatchedOntoObject() || _CurrentState == PikminStates.Push)
 		{
-			float yRotation = _EulerAngles.y;
-			yRotation = Mathf.LerpAngle(yRotation, _FaceDirectionAngle, _Data._RotationSpeed * Time.fixedDeltaTime);
-			_Transform.rotation = Quaternion.Euler(0.0f, yRotation, 0.0f);
+			float newYRotation = Mathf.LerpAngle(_EulerAngles.y, _FaceDirectionAngle, _Data._RotationSpeed * Time.fixedDeltaTime);
+			_Transform.rotation = Quaternion.Euler(0f, newYRotation, 0f);
 		}
 
 		float storedY = _Rigidbody.velocity.y;
 		_Rigidbody.velocity = _DirectionVector + _AddedVelocity;
 		_DirectionVector = Vector3.up * storedY;
 
-		_AddedVelocity = Vector3.Lerp(_AddedVelocity, Vector3.zero, 10 * Time.deltaTime);
+		_AddedVelocity = Vector3.Lerp(_AddedVelocity, Vector3.zero, 10 * Time.fixedDeltaTime);
 	}
 
 	void OnCollisionEnter(Collision collision)
@@ -466,7 +464,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		RemoveFromSquad();
 
 		_IdleTimer += Time.deltaTime;
-		if (_IdleTimer <= _IdleTickRate)
+		if (_IdleTimer < _IdleTickRate)
 		{
 			return;
 		}
@@ -497,16 +495,15 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 			// Determine if we can see the item
 			Vector3 direction = MathUtil.DirectionFromTo(_Transform.position, collider.ClosestPoint(_Transform.position));
-			if (!Physics.Raycast(_Transform.position, direction, out RaycastHit hit, _Data._SearchRadius,
-				_AllMask, QueryTriggerInteraction.Ignore)
-				|| hit.collider != collider)
-			{
-				// FALLBACK: we'll use the global origin instead of the closest point
-				direction = MathUtil.DirectionFromTo(_Transform.position, collider.transform.position);
-				if (!Physics.Raycast(_Transform.position, direction, out hit, _Data._SearchRadius,
-					_AllMask, QueryTriggerInteraction.Ignore)
+			if (!Physics.Raycast(_Transform.position, direction, out RaycastHit hit, _Data._SearchRadius, _AllMask, QueryTriggerInteraction.Ignore)
 					|| hit.collider != collider)
+			{
+				// Fall back to global origin
+				direction = MathUtil.DirectionFromTo(_Transform.position, collider.transform.position);
+				if (!Physics.Raycast(_Transform.position, direction, out hit, _Data._SearchRadius, _AllMask, QueryTriggerInteraction.Ignore)
+						|| hit.collider != collider)
 				{
+					// Check if the object is too high up
 					if (Mathf.Abs(_Transform.position.y - collider.transform.position.y) > 1.5f)
 					{
 						continue;
@@ -514,27 +511,33 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				}
 			}
 
-			if (currentIntention == PikminIntention.Push)
+			switch (currentIntention)
 			{
-				IPikminPush toPush = collider.GetComponentInParent<IPikminPush>();
+				case PikminIntention.Push:
+					{
+						IPikminPush toPush = collider.GetComponentInParent<IPikminPush>();
 
-				if (!toPush.IsPikminSpotAvailable())
-				{
-					continue;
-				}
+						if (!toPush.IsPikminSpotAvailable())
+						{
+							continue;
+						}
 
-				_Pushing = toPush;
-			}
-			else if (currentIntention == PikminIntention.Carry)
-			{
-				IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
+						_Pushing = toPush;
+						break;
+					}
 
-				if (!toCarry.IsPikminSpotAvailable())
-				{
-					continue;
-				}
+				case PikminIntention.Carry:
+					{
+						IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
 
-				_Carrying = toCarry;
+						if (!toCarry.IsPikminSpotAvailable())
+						{
+							continue;
+						}
+
+						_Carrying = toCarry;
+						break;
+					}
 			}
 
 			float distance = MathUtil.DistanceTo(_Transform.position, collider.transform.position);
@@ -643,7 +646,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		}
 
 		_SuckNectarTimer += Time.deltaTime;
-		if (_SuckNectarTimer > Nectar.NECTAR_DRINK_TIME)
+		if (_SuckNectarTimer >= Nectar.NECTAR_DRINK_TIME)
 		{
 			SetMaturity(_CurrentMaturity + 1);
 			ChangeState(PikminStates.Idle);
@@ -686,39 +689,53 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		}
 
 		PikminStatsManager.Remove(_Data._PikminColour, _CurrentMaturity, _CurrentStatSpecifier);
-		AudioSource.PlayClipAtPoint(_Data._DeathNoise, _Transform.position, _Data._AudioVolume);
 
-		// Create the soul gameobject, and play the death noise
+		if (_Data._DeathNoise != null)
+		{
+			AudioSource.PlayClipAtPoint(_Data._DeathNoise, _Transform.position, _Data._AudioVolume);
+		}
+
 		if (_DeathParticle != null)
 		{
 			ParticleSystem soul = Instantiate(_DeathParticle, _Transform.position + Vector3.up * 1.25f, Quaternion.Euler(-90, 0, 0)).GetComponent<ParticleSystem>();
 			ParticleSystem.MainModule soulEffect = soul.main;
 			soulEffect.startColor = _Data._DeathSpiritPikminColour;
-			Destroy(soul.gameObject, 5);
+			Destroy(soul.gameObject, 5f);
 		}
 
-		if (PikminStatsManager.GetTotalInAllOnions() + PikminStatsManager.GetTotalOnField() == 0)
+		int totalPikmin = PikminStatsManager.GetTotalInAllOnions() + PikminStatsManager.GetTotalOnField();
+		if (totalPikmin == 0)
 		{
 			Player._Instance.PikminExtinction();
 		}
 
-		// Remove the object
 		Destroy(gameObject);
+	}
+
+	private void HandleBeingHeld()
+	{
+		if (_HeldAudioTimer >= 0.5f)
+		{
+			_AudioSource.pitch = Random.Range(0.75f, 1.25f);
+			PlaySound(_Data._HeldNoise, Random.Range(0, 0.15f));
+			_HeldAudioTimer = 0;
+		}
+
+		_HeldAudioTimer += Time.deltaTime;
 	}
 
 	void HandleOnFire()
 	{
 		_FireTimer += Time.fixedDeltaTime;
 
-		// RIP
-		if (_FireTimer > _Data._FireDeathTimer)
+		if (_FireTimer >= _Data._FireDeathTimer)
 		{
 			Die(0.5f);
 			return;
 		}
 
 		_FaceDirectionAngle = Mathf.LerpAngle(_FaceDirectionAngle, _WanderAngle, 3.0f * Time.fixedDeltaTime);
-		if (Mathf.DeltaAngle(_FaceDirectionAngle, _WanderAngle) < 1.0f)
+		if (Mathf.Abs(Mathf.DeltaAngle(_FaceDirectionAngle, _WanderAngle)) < 1.0f)
 		{
 			_WanderAngle = Random.Range(-360.0f, 360.0f);
 		}
@@ -792,8 +809,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				Vector3 direction = MathUtil.DirectionFromTo(collider.transform.position, _Transform.position);
 				if (direction.sqrMagnitude <= 0.01f)
 				{
-					direction.x = Random.Range(-0.025f, 0.025f);
-					direction.z = Random.Range(-0.025f, 0.025f);
+					direction.x += Random.Range(-0.025f, 0.025f);
+					direction.z += Random.Range(-0.025f, 0.025f);
 				}
 				_AddedVelocity += _PikminPushScale * Time.fixedDeltaTime * direction;
 			}
@@ -823,14 +840,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			{
 				// Handle squishing
 				IPikminSquish squish = collider.GetComponentInParent<IPikminSquish>();
-				if (squish == null)
-				{
-					_TargetObject = collision.transform;
-					_TargetObjectCollider = collider;
-					_Intention = collider.GetComponentInParent<IPikminInteractable>().IntentionType;
-					CarryoutIntention();
-				}
-				else
+				if (squish != null)
 				{
 					Vector3 closestPoint = collider.ClosestPoint(_Transform.position);
 
@@ -841,6 +851,13 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 					}
 
 					ChangeState(PikminStates.Idle);
+				}
+				else
+				{
+					_TargetObject = collision.transform;
+					_TargetObjectCollider = collider;
+					_Intention = collider.GetComponentInParent<IPikminInteractable>().IntentionType;
+					CarryoutIntention();
 				}
 			}
 			else if (!collider.CompareTag("Pikmin") && !collider.CompareTag("Player"))
@@ -894,6 +911,26 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		return target.position;
 	}
 
+	/*		if (_TargetObjectCollider != null)
+		{
+			Vector3 thisPos = _Transform.position;
+			Vector3 nextPos = _TargetObjectCollider.ClosestPoint(pos);
+			Vector3 direct = MathUtil.DirectionFromTo(thisPos, nextPos, !useY);
+
+			if (Physics.Raycast(thisPos, direct, out RaycastHit info, 1.5f + _LatchNormalOffset)
+				&& info.transform == _LatchedTransform)
+			{
+				Vector3 resultPos = nextPos + (info.normal * _LatchNormalOffset);
+				if (Physics.OverlapSphere(resultPos, 0.5f, _MapMask).Length == 0)
+				{
+					pos = Vector3.Lerp(thisPos, resultPos, 35 * Time.deltaTime);
+				}
+			}
+		}
+		else
+		{
+			_TargetObjectCollider = _LatchedTransform.GetComponent<Collider>();
+		}*/
 	void MaintainLatch()
 	{
 		if (!Latch_IsLatchedOntoObject())
@@ -903,27 +940,6 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 		Vector3 pos = _LatchedTransform.position + _LatchedOffset;
 		bool useY = _CurrentState == PikminStates.Carry;
-
-		/*		if (_TargetObjectCollider != null)
-				{
-					Vector3 thisPos = _Transform.position;
-					Vector3 nextPos = _TargetObjectCollider.ClosestPoint(pos);
-					Vector3 direct = MathUtil.DirectionFromTo(thisPos, nextPos, !useY);
-
-					if (Physics.Raycast(thisPos, direct, out RaycastHit info, 1.5f + _LatchNormalOffset)
-						&& info.transform == _LatchedTransform)
-					{
-						Vector3 resultPos = nextPos + (info.normal * _LatchNormalOffset);
-						if (Physics.OverlapSphere(resultPos, 0.5f, _MapMask).Length == 0)
-						{
-							pos = Vector3.Lerp(thisPos, resultPos, 35 * Time.deltaTime);
-						}
-					}
-				}
-				else
-				{
-					_TargetObjectCollider = _LatchedTransform.GetComponent<Collider>();
-				}*/
 
 		Vector3 directionFromPosToObj = MathUtil.DirectionFromTo(pos, _LatchedTransform.position, !useY);
 		_Transform.SetPositionAndRotation(pos, Quaternion.LookRotation(directionFromPosToObj));
@@ -937,34 +953,32 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	{
 		PikminAI other = obj as PikminAI;
 
-		int thisColour = (int)GetColour();
-		int otherColour = (int)other.GetColour();
-
-		if ((int)Player._Instance._PikminController._SelectedThrowPikmin == thisColour)
+		// Sort by selected Pikmin colour first.
+		PikminColour selectedColour = Player._Instance._PikminController._SelectedThrowPikmin;
+		if (GetColour() == selectedColour && other.GetColour() != selectedColour)
 		{
 			return 1;
 		}
-
-		if (thisColour != otherColour)
+		else if (GetColour() != selectedColour && other.GetColour() == selectedColour)
 		{
 			return -1;
 		}
 
-		return 0;
+		// Sort by Pikmin colour if they are not the selected colour.
+		return GetColour().CompareTo(other.GetColour());
 	}
 
-	public void SetMaturity(PikminMaturity m)
+
+	public void SetMaturity(PikminMaturity newMaturity)
 	{
 		PikminStatsManager.Remove(_Data._PikminColour, _CurrentMaturity, _CurrentStatSpecifier);
-		_CurrentMaturity = m;
+		_CurrentMaturity = newMaturity;
 		PikminStatsManager.Add(_Data._PikminColour, _CurrentMaturity, _CurrentStatSpecifier);
 
-		// Get the headtype we want to enable
-		int type = (int)_CurrentMaturity;
-		// Iterate over all of the heads, and activate the one that matches the type we want
-		for (int i = 0; i < (int)PikminMaturity.Flower + 1; i++)
+		// Activate appropriate head model based on new maturity.
+		for (int i = 0; i < _HeadModels.Length; i++)
 		{
-			_HeadModels[i].SetActive(i == type);
+			_HeadModels[i].SetActive(i == (int)_CurrentMaturity);
 		}
 	}
 
@@ -1237,30 +1251,29 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	// CALLED BY PIKMIN ANIMATION - ATTACK
 	public void ANIM_Attack()
 	{
-		if (_Attacking != null)
-		{
-			_AttackVFXInstance.transform.position = _HeadBoneTransform.position - (_HeadBoneTransform.forward / 5);
-			_AttackVFXInstance.Play();
-
-			_Attacking.OnAttackRecieve(_Data._AttackDamage, _AttackingTransform);
-			PlaySoundForced(_Data._AttackHitNoise);
-		}
-	}
-
-	public void PlaySound(AudioClip clip, float delay = 0)
-	{
-		if (_AudioSource.clip != clip)
-		{
-			_AudioSource.clip = clip;
-		}
-
-		if (_AudioSource.isPlaying)
+		if (_Attacking == null)
 		{
 			return;
 		}
 
+		_AttackVFXInstance.transform.position = _HeadBoneTransform.position - (_HeadBoneTransform.forward / 5);
+		_AttackVFXInstance.Play();
+
+		_Attacking.OnAttackRecieve(_Data._AttackDamage, _AttackingTransform);
+		PlaySoundForced(_Data._AttackHitNoise);
+	}
+
+	public void PlaySound(AudioClip clip, float delay = 0)
+	{
+		if (_AudioSource.isPlaying && _AudioSource.clip == clip)
+		{
+			return;
+		}
+
+		_AudioSource.clip = clip;
 		_AudioSource.volume = _Data._AudioVolume;
-		if (delay != 0)
+
+		if (delay > 0)
 		{
 			_AudioSource.PlayDelayed(delay);
 		}
@@ -1272,12 +1285,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 	public void PlaySoundForced(AudioClip clip)
 	{
-		if (_AudioSource.clip != clip)
-		{
-			_AudioSource.clip = clip;
-			_AudioSource.Stop();
-		}
-
+		_AudioSource.Stop();
+		_AudioSource.clip = clip;
 		_AudioSource.volume = _Data._AudioVolume;
 		_AudioSource.Play();
 	}

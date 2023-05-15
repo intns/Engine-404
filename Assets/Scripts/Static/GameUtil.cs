@@ -1,9 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 public static class GameUtil
 {
+	private static readonly Dictionary<PikminColour, Color> _PikminColorMap = new Dictionary<PikminColour, Color>()
+{
+		{ PikminColour.Red, Color.red },
+		{ PikminColour.Yellow, Color.yellow },
+		{ PikminColour.Blue, Color.blue }
+};
+
 	/// <summary>
 	/// Computes the majority colour in a list of Pikmin, if they all match, defaults to first pikmin added
 	/// </summary>
@@ -11,60 +19,38 @@ public static class GameUtil
 	/// <returns>The majority colour of the Pikmin in the list</returns>
 	public static PikminColour GetMajorityColour(List<PikminAI> pikmin)
 	{
-		int red = 0;
-		int ylw = 0;
-		int blu = 0;
-
-		foreach (PikminAI c in pikmin)
+		/*
+		 * TODO: See if this is slower than the implementation below, even though it's completely future-proof
+		 * Dictionary<PikminColour, int> colorCounts = Enum.GetValues(typeof(PikminColour)).Cast<PikminColour>().ToDictionary(color => color, color => 0);
+		 */
+		Dictionary<PikminColour, int> colorCounts = new Dictionary<PikminColour, int>()
 		{
-			switch (c._Data._PikminColour)
-			{
-				case PikminColour.Red:
-					red++;
-					break;
-				case PikminColour.Yellow:
-					ylw++;
-					break;
-				case PikminColour.Blue:
-					blu++;
-					break;
+				{ PikminColour.Red, 0 },
+				{ PikminColour.Yellow, 0 },
+				{ PikminColour.Blue, 0 }
+		};
 
-				case PikminColour.Size:
-				default:
-					break;
-			}
+		foreach (PikminAI p in pikmin)
+		{
+			colorCounts[p._Data._PikminColour]++;
 		}
 
-		if (red > ylw && red > blu)
-		{
-			return PikminColour.Red;
-		}
-		else if (ylw > red && ylw > blu)
-		{
-			return PikminColour.Yellow;
-		}
-		else if (blu > red && blu > ylw)
-		{
-			return PikminColour.Blue;
-		}
-
-		return pikmin[0]._Data._PikminColour;
+		return colorCounts.OrderByDescending(kvp => kvp.Value)
+											.Select(kvp => kvp.Key)
+											.DefaultIfEmpty(pikmin[0]._Data._PikminColour)
+											.First();
 	}
 
 
 	public static Color PikminColorToColor(PikminColour col)
 	{
-		switch (col)
+		if (_PikminColorMap.TryGetValue(col, out Color color))
 		{
-			case PikminColour.Red:
-				return Color.red;
-			case PikminColour.Yellow:
-				return Color.yellow;
-			case PikminColour.Blue:
-				return Color.blue;
-			case PikminColour.Size:
-			default:
-				return Color.white;
+			return color;
+		}
+		else
+		{
+			return Color.white;
 		}
 	}
 }

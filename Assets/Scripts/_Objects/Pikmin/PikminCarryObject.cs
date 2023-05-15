@@ -225,9 +225,12 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	#region Pikmin Carry Implementation
 	public PikminIntention IntentionType => PikminIntention.Carry;
 
+	/// <summary>
+	/// Searches for the onion and sets target position if enough Pikmin are carrying, increases speed based on number of carriers.
+	/// </summary>
+	/// <param name="p">The PikminAI object being carried.</param>
 	public void OnCarryStart(PikminAI p)
 	{
-		// If we have too many Pikmin
 		if (_CarryingPikmin.Count >= _CarryMinMax.y)
 		{
 			p.ChangeState(PikminStates.Idle);
@@ -238,11 +241,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		p.ChangeState(PikminStates.Carry);
 		_CarryingPikmin.Add(p);
 
-		// Circle offset + ((circle pos with qualtiy 'carry max' at the index 'pikmin count') * circle size)
-		_CarryingPikmin[^1].Latch_SetOffset(
-			_CarryCircleOffset
-			+ MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryMinMax.y, _CarryingPikmin.IndexOf(p)))
-			* _CarryCircleRadius);
+		// Calculate the offset for the Pikmin based on its position in the carrying circle.
+		int lastIndex = _CarryingPikmin.Count - 1;
+		Vector3 offset = _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryingPikmin.Count, lastIndex)) * _CarryCircleRadius;
+		_CarryingPikmin[lastIndex].Latch_SetOffset(offset);
 
 		if (_CarryingPikmin.Count >= _CarryMinMax.x && !_IsBeingCarried)
 		{
@@ -251,19 +253,18 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 				PikminColour colour = GameUtil.GetMajorityColour(_CarryingPikmin);
 				_TargetOnion = OnionManager.GetOnionOfColour(colour);
 
+				// Assert that the target onion exists and is active.
 				Debug.Assert(_TargetOnion != null, $"Target Onion ({colour}) not found!");
 				Debug.Assert(_TargetOnion.OnionActive == true, $"Target Onion ({colour}) not active!");
 			}
 
+			// Set the current waypoint and target position for the carrying object and set the object to being carried.
 			_CurrentWaypoint = WayPointManager._Instance.GetWaypointTowards(transform.position);
 			_TargetPosition = _CurrentWaypoint.transform.position;
 			_IsBeingCarried = true;
 
-			_CurrentSpeedTarget += _SpeedAddedPerPikmin;
-			if (_CurrentSpeedTarget > _MaxSpeed)
-			{
-				_CurrentSpeedTarget = _MaxSpeed;
-			}
+			// Increase the carrying object's speed target based on the number of Pikmin being carried, but not exceeding the maximum speed.
+			_CurrentSpeedTarget = Mathf.Min(_CurrentSpeedTarget + _SpeedAddedPerPikmin, _MaxSpeed);
 		}
 
 		UpdateText();
