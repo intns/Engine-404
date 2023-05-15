@@ -56,7 +56,7 @@ PrefabInstance:
     - target: {fileID: 4151343529506950368, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
       propertyPath: m_Interpolate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4151343529506950368, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
@@ -67,6 +67,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxSpeed
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: _MaxRollAngle
+      value: 89.9
       objectReference: {fileID: 0}
     - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}

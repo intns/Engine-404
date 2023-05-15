@@ -9,7 +9,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] AudioClip _CarryNoiseClip;
 
 	[Header("Settings")]
-	[SerializeField, Tooltip("Number on the left signifies the minimum amount to carry, number on the right is the maximum.")]
+	[SerializeField, Tooltip("Minimum / Maximum carrying capacity")]
 	Vector2Int _CarryMinMax = new Vector2Int(1, 2);
 
 	[SerializeField, Tooltip("How close we have to be to the position to move onto the next position")]
@@ -182,6 +182,21 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		float storedY = _Rigidbody.velocity.y;
 		_Rigidbody.velocity = _MoveVector;
 		_MoveVector = new Vector3(0, storedY, 0);
+
+		// TODO: find a replacement for this magic number
+		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.5f))
+		{
+			Vector3 desiredUp = Vector3.Cross(transform.up, hit.normal); 
+
+			if (Mathf.Approximately(Vector3.Dot(transform.up, desiredUp), 1f))
+			{
+				return;
+			}
+
+			Vector3 torqueDirection = Vector3.Cross(transform.up, desiredUp);
+			float torqueMagnitude = Mathf.Asin(torqueDirection.magnitude) * _Rigidbody.mass * Physics.gravity.magnitude;
+			_Rigidbody.AddTorque(torqueMagnitude * torqueDirection.normalized);
+		}
 	}
 
 	void OnDrawGizmosSelected()
@@ -213,7 +228,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		_MoveVector = newVelocity;
 	}
 
-	void UpdateText()
+	void UpdateUI()
 	{
 		// If we're about to delete the object, no point in updating it
 		if (_ShutdownInProgress) { return; }
@@ -241,13 +256,16 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		p.ChangeState(PikminStates.Carry);
 		_CarryingPikmin.Add(p);
 
-		// Calculate the offset for the Pikmin based on its position in the carrying circle.
-		int lastIndex = _CarryingPikmin.Count - 1;
-		Vector3 offset = _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryingPikmin.Count, lastIndex)) * _CarryCircleRadius;
-		_CarryingPikmin[lastIndex].Latch_SetOffset(offset);
+		for (int i = 0; i < _CarryingPikmin.Count; i++)
+		{
+			// Calculate the offset for the Pikmin based on its position in the carrying circle.
+			Vector3 offset = _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryingPikmin.Count, i)) * _CarryCircleRadius;
+			_CarryingPikmin[i].Latch_SetOffset(offset);
+		}
 
 		if (_CarryingPikmin.Count >= _CarryMinMax.x && !_IsBeingCarried)
 		{
+			// Set the target onion based on the colour of the Pikmin carrying.
 			if (OnionManager.IsAnyOnionActiveInScene)
 			{
 				PikminColour colour = GameUtil.GetMajorityColour(_CarryingPikmin);
@@ -258,16 +276,16 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 				Debug.Assert(_TargetOnion.OnionActive == true, $"Target Onion ({colour}) not active!");
 			}
 
-			// Set the current waypoint and target position for the carrying object and set the object to being carried.
+			// Set the current waypoint and target position for this object, then update the speed.
 			_CurrentWaypoint = WayPointManager._Instance.GetWaypointTowards(transform.position);
 			_TargetPosition = _CurrentWaypoint.transform.position;
+
 			_IsBeingCarried = true;
 
-			// Increase the carrying object's speed target based on the number of Pikmin being carried, but not exceeding the maximum speed.
 			_CurrentSpeedTarget = Mathf.Min(_CurrentSpeedTarget + _SpeedAddedPerPikmin, _MaxSpeed);
 		}
 
-		UpdateText();
+		UpdateUI();
 	}
 
 	public void OnCarryLeave(PikminAI p)
@@ -282,14 +300,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			_IsBeingCarried = false;
 
 			_CurrentSpeedTarget -= _SpeedAddedPerPikmin;
-			if (_CurrentSpeedTarget < _BaseSpeed)
-			{
-				// SHOULDN'T be needed, but just in case
-				_CurrentSpeedTarget = _BaseSpeed;
-			}
+			_CurrentSpeedTarget = Mathf.Max(_CurrentSpeedTarget, _BaseSpeed);
 		}
 
-		UpdateText();
+		UpdateUI();
 	}
 
 	public bool IsPikminSpotAvailable()

@@ -200,8 +200,6 @@ GameObject:
   - component: {fileID: 8431524403549130377}
   - component: {fileID: 2605067543600766223}
   - component: {fileID: 756053896}
-  - component: {fileID: 2273998655982522743}
-  - component: {fileID: 804055351478062553}
   - component: {fileID: -8763109396242370132}
   m_Layer: 13
   m_Name: pref_Pellet_1_Red
@@ -245,6 +243,7 @@ MonoBehaviour:
   _CarryMinMax: {x: 1, y: 2}
   _DistanceToNextPosition: 5
   _InvulnTimeAfterSpawn: 1
+  _MaxRollAngle: 89.9
   _CarryCircleRadius: 1
   _CarryCircleOffset: {x: -0.06, y: 0.29, z: 0.06}
   _AccelerationSpeed: 8
@@ -256,7 +255,6 @@ MonoBehaviour:
   _PikminToProduceNonMatchColour: 1
   _CurrentMoveSpeed: 0
   _MoveVector: {x: 0, y: 0, z: 0}
-  _NextDestination: {x: 0, y: 0, z: 0}
   _TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &756053896
 Rigidbody:
@@ -282,59 +280,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!114 &2273998655982522743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4853071827087637658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 0
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: -1
---- !u!114 &804055351478062553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4853071827087637658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  smoothType: 0
-  subdivisions: 2
-  iterations: 2
-  strength: 0.5
-  uniformLength: 1
-  maxSegmentLength: 2
-  bezierTangentLength: 0.4
-  offset: 0.2
-  factor: 0.1
 --- !u!82 &-8763109396242370132
 AudioSource:
   m_ObjectHideFlags: 0

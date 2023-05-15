@@ -92,10 +92,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4473817771820094112}
-  - component: {fileID: 4151343529506950368}
   - component: {fileID: 4151343529506950371}
-  - component: {fileID: 4151343529506950369}
-  - component: {fileID: -130031804920502830}
+  - component: {fileID: 4151343529506950368}
   - component: {fileID: -2793859736506533239}
   m_Layer: 13
   m_Name: pref_Pellet_5_Red
@@ -118,10 +116,40 @@ Transform:
   m_Children:
   - {fileID: 1221946547981725967}
   - {fileID: 3565917862207703934}
-  - {fileID: 4151343531540337642}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4151343529506950371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3845477201539155994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bda116b6fd3482d44b19259810000802, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
+    type: 3}
+  _CarryNoiseClip: {fileID: 8300000, guid: 82f0bada0276e0845b8d9ef9b6cb33d5, type: 3}
+  _CarryMinMax: {x: 5, y: 10}
+  _DistanceToNextPosition: 5
+  _InvulnTimeAfterSpawn: 1
+  _MaxRollAngle: 89.9
+  _CarryCircleRadius: 1.4
+  _CarryCircleOffset: {x: 0, y: -0.4, z: 0}
+  _AccelerationSpeed: 8
+  _BaseSpeed: 2
+  _SpeedAddedPerPikmin: 0.5
+  _MaxSpeed: 4
+  _ColourToGenerateFor: 0
+  _PikminToProduceMatchColour: 5
+  _PikminToProduceNonMatchColour: 3
+  _CurrentMoveSpeed: 0
+  _MoveVector: {x: 0, y: 0, z: 0}
+  _TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &4151343529506950368
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,90 +174,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!114 &4151343529506950371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3845477201539155994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bda116b6fd3482d44b19259810000802, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
-    type: 3}
-  _CarryNoiseClip: {fileID: 8300000, guid: 82f0bada0276e0845b8d9ef9b6cb33d5, type: 3}
-  _CarryMinMax: {x: 5, y: 10}
-  _DistanceToNextPosition: 5
-  _InvulnTimeAfterSpawn: 1
-  _CarryCircleRadius: 1.4
-  _CarryCircleOffset: {x: 0, y: -0.4, z: 0}
-  _AccelerationSpeed: 8
-  _BaseSpeed: 2
-  _SpeedAddedPerPikmin: 0.5
-  _MaxSpeed: 4
-  _ColourToGenerateFor: 0
-  _PikminToProduceMatchColour: 5
-  _PikminToProduceNonMatchColour: 3
-  _CurrentMoveSpeed: 0
-  _MoveVector: {x: 0, y: 0, z: 0}
-  _NextDestination: {x: 0, y: 0, z: 0}
-  _TargetPosition: {x: 0, y: 0, z: 0}
---- !u!114 &4151343529506950369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3845477201539155994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 0
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: -1
---- !u!114 &-130031804920502830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3845477201539155994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  smoothType: 0
-  subdivisions: 2
-  iterations: 2
-  strength: 0.5
-  uniformLength: 1
-  maxSegmentLength: 2
-  bezierTangentLength: 0.4
-  offset: 0.2
-  factor: 0.1
 --- !u!82 &-2793859736506533239
 AudioSource:
   m_ObjectHideFlags: 0
@@ -326,108 +273,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &4151343531540337637
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4151343531540337642}
-  - component: {fileID: 4151343531540337643}
-  - component: {fileID: 6943525113885177638}
-  - component: {fileID: 5754749453939346760}
-  m_Layer: 13
-  m_Name: Collider
-  m_TagString: PikminInteract
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4151343531540337642
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4151343531540337637}
-  m_LocalRotation: {x: -0.70710707, y: -0, z: -0, w: 0.70710653}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4473817771820094112}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!64 &4151343531540337643
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4151343531540337637}
-  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -8392838232986735976, guid: aac46c45523870c43a988184a3790b59, type: 3}
---- !u!136 &6943525113885177638
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4151343531540337637}
-  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.75
-  m_Height: 2.7
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: -0.009326816}
---- !u!136 &5754749453939346760
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4151343531540337637}
-  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.75
-  m_Height: 2.7
-  m_Direction: 0
-  m_Center: {x: 0, y: 0, z: -0.009326816}
 --- !u!1 &8046210487221419007
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,6 +284,7 @@ GameObject:
   - component: {fileID: 3565917862207703934}
   - component: {fileID: 566598473555536106}
   - component: {fileID: 7071673281988979460}
+  - component: {fileID: 8056792089397570702}
   m_Layer: 13
   m_Name: pellet2__pellet5_m
   m_TagString: Untagged
@@ -511,3 +357,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8056792089397570702
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8046210487221419007}
+  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8392838232986735976, guid: aac46c45523870c43a988184a3790b59, type: 3}

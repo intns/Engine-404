@@ -25,6 +25,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5214387976797067357, guid: 80e619207e546854786da5f1faafa140,
         type: 3}
+      propertyPath: _MaxRollAngle
+      value: 89.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214387976797067357, guid: 80e619207e546854786da5f1faafa140,
+        type: 3}
       propertyPath: _AccelerationSpeed
       value: 8
       objectReference: {fileID: 0}
@@ -42,6 +47,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _DistanceToNextPosition
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214387976797067358, guid: 80e619207e546854786da5f1faafa140,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5753211366362367518, guid: 80e619207e546854786da5f1faafa140,
         type: 3}
@@ -103,37 +113,5 @@ PrefabInstance:
     - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4943918768778943652, guid: 80e619207e546854786da5f1faafa140,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 395563783681224155}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80e619207e546854786da5f1faafa140, type: 3}
---- !u!1 &4458233121086356661 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4943918768778943652, guid: 80e619207e546854786da5f1faafa140,
-    type: 3}
-  m_PrefabInstance: {fileID: 8737687558308175889}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &395563783681224155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4458233121086356661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  smoothType: 0
-  subdivisions: 2
-  iterations: 2
-  strength: 0.5
-  uniformLength: 1
-  maxSegmentLength: 2
-  bezierTangentLength: 0.4
-  offset: 0.2
-  factor: 0.1
