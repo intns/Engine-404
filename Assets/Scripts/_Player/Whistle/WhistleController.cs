@@ -138,19 +138,11 @@ public class WhistleController : MonoBehaviour
 				}
 				else
 				{
-					// Reliant on the mouse, so cannot be used with controllers
-					try
+					Ray ray = _MainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+					if (Physics.Raycast(ray, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
 					{
-						Ray ray = _MainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-						if (Physics.Raycast(ray, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
-						{
-							Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
-							transform.position = targetReticlePos = target;
-						}
-					}
-					catch
-					{
-						// Do nothing
+						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
+						transform.position = targetReticlePos = target;
 					}
 				}
 			}
