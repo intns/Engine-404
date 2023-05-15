@@ -32,6 +32,11 @@ public static class GameUtil
 
 		foreach (PikminAI p in pikmin)
 		{
+			if (p == null)
+			{
+				continue;
+			}
+
 			colorCounts[p._Data._PikminColour]++;
 		}
 
