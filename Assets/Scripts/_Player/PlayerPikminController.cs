@@ -377,29 +377,20 @@ public class PlayerPikminController : MonoBehaviour
 
 	Vector3 CalculateVelocity(Vector3 destination, float vd)
 	{
-		float gravity = Physics.gravity.y;
+		float gravity = Physics.gravity.y - 9.81f;
 
 		Vector3 displacementXZ = MathUtil.XZToXYZ(new Vector2(destination.x - _PikminInHand.transform.position.x,
-				destination.z - _PikminInHand.transform.position.z));
+			destination.z - _PikminInHand.transform.position.z));
 
 		float throwHeight = _PikminInHand._Data._ThrowingHeight;
 
-		float time;
-		if (destination.y < throwHeight)
-		{
-			// Use a different formula that takes into account the additional time required to fall from the throwing height to the destination
-			time = Mathf.Sqrt(-2 * throwHeight / gravity) + Mathf.Sqrt(2 * throwHeight / gravity) + Mathf.Sqrt(2 * (vd - throwHeight) / gravity);
-		}
-		else
-		{
-			time = (Mathf.Sqrt(-2 * throwHeight / gravity) + Mathf.Sqrt(2 * (vd - throwHeight) / gravity));
-		}
+		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + throwHeight) / gravity)
+			+ Mathf.Sqrt(2 * (vd - throwHeight) / gravity);
 
-		Vector3 normalizedDisplacementXZ = displacementXZ.normalized; // Normalize the XZ displacement vector
 		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * throwHeight);
-		Vector3 velocityXZ = normalizedDisplacementXZ * (displacementXZ.magnitude / time); // Scale the normalized vector to preserve the magnitude
+		Vector3 velocityXZ = (displacementXZ / time) * 1.01f;
 
-		return velocityXZ + velocityY;
+		return velocityXZ + (velocityY * -Mathf.Sign(gravity));
 	}
 
 	void SetLineRenderer()
@@ -414,12 +405,11 @@ public class PlayerPikminController : MonoBehaviour
 		}
 
 		Vector3 offs = (whistleTransform - transform.position);
+		// TODO: Fix clamp magnitude not working as intended!
 		Vector2 clamped = Vector2.ClampMagnitude(new Vector2(offs.x, offs.z), _PikminThrowRadius);
-		Vector3 destination = transform.position + MathUtil.XZToXYZ(clamped);
-		destination.y = Mathf.Clamp(whistleTransform.y, transform.position.y, _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight);
+		Vector3 destination = transform.position + Vector3.ClampMagnitude(MathUtil.XZToXYZ(clamped), _PikminThrowRadius);
 		float vd = destination.y - transform.position.y;
 		_ThrownVelocity = CalculateVelocity(destination, vd);
-
 
 		if (float.IsNaN(_ThrownVelocity.x))
 		{
