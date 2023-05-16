@@ -23991,6 +23991,36 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 616687785}
+    - target: {fileID: 4246387085006627562, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: m_SlopeLimit
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387085006627563, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _SlideLimit
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387085006627563, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _SlideSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387085006627563, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _MaxSlideSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387085006627563, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _MinSlopeAngle
+      value: 32.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4246387085006627563, guid: a4e570be87d7aca479ee34c405cc44de,
+        type: 3}
+      propertyPath: _SlideFriction
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6894162304972100195, guid: a4e570be87d7aca479ee34c405cc44de,
         type: 3}
       propertyPath: m_RootOrder
