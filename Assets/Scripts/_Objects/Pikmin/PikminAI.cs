@@ -129,6 +129,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	[SerializeField] Transform _LatchedTransform = null;
 	public Vector3 _LatchedOffset = Vector3.zero;
 	[SerializeField] float _HeldAudioTimer = 0.0f;
+	[SerializeField] float _ColliderTimer = 0.0f;
+	[SerializeField] float _ColliderOriginRadius = 0.0f;
+	[SerializeField] float _ColliderOriginHeight = 0.0f;
 
 	VisualEffect _AttackVFXInstance = null;
 
@@ -193,9 +196,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	{
 		_Rigidbody = GetComponent<Rigidbody>();
 		_Animator = GetComponent<Animator>();
-		_Collider = GetComponent<CapsuleCollider>();
-		_AudioSource = GetComponent<AudioSource>();
 
+		_Collider = GetComponent<CapsuleCollider>();
+		_ColliderOriginRadius= _Collider.radius;
+		_ColliderOriginHeight = _Collider.height;
+
+		_AudioSource = GetComponent<AudioSource>();
 		_AudioSource.volume = _Data._AudioVolume;
 
 		_ThrowTrailRenderer.enabled = false;
@@ -294,9 +300,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			case PikminStates.BeingHeld:
 				HandleBeingHeld();
 				break;
+			case PikminStates.Thrown:
+				HandleThrown();
+				break;
 
 			case PikminStates.Carry:
-			case PikminStates.Thrown:
 			case PikminStates.RunTowards:
 			case PikminStates.Waiting:
 			default:
@@ -724,6 +732,22 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		_HeldAudioTimer += Time.deltaTime;
 	}
 
+	private void HandleThrown()
+	{
+		const float GROWTH_TIMER = 0.2f;
+
+		if (_ColliderTimer >= GROWTH_TIMER)
+		{
+			_Collider.radius = _ColliderOriginRadius;
+			_Collider.height = _ColliderOriginHeight;
+			return;
+		}
+
+		_ColliderTimer += Time.deltaTime;
+		_Collider.radius = Mathf.Lerp(0.001f, _ColliderOriginRadius, _ColliderTimer / GROWTH_TIMER);
+		_Collider.height = Mathf.Lerp(0.001f, _ColliderOriginHeight, _ColliderTimer / GROWTH_TIMER);
+	}
+
 	void HandleOnFire()
 	{
 		_FireTimer += Time.fixedDeltaTime;
@@ -1039,6 +1063,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				break;
 			case PikminStates.Thrown:
 				_ThrowTrailRenderer.enabled = false;
+				_ColliderTimer = 0.0f;
+				_Collider.radius = _ColliderOriginRadius;
+				_Collider.height = _ColliderOriginHeight;
 				break;
 			case PikminStates.BeingHeld:
 				_AudioSource.pitch = 1.0f;
@@ -1102,6 +1129,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 		_Animator.SetBool("Holding", true);
 
+		_ColliderTimer = 0.0f;
+
 		ChangeState(PikminStates.BeingHeld);
 		_FaceDirectionAngle = _PlayerTransform.eulerAngles.y;
 	}
@@ -1112,6 +1141,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		_Rigidbody.isKinematic = false;
 		_Rigidbody.useGravity = true;
 		_Collider.isTrigger = false;
+		_Collider.radius = 0.001f;
 
 		_Animator.SetBool("Holding", false);
 
