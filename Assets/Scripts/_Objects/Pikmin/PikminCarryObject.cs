@@ -32,6 +32,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] int _PikminToProduceMatchColour = 2;
 	[SerializeField] int _PikminToProduceNonMatchColour = 1;
 
+	[Space()]
+
+	[SerializeField] LayerMask _MapMask;
+
 	[Header("Debugging")]
 	[SerializeField] float _CurrentMoveSpeed = 0;
 	[SerializeField] Vector3 _MoveVector = Vector3.zero;
@@ -64,6 +68,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		GameObject carryText = Instantiate(_CarryTextPrefab, transform.position, Quaternion.identity);
 		_CarryText = carryText.GetComponent<CarryText>();
 		_CarryText._FollowTarget = transform;
+
+		_MapMask.value |= 1 << gameObject.layer;
 	}
 
 	void Update()
@@ -179,24 +185,11 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
+		RotateUpwards();
+
 		float storedY = _Rigidbody.velocity.y;
 		_Rigidbody.velocity = _MoveVector;
 		_MoveVector = new Vector3(0, storedY, 0);
-
-		// TODO: find a replacement for this magic number
-		if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.5f))
-		{
-			Vector3 desiredUp = Vector3.Cross(transform.up, hit.normal); 
-
-			if (Mathf.Approximately(Vector3.Dot(transform.up, desiredUp), 1f))
-			{
-				return;
-			}
-
-			Vector3 torqueDirection = Vector3.Cross(transform.up, desiredUp);
-			float torqueMagnitude = Mathf.Asin(torqueDirection.magnitude) * _Rigidbody.mass * Physics.gravity.magnitude;
-			_Rigidbody.AddTorque(torqueMagnitude * torqueDirection.normalized);
-		}
 	}
 
 	void OnDrawGizmosSelected()
@@ -212,6 +205,43 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		{
 			Gizmos.DrawWireSphere(GetPikminPosition(_CarryMinMax.y, i), 0.15f);
 		}
+	}
+
+	void RotateUpwards()
+	{
+		if (!Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 2.5f, _MapMask, QueryTriggerInteraction.Ignore))
+		{
+			return;
+		}
+
+		// Determine the desired up direction based on the surface normal.
+		Vector3 desiredUpDirection = hit.normal;
+
+		// Calculate the dot product of the current up direction and the desired up direction.
+		float dotProduct = Vector3.Dot(transform.up, desiredUpDirection);
+
+		// If the dot product is close to 1, the object is already upright.
+		if (dotProduct > 0.99f)
+		{
+			return;
+		}
+
+		// If the dot product is close to -1, the object is upside down and needs to be rotated.
+		if (dotProduct < -0.9f)
+		{
+			// Invert the desired up direction to mirror according to the polygon normal.
+			desiredUpDirection = Vector3.ProjectOnPlane(-transform.up, hit.normal).normalized;
+		}
+
+		Vector3 torqueDirection = Vector3.Cross(transform.up, desiredUpDirection);
+		float torqueMagnitude = Mathf.Asin(torqueDirection.magnitude) * _Rigidbody.mass * Physics.gravity.magnitude;
+
+		if (torqueMagnitude < 0.005f)
+		{
+			return;
+		}
+
+		_Rigidbody.AddTorque(torqueMagnitude * torqueDirection.normalized);
 	}
 
 	Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)

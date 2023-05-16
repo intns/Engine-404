@@ -111,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 3845477201539155994}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1221946547981725967}
@@ -137,8 +137,7 @@ MonoBehaviour:
   _CarryMinMax: {x: 5, y: 10}
   _DistanceToNextPosition: 5
   _InvulnTimeAfterSpawn: 1
-  _MaxRollAngle: 89.9
-  _CarryCircleRadius: 1.4
+  _CarryCircleRadius: 1.18
   _CarryCircleOffset: {x: 0, y: -0.4, z: 0}
   _AccelerationSpeed: 8
   _BaseSpeed: 2
@@ -147,6 +146,9 @@ MonoBehaviour:
   _ColourToGenerateFor: 0
   _PikminToProduceMatchColour: 5
   _PikminToProduceNonMatchColour: 3
+  _MapMask:
+    serializedVersion: 2
+    m_Bits: 512
   _CurrentMoveSpeed: 0
   _MoveVector: {x: 0, y: 0, z: 0}
   _TargetPosition: {x: 0, y: 0, z: 0}
@@ -364,7 +366,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8046210487221419007}
-  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

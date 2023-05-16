@@ -80,13 +80,18 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 82f0bada0276e0845b8d9ef9b6cb33d5, type: 3}
     - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
+      propertyPath: _MapMask.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
       propertyPath: _AccelerationSpeed
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
       propertyPath: _CarryCircleRadius
-      value: 1.4
+      value: 1.18
       objectReference: {fileID: 0}
     - target: {fileID: 4151343529506950371, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
@@ -112,6 +117,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4473817771820094112, guid: dd1f9acce7bbade4a91413b2c74445f7,
         type: 3}
