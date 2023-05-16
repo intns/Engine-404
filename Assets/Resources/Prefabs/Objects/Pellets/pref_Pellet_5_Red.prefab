@@ -117,7 +117,7 @@ Transform:
   - {fileID: 1221946547981725967}
   - {fileID: 3565917862207703934}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4151343529506950371
 MonoBehaviour:
@@ -138,11 +138,11 @@ MonoBehaviour:
   _DistanceToNextPosition: 5
   _InvulnTimeAfterSpawn: 1
   _CarryCircleRadius: 1.18
-  _CarryCircleOffset: {x: 0, y: -0.4, z: 0}
+  _CarryCircleOffset: {x: 0, y: -0.25, z: 0}
   _AccelerationSpeed: 8
-  _BaseSpeed: 2
+  _BaseSpeed: 4
   _SpeedAddedPerPikmin: 0.5
-  _MaxSpeed: 4
+  _MaxSpeed: 8
   _ColourToGenerateFor: 0
   _PikminToProduceMatchColour: 5
   _PikminToProduceNonMatchColour: 3

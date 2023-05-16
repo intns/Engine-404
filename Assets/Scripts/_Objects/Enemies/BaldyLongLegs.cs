@@ -200,7 +200,6 @@ public class BaldyLongLegsFoot
 }
 
 
-[RequireComponent(typeof(EnemyDamageScript))]
 public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 {
 	enum States
@@ -233,7 +232,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	float _MoveSpeed = 0.0f;
 	float _CircleTimer = 0;
 	List<BaldyLongLegsFoot> _Feet = new List<BaldyLongLegsFoot>();
-	EnemyDamageScript _DamageScript = null;
+	/*EnemyDamageScript _DamageScript = null;*/
 	Animator _Animator;
 
 	public Vector3 GetRaycastObjPosition(int legIdx)
@@ -244,7 +243,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	void Awake()
 	{
 		_Animator = GetComponent<Animator>();
-		_DamageScript = GetComponent<EnemyDamageScript>();
+/*		_DamageScript = GetComponent<EnemyDamageScript>();*/
 
 		for (int i = 0; i < _LegTargets.Length; i++)
 		{
@@ -330,7 +329,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 					_State = States.Death;
 					_Animator.Play("Death");
 
-					while (_DamageScript._AttachedPikmin.Count > 0)
+				/*	while (_DamageScript._AttachedPikmin.Count > 0)
 					{
 						PikminAI pik = _DamageScript._AttachedPikmin[0];
 						if (pik == null)
@@ -340,13 +339,13 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 						pik.ChangeState(PikminStates.Idle);
 						pik._AddedVelocity = MathUtil.DirectionFromTo(transform.position, pik.transform.position) * 5;
-					}
+					}*/
 				}
 
 				break;
 
 			case States.Death:
-				while (_DamageScript._AttachedPikmin.Count > 0)
+				/*while (_DamageScript._AttachedPikmin.Count > 0)
 				{
 					PikminAI pik = _DamageScript._AttachedPikmin[0];
 					if (pik == null)
@@ -356,7 +355,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 					pik.ChangeState(PikminStates.Idle);
 					pik._AddedVelocity = MathUtil.DirectionFromTo(transform.position, pik.transform.position) * 5;
-				}
+				}*/
 				break;
 			default:
 				break;
@@ -453,7 +452,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 	public void ANIM_Death()
 	{
-		Instantiate(_DamageScript._DeadObject[0], transform.position + _DamageScript._DeadObjectOffset, Quaternion.identity);
+		/*Instantiate(_DamageScript._DeadObject[0], transform.position + _DamageScript._DeadObjectOffset, Quaternion.identity);*/
 	}
 
 	public void ANIM_DeathEnd()
@@ -470,21 +469,21 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{
-		_DamageScript._AttachedPikmin.Remove(pikmin);
-	}
+/*		_DamageScript._AttachedPikmin.Remove(pikmin);
+*/	}
 
 	public void OnAttackStart(PikminAI pikmin)
 	{
-		_DamageScript._AttachedPikmin.Add(pikmin);
-	}
+/*		_DamageScript._AttachedPikmin.Add(pikmin);
+*/	}
 
 	public void OnAttackRecieve(float damage, Transform hitPart = default)
 	{
-		if (this == null || _DamageScript == null)
+/*		if (this == null || _DamageScript == null)
 		{
 			return;
 		}
-
+*/
 /*		_DamageScript._HWScript._CurrentHealth -= damage;
 
 		float health = _DamageScript._HWScript._CurrentHealth;*/

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyDamageScript))]
+/*[RequireComponent(typeof(EnemyDamageScript))]
 public class BrambleGate : MonoBehaviour, IPikminAttack
 {
 	[Header("Components")]
@@ -53,3 +53,4 @@ public class BrambleGate : MonoBehaviour, IPikminAttack
 	#region Public Functions
 	#endregion
 }
+*/
