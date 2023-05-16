@@ -307,7 +307,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			}
 
 			// Set the current waypoint and target position for this object, then update the speed.
-			_CurrentWaypoint = WayPointManager._Instance.GetWaypointTowards(transform.position);
+			_CurrentWaypoint = WayPointManager._Instance.GetClosestWaypoint(transform.position);
 			_TargetPosition = _CurrentWaypoint.transform.position;
 
 			_IsBeingCarried = true;

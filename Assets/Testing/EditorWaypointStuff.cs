@@ -13,12 +13,12 @@ public class EditorWaypointManager : Editor
 
 		if (GUILayout.Button("Calculate Distance"))
 		{
-			way.CalculateDistance(false);
+			way.CalculateDistances(false);
 		}
 
 		if (GUILayout.Button("Clear Paths"))
 		{
-			way.CalculateDistance(true);
+			way.CalculateDistances(true);
 		}
 
 		if (GUILayout.Button("Generate IDs"))
