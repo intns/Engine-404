@@ -109,8 +109,11 @@ public class PlayerPikminController : MonoBehaviour
 		if (_CanThrowPikmin && _HoldingPikmin)
 		{
 			// Move the Pikmin's model to in front of the player
-			// TODO: fix whatever the fuck's wrong with this
-			_PikminInHand.transform.position = transform.position + transform.right / 1.5f + transform.forward + Vector3.up;
+			_PikminInHand.transform.position = transform.position
+																				+ transform.right / 1.75f
+																				+ transform.forward / 4f
+																				+ Vector3.up / 3.5f;
+
 			SetLineRenderer();
 
 			_CanPlayerAttack = false;
@@ -408,7 +411,7 @@ public class PlayerPikminController : MonoBehaviour
 		Vector2 clamped = Vector2.ClampMagnitude(new Vector2(offs.x, offs.z), _PikminThrowRadius);
 		Vector3 destination = transform.position + MathUtil.XZToXYZ(clamped);
 		destination.y = Mathf.Clamp(whistleTransform.y, transform.position.y, _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight); float vd = destination.y - transform.position.y;
-		
+
 		_ThrownVelocity = CalculateVelocity(destination, vd);
 
 		if (float.IsNaN(_ThrownVelocity.x))
