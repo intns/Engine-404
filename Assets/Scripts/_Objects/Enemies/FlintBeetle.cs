@@ -172,7 +172,6 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 
 		public override void Cleanup(Entity ent)
 		{
-			FlintBeetle obj = (FlintBeetle)ent;
 		}
 	}
 
@@ -192,12 +191,10 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 
 		public override void Execute(Entity ent)
 		{
-			FlintBeetle obj = (FlintBeetle)ent;
 		}
 
 		public override void Cleanup(Entity ent)
 		{
-			FlintBeetle obj = (FlintBeetle)ent;
 		}
 	}
 
@@ -411,7 +408,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 
 	public new void OnAttackStart(PikminAI pikmin) => _AttachedPikmin.Add(pikmin);
 
-	public new void OnAttackRecieve(float damage) { }
+	public void OnAttackRecieve(float damage) { }
 
 	public void OnSquish(PikminAI ai)
 	{
