@@ -603,13 +603,15 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			}
 		}
 
-		if (closestCol != null)
+		if (closestCol == null)
 		{
-			// We can move to the target object, and it is an interactable, so set our target object
-			ChangeState(PikminStates.RunTowards);
-			_TargetObject = closestCol.transform;
-			_TargetObjectCollider = closestCol;
+			return;
 		}
+
+		// We can move to the target object, and it is an interactable, so set our target object
+		ChangeState(PikminStates.RunTowards);
+		_TargetObject = closestCol.transform;
+		_TargetObjectCollider = closestCol;
 	}
 
 	void HandleRunningTowards()
@@ -653,10 +655,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	void HandleAttack()
 	{
 		// The object we were attacking has died, so we can go back to being idle
-		if (_Attacking == null || _AttackingTransform == null)
+		if (_Attacking != null && _AttackingTransform != null)
 		{
-			ChangeState(PikminStates.Idle);
+			return;
 		}
+
+		ChangeState(PikminStates.Idle);
 	}
 
 	void HandlePush()
@@ -680,11 +684,13 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			MoveTowards(destination, true, false);
 			_FaceDirectionAngle = Quaternion.LookRotation(_Pushing.GetMovementDirection()).eulerAngles.y;
 
-			if (!_PushReady)
+			if (_PushReady)
 			{
-				_Pushing.OnPikminReady(this);
-				_PushReady = true;
+				return;
 			}
+
+			_Pushing.OnPikminReady(this);
+			_PushReady = true;
 		}
 		else
 		{
@@ -1238,7 +1244,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		_Collider.isTrigger = false;
 		_Collider.radius = 0.001f;
 
-		_Animator.SetBool("Holding", false);
+		_Animator.SetBool(Animations.Holding, false);
 
 		_InSquad = false;
 		_CurrentStatSpecifier = PikminStatSpecifier.OnField;
