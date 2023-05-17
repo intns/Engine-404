@@ -7,9 +7,8 @@ using UnityEngine;
 public class CardboardBox : MonoBehaviour, IPikminPush
 {
 	[Header("Components")]
-	[SerializeField] Transform _EndPosition = null;
-	[SerializeField] GameObject _CarryTextPrefab = null;
-	Transform _Transform = null;
+	[SerializeField] Transform _EndPosition;
+	[SerializeField] GameObject _CarryTextPrefab;
 
 	[Header("Settings")]
 	[SerializeField] int _PikminToPush = 10;
@@ -17,11 +16,16 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 	[SerializeField] int _StepCount = 4;
 	[SerializeField] AnimationCurve _PushMoveCurve;
 	[Space]
-	[SerializeField] Transform _PushStartPosition = null;
+	[SerializeField] Transform _PushStartPosition;
 	[SerializeField] float _DistancePerPikmin = 0.5f;
+	List<PikminAI> _AttachedPiki = new(); // All the Pikmin currently pushing at the push point
 
-	CarryText _CarryText = null;
-	List<PikminAI> _AttachedPiki = new List<PikminAI>();    // All the Pikmin currently pushing at the push point
+	CarryText _CarryText;
+
+	List<PushPoint> _PushPoints = new();
+	Transform _Transform;
+
+	public Action _OnPush { get; set; }
 
 	class PushPoint
 	{
@@ -35,11 +39,8 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 		}
 	}
 
-	List<PushPoint> _PushPoints = new List<PushPoint>();
-
-	public Action _OnPush { get; set; }
-
 	#region Unity Functions
+
 	void Awake()
 	{
 		_Transform = transform;
@@ -51,15 +52,8 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 		for (int i = 0; i < _PikminToPush; i++)
 		{
-			GameObject obj = new GameObject("push_point_" + i)
-			{
-				transform =
-				{
-					parent = _PushStartPosition,
-					position = _PushStartPosition.position + _DistancePerPikmin * i * _PushStartPosition.right
-				}
-			};
-			_PushPoints.Add(new PushPoint(obj.transform, null));
+			GameObject obj = new("push_point_" + i) { transform = { parent = _PushStartPosition, position = _PushStartPosition.position + _DistancePerPikmin * i * _PushStartPosition.right } };
+			_PushPoints.Add(new(obj.transform, null));
 		}
 	}
 
@@ -77,13 +71,19 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 		for (int i = 0; i < _PikminToPush; i++)
 		{
-			Gizmos.DrawCube(_PushStartPosition.position + _PushStartPosition.right * i * _DistancePerPikmin, Vector3.one * 0.5f);
+			Gizmos.DrawCube(
+				_PushStartPosition.position + _PushStartPosition.right * i * _DistancePerPikmin,
+				Vector3.one * 0.5f
+			);
 		}
 	}
+
 	#endregion
 
 	#region IEnumerators
-	bool _Pushed = false;
+
+	bool _Pushed;
+
 	IEnumerator IE_PushingSequence()
 	{
 		yield return null;
@@ -93,29 +93,30 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 		Vector3 firstOrigin = _Transform.position;
 		Vector3 endPosition = _EndPosition.position;
-		float t = 0;
+
+		float timeFrac = 0;
+		float stepSize = 1f / _StepCount;
+		float step = Time.deltaTime / _TimePerPush;
 
 		for (int i = 1; i < _StepCount; i++)
 		{
-			Vector3 target = Vector3.Lerp(firstOrigin, endPosition, (float)i / _StepCount);
+			Vector3 target = Vector3.Lerp(firstOrigin, endPosition, i * stepSize);
 
-			Vector3 originPosition = _Transform.position;
-			while (t <= _TimePerPush)
+			while (timeFrac <= 1f)
 			{
-				_Transform.position = Vector3.Lerp(originPosition, target, _PushMoveCurve.Evaluate(t / _TimePerPush));
-				t += Time.deltaTime;
+				_Transform.position = Vector3.Lerp(firstOrigin, target, _PushMoveCurve.Evaluate(timeFrac));
+				timeFrac += step;
 				yield return new WaitForEndOfFrame();
 			}
 
-			t = 0;
+			timeFrac = 0;
 		}
 
-		firstOrigin = _Transform.position;
-		t = 0;
-		while (t <= _TimePerPush)
+		timeFrac = 0;
+		while (timeFrac <= 1f)
 		{
-			_Transform.position = Vector3.Lerp(firstOrigin, endPosition, _PushMoveCurve.Evaluate(t / _TimePerPush));
-			t += Time.deltaTime;
+			_Transform.position = Vector3.Lerp(firstOrigin, endPosition, _PushMoveCurve.Evaluate(timeFrac));
+			timeFrac += step;
 			yield return new WaitForEndOfFrame();
 		}
 
@@ -124,6 +125,7 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 			_AttachedPiki[0].ChangeState(PikminStates.Idle);
 		}
 	}
+
 	#endregion
 
 	#region Public Functions
@@ -166,15 +168,13 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 		_CarryText.UpdateColor(_AttachedPiki);
 		_CarryText.SetText(_AttachedPiki.Count, _PikminToPush);
 
-		if (_AttachedPiki.Count >= _PikminToPush)
+		if (_AttachedPiki.Count < _PikminToPush)
 		{
-			StartCoroutine(IE_PushingSequence());
-
-			if (_OnPush != null)
-			{
-				_OnPush.Invoke();
-			}
+			return;
 		}
+
+		StartCoroutine(IE_PushingSequence());
+		_OnPush?.Invoke();
 	}
 
 	// TODO: Fix bug with Pikmin running towards and changing state while running, causing
@@ -183,51 +183,32 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 	{
 		// Check if the AI is already in the pushing list
 		PushPoint usedPushPos = _PushPoints.FirstOrDefault(v => v._Pusher == ai);
+
 		if (usedPushPos != null)
 		{
 			return usedPushPos._Transform.position;
 		}
 
-		// Pikmin is not in pushing list, so we'll find the closest point
-		PushPoint closest = null;
-		float closestDist = float.PositiveInfinity;
-		foreach (PushPoint currentPoint in _PushPoints)
-		{
-			if (currentPoint._Pusher != null)
-			{
-				continue;
-			}
-
-			float dist = MathUtil.DistanceTo(ai.transform.position, currentPoint._Transform.position);
-			if (dist >= closestDist)
-			{
-				continue;
-			}
-
-			closestDist = dist;
-			closest = currentPoint;
-		}
+		// Find the closest available point
+		PushPoint closest = _PushPoints
+		                    .Where(p => p._Pusher == null)
+		                    .OrderBy(p => MathUtil.DistanceTo(ai.transform.position, p._Transform.position))
+		                    .FirstOrDefault();
 
 		if (closest == null)
 		{
-			foreach (var point in _PushPoints)
-			{
-				if (point._Pusher == null)
-				{
-					return point._Transform.position;
-				}
-				else if (point._Pusher._CurrentState != PikminStates.Push)
-				{
-					point._Pusher = null;
-					return point._Transform.position;
-				}
-			}
+			closest = _PushPoints
+			          .Where(p => p._Pusher != null && p._Pusher._CurrentState != PikminStates.Push)
+			          .OrderBy(p => MathUtil.DistanceTo(ai.transform.position, p._Transform.position))
+			          .FirstOrDefault();
 
-			ai.ChangeState(PikminStates.Idle);
-			return Vector3.zero;
+			if (closest == null)
+			{
+				ai.ChangeState(PikminStates.Idle);
+				return Vector3.zero;
+			}
 		}
 
-		// Found a point, the new pusher is this Pikmin!
 		closest._Pusher = ai;
 		return closest._Transform.position;
 	}
@@ -241,5 +222,6 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 	{
 		return MathUtil.DirectionFromTo(_Transform.position, _EndPosition.position);
 	}
+
 	#endregion
 }

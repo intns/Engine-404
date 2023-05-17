@@ -1,8 +1,8 @@
-using Cinemachine.Utility;
 using UnityEngine;
 
 public class Nectar : MonoBehaviour
 {
+	public static float NECTAR_DRINK_TIME = 5.0f;
 	// Pikmin 2 Style - drunk
 	// Pikmin 3 Style - sips
 
@@ -12,17 +12,15 @@ public class Nectar : MonoBehaviour
 	[Space]
 	[SerializeField] bool _UseSips = true;
 	[SerializeField] int _SipsUntilDeath = 10;
+	float _DrinkTimer;
+	bool _Interacted;
+	float _InteractionTimer;
+	bool _IsBeingDrunk;
+	int _SipsLeft;
+	Vector3 _StartSize = Vector3.zero;
 
 	[Header("Debugging")]
-	Transform _Transform = null;
-	Vector3 _StartSize = Vector3.zero;
-	float _InteractionTimer = 0.0f;
-	bool _Interacted = false;
-	int _SipsLeft = 0;
-	float _DrinkTimer = 0.0f;
-	bool _IsBeingDrunk = false;
-
-	public static float NECTAR_DRINK_TIME = 5.0f;
+	Transform _Transform;
 
 	void Awake()
 	{
@@ -37,6 +35,7 @@ public class Nectar : MonoBehaviour
 		if (!_Interacted)
 		{
 			Vector3 targetScale = _StartSize;
+
 			if (_UseSips)
 			{
 				targetScale *= _SipsLeft / (float)_SipsUntilDeath;
@@ -44,8 +43,9 @@ public class Nectar : MonoBehaviour
 			else if (_IsBeingDrunk)
 			{
 				_DrinkTimer += Time.deltaTime;
-				targetScale *= 1 - (_DrinkTimer / NECTAR_DRINK_TIME);
+				targetScale *= 1 - _DrinkTimer / NECTAR_DRINK_TIME;
 			}
+
 			_Transform.localScale = Vector3.Lerp(_Transform.localScale, targetScale, 5 * Time.deltaTime);
 
 			_StartSize = _Transform.localScale;
@@ -73,6 +73,7 @@ public class Nectar : MonoBehaviour
 			_InteractionTimer += Time.deltaTime;
 
 			float horizontalMod = 0.0f;
+
 			if (_InteractionTimer <= scaleDuration)
 			{
 				float t = _InteractionTimer / scaleDuration;
@@ -84,7 +85,7 @@ public class Nectar : MonoBehaviour
 			}
 
 			float xzScale = horizontalMod * (_HorizontalDamageAnimFactor * 0.2f);
-			_Transform.localScale = new(_StartSize.x - xzScale, (horizontalMod * 0.25f) + _StartSize.y, _StartSize.z - xzScale);
+			_Transform.localScale = new(_StartSize.x - xzScale, horizontalMod * 0.25f + _StartSize.y, _StartSize.z - xzScale);
 		}
 	}
 
@@ -113,7 +114,7 @@ public class Nectar : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerStay(Collider other)
+	void OnTriggerStay(Collider other)
 	{
 		if (_SipsLeft <= 0 && _UseSips)
 		{
@@ -121,7 +122,7 @@ public class Nectar : MonoBehaviour
 		}
 
 		if (other.CompareTag("Pikmin") && other.TryGetComponent(out PikminAI ai)
-			&& ai._CurrentState != PikminStates.SuckNectar && ai.InteractNectar(_Transform))
+		                               && ai._CurrentState != PikminStates.SuckNectar && ai.InteractNectar(_Transform))
 		{
 			_SipsLeft--;
 			_IsBeingDrunk = true;

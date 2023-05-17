@@ -9,18 +9,67 @@ public class PlayerUIController : MonoBehaviour
 	[SerializeField] TextMeshProUGUI _SquadText;
 	[SerializeField] TextMeshProUGUI _AreaText;
 	[SerializeField] Image _HealthWheel;
-	[SerializeField] Gradient _ColorGradient = null;
+	[SerializeField] Gradient _ColorGradient;
 
 	[SerializeField] Image _CurrentPikminImage;
 	[SerializeField] Sprite[] _PikminImages;
-	Animation _PikminImageAnimation;
 
 	[SerializeField] CanvasGroup _CanvasGroup;
 
-	[SerializeField] bool _DisplayValues = false;
-	int _InSquadAmount = -1;
+	[SerializeField] bool _DisplayValues;
 	int _InFieldAmount = -1;
-	float _TickTimer = 0.0f;
+	int _InSquadAmount = -1;
+	Animation _PikminImageAnimation;
+	float _TickTimer;
+
+	void Awake()
+	{
+		// TODO: Settings manager!!!
+		if (!PlayerPrefs.HasKey("day"))
+		{
+			PlayerPrefs.SetInt("day", 0);
+		}
+
+		_DayText.text = string.Empty;
+		_SquadText.text = string.Empty;
+		_AreaText.text = string.Empty;
+
+		_CurrentPikminImage.color = Color.clear;
+		_PikminImageAnimation = _CurrentPikminImage.GetComponent<Animation>();
+	}
+
+	void Update()
+	{
+		if (!_DisplayValues)
+		{
+			return;
+		}
+
+		_TickTimer += Time.deltaTime;
+
+		if (_TickTimer > 0.2f)
+		{
+			UpdateUI();
+			_TickTimer = 0.0f;
+		}
+
+		float currHealth = Player._Instance.GetCurrentHealth();
+		float maxHealth = Player._Instance.GetMaxHealth();
+		float ratio = currHealth / maxHealth;
+
+		_HealthWheel.fillAmount = Mathf.Lerp(_HealthWheel.fillAmount, ratio, 2.0f * Time.deltaTime);
+		_HealthWheel.color = _ColorGradient.Evaluate(ratio);
+	}
+
+	public void FadeInUI(bool shouldUpdateOnFinish = false)
+	{
+		StartCoroutine(FadeInCanvas(shouldUpdateOnFinish));
+	}
+
+	public void FadeOutUI()
+	{
+		StartCoroutine(FadeOutCanvas());
+	}
 
 
 	IEnumerator FadeInCanvas(bool shouldUpdateOnFinish)
@@ -61,52 +110,12 @@ public class PlayerUIController : MonoBehaviour
 		_DisplayValues = false;
 	}
 
-	public void FadeInUI(bool shouldUpdateOnFinish = false) => StartCoroutine(FadeInCanvas(shouldUpdateOnFinish));
-	public void FadeOutUI() => StartCoroutine(FadeOutCanvas());
-
-	void Awake()
-	{
-		// TODO: Settings manager!!!
-		if (!PlayerPrefs.HasKey("day"))
-		{
-			PlayerPrefs.SetInt("day", 0);
-		}
-
-		_DayText.text = string.Empty;
-		_SquadText.text = string.Empty;
-		_AreaText.text = string.Empty;
-
-		_CurrentPikminImage.color = Color.clear;
-		_PikminImageAnimation = _CurrentPikminImage.GetComponent<Animation>();
-	}
-
-	void Update()
-	{
-		if (!_DisplayValues)
-		{
-			return;
-		}
-
-		_TickTimer += Time.deltaTime;
-		if (_TickTimer > 0.2f)
-		{
-			UpdateUI();
-			_TickTimer = 0.0f;
-		}
-
-		float currHealth = Player._Instance.GetCurrentHealth();
-		float maxHealth = Player._Instance.GetMaxHealth();
-		float ratio = currHealth / maxHealth;
-
-		_HealthWheel.fillAmount = Mathf.Lerp(_HealthWheel.fillAmount, ratio, 2.0f * Time.deltaTime);
-		_HealthWheel.color = _ColorGradient.Evaluate(ratio);
-	}
-
 	#region Public functions
+
 	public void UpdateUI()
 	{
-		int newInSquad = PikminStatsManager.GetTotalInSquad();
-		int newOnField = PikminStatsManager.GetTotalOnField();
+		int newInSquad = PikminStatsManager.GetTotalPikminInSquad();
+		int newOnField = PikminStatsManager.GetTotalPikminOnField();
 
 		if (_InSquadAmount != newInSquad)
 		{
@@ -128,6 +137,7 @@ public class PlayerUIController : MonoBehaviour
 		_DayText.text = PlayerPrefs.GetInt("day").ToString();
 
 		PikminColour colour = Player._Instance._PikminController._SelectedThrowPikmin;
+
 		if (colour != PikminColour.Size)
 		{
 			_CurrentPikminImage.color = Color.white;
@@ -146,5 +156,6 @@ public class PlayerUIController : MonoBehaviour
 		_PikminImageAnimation.Play();
 		_DayText.GetComponent<Animation>().Play();
 	}
+
 	#endregion
 }

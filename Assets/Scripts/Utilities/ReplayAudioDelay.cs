@@ -10,14 +10,14 @@ using UnityEngine;
 public class ReplayAudioDelay : MonoBehaviour
 {
 	[Header("Components")]
-	[SerializeField] AudioSource _ToReplay = null;
+	[SerializeField] AudioSource _ToReplay;
 
 	[Header("Settings")]
-	[SerializeField] float _Delay = 0;
-	[SerializeField] bool _UseRandomDelay = false;
+	[SerializeField] float _Delay;
+	[SerializeField] bool _UseRandomDelay;
 	[SerializeField] Vector2 _RandomDelayBounds = Vector2.one * 2;
 	float _CurrentDelay;
-	float _CurrentTime = 0;
+	float _CurrentTime;
 
 	void Awake()
 	{
@@ -29,6 +29,7 @@ public class ReplayAudioDelay : MonoBehaviour
 	{
 		// Increment the timer
 		_CurrentTime += Time.deltaTime;
+
 		if (_CurrentTime >= _CurrentDelay)
 		{
 			// Play the audio, and reset the timer

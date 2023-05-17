@@ -13,22 +13,22 @@ using UnityEngine;
 public class Plant : MonoBehaviour
 {
 	[Header("Components")]
-	[SerializeField] AudioClip _InteractSound = null;
-	SphereCollider _Collider = null;
-	AudioSource _Audio = null;
-	Animator _Animator = null;
+	[SerializeField] AudioClip _InteractSound;
 
 	[Header("Settings")]
 	// The prepended I expands to 'Interaction'
 	[SerializeField] LayerMask _ILayers = 0;
 	[SerializeField] Vector3 _IOffset = Vector3.forward;
-	[SerializeField] float _IForwardOffset = 0;
+	[SerializeField] float _IForwardOffset;
 	[SerializeField] float _IRadius = 2.5f;
 
 	[Header("Animation Randomization")]
 	// Sets this to a random float between 0 and 0.75 so the plants don't look the same
 	[SerializeField] Vector2 _AnimStartRandBounds = Vector2.up;
-	readonly List<Collider> _Interacting = new List<Collider>();
+	readonly List<Collider> _Interacting = new();
+	Animator _Animator;
+	AudioSource _Audio;
+	SphereCollider _Collider;
 
 	void Awake()
 	{
@@ -44,19 +44,12 @@ public class Plant : MonoBehaviour
 		_Audio = GetComponent<AudioSource>();
 	}
 
-	IEnumerator StartAnimationAfterTime()
-	{
-		yield return new WaitForSeconds(Random.Range(_AnimStartRandBounds.x, _AnimStartRandBounds.y));
-		_Animator.enabled = true;
-
-		yield return null;
-	}
-
 	void OnTriggerEnter(Collider other)
 	{
 		// Check if the layer is within the interacting layers
 		int layer = other.gameObject.layer;
-		if (_ILayers != (_ILayers | (1 << layer)))
+
+		if (_ILayers != (_ILayers | 1 << layer))
 		{
 			return;
 		}
@@ -70,7 +63,8 @@ public class Plant : MonoBehaviour
 	{
 		// Check if the layer is within the interacting layers
 		int layer = other.gameObject.layer;
-		if (_ILayers != (_ILayers | (1 << layer)))
+
+		if (_ILayers != (_ILayers | 1 << layer))
 		{
 			return;
 		}
@@ -87,5 +81,13 @@ public class Plant : MonoBehaviour
 	{
 		_Audio.clip = _InteractSound;
 		_Audio.Play();
+	}
+
+	IEnumerator StartAnimationAfterTime()
+	{
+		yield return new WaitForSeconds(Random.Range(_AnimStartRandBounds.x, _AnimStartRandBounds.y));
+		_Animator.enabled = true;
+
+		yield return null;
 	}
 }

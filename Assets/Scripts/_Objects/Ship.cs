@@ -3,38 +3,18 @@ using UnityEngine.VFX;
 
 public class Ship : MonoBehaviour
 {
-	public static Ship _Instance = null;
+	public static Ship _Instance;
 
 	[Header("Components")]
 	[SerializeField] VisualEffect _FireVFX;
 
 	[HideInInspector]
-	public Transform _Transform = null;
-
-	// [Header("Settings")]
-
-	#region Unity Functions
-	void OnEnable()
-	{
-		_Instance = this;
-		SetEngineFlamesVFX(false);
-	}
-
-	void Awake()
-	{
-		_Transform = transform;
-	}
-	#endregion
-
-	#region IEnumerators
-	#endregion
-
-	#region Utility Functions
-	#endregion
+	public Transform _Transform;
 
 	#region Public Functions
+
 	/// <summary>
-	/// Starts / Stops flames underneath ship
+	///   Starts / Stops flames underneath ship
 	/// </summary>
 	/// <param name="state">Whether to start or stop the flames</param>
 	public void SetEngineFlamesVFX(bool state)
@@ -48,5 +28,23 @@ public class Ship : MonoBehaviour
 			_FireVFX.Stop();
 		}
 	}
+
+	#endregion
+
+	// [Header("Settings")]
+
+	#region Unity Functions
+
+	void OnEnable()
+	{
+		_Instance = this;
+		SetEngineFlamesVFX(false);
+	}
+
+	void Awake()
+	{
+		_Transform = transform;
+	}
+
 	#endregion
 }

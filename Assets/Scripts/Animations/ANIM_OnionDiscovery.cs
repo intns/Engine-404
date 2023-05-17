@@ -3,16 +3,24 @@ using UnityEngine;
 
 public class ANIM_OnionDiscovery : MonoBehaviour
 {
-	[SerializeField] SkinnedMeshRenderer _BodyRenderer = null;
+	[SerializeField] SkinnedMeshRenderer _BodyRenderer;
 
-	[SerializeField] Transform _LookAtTarget = null;
-	[SerializeField] Animator _Animator = null;
-	[SerializeField] Onion _Onion = null;
+	[SerializeField] Transform _LookAtTarget;
+	[SerializeField] Animator _Animator;
+	[SerializeField] Onion _Onion;
 	[SerializeField] AnimationClip _DiscoverClip;
 	Camera _Camera;
 	Player _Player;
 
-	bool _Playing = false;
+	bool _Playing;
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.CompareTag("Player"))
+		{
+			StartCoroutine(IE_Play());
+		}
+	}
 
 	IEnumerator IE_Play()
 	{
@@ -20,6 +28,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 		{
 			yield break;
 		}
+
 		_Playing = true;
 
 		yield return null;
@@ -35,17 +44,21 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 		float maxFov = 55;
 		float minFov = 30;
 
-		Color fadedColor = new Color(0.4078f, 0.4078f, 0.4078f);
+		Color fadedColor = new(0.4078f, 0.4078f, 0.4078f);
 
 		_BodyRenderer.material.color = fadedColor;
 
-		FadeManager._Instance.FadeInOut(0.75f, 0.75f, () =>
-		{
-			Vector3 fromPlayerToTarget = MathUtil.DirectionFromTo(_Player.transform.position, _LookAtTarget.position);
-			_Camera.transform.position = _Player.transform.position - (fromPlayerToTarget * 12.5f) + (Vector3.up * 15);
-			_Camera.transform.LookAt(_LookAtTarget.position + (Vector3.down * 4));
-			_Camera.fieldOfView = minFov;
-		});
+		FadeManager._Instance.FadeInOut(
+			0.75f,
+			0.75f,
+			() =>
+			{
+				Vector3 fromPlayerToTarget = MathUtil.DirectionFromTo(_Player.transform.position, _LookAtTarget.position);
+				_Camera.transform.position = _Player.transform.position - fromPlayerToTarget * 12.5f + Vector3.up * 15;
+				_Camera.transform.LookAt(_LookAtTarget.position + Vector3.down * 4);
+				_Camera.fieldOfView = minFov;
+			}
+		);
 
 		yield return new WaitForSeconds(2);
 
@@ -54,12 +67,21 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 
 		float t = 0;
 		float length = _DiscoverClip.length + 0.5f;
+
 		while (t <= length)
 		{
 			// Rotate the camera to look at the Player
-			_Camera.transform.rotation = Quaternion.Lerp(_Camera.transform.rotation,
-				Quaternion.LookRotation(MathUtil.DirectionFromTo(_Camera.transform.position, _LookAtTarget.position + (Vector3.down * 4), true)),
-				MathUtil.EaseOut3(10 * Time.deltaTime));
+			_Camera.transform.rotation = Quaternion.Lerp(
+				_Camera.transform.rotation,
+				Quaternion.LookRotation(
+					MathUtil.DirectionFromTo(
+						_Camera.transform.position,
+						_LookAtTarget.position + Vector3.down * 4,
+						true
+					)
+				),
+				MathUtil.EaseOut3(10 * Time.deltaTime)
+			);
 
 			_Camera.fieldOfView = Mathf.Lerp(minFov, maxFov, MathUtil.EaseOut4(t / length));
 			_BodyRenderer.material.color = Color.Lerp(fadedColor, Color.white, MathUtil.EaseOut4(t / length));
@@ -71,33 +93,38 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 
 		t = 0;
 		length = 5;
+
 		while (t <= length)
 		{
-			_Camera.transform.rotation = Quaternion.Lerp(_Camera.transform.rotation,
-				Quaternion.LookRotation(MathUtil.DirectionFromTo(_Camera.transform.position, _LookAtTarget.position + (Vector3.down * 7.5f), true)),
-				MathUtil.EaseOut3(t / length));
+			_Camera.transform.rotation = Quaternion.Lerp(
+				_Camera.transform.rotation,
+				Quaternion.LookRotation(
+					MathUtil.DirectionFromTo(
+						_Camera.transform.position,
+						_LookAtTarget.position + Vector3.down * 7.5f,
+						true
+					)
+				),
+				MathUtil.EaseOut3(t / length)
+			);
 
 			t += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
 
-		FadeManager._Instance.FadeInOut(0.75f, 0.75f, () =>
-		{
-			_Player.Pause(PauseType.Unpaused);
-			_Camera.GetComponent<CameraFollow>().enabled = true;
-		});
+		FadeManager._Instance.FadeInOut(
+			0.75f,
+			0.75f,
+			() =>
+			{
+				_Player.Pause(PauseType.Unpaused);
+				_Camera.GetComponent<CameraFollow>().enabled = true;
+			}
+		);
 
 		OnionManager.SaveData.SetOnionDiscovered(_Onion.Colour, true);
 		_Onion.ANIM_EndDiscovery();
 
 		gameObject.SetActive(false);
-	}
-
-	void OnTriggerEnter(Collider other)
-	{
-		if (other.CompareTag("Player"))
-		{
-			StartCoroutine(IE_Play());
-		}
 	}
 }

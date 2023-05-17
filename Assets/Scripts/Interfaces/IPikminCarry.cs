@@ -7,14 +7,14 @@
 
 public interface IPikminCarry : IPikminInteractable
 {
-	// Called when a Pikmin starts carrying the object
-	void OnCarryStart(PikminAI p);
-
-	// Called when the Pikmin gets called by the whistle, or reached it's destination
-	void OnCarryLeave(PikminAI p);
-
 	bool IsMoving();
 
 	// Returns whether or not the current amount of Pikmin carrying is > the maximum amount allowed
 	bool IsPikminSpotAvailable();
+
+	// Called when the Pikmin gets called by the whistle, or reached it's destination
+	void OnCarryLeave(PikminAI p);
+
+	// Called when a Pikmin starts carrying the object
+	void OnCarryStart(PikminAI p);
 }

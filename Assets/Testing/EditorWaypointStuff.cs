@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(WayPointManager))]
 public class EditorWaypointManager : Editor
@@ -24,6 +22,7 @@ public class EditorWaypointManager : Editor
 		if (GUILayout.Button("Generate IDs"))
 		{
 			TEST_Waypoint[] wps = way.GetComponentsInChildren<TEST_Waypoint>();
+
 			foreach (TEST_Waypoint wp in wps)
 			{
 				if (way._Home == wp)
@@ -39,9 +38,17 @@ public class EditorWaypointManager : Editor
 		if (GUILayout.Button("Place On Map"))
 		{
 			TEST_Waypoint[] wps = way.GetComponentsInChildren<TEST_Waypoint>();
+
 			foreach (TEST_Waypoint wp in wps)
 			{
-				if (Physics.Raycast(wp.transform.position + Vector3.up * 1000.0f, Vector3.down, out RaycastHit info, float.PositiveInfinity, way._MapMask, QueryTriggerInteraction.Ignore))
+				if (Physics.Raycast(
+					    wp.transform.position + Vector3.up * 1000.0f,
+					    Vector3.down,
+					    out RaycastHit info,
+					    float.PositiveInfinity,
+					    way._MapMask,
+					    QueryTriggerInteraction.Ignore
+				    ))
 				{
 					wp.transform.position = info.point + Vector3.up * 2.5f;
 					EditorUtility.SetDirty(wp.transform);

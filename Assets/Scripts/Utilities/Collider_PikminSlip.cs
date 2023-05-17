@@ -3,8 +3,8 @@ using UnityEngine.Events;
 
 public class Collider_PikminSlip : MonoBehaviour
 {
-	[SerializeField] UnityEvent _OnTouch = null;
-	[SerializeField] Transform _Parent = null;
+	[SerializeField] UnityEvent _OnTouch;
+	[SerializeField] Transform _Parent;
 	[SerializeField] float _PushForce = 300;
 	[SerializeField] bool _UseVerticalVel = true;
 
@@ -13,6 +13,22 @@ public class Collider_PikminSlip : MonoBehaviour
 		if (_Parent != null)
 		{
 			transform.position = _Parent.position;
+		}
+	}
+
+	void OnCollisionStay(Collision collision)
+	{
+		if (collision.gameObject.CompareTag("Pikmin"))
+		{
+			OnTouch(collision.transform);
+		}
+	}
+
+	void OnTriggerStay(Collider other)
+	{
+		if (other.gameObject.CompareTag("Pikmin"))
+		{
+			OnTouch(other.transform);
 		}
 	}
 
@@ -32,22 +48,6 @@ public class Collider_PikminSlip : MonoBehaviour
 		if (_OnTouch != null)
 		{
 			_OnTouch.Invoke();
-		}
-	}
-
-	void OnCollisionStay(Collision collision)
-	{
-		if (collision.gameObject.CompareTag("Pikmin"))
-		{
-			OnTouch(collision.transform);
-		}
-	}
-
-	void OnTriggerStay(Collider other)
-	{
-		if (other.gameObject.CompareTag("Pikmin"))
-		{
-			OnTouch(other.transform);
 		}
 	}
 }

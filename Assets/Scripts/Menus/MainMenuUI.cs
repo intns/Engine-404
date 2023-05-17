@@ -5,7 +5,6 @@
  * Created for: needing a UI for the main menu
  */
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -21,21 +20,21 @@ public enum MainMenuState
 	None = 0,
 
 	PressStart,
-	Menu
+	Menu,
 }
 
 public class MainMenuUI : MonoBehaviour
 {
 	[Header("Components")]
-	[SerializeField] Transform _Canvas = null;
-	[SerializeField] CanvasGroup _EngineLogo = null;
+	[SerializeField] Transform _Canvas;
+	[SerializeField] CanvasGroup _EngineLogo;
 	[Space]
-	[SerializeField] CanvasGroup _PressStartCanvasGroup = null;
-	[SerializeField] TextMeshProUGUI _StartText = null;
+	[SerializeField] CanvasGroup _PressStartCanvasGroup;
+	[SerializeField] TextMeshProUGUI _StartText;
 	[Space]
-	[SerializeField] CanvasGroup _MainMenuCanvasGroup = null;
+	[SerializeField] CanvasGroup _MainMenuCanvasGroup;
 	[Space]
-	[SerializeField] Transform _TemplateButton = null;
+	[SerializeField] Transform _TemplateButton;
 
 	[Header("Settings")]
 	[SerializeField] float _FadeinBlackTime = 2;
@@ -49,7 +48,7 @@ public class MainMenuUI : MonoBehaviour
 	[Header("Debugging")]
 	[SerializeField] MainMenuState _State = MainMenuState.None;
 
-	float _StartTextTimer = 0.0f;
+	float _StartTextTimer;
 
 	void Awake()
 	{
@@ -79,12 +78,11 @@ public class MainMenuUI : MonoBehaviour
 				break;
 			case MainMenuState.Menu:
 				break;
-			default:
-				break;
 		}
 	}
 
 	#region Misc Functions
+
 	void ChangeState(MainMenuState newState)
 	{
 		switch (newState)
@@ -94,10 +92,7 @@ public class MainMenuUI : MonoBehaviour
 			case MainMenuState.PressStart:
 				_StartTextTimer = 0.0f;
 
-				FadeManager._Instance.FadeIn(_FadeinBlackTime, new Action(() =>
-				{
-					StartCoroutine(FadeInStartText());
-				}));
+				FadeManager._Instance.FadeIn(_FadeinBlackTime, () => { StartCoroutine(FadeInStartText()); });
 				break;
 			case MainMenuState.Menu:
 				StartCoroutine(FadeOutCanvas(_PressStartCanvasGroup));
@@ -109,12 +104,11 @@ public class MainMenuUI : MonoBehaviour
 
 				StartCoroutine(FadeInCanvas(_MainMenuCanvasGroup));
 				break;
-			default:
-				break;
 		}
 
 		_State = newState;
 	}
+
 	#endregion
 
 	#region Public Functions
@@ -142,7 +136,15 @@ public class MainMenuUI : MonoBehaviour
 	public void PressExit()
 	{
 		AudioSource.PlayClipAtPoint(_SelectAudio, Camera.main.transform.position, 0.25f);
-		FadeManager._Instance.FadeOut(_FadeoutTime, () => { Application.Quit(); Debug.Break(); });
+
+		FadeManager._Instance.FadeOut(
+			_FadeoutTime,
+			() =>
+			{
+				Application.Quit();
+				Debug.Break();
+			}
+		);
 	}
 
 	public void OnPointerEnter(BaseEventData ev)
@@ -160,6 +162,7 @@ public class MainMenuUI : MonoBehaviour
 
 		float t = 0;
 		float time = _FadeinUITime;
+
 		while (t <= time)
 		{
 			t += Time.deltaTime;
@@ -172,6 +175,7 @@ public class MainMenuUI : MonoBehaviour
 	{
 		float t = 0;
 		float time = _FadeinUITime;
+
 		while (t <= time)
 		{
 			t += Time.deltaTime;
@@ -188,6 +192,7 @@ public class MainMenuUI : MonoBehaviour
 
 		float t = 0;
 		float time = _FadeinUITime;
+
 		while (t <= time)
 		{
 			t += Time.deltaTime;
@@ -202,7 +207,8 @@ public class MainMenuUI : MonoBehaviour
 	IEnumerator FadeInDebugControls()
 	{
 		bool skippedCurrent = false;
-		List<Transform> objects = new List<Transform>();
+		var objects = new List<Transform>();
+
 		// Generate options for every scene
 		for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
 		{
@@ -218,14 +224,23 @@ public class MainMenuUI : MonoBehaviour
 			Transform obj = Instantiate(_TemplateButton, _Canvas);
 			RectTransform rectTransform = obj.GetComponent<RectTransform>();
 			obj.GetComponentInChildren<TextMeshProUGUI>().text = sceneName;
-			obj.GetComponent<Button>().onClick.AddListener(() => FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene(sceneName)));
-			obj.GetComponent<RectTransform>().localPosition = new Vector3(rectTransform.localPosition.x, rectTransform.localPosition.y - ((skippedCurrent ? i - 1 : i) * 100));
+
+			obj.GetComponent<Button>().onClick.AddListener(
+				() =>
+					FadeManager._Instance.FadeInOut(1, 1, () => SceneManager.LoadScene(sceneName))
+			);
+
+			obj.GetComponent<RectTransform>().localPosition = new(
+				rectTransform.localPosition.x,
+				rectTransform.localPosition.y - (skippedCurrent ? i - 1 : i) * 100
+			);
 			obj.gameObject.SetActive(true);
 			objects.Add(obj);
 		}
 
-		List<Image> imageComponents = new List<Image>();
-		List<TextMeshProUGUI> textComponents = new List<TextMeshProUGUI>();
+		var imageComponents = new List<Image>();
+		var textComponents = new List<TextMeshProUGUI>();
+
 		foreach (Transform t1 in objects)
 		{
 			imageComponents.Add(t1.GetComponent<Image>());
@@ -234,6 +249,7 @@ public class MainMenuUI : MonoBehaviour
 
 		float t = 0;
 		float time = _FadeinUITime;
+
 		while (t <= time)
 		{
 			t += Time.deltaTime;

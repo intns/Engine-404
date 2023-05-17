@@ -12,7 +12,7 @@ public static class DemoSettings
 
 public class DemoController : MonoBehaviour
 {
-	[SerializeField] bool _ResetPrefs = false;
+	[SerializeField] bool _ResetPrefs;
 	[Space]
 	[SerializeField] Volume _MainVP;
 	[SerializeField] DayTimeManager _DayTimeManager;
@@ -20,12 +20,12 @@ public class DemoController : MonoBehaviour
 
 	[Header("Fade-in sequence")]
 	[SerializeField] CanvasGroup _CanvasGroup;
-	[SerializeField] Image _BlackImage = null;
-	[SerializeField] TextMeshProUGUI _Text = null;
+	[SerializeField] Image _BlackImage;
+	[SerializeField] TextMeshProUGUI _Text;
 
 	[Header("Intro Sequence")]
-	[SerializeField] bool _DoSequence = false;
-	[SerializeField] Animator _CeresAnimator = null;
+	[SerializeField] bool _DoSequence;
+	[SerializeField] Animator _CeresAnimator;
 
 	void Awake()
 	{
@@ -37,12 +37,13 @@ public class DemoController : MonoBehaviour
 		}
 
 		bool editFog = Random.Range(0, 5) < 2.5f;
+
 		// We're going to randomise the VP a bit
 		if (editFog)
 		{
 			fog.meanFreePath.value = Random.Range(50.0f, 250.0f);
 			fog.baseHeight.value = Random.Range(-1.0f, 13.0f);
-			fog.albedo.value = Color.Lerp(new Color(1, 0.95f, 0.815f), new Color(1, 0.578f, 0.306f), Random.Range(0.2f, 0.8f));
+			fog.albedo.value = Color.Lerp(new(1, 0.95f, 0.815f), new(1, 0.578f, 0.306f), Random.Range(0.2f, 0.8f));
 		}
 		else
 		{
@@ -84,6 +85,52 @@ public class DemoController : MonoBehaviour
 		}
 	}
 
+	IEnumerator IE_DoAnimation()
+	{
+		Ship._Instance.SetEngineFlamesVFX(true);
+		_CeresAnimator.SetTrigger("DEMO_INTRO");
+		Transform main = Camera.main.transform;
+
+		CameraFollow cameraFollow = main.GetComponent<CameraFollow>();
+		cameraFollow.enabled = false;
+		Transform shipTransform = _CeresAnimator.transform;
+
+		main.position = shipTransform.position + Vector3.up * 15 + Vector3.back * 20;
+
+		Vector3 position = Vector3.Lerp(
+			main.position,
+			shipTransform.position + Vector3.up * 20 + Vector3.forward * 35,
+			5 * Time.deltaTime
+		);
+
+		float t = 0;
+		float length = 8.0f;
+
+		while (t <= length)
+		{
+			// Rotate the camera to look at the Player
+			position = Vector3.Lerp(
+				position,
+				shipTransform.position + Vector3.up * 20 + Vector3.forward * 45,
+				5 * Time.deltaTime
+			);
+
+			Quaternion rotation = Quaternion.Lerp(
+				main.rotation,
+				Quaternion.LookRotation(MathUtil.DirectionFromTo(main.position, shipTransform.position + Vector3.up * 5, true)),
+				10 * Time.deltaTime
+			);
+
+			main.SetPositionAndRotation(position, rotation);
+
+			t += Time.deltaTime;
+			yield return null;
+		}
+
+		cameraFollow.enabled = true;
+		Ship._Instance.SetEngineFlamesVFX(false);
+	}
+
 	IEnumerator IE_StartScene()
 	{
 		_BlackImage.enabled = true;
@@ -94,6 +141,7 @@ public class DemoController : MonoBehaviour
 		_Text.text = _MapName;
 
 		float t = 0;
+
 		while (t <= 2)
 		{
 			t += Time.deltaTime;
@@ -106,6 +154,7 @@ public class DemoController : MonoBehaviour
 		StartCoroutine(IE_DoAnimation());
 
 		t = 0;
+
 		while (t <= 2)
 		{
 			t += Time.deltaTime;
@@ -114,6 +163,7 @@ public class DemoController : MonoBehaviour
 		}
 
 		t = 0;
+
 		while (t <= 1.25f)
 		{
 			t += Time.deltaTime;
@@ -130,45 +180,15 @@ public class DemoController : MonoBehaviour
 		// Update UI before the fade in occurs, due to animation
 		Player._Instance._UIController.UpdateFullUI();
 
-		FadeManager._Instance.FadeInOut(2.0f, 2.0f, () =>
-		{
-			Player._Instance._ModelObject.SetActive(true);
-			Player._Instance.Pause(PauseType.Unpaused);
-			_DayTimeManager.enabled = true;
-		});
-	}
-
-	IEnumerator IE_DoAnimation()
-	{
-		Ship._Instance.SetEngineFlamesVFX(true);
-		_CeresAnimator.SetTrigger("DEMO_INTRO");
-		Transform main = Camera.main.transform;
-
-		CameraFollow cameraFollow = main.GetComponent<CameraFollow>();
-		cameraFollow.enabled = false;
-		Transform shipTransform = _CeresAnimator.transform;
-
-		main.position = shipTransform.position + Vector3.up * 15 + Vector3.back * 20;
-		Vector3 position = Vector3.Lerp(main.position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 35, 5 * Time.deltaTime);
-
-		float t = 0;
-		float length = 8.0f;
-		while (t <= length)
-		{
-			// Rotate the camera to look at the Player
-			position = Vector3.Lerp(position, shipTransform.position + Vector3.up * 20 + Vector3.forward * 45, 5 * Time.deltaTime);
-
-			Quaternion rotation = Quaternion.Lerp(main.rotation,
-							Quaternion.LookRotation(MathUtil.DirectionFromTo(main.position, shipTransform.position + Vector3.up * 5, true)),
-							10 * Time.deltaTime);
-
-			main.SetPositionAndRotation(position, rotation);
-
-			t += Time.deltaTime;
-			yield return null;
-		}
-
-		cameraFollow.enabled = true;
-		Ship._Instance.SetEngineFlamesVFX(false);
+		FadeManager._Instance.FadeInOut(
+			2.0f,
+			2.0f,
+			() =>
+			{
+				Player._Instance._ModelObject.SetActive(true);
+				Player._Instance.Pause(PauseType.Unpaused);
+				_DayTimeManager.enabled = true;
+			}
+		);
 	}
 }

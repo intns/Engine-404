@@ -12,7 +12,7 @@ public class GFXEnabler : MonoBehaviour
 {
 	[Header("Components")]
 	[SerializeField] KeyCode _OptionMenuKey = KeyCode.Return;
-	[SerializeField] Volume _PostProcessVolume = null;
+	[SerializeField] Volume _PostProcessVolume;
 
 	void Update()
 	{

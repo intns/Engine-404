@@ -2,11 +2,18 @@ using UnityEngine;
 
 public class MovementEngine : MonoBehaviour
 {
-	Rigidbody _Rigidbody = null;
+	[SerializeField] AnimationCurve _DeaccelerateCurve;
+	[SerializeField] float _DeaccelerateTime = 0.25f;
+	[SerializeField] Vector3 _CurrentSmoothVelocity;
+
+	Rigidbody _Rigidbody;
+
+	Vector3 _SmoothVelocity;
+	float _SmoothVelocityTimer;
 
 	public Vector3 SmoothVelocity
 	{
-		get { return _SmoothVelocity; }
+		get => _SmoothVelocity;
 		set
 		{
 			_SmoothVelocityTimer = 0;
@@ -15,19 +22,8 @@ public class MovementEngine : MonoBehaviour
 		}
 	}
 
-	public Vector3 RealVelocity
-	{
-		get => _Rigidbody.velocity;
-	}
-
-	[SerializeField] AnimationCurve _DeaccelerateCurve;
-	[SerializeField] float _DeaccelerateTime = 0.25f;
-
-	Vector3 _SmoothVelocity;
-	[SerializeField] Vector3 _CurrentSmoothVelocity;
-	float _SmoothVelocityTimer = 0;
-
 	#region Unity Functions
+
 	void Awake()
 	{
 		_Rigidbody = GetComponent<Rigidbody>();
@@ -45,10 +41,14 @@ public class MovementEngine : MonoBehaviour
 			return;
 		}
 
-		_CurrentSmoothVelocity = Vector3.Lerp(_SmoothVelocity, Vector3.up * _Rigidbody.velocity.y,
-			_DeaccelerateCurve.Evaluate(_SmoothVelocityTimer / _DeaccelerateTime));
+		_CurrentSmoothVelocity = Vector3.Lerp(
+			_SmoothVelocity,
+			Vector3.up * _Rigidbody.velocity.y,
+			_DeaccelerateCurve.Evaluate(_SmoothVelocityTimer / _DeaccelerateTime)
+		);
 
 		_SmoothVelocityTimer += Time.deltaTime;
+
 		if (_SmoothVelocityTimer >= _DeaccelerateTime)
 		{
 			_CurrentSmoothVelocity = Vector3.zero;
@@ -63,10 +63,12 @@ public class MovementEngine : MonoBehaviour
 		}
 
 		float storedY = _Rigidbody.velocity.y;
+
 		if (_CurrentSmoothVelocity != Vector3.zero)
 		{
 			SetVelocity(_CurrentSmoothVelocity);
 		}
+
 		_CurrentSmoothVelocity.y = storedY;
 	}
 
@@ -74,5 +76,6 @@ public class MovementEngine : MonoBehaviour
 	{
 		_Rigidbody.velocity = velocity;
 	}
+
 	#endregion
 }

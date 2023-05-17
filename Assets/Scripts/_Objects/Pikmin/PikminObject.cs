@@ -16,7 +16,7 @@ public enum PikminColour
 	Yellow,
 	Blue,
 
-	Size
+	Size,
 }
 
 public enum PikminMaturity
@@ -24,7 +24,7 @@ public enum PikminMaturity
 	Leaf = 0,
 	Bud,
 	Flower,
-	Size
+	Size,
 }
 
 [CreateAssetMenu(fileName = "NewPikminType", menuName = "New Pikmin Type")]
@@ -59,26 +59,26 @@ public class PikminObject : ScriptableObject
 	public float _AudioVolume = 1;
 
 	[Space]
-	public AudioClip _DeathNoise = null;
-	public AudioClip _ThrowNoise = null;
+	public AudioClip _DeathNoise;
+	public AudioClip _ThrowNoise;
 	[Space]
-	public AudioClip _IdleNoise = null;
+	public AudioClip _IdleNoise;
 	[Space]
-	public AudioClip _HeldNoise = null;
+	public AudioClip _HeldNoise;
 	[Space]
-	public AudioClip _AttackScreechNoise = null;
-	public AudioClip _AttackHitNoise = null;
+	public AudioClip _AttackScreechNoise;
+	public AudioClip _AttackHitNoise;
 	[Space]
-	public AudioClip _CarryAddNoise = null;
-	public AudioClip _CarryingNoise = null;
-
-	public float GetMaxSpeed(PikminMaturity maturity)
-	{
-		return _MaxSpeedPerMaturity[(int)maturity];
-	}
+	public AudioClip _CarryAddNoise;
+	public AudioClip _CarryingNoise;
 
 	public float GetAcceleration(PikminMaturity maturity)
 	{
 		return _MaxAccelPerMaturity[(int)maturity];
+	}
+
+	public float GetMaxSpeed(PikminMaturity maturity)
+	{
+		return _MaxSpeedPerMaturity[(int)maturity];
 	}
 }

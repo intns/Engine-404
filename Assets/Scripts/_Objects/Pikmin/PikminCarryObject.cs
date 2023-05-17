@@ -9,53 +9,50 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] AudioClip _CarryNoiseClip;
 
 	[Header("Settings")]
-	[SerializeField, Tooltip("Minimum / Maximum carrying capacity")]
-	Vector2Int _CarryMinMax = new Vector2Int(1, 2);
+	[SerializeField] [Tooltip("Minimum / Maximum carrying capacity")]
+	Vector2Int _CarryMinMax = new(1, 2);
 
-	[SerializeField, Tooltip("How close we have to be to the position to move onto the next position")]
+	[SerializeField] [Tooltip("How close we have to be to the position to move onto the next position")]
 	float _DistanceToNextPosition = 0.5f;
 
-	[SerializeField, Tooltip("How long does it take for the object to be carried after spawn?")]
+	[SerializeField] [Tooltip("How long does it take for the object to be carried after spawn?")]
 	float _InvulnTimeAfterSpawn = 1.0f;
 
 	[SerializeField] float _CarryCircleRadius = 1;
 	[SerializeField] Vector3 _CarryCircleOffset = Vector3.zero;
 
-	[Space()]
+	[Space]
 	[SerializeField] float _AccelerationSpeed = 2;
 	[SerializeField] float _BaseSpeed = 2;
 	[SerializeField] float _SpeedAddedPerPikmin = 0.5f;
 	[SerializeField] float _MaxSpeed = 3;
 
-	[Space()]
+	[Space]
 	[SerializeField] PikminColour _ColourToGenerateFor = PikminColour.Size;
 	[SerializeField] int _PikminToProduceMatchColour = 2;
 	[SerializeField] int _PikminToProduceNonMatchColour = 1;
 
-	[Space()]
-
+	[Space]
 	[SerializeField] LayerMask _MapMask;
 
 	[Header("Debugging")]
-	[SerializeField] float _CurrentMoveSpeed = 0;
+	[SerializeField] float _CurrentMoveSpeed;
 	[SerializeField] Vector3 _MoveVector = Vector3.zero;
 	[SerializeField] Vector3 _TargetPosition;
 
-	CarryText _CarryText = null;
-	Onion _TargetOnion = null;
-	Rigidbody _Rigidbody = null;
-	TEST_Waypoint _CurrentWaypoint = null;
+	List<PikminAI> _CarryingPikmin = new();
+
+	CarryText _CarryText;
+
+	float _CurrentSpeedTarget;
+	TEST_Waypoint _CurrentWaypoint;
+	bool _IsBeingCarried;
+	Rigidbody _Rigidbody;
+	bool _ShutdownInProgress;
 	AudioSource _Source;
 
-	float _CurrentSpeedTarget = 0;
-
-	List<PikminAI> _CarryingPikmin = new List<PikminAI>();
-	bool _IsBeingCarried = false;
-	bool _ShutdownInProgress = false;
-
-	float _SpawnInvulnTimer = 0.0f;
-
-	public bool IsMoving() => _IsBeingCarried;
+	float _SpawnInvulnTimer;
+	Onion _TargetOnion;
 
 	void Awake()
 	{
@@ -85,6 +82,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 
 		_SpawnInvulnTimer += Time.deltaTime;
+
 		if (_SpawnInvulnTimer < _InvulnTimeAfterSpawn)
 		{
 			return;
@@ -99,7 +97,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 			return;
 		}
-		else if (!OnionManager.IsAnyOnionActiveInScene)
+
+		if (!OnionManager.IsAnyOnionActiveInScene)
 		{
 			return;
 		}
@@ -123,6 +122,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			float distToWp = MathUtil.DistanceTo(transform.position, _CurrentWaypoint.transform.position, false);
 
 			const float K_MIN_SMOOTH_DIST = 10.0f;
+
 			if (distToWp <= K_MIN_SMOOTH_DIST)
 			{
 				_CurrentWaypoint = _CurrentWaypoint._Next;
@@ -141,17 +141,71 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 	}
 
-	private void OnionSuckProcedure()
+	void FixedUpdate()
+	{
+		if (GameManager.IsPaused)
+		{
+			_MoveVector = Vector3.zero;
+			_Rigidbody.velocity = Vector3.zero;
+			return;
+		}
+
+		RotateUpwards();
+
+		float storedY = _Rigidbody.velocity.y;
+		_Rigidbody.velocity = _MoveVector;
+		_MoveVector = new(0, storedY, 0);
+	}
+
+	void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.red;
+
+		for (int i = 0; i < _CarryMinMax.x; i++)
+		{
+			Gizmos.DrawWireSphere(GetPikminPosition(_CarryMinMax.x, i), 0.1f);
+		}
+
+		Gizmos.color = Color.blue;
+
+		for (int i = 0; i < _CarryMinMax.y; i++)
+		{
+			Gizmos.DrawWireSphere(GetPikminPosition(_CarryMinMax.y, i), 0.15f);
+		}
+	}
+
+	public bool IsMoving()
+	{
+		return _IsBeingCarried;
+	}
+
+	Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)
+	{
+		return transform.position + _CarryCircleOffset
+		                          + MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx)) * _CarryCircleRadius;
+	}
+
+	void MoveTowards(Vector3 position)
+	{
+		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
+
+		Vector3 newVelocity = MathUtil.DirectionFromTo(transform.position, position) * _CurrentMoveSpeed;
+		newVelocity.y = _Rigidbody.velocity.y;
+		_MoveVector = newVelocity;
+	}
+
+	void OnionSuckProcedure()
 	{
 		_ShutdownInProgress = true;
 		PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
+
 		while (_CarryingPikmin.Count > 0)
 		{
 			_CarryingPikmin[0].ChangeState(PikminStates.Idle);
 		}
 
 		if (targetColour == _ColourToGenerateFor
-			|| _ColourToGenerateFor == PikminColour.Size)
+		    || _ColourToGenerateFor == PikminColour.Size)
 		{
 			_TargetOnion.StartSuction(gameObject, _PikminToProduceMatchColour);
 		}
@@ -168,6 +222,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		_Rigidbody.isKinematic = true;
 
 		Collider[] colliders = gameObject.GetComponentsInChildren<Collider>(false);
+
 		foreach (Collider coll in colliders)
 		{
 			coll.enabled = false;
@@ -176,40 +231,16 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		enabled = false;
 	}
 
-	void FixedUpdate()
-	{
-		if (GameManager.IsPaused)
-		{
-			_MoveVector = Vector3.zero;
-			_Rigidbody.velocity = Vector3.zero;
-			return;
-		}
-
-		RotateUpwards();
-
-		float storedY = _Rigidbody.velocity.y;
-		_Rigidbody.velocity = _MoveVector;
-		_MoveVector = new Vector3(0, storedY, 0);
-	}
-
-	void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.red;
-		for (int i = 0; i < _CarryMinMax.x; i++)
-		{
-			Gizmos.DrawWireSphere(GetPikminPosition(_CarryMinMax.x, i), 0.1f);
-		}
-
-		Gizmos.color = Color.blue;
-		for (int i = 0; i < _CarryMinMax.y; i++)
-		{
-			Gizmos.DrawWireSphere(GetPikminPosition(_CarryMinMax.y, i), 0.15f);
-		}
-	}
-
 	void RotateUpwards()
 	{
-		if (!Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 2.5f, _MapMask, QueryTriggerInteraction.Ignore))
+		if (!Physics.Raycast(
+			    transform.position,
+			    Vector3.down,
+			    out RaycastHit hit,
+			    2.5f,
+			    _MapMask,
+			    QueryTriggerInteraction.Ignore
+		    ))
 		{
 			return;
 		}
@@ -244,34 +275,25 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		_Rigidbody.AddTorque(torqueMagnitude * torqueDirection.normalized);
 	}
 
-	Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)
-	{
-		return transform.position + _CarryCircleOffset + (MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx)) * _CarryCircleRadius);
-	}
-
-	void MoveTowards(Vector3 position)
-	{
-		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
-
-		Vector3 newVelocity = MathUtil.DirectionFromTo(transform.position, position) * _CurrentMoveSpeed;
-		newVelocity.y = _Rigidbody.velocity.y;
-		_MoveVector = newVelocity;
-	}
-
 	void UpdateUI()
 	{
 		// If we're about to delete the object, no point in updating it
-		if (_ShutdownInProgress) { return; }
+		if (_ShutdownInProgress)
+		{
+			return;
+		}
 
 		_CarryText.UpdateColor(_CarryingPikmin);
 		_CarryText.SetText(_CarryingPikmin.Count, _CarryMinMax.x);
 	}
 
 	#region Pikmin Carry Implementation
+
 	public PikminIntention IntentionType => PikminIntention.Carry;
 
 	/// <summary>
-	/// Searches for the onion and sets target position if enough Pikmin are carrying, increases speed based on number of carriers.
+	///   Searches for the onion and sets target position if enough Pikmin are carrying, increases speed based on number of
+	///   carriers.
 	/// </summary>
 	/// <param name="p">The PikminAI object being carried.</param>
 	public void OnCarryStart(PikminAI p)
@@ -289,7 +311,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		for (int i = 0; i < _CarryingPikmin.Count; i++)
 		{
 			// Calculate the offset for the Pikmin based on its position in the carrying circle.
-			Vector3 offset = _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryingPikmin.Count, i)) * _CarryCircleRadius;
+			Vector3 offset = _CarryCircleOffset
+			                 + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryingPikmin.Count, i)) * _CarryCircleRadius;
 			_CarryingPikmin[i].Latch_SetOffset(offset);
 		}
 
@@ -340,5 +363,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	{
 		return _SpawnInvulnTimer >= _InvulnTimeAfterSpawn && _CarryingPikmin.Count < _CarryMinMax.y;
 	}
+
 	#endregion
 }

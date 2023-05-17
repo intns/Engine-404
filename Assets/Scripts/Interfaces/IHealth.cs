@@ -1,5 +1,6 @@
 public interface IHealth
 {
+	float AddHealth(float h);
 	float GetCurrentHealth();
 	float GetMaxHealth();
 
@@ -7,5 +8,4 @@ public interface IHealth
 
 	// Returns the new value
 	float SubtractHealth(float h);
-	float AddHealth(float h);
 }

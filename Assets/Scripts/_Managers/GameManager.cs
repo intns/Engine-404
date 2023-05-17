@@ -21,13 +21,15 @@ public enum PauseType
 
 public static class GameManager
 {
-	public static bool IsPaused { get => PauseType != PauseType.Unpaused; }
+	static PauseType _pauseType = PauseType.Unpaused;
+
+	public static bool _DebugGui = Application.isEditor; // Used for debugging
+	public static Language _Language = Language.English; // Used for alternate texts
+	public static bool IsPaused => PauseType != PauseType.Unpaused;
+
 	public static PauseType PauseType
 	{
-		get
-		{
-			return _pauseType;
-		}
+		get => _pauseType;
 		set
 		{
 			OnPauseEvent?.Invoke(value);
@@ -35,14 +37,13 @@ public static class GameManager
 			_pauseType = value;
 		}
 	}
-	static PauseType _pauseType = PauseType.Unpaused;
-
-	public static bool _DebugGui = Application.isEditor; // Used for debugging
-	public static Language _Language = Language.English; // Used for alternate texts
 
 	#region Subscriber Events
+
 	/// Callbacks
 	public delegate void PauseEvent(PauseType t);
+
 	public static event PauseEvent OnPauseEvent;
+
 	#endregion
 }

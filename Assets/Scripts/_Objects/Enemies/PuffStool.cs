@@ -7,24 +7,28 @@ public static class Perlin
 
 	public static float Noise(float x)
 	{
-		var X = Mathf.FloorToInt(x) & 0xff;
+		int X = Mathf.FloorToInt(x) & 0xff;
 		x -= Mathf.Floor(x);
-		var u = Fade(x);
+		float u = Fade(x);
 		return Lerp(u, Grad(perm[X], x), Grad(perm[X + 1], x - 1)) * 2;
 	}
 
 	public static float Noise(float x, float y)
 	{
-		var X = Mathf.FloorToInt(x) & 0xff;
-		var Y = Mathf.FloorToInt(y) & 0xff;
+		int X = Mathf.FloorToInt(x) & 0xff;
+		int Y = Mathf.FloorToInt(y) & 0xff;
 		x -= Mathf.Floor(x);
 		y -= Mathf.Floor(y);
-		var u = Fade(x);
-		var v = Fade(y);
-		var A = (perm[X] + Y) & 0xff;
-		var B = (perm[X + 1] + Y) & 0xff;
-		return Lerp(v, Lerp(u, Grad(perm[A], x, y), Grad(perm[B], x - 1, y)),
-									 Lerp(u, Grad(perm[A + 1], x, y - 1), Grad(perm[B + 1], x - 1, y - 1)));
+		float u = Fade(x);
+		float v = Fade(y);
+		int A = perm[X] + Y & 0xff;
+		int B = perm[X + 1] + Y & 0xff;
+
+		return Lerp(
+			v,
+			Lerp(u, Grad(perm[A], x, y), Grad(perm[B], x - 1, y)),
+			Lerp(u, Grad(perm[A + 1], x, y - 1), Grad(perm[B + 1], x - 1, y - 1))
+		);
 	}
 
 	public static float Noise(Vector2 coord)
@@ -34,25 +38,35 @@ public static class Perlin
 
 	public static float Noise(float x, float y, float z)
 	{
-		var X = Mathf.FloorToInt(x) & 0xff;
-		var Y = Mathf.FloorToInt(y) & 0xff;
-		var Z = Mathf.FloorToInt(z) & 0xff;
+		int X = Mathf.FloorToInt(x) & 0xff;
+		int Y = Mathf.FloorToInt(y) & 0xff;
+		int Z = Mathf.FloorToInt(z) & 0xff;
 		x -= Mathf.Floor(x);
 		y -= Mathf.Floor(y);
 		z -= Mathf.Floor(z);
-		var u = Fade(x);
-		var v = Fade(y);
-		var w = Fade(z);
-		var A = (perm[X] + Y) & 0xff;
-		var B = (perm[X + 1] + Y) & 0xff;
-		var AA = (perm[A] + Z) & 0xff;
-		var BA = (perm[B] + Z) & 0xff;
-		var AB = (perm[A + 1] + Z) & 0xff;
-		var BB = (perm[B + 1] + Z) & 0xff;
-		return Lerp(w, Lerp(v, Lerp(u, Grad(perm[AA], x, y, z), Grad(perm[BA], x - 1, y, z)),
-													 Lerp(u, Grad(perm[AB], x, y - 1, z), Grad(perm[BB], x - 1, y - 1, z))),
-									 Lerp(v, Lerp(u, Grad(perm[AA + 1], x, y, z - 1), Grad(perm[BA + 1], x - 1, y, z - 1)),
-													 Lerp(u, Grad(perm[AB + 1], x, y - 1, z - 1), Grad(perm[BB + 1], x - 1, y - 1, z - 1))));
+		float u = Fade(x);
+		float v = Fade(y);
+		float w = Fade(z);
+		int A = perm[X] + Y & 0xff;
+		int B = perm[X + 1] + Y & 0xff;
+		int AA = perm[A] + Z & 0xff;
+		int BA = perm[B] + Z & 0xff;
+		int AB = perm[A + 1] + Z & 0xff;
+		int BB = perm[B + 1] + Z & 0xff;
+
+		return Lerp(
+			w,
+			Lerp(
+				v,
+				Lerp(u, Grad(perm[AA], x, y, z), Grad(perm[BA], x - 1, y, z)),
+				Lerp(u, Grad(perm[AB], x, y - 1, z), Grad(perm[BB], x - 1, y - 1, z))
+			),
+			Lerp(
+				v,
+				Lerp(u, Grad(perm[AA + 1], x, y, z - 1), Grad(perm[BA + 1], x - 1, y, z - 1)),
+				Lerp(u, Grad(perm[AB + 1], x, y - 1, z - 1), Grad(perm[BB + 1], x - 1, y - 1, z - 1))
+			)
+		);
 	}
 
 	public static float Noise(Vector3 coord)
@@ -66,27 +80,31 @@ public static class Perlin
 
 	public static float Fbm(float x, int octave)
 	{
-		var f = 0.0f;
-		var w = 0.5f;
-		for (var i = 0; i < octave; i++)
+		float f = 0.0f;
+		float w = 0.5f;
+
+		for (int i = 0; i < octave; i++)
 		{
 			f += w * Noise(x);
 			x *= 2.0f;
 			w *= 0.5f;
 		}
+
 		return f;
 	}
 
 	public static float Fbm(Vector2 coord, int octave)
 	{
-		var f = 0.0f;
-		var w = 0.5f;
-		for (var i = 0; i < octave; i++)
+		float f = 0.0f;
+		float w = 0.5f;
+
+		for (int i = 0; i < octave; i++)
 		{
 			f += w * Noise(coord);
 			coord *= 2.0f;
 			w *= 0.5f;
 		}
+
 		return f;
 	}
 
@@ -97,14 +115,16 @@ public static class Perlin
 
 	public static float Fbm(Vector3 coord, int octave)
 	{
-		var f = 0.0f;
-		var w = 0.5f;
-		for (var i = 0; i < octave; i++)
+		float f = 0.0f;
+		float w = 0.5f;
+
+		for (int i = 0; i < octave; i++)
 		{
 			f += w * Noise(coord);
 			coord *= 2.0f;
 			w *= 0.5f;
 		}
+
 		return f;
 	}
 
@@ -139,57 +159,32 @@ public static class Perlin
 
 	static float Grad(int hash, float x, float y, float z)
 	{
-		var h = hash & 15;
-		var u = h < 8 ? x : y;
-		var v = h < 4 ? y : (h == 12 || h == 14 ? x : z);
+		int h = hash & 15;
+		float u = h < 8 ? x : y;
+		float v = h < 4 ? y : h == 12 || h == 14 ? x : z;
 		return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 	}
 
-	static int[] perm = {
-				151,160,137,91,90,15,
-				131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
-				190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
-				88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,134,139,48,27,166,
-				77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,
-				102,143,54, 65,25,63,161, 1,216,80,73,209,76,132,187,208, 89,18,169,200,196,
-				135,130,116,188,159,86,164,100,109,198,173,186, 3,64,52,217,226,250,124,123,
-				5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,
-				223,183,170,213,119,248,152, 2,44,154,163, 70,221,153,101,155,167, 43,172,9,
-				129,22,39,253, 19,98,108,110,79,113,224,232,178,185, 112,104,218,246,97,228,
-				251,34,242,193,238,210,144,12,191,179,162,241, 81,51,145,235,249,14,239,107,
-				49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,
-				138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180,
-				151
-		};
+	static int[] perm =
+	{
+		151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23, 190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35,
+		11, 32, 57, 177, 33, 88, 237, 149, 56, 87, 174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48, 27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211, 133, 230, 220, 105, 92, 41, 55, 46,
+		245, 40, 244, 102, 143, 54, 65, 25, 63, 161, 1, 216, 80, 73, 209, 76, 132, 187, 208, 89, 18, 169, 200, 196, 135, 130, 116, 188, 159, 86, 164, 100, 109, 198, 173, 186, 3, 64, 52, 217, 226, 250, 124,
+		123, 5, 202, 38, 147, 118, 126, 255, 82, 85, 212, 207, 206, 59, 227, 47, 16, 58, 17, 182, 189, 28, 42, 223, 183, 170, 213, 119, 248, 152, 2, 44, 154, 163, 70, 221, 153, 101, 155, 167, 43, 172, 9, 129,
+		22, 39, 253, 19, 98, 108, 110, 79, 113, 224, 232, 178, 185, 112, 104, 218, 246, 97, 228, 251, 34, 242, 193, 238, 210, 144, 12, 191, 179, 162, 241, 81, 51, 145, 235, 249, 14, 239, 107, 49, 192, 214, 31,
+		181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254, 138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180, 151,
+	};
 
 	#endregion
 }
 
 public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 {
-	enum States
-	{
-		Idle,
-		Walking,
-
-		StunStart,
-		Stunned,
-		StunEnd,
-
-		Attack,
-		Death
-	}
-
-	[Header("Components")]
-	Transform _Transform = null;
-	Animator _Animator = null;
-	MovementEngine _MovementEngine = null;
-
 	[Header("Settings")]
 	[SerializeField] float _Speed = 15;
 	[SerializeField] float _MaxHealth = 3500;
 	[SerializeField] Vector3 _DeadOffset = Vector3.zero;
-	[SerializeField] GameObject _DeadObject = null;
+	[SerializeField] GameObject _DeadObject;
 	[Space]
 	[SerializeField] float _TimePerAttack = 5;
 	[Space]
@@ -202,23 +197,17 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 	[SerializeField] ParticleSystem _ToxicPS;
 
 	[Header("Health Wheel")]
-	[SerializeField] GameObject _HWObject = null;
+	[SerializeField] GameObject _HWObject;
 	[SerializeField] Vector3 _HWOffset = Vector3.up;
 	[SerializeField] float _HWScale = 1;
 
 	[Header("Debugging")]
 	[SerializeField] States _CurrentState = States.Idle;
 	[SerializeField] Transform _TargetObject;
-	[SerializeField] float _AttackTimer = 0;
-	[SerializeField] float _StunTimer = 0;
-	[SerializeField] float _CurrentHealthForStun = 0;
+	[SerializeField] float _AttackTimer;
+	[SerializeField] float _StunTimer;
+	[SerializeField] float _CurrentHealthForStun;
 	[SerializeField] Vector3 _WanderDirection = Vector3.zero;
-	Vector2 _RngStartDir = Vector2.zero;
-
-	List<PikminAI> _AttachedPikmin = new List<PikminAI>();
-
-	float _CurrentHealth = 0;
-	HealthWheel _HWScript = null;
 
 	[Header("Animations")]
 	[SerializeField] AnimationClip _IdleAnim;
@@ -229,7 +218,18 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 	[SerializeField] AnimationClip _StunAnim;
 	[SerializeField] AnimationClip _DeathStandAnim;
 	[SerializeField] AnimationClip _DeathStunnedAnim;
-	AnimationController _AnimController = new AnimationController();
+	Animator _Animator;
+	AnimationController _AnimController = new();
+
+	List<PikminAI> _AttachedPikmin = new();
+
+	float _CurrentHealth;
+	HealthWheel _HWScript;
+	MovementEngine _MovementEngine;
+	Vector2 _RngStartDir = Vector2.zero;
+
+	[Header("Components")]
+	Transform _Transform;
 
 	public static class AnimationState
 	{
@@ -243,7 +243,21 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		public const int DeathStunned = 7;
 	}
 
+	enum States
+	{
+		Idle,
+		Walking,
+
+		StunStart,
+		Stunned,
+		StunEnd,
+
+		Attack,
+		Death,
+	}
+
 	#region Unity Functions
+
 	void Awake()
 	{
 		_Transform = transform;
@@ -254,11 +268,12 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		float randomVal = Random.value * Mathf.PI * 2;
 		_RngStartDir.x = randomVal;
 		_RngStartDir.y = randomVal + Random.value;
-		_WanderDirection = new Vector3(Mathf.Sin(randomVal), 0, Mathf.Cos(randomVal));
+		_WanderDirection = new(Mathf.Sin(randomVal), 0, Mathf.Cos(randomVal));
 
 		_CurrentHealth = _MaxHealth;
 
-		_HWScript = Instantiate(_HWObject, transform.position + _HWOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
+		_HWScript = Instantiate(_HWObject, transform.position + _HWOffset, Quaternion.identity)
+			.GetComponentInChildren<HealthWheel>();
 		_HWScript.Setup(_Transform, _HWOffset, Vector3.one * _HWScale, _MaxHealth);
 
 		_AnimController._ParentAnimator = _Animator;
@@ -282,74 +297,76 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		switch (_CurrentState)
 		{
 			case States.Idle:
-				{
-					HandleIdle();
-					break;
-				}
+			{
+				HandleIdle();
+				break;
+			}
 			case States.Walking:
-				{
-					HandleWalking();
-					break;
-				}
+			{
+				HandleWalking();
+				break;
+			}
 			case States.Stunned:
-				{
-					HandleStunned();
-					break;
-				}
+			{
+				HandleStunned();
+				break;
+			}
 			case States.Attack:
-				{
-					_MovementEngine.SetVelocity(Vector3.zero);
-					break;
-				}
-			case States.Death:
-				{
-					while (_AttachedPikmin.Count > 0)
-					{
-						PikminAI pik = _AttachedPikmin[0];
-						if (pik == null)
-						{
-							break;
-						}
-
-						pik.ChangeState(PikminStates.Idle);
-						pik._AddedVelocity = MathUtil.DirectionFromTo(_Transform.position, pik.transform.position) * 5;
-					}
-
-
-					_MovementEngine.SetVelocity(Vector3.zero);
-					break;
-				}
-			case States.StunStart:
-				{
-					while (_AttachedPikmin.Count > 10)
-					{
-						PikminAI pik = _AttachedPikmin[^1];
-						if (pik == null)
-						{
-							break;
-						}
-
-						pik.ChangeState(PikminStates.Idle);
-						pik._AddedVelocity = MathUtil.DirectionFromTo(_Transform.position, pik.transform.position) * 5;
-					}
-
-					Collider[] pikmin = Physics.OverlapSphere(_Transform.position, _DeathSphere, _PlayerAndPikminMask);
-					foreach (Collider pik in pikmin)
-					{
-						PikminAI ai = pik.GetComponent<PikminAI>();
-						if (ai != null)
-						{
-							ai._AddedVelocity = MathUtil.DirectionFromTo(_Transform.position, pik.transform.position) * 15;
-						}
-					}
-
-					_MovementEngine.SetVelocity(Vector3.zero);
-					break;
-				}
-			case States.StunEnd:
+			{
 				_MovementEngine.SetVelocity(Vector3.zero);
 				break;
-			default:
+			}
+			case States.Death:
+			{
+				while (_AttachedPikmin.Count > 0)
+				{
+					PikminAI pik = _AttachedPikmin[0];
+
+					if (pik == null)
+					{
+						break;
+					}
+
+					pik.ChangeState(PikminStates.Idle);
+					pik._AddedVelocity = MathUtil.DirectionFromTo(_Transform.position, pik.transform.position) * 5;
+				}
+
+
+				_MovementEngine.SetVelocity(Vector3.zero);
+				break;
+			}
+			case States.StunStart:
+			{
+				while (_AttachedPikmin.Count > 10)
+				{
+					PikminAI pik = _AttachedPikmin[^1];
+
+					if (pik == null)
+					{
+						break;
+					}
+
+					pik.ChangeState(PikminStates.Idle);
+					pik._AddedVelocity = MathUtil.DirectionFromTo(_Transform.position, pik.transform.position) * 5;
+				}
+
+				Collider[] pikmin = Physics.OverlapSphere(_Transform.position, _DeathSphere, _PlayerAndPikminMask);
+
+				foreach (Collider pik in pikmin)
+				{
+					PikminAI ai = pik.GetComponent<PikminAI>();
+
+					if (ai != null)
+					{
+						ai._AddedVelocity = MathUtil.DirectionFromTo(_Transform.position, pik.transform.position) * 15;
+					}
+				}
+
+				_MovementEngine.SetVelocity(Vector3.zero);
+				break;
+			}
+			case States.StunEnd:
+				_MovementEngine.SetVelocity(Vector3.zero);
 				break;
 		}
 	}
@@ -369,6 +386,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		Gizmos.color = Color.red;
 
 		Mesh mesh = _DeadObject.GetComponentInChildren<MeshFilter>().sharedMesh;
+
 		if (mesh != null)
 		{
 			Gizmos.DrawWireMesh(mesh, transform.position + _DeadOffset);
@@ -378,15 +396,22 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 			Gizmos.DrawWireSphere(transform.position + _DeadOffset, 1);
 		}
 	}
+
 	#endregion
 
 	#region IEnumerators
+
 	#endregion
 
 	#region Utility Functions
+
 	void HandleIdle()
 	{
-		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, new(Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask)));
+		Collider closestObj = MathUtil.GetClosestCollider(
+			_Transform.position,
+			new(Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask))
+		);
+
 		if (closestObj != null)
 		{
 			_TargetObject = closestObj.transform;
@@ -398,11 +423,15 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 	void HandleWalking()
 	{
-		Vector3 direction = new Vector3(Perlin.Noise(Time.time + _RngStartDir.x), 0, Perlin.Noise(Time.time / 2 + _RngStartDir.y)).normalized;
+		Vector3 direction
+			= new Vector3(Perlin.Noise(Time.time + _RngStartDir.x), 0, Perlin.Noise(Time.time / 2 + _RngStartDir.y))
+				.normalized;
 		_WanderDirection = Vector3.Lerp(_WanderDirection, direction, 0.3f * Time.deltaTime);
 
 		_MovementEngine.SmoothVelocity = _Speed * _WanderDirection;
-		_Transform.rotation = Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(_WanderDirection), 4 * Time.deltaTime);
+
+		_Transform.rotation
+			= Quaternion.Slerp(_Transform.rotation, Quaternion.LookRotation(_WanderDirection), 4 * Time.deltaTime);
 
 		_AnimController.ChangeState(AnimationState.Walk);
 
@@ -418,10 +447,12 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, _DetectionSphere, _PlayerAndPikminMask);
 		Collider closestObj = MathUtil.GetClosestCollider(_Transform.position, new(objects));
+
 		if (closestObj != null)
 		{
 			float curDist = MathUtil.DistanceTo(_Transform.position, _TargetObject.position);
 			float closestDist = MathUtil.DistanceTo(_Transform.position, closestObj.transform.position);
+
 			if (closestDist < curDist)
 			{
 				_TargetObject = closestObj.transform;
@@ -456,6 +487,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		_MovementEngine.SetVelocity(Vector3.zero);
 
 		_StunTimer += Time.deltaTime;
+
 		if (_StunTimer < _TimeForStun)
 		{
 			return;
@@ -464,6 +496,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		while (_AttachedPikmin.Count > 0)
 		{
 			PikminAI pik = _AttachedPikmin[0];
+
 			if (pik == null)
 			{
 				break;
@@ -512,8 +545,8 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 				break;
 			case States.Death:
 				if (oldState == States.Stunned
-				|| oldState == States.StunStart
-				|| oldState == States.StunEnd)
+				    || oldState == States.StunStart
+				    || oldState == States.StunEnd)
 				{
 					_AnimController.ChangeState(AnimationState.DeathStunned);
 				}
@@ -521,14 +554,21 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 				{
 					_AnimController.ChangeState(AnimationState.DeathStand);
 				}
+
 				break;
 		}
 	}
+
 	#endregion
 
 	#region Public Functions
+
 	public PikminIntention IntentionType => PikminIntention.Attack;
-	bool IPikminAttack.IsAttackAvailable() => true;
+
+	bool IPikminAttack.IsAttackAvailable()
+	{
+		return true;
+	}
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{
@@ -548,8 +588,9 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		}
 
 		_CurrentHealthForStun -= damage;
+
 		if (_CurrentHealthForStun <= 0
-			&& (_CurrentState == States.Idle || _CurrentState == States.Walking))
+		    && (_CurrentState == States.Idle || _CurrentState == States.Walking))
 		{
 			ChangeState(States.StunStart);
 			_CurrentHealthForStun = _HealthForStun;
@@ -586,11 +627,11 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, _DeathSphere, _PlayerAndPikminMask);
 
-		foreach (var coll in objects)
+		foreach (Collider coll in objects)
 		{
 			if (coll.TryGetComponent(out PikminAI ai))
 			{
-				ai.Die(0);
+				ai.Die();
 			}
 
 			if (coll.transform == _TargetObject)
@@ -613,6 +654,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 
 
 	#region Health Implementation
+
 	// 'Getter' functions
 	public float GetCurrentHealth()
 	{
@@ -639,6 +681,8 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 	{
 		_CurrentHealth = set;
 	}
+
 	#endregion
+
 	#endregion
 }

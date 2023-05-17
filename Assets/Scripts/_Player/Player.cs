@@ -12,20 +12,22 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerPikminController),
-									typeof(AnimationController),
-									typeof(PlayerMovementController))]
+[RequireComponent(
+	typeof(PlayerPikminController),
+	typeof(AnimationController),
+	typeof(PlayerMovementController)
+)]
 public class Player : MonoBehaviour, IHealth, IInteraction
 {
 	public static Player _Instance;
-	public PlayerMovementController _MovementController = null;
-	public PlayerPikminController _PikminController = null;
-	public PlayerUIController _UIController = null;
-	public WhistleController _WhistleController = null;
-	public GameObject _ModelObject = null;
+	public PlayerMovementController _MovementController;
+	public PlayerPikminController _PikminController;
+	public PlayerUIController _UIController;
+	public WhistleController _WhistleController;
+	public GameObject _ModelObject;
 
 	[Header("Components")]
-	[SerializeField] LineRenderer _WhistleLine = null;
+	[SerializeField] LineRenderer _WhistleLine;
 
 	[Header("Settings")]
 	[SerializeField] float _MaxHealth = 100;
@@ -38,15 +40,6 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	[Header("Animations")]
 	[SerializeField] AnimationController _AnimController;
 
-	public static class PlayerAnimation
-	{
-		public const int Walk = 0;
-		public const int Die = 1;
-		public const int Damage = 2;
-		public const int Idle = 3;
-		public const int Attack = 4;
-	}
-
 	[SerializeField] AnimationClip _WalkAnimation;
 	[SerializeField] AnimationClip _DieAnimation;
 	[SerializeField] AnimationClip _DamageAnimation;
@@ -54,16 +47,11 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	[SerializeField] AnimationClip _AttackAnimation;
 
 	[SerializeField] CharacterController _Controller;
-	bool _IsHit = false;
-	bool _Walking = false;
 
-	float _AttackTimer = 0.0f;
-	float _DamageCooldown = 0.0f;
-
-	void OnEnable()
-	{
-		_Instance = this;
-	}
+	float _AttackTimer;
+	float _DamageCooldown;
+	bool _IsHit;
+	bool _Walking;
 
 	void Awake()
 	{
@@ -130,15 +118,86 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		}
 	}
 
+	void OnEnable()
+	{
+		_Instance = this;
+	}
+
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere(transform.position + transform.forward, _AttackSphereRadius);
-		Handles.Label(transform.position + transform.forward + Vector3.up * _AttackSphereRadius, $"Attack Damage: {_AttackDamage}");
+
+		Handles.Label(
+			transform.position + transform.forward + Vector3.up * _AttackSphereRadius,
+			$"Attack Damage: {_AttackDamage}"
+		);
 	}
 
 	public void Die()
 	{
 		DayTimeManager._Instance.FinishDay();
+	}
+
+	// Happens whenever the movement joystick/buttons change values
+	public void OnMovement(InputAction.CallbackContext context)
+	{
+		// If NOT paralyzed AND NOT paused AND IS moving any direction
+		_Walking = !_MovementController._Paralysed && !GameManager.IsPaused
+		                                           && (context.ReadValue<Vector2>().x != 0
+		                                               || context.ReadValue<Vector2>().y != 0);
+	}
+
+	public void OnPrimaryAction(InputAction.CallbackContext context)
+	{
+		if (!context.started || GameManager.IsPaused || _CurrentHealth <= 0 || _MovementController._Paralysed
+		    || !_PikminController._CanPlayerAttack || _AttackTimer > 0)
+		{
+			return;
+		}
+
+		// TODO: Make animation play
+		_AnimController.ChangeState(PlayerAnimation.Attack, true, true);
+
+		// Attack!
+		if (!Physics.SphereCast(transform.position, _AttackSphereRadius, transform.forward, out RaycastHit info)
+		    || info.transform.CompareTag("Player") || info.transform.CompareTag("Pikmin"))
+		{
+			return;
+		}
+
+		IHealth c = info.transform.GetComponentInParent<IHealth>();
+
+		if (c != null)
+		{
+			c.SubtractHealth(_AttackDamage);
+
+			_AttackTimer = _AttackCooldown;
+		}
+	}
+
+	// When start key is pressed
+	public void OnStart()
+	{
+		Die();
+	}
+
+	public void Pause(PauseType type)
+	{
+		_AnimController.ChangeState(PlayerAnimation.Idle);
+
+		if (type == PauseType.Unpaused)
+		{
+			_UIController.FadeInUI(true);
+			_WhistleLine.enabled = true;
+		}
+		else
+		{
+			_UIController.FadeOutUI();
+			_WhistleLine.enabled = false;
+		}
+
+		_MovementController._Paralysed = type != PauseType.Unpaused;
+		GameManager.PauseType = type;
 	}
 
 	public void PikminExtinction()
@@ -165,63 +224,27 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		}
 	}
 
-	public void Pause(PauseType type)
+	#region IEnumerators
+
+	IEnumerator IE_PikminExtinctionSequence()
 	{
-		_AnimController.ChangeState(PlayerAnimation.Idle);
+		Pause(PauseType.Paused);
+		_UIController.FadeOutUI();
 
-		if (type == PauseType.Unpaused)
-		{
-			_UIController.FadeInUI(true);
-			_WhistleLine.enabled = true;
-		}
-		else
-		{
-			_UIController.FadeOutUI();
-			_WhistleLine.enabled = false;
-		}
+		yield return new WaitForSecondsRealtime(3.5f);
 
-		_MovementController._Paralysed = type != PauseType.Unpaused;
-		GameManager.PauseType = type;
-	}
-
-	// When start key is pressed
-	public void OnStart()
-	{
 		Die();
 	}
 
-	// Happens whenever the movement joystick/buttons change values
-	public void OnMovement(InputAction.CallbackContext context)
+	#endregion
+
+	public static class PlayerAnimation
 	{
-		// If NOT paralyzed AND NOT paused AND IS moving any direction
-		_Walking = (!_MovementController._Paralysed) && (!GameManager.IsPaused) && ((context.ReadValue<Vector2>().x != 0) || (context.ReadValue<Vector2>().y != 0));
-	}
-
-	public void OnPrimaryAction(InputAction.CallbackContext context)
-	{
-		if (!context.started || GameManager.IsPaused || _CurrentHealth <= 0 || _MovementController._Paralysed
-			|| !_PikminController._CanPlayerAttack || _AttackTimer > 0)
-		{
-			return;
-		}
-
-		// TODO: Make animation play
-		_AnimController.ChangeState(PlayerAnimation.Attack, true, true);
-
-		// Attack!
-		if (!Physics.SphereCast(transform.position, _AttackSphereRadius, transform.forward, out RaycastHit info)
-			|| info.transform.CompareTag("Player") || info.transform.CompareTag("Pikmin"))
-		{
-			return;
-		}
-
-		IHealth c = info.transform.GetComponentInParent<IHealth>();
-		if (c != null)
-		{
-			c.SubtractHealth(_AttackDamage);
-
-			_AttackTimer = _AttackCooldown;
-		}
+		public const int Walk = 0;
+		public const int Die = 1;
+		public const int Damage = 2;
+		public const int Idle = 3;
+		public const int Attack = 4;
 	}
 
 	#region Animation Callbacks
@@ -292,20 +315,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 
 	public void ActWater()
 	{
-
 	}
 
-	#endregion
-
-	#region IEnumerators
-	IEnumerator IE_PikminExtinctionSequence()
-	{
-		Pause(PauseType.Paused);
-		_UIController.FadeOutUI();
-
-		yield return new WaitForSecondsRealtime(3.5f);
-
-		Die();
-	}
 	#endregion
 }

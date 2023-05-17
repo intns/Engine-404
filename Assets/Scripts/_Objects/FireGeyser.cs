@@ -4,126 +4,7 @@ using UnityEngine.VFX;
 
 public class FireGeyser : Entity
 {
-	public class WaitingStateArg : StateArg
-	{
-		public float _WaitTimer;
-	}
-
-	public class WaitingState : BasicFSMState<Entity>
-	{
-		public WaitingState(int stateIndex) : base(stateIndex, "Waiting State")
-		{
-		}
-
-		public override void Start(Entity ent, StateArg arg)
-		{
-			FireGeyser obj = (FireGeyser)ent;
-			WaitingStateArg waitArg = (WaitingStateArg)arg;
-
-			obj._Timer = arg != null ? waitArg._WaitTimer : 0.0f;
-			obj.FireFX_Stop();
-		}
-
-		public override void Execute(Entity ent)
-		{
-			FireGeyser obj = (FireGeyser)ent;
-
-			if (obj.GetCurrentHealth() <= 0.0f)
-			{
-				obj._FSM.SetState((int)FSMStates.Death, ent);
-			}
-
-			obj._Timer += Time.deltaTime;
-			if (obj._Timer > obj.GetTimePerAttack())
-			{
-				obj._FSM.SetState((int)FSMStates.Attacking, ent);
-			}
-		}
-
-		public override void Cleanup(Entity ent)
-		{
-		}
-	}
-
-	public class AttackState : BasicFSMState<Entity>
-	{
-		public AttackState(int stateIndex) : base(stateIndex, "Attack State")
-		{
-		}
-
-		public override void Start(Entity ent, StateArg arg)
-		{
-			FireGeyser obj = (FireGeyser)ent;
-
-			obj._Timer = 0.0f;
-			obj.FireFX_Start();
-		}
-
-		public override void Execute(Entity ent)
-		{
-			FireGeyser obj = (FireGeyser)ent;
-
-			obj._Timer += Time.deltaTime;
-			if (obj.GetCurrentHealth() > 0.0f && obj._Timer <= obj.GetActiveAttackTime())
-			{
-				obj.FireFX_CheckCollision();
-				return;
-			}
-
-			obj.FireFX_Stop();
-			if (obj.GetCurrentHealth() > 0.0f)
-			{
-				obj._FSM.SetState((int)FSMStates.Waiting, ent);
-			}
-			else
-			{
-				obj._FSM.SetState((int)FSMStates.Death, ent);
-			}
-		}
-
-		public override void Cleanup(Entity ent)
-		{
-			FireGeyser obj = (FireGeyser)ent;
-			obj.FireFX_Stop();
-		}
-	}
-
-	public class DeathState : BasicFSMState<Entity>
-	{
-		public DeathState(int stateIndex) : base(stateIndex, "Dead State")
-		{
-		}
-
-		public override void Start(Entity ent, StateArg arg)
-		{
-			FireGeyser obj = (FireGeyser)ent;
-
-			FlagsHelper.Unset(ref obj._Flags, EntityFlags.IsAttackAvailable);
-
-			obj.SetHealth(0.0f);
-			obj.FireFX_Stop();
-
-			// TODO: Create bomb effect
-		}
-
-		public override void Execute(Entity ent)
-		{
-		}
-
-		public override void Cleanup(Entity ent)
-		{
-		}
-	}
-
-	enum FSMStates
-	{
-		Waiting = 0,
-		Attacking,
-		Death
-	}
-
-	[Space()]
-
+	[Space]
 	[Header("Components")]
 	[SerializeField] VisualEffect _FireVFX;
 
@@ -133,7 +14,7 @@ public class FireGeyser : Entity
 	[SerializeField] LayerMask _InteractionLayers;
 
 	[Header("Debugging")]
-	public float _Timer = 0.0f;
+	public float _Timer;
 
 	BasicFSM<Entity> _FSM;
 
@@ -173,16 +54,148 @@ public class FireGeyser : Entity
 		}
 	}
 
-	#region Public Functions
-	public float GetTimePerAttack() { return _TimePerAttack + Random.Range(0.5f, 2.5f); }
+	public class AttackState : BasicFSMState<Entity>
+	{
+		public AttackState(int stateIndex) : base(stateIndex, "Attack State")
+		{
+		}
 
-	public float GetActiveAttackTime() { return _ActiveAttackTime + Random.Range(0.5f, 1.5f); }
+		public override void Cleanup(Entity ent)
+		{
+			FireGeyser obj = (FireGeyser)ent;
+			obj.FireFX_Stop();
+		}
+
+		public override void Execute(Entity ent)
+		{
+			FireGeyser obj = (FireGeyser)ent;
+
+			obj._Timer += Time.deltaTime;
+
+			if (obj.GetCurrentHealth() > 0.0f && obj._Timer <= obj.GetActiveAttackTime())
+			{
+				obj.FireFX_CheckCollision();
+				return;
+			}
+
+			obj.FireFX_Stop();
+
+			if (obj.GetCurrentHealth() > 0.0f)
+			{
+				obj._FSM.SetState((int)FSMStates.Waiting, ent);
+			}
+			else
+			{
+				obj._FSM.SetState((int)FSMStates.Death, ent);
+			}
+		}
+
+		public override void Start(Entity ent, StateArg arg)
+		{
+			FireGeyser obj = (FireGeyser)ent;
+
+			obj._Timer = 0.0f;
+			obj.FireFX_Start();
+		}
+	}
+
+	public class DeathState : BasicFSMState<Entity>
+	{
+		public DeathState(int stateIndex) : base(stateIndex, "Dead State")
+		{
+		}
+
+		public override void Cleanup(Entity ent)
+		{
+		}
+
+		public override void Execute(Entity ent)
+		{
+		}
+
+		public override void Start(Entity ent, StateArg arg)
+		{
+			FireGeyser obj = (FireGeyser)ent;
+
+			FlagsHelper.Unset(ref obj._Flags, EntityFlags.IsAttackAvailable);
+
+			obj.SetHealth(0.0f);
+			obj.FireFX_Stop();
+
+			// TODO: Create bomb effect
+		}
+	}
+
+	enum FSMStates
+	{
+		Waiting = 0,
+		Attacking,
+		Death,
+	}
+
+	public class WaitingState : BasicFSMState<Entity>
+	{
+		public WaitingState(int stateIndex) : base(stateIndex, "Waiting State")
+		{
+		}
+
+		public override void Cleanup(Entity ent)
+		{
+		}
+
+		public override void Execute(Entity ent)
+		{
+			FireGeyser obj = (FireGeyser)ent;
+
+			if (obj.GetCurrentHealth() <= 0.0f)
+			{
+				obj._FSM.SetState((int)FSMStates.Death, ent);
+			}
+
+			obj._Timer += Time.deltaTime;
+
+			if (obj._Timer > obj.GetTimePerAttack())
+			{
+				obj._FSM.SetState((int)FSMStates.Attacking, ent);
+			}
+		}
+
+		public override void Start(Entity ent, StateArg arg)
+		{
+			FireGeyser obj = (FireGeyser)ent;
+			WaitingStateArg waitArg = (WaitingStateArg)arg;
+
+			obj._Timer = arg != null ? waitArg._WaitTimer : 0.0f;
+			obj.FireFX_Stop();
+		}
+	}
+
+	public class WaitingStateArg : StateArg
+	{
+		public float _WaitTimer;
+	}
+
+	#region Public Functions
+
+	public float GetTimePerAttack()
+	{
+		return _TimePerAttack + Random.Range(0.5f, 2.5f);
+	}
+
+	public float GetActiveAttackTime()
+	{
+		return _ActiveAttackTime + Random.Range(0.5f, 1.5f);
+	}
 
 	public void FireFX_CheckCollision()
 	{
 		Collider[] colls = Physics.OverlapCapsule(
-			_Transform.position, _Transform.position + Vector3.up * 2.5f,
-			1.0f, _InteractionLayers, QueryTriggerInteraction.Ignore);
+			_Transform.position,
+			_Transform.position + Vector3.up * 2.5f,
+			1.0f,
+			_InteractionLayers,
+			QueryTriggerInteraction.Ignore
+		);
 
 		foreach (Collider c in colls)
 		{
@@ -191,7 +204,7 @@ public class FireGeyser : Entity
 				i.ActFire();
 			}
 		}
-		
+
 		// Sometimes the collection may get modified
 		for (int i = 0; i < _AttachedPikmin.Count; i++)
 		{
@@ -211,5 +224,6 @@ public class FireGeyser : Entity
 	{
 		_FireVFX.Stop();
 	}
+
 	#endregion
 }

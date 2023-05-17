@@ -18,10 +18,10 @@ public class WhistleController : MonoBehaviour
      actually is, as opposed to just changing the decals localScale */
 
 	[Header("Components")]
-	[SerializeField] GameObject _WhistleParticle = null;
-	[SerializeField] Transform _ParticleParent = null;
-	[SerializeField] AudioClip _BlowSound = null;
-	public Transform _Reticle = null;
+	[SerializeField] GameObject _WhistleParticle;
+	[SerializeField] Transform _ParticleParent;
+	[SerializeField] AudioClip _BlowSound;
+	public Transform _Reticle;
 
 	[Header("Particles")]
 	[SerializeField] int _ParticleDensity = 15;
@@ -30,11 +30,11 @@ public class WhistleController : MonoBehaviour
 	[SerializeField] float _HeightOffset = 0.5f;
 
 	[Header("Settings")]
-	[SerializeField] bool _Pluckaphone = false;
+	[SerializeField] bool _Pluckaphone;
 	[Space]
 	[SerializeField] float _StartingRadius = 1;
 	[SerializeField] float _ExpandedRadius = 10;
-	[SerializeField] float _PikminCallHeight = 0;
+	[SerializeField] float _PikminCallHeight;
 	[Space]
 	[SerializeField] float _MaxBlowTime = 3;
 	[SerializeField] float _OffsetFromSurface = 0.5f;
@@ -44,8 +44,6 @@ public class WhistleController : MonoBehaviour
 	[Header("Controller Settings")]
 	[SerializeField] float _MaxDistFromPlayer = 5;
 	[SerializeField] float _MoveSpeed = 5;
-	Vector2 _Movement;
-	Vector2 _OffsetFromPlayer = Vector2.zero;
 
 	[Header("Raycast Settings")]
 	[SerializeField] float _MaxDistance = Mathf.Infinity;
@@ -53,22 +51,26 @@ public class WhistleController : MonoBehaviour
 
 	[Header("Debugging")]
 	[SerializeField] uint _WhistleCircleSegments = 20;
-	AudioSource _Source;
-	GameObject[] _Particles;
+	bool _Blowing;
 	Camera _MainCamera;
-	Transform _PlayerTransform;
+	Vector2 _Movement;
+	Vector2 _OffsetFromPlayer = Vector2.zero;
+	GameObject[] _Particles;
 	PlayerInput _PlayerInput;
-	bool _Blowing = false;
-	float _TimeBlowing = 0;
+	Transform _PlayerTransform;
+	AudioSource _Source;
+	float _TimeBlowing;
 
 	void Awake()
 	{
 		// Generate particles for blowing later on
 		_Particles = new GameObject[_ParticleDensity + 1];
+
 		for (int i = 0; i < _Particles.Length; i++)
 		{
 			_Particles[i] = Instantiate(_WhistleParticle, _ParticleParent);
 		}
+
 		AssignParticlePositions();
 		SetParticlesActive(false);
 
@@ -91,80 +93,6 @@ public class WhistleController : MonoBehaviour
 		StartCoroutine(IE_Move());
 	}
 
-	IEnumerator IE_Move()
-	{
-		while (enabled)
-		{
-			Vector3 targetReticlePos = _Reticle.position;
-
-			if (!GameManager.IsPaused)
-			{
-				if (!_Reticle.gameObject.activeInHierarchy)
-				{
-					_Reticle.gameObject.SetActive(true);
-				}
-
-				// Check if there is a controller attached
-				if (_PlayerInput.currentControlScheme != "KeyboardAndMouse")
-				{
-					Vector3 directionVector = new(_Movement.x * _MoveSpeed, 0, _Movement.y * _MoveSpeed);
-					//Rotate the input vector into camera space so up is camera's up and right is camera's right
-					directionVector = _MainCamera.transform.rotation * directionVector;
-
-					_OffsetFromPlayer.x += directionVector.x;
-					_OffsetFromPlayer.y += directionVector.z;
-
-					float totalDistanceSquared = _OffsetFromPlayer.sqrMagnitude;
-					if (totalDistanceSquared > _MaxDistFromPlayer * _MaxDistFromPlayer)
-					{
-						float totalDistance = _MaxDistFromPlayer / Mathf.Sqrt(totalDistanceSquared);
-						_OffsetFromPlayer.x *= totalDistance;
-						_OffsetFromPlayer.y *= totalDistance;
-					}
-
-					Vector3 currentPosition = new(_PlayerTransform.position.x + _OffsetFromPlayer.x,
-						transform.position.y,
-						_PlayerTransform.position.z + _OffsetFromPlayer.y);
-
-					// Assign our position to the reticles position to the new position!
-					transform.position = targetReticlePos = currentPosition;
-
-					currentPosition.y += _ParticleRaycastAddedHeight;
-					if (Physics.Raycast(currentPosition, Vector3.down, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
-					{
-						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
-						transform.position = targetReticlePos = target;
-					}
-				}
-				else
-				{
-					Ray ray = _MainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-					if (Physics.Raycast(ray, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
-					{
-						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
-						transform.position = targetReticlePos = target;
-					}
-				}
-			}
-			else
-			{
-				if (_Blowing)
-				{
-					EndBlow();
-				}
-				else if (_Reticle.gameObject.activeInHierarchy)
-				{
-					_Reticle.gameObject.SetActive(false);
-				}
-			}
-
-			_Reticle.position = Vector3.Lerp(_Reticle.position, targetReticlePos, 0.75f);
-			Player._Instance.SetWhistleLine(_Reticle.position);
-
-			yield return null;
-		}
-	}
-
 	void Update()
 	{
 		if (GameManager.IsPaused || Player._Instance._MovementController._Paralysed)
@@ -184,6 +112,7 @@ public class WhistleController : MonoBehaviour
 
 			// Used to keep track of how long we've been blowing for
 			_TimeBlowing += Time.deltaTime;
+
 			if (_TimeBlowing >= _MaxBlowTime)
 			{
 				EndBlow();
@@ -191,17 +120,22 @@ public class WhistleController : MonoBehaviour
 
 			// Grow the scale of the whistle to the radius we want it to become
 			float timeFrac = _TimeBlowing / _MaxBlowTime;
-			transform.localScale = Vector3.Lerp(transform.localScale, MathUtil.XZToXYZ(Vector2.one * _ExpandedRadius, 1), timeFrac);
+
+			transform.localScale
+				= Vector3.Lerp(transform.localScale, MathUtil.XZToXYZ(Vector2.one * _ExpandedRadius, 1), timeFrac);
 
 			// Handle collisions with Pikmin
-			Collider[] collisions = Physics.OverlapCapsule(transform.position + (Vector3.down * _PikminCallHeight),
-				transform.position + (Vector3.up * _PikminCallHeight),
+			Collider[] collisions = Physics.OverlapCapsule(
+				transform.position + Vector3.down * _PikminCallHeight,
+				transform.position + Vector3.up * _PikminCallHeight,
 				transform.localScale.x,
-				_PikminMask);
+				_PikminMask
+			);
 
 			foreach (Collider pikmin in collisions)
 			{
 				PikminAI pAI = pikmin.GetComponent<PikminAI>();
+
 				if (pAI != null)
 				{
 					pAI.AddToSquad();
@@ -209,6 +143,7 @@ public class WhistleController : MonoBehaviour
 				else if (_Pluckaphone)
 				{
 					PikminSprout sprout = pikmin.GetComponent<PikminSprout>();
+
 					if (sprout != null)
 					{
 						pAI = sprout.OnPluck();
@@ -217,6 +152,42 @@ public class WhistleController : MonoBehaviour
 					}
 				}
 			}
+		}
+	}
+
+	/// <summary>
+	///   Displays debug information about the Whistle when selected in the editor
+	/// </summary>
+	void OnDrawGizmosSelected()
+	{
+		if (Application.isPlaying)
+		{
+			// Draw particles
+			AssignParticlePositions();
+
+			foreach (GameObject particle in _Particles)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawSphere(particle.transform.position, 0.05f * transform.localScale.x);
+			}
+		}
+
+		// Draw default whistle radius
+		for (int i = 0; i < _WhistleCircleSegments + 1; i++)
+		{
+			Vector3 pos = transform.position
+			              + MathUtil.XZToXYZ(MathUtil.PositionInUnit((int)_WhistleCircleSegments, i)) * _StartingRadius;
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawSphere(pos, 0.05f * _StartingRadius);
+		}
+
+		// Draw expanded whistle radius
+		for (int i = 0; i < _WhistleCircleSegments + 1; i++)
+		{
+			Vector3 pos = transform.position
+			              + MathUtil.XZToXYZ(MathUtil.PositionInUnit((int)_WhistleCircleSegments, i)) * _ExpandedRadius;
+			Gizmos.color = Color.green;
+			Gizmos.DrawSphere(pos, 0.05f * _ExpandedRadius);
 		}
 	}
 
@@ -250,34 +221,44 @@ public class WhistleController : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Displays debug information about the Whistle when selected in the editor
+	///   Assigns the positions of the blow particles
 	/// </summary>
-	void OnDrawGizmosSelected()
+	void AssignParticlePositions()
 	{
-		if (Application.isPlaying)
-		{
-			// Draw particles
-			AssignParticlePositions();
-			foreach (GameObject particle in _Particles)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawSphere(particle.transform.position, 0.05f * transform.localScale.x);
-			}
-		}
+		Transform cacheTransform = transform;
 
-		// Draw default whistle radius
-		for (int i = 0; i < _WhistleCircleSegments + 1; i++)
+		for (int i = 0; i < _ParticleDensity + 1; i++)
 		{
-			Vector3 pos = transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit((int)_WhistleCircleSegments, i)) * _StartingRadius;
-			Gizmos.color = Color.yellow;
-			Gizmos.DrawSphere(pos, 0.05f * _StartingRadius);
-		}
-		// Draw expanded whistle radius
-		for (int i = 0; i < _WhistleCircleSegments + 1; i++)
-		{
-			Vector3 pos = transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit((int)_WhistleCircleSegments, i)) * _ExpandedRadius;
-			Gizmos.color = Color.green;
-			Gizmos.DrawSphere(pos, 0.05f * _ExpandedRadius);
+			Vector3 localPos
+				= MathUtil.XZToXYZ(MathUtil.PositionInUnit(_ParticleDensity, i, _TimeBlowing * _ParticleRotationSpeed))
+				  * cacheTransform.localScale.x;
+			// Offset the local position to be global
+			localPos += cacheTransform.position;
+			//Cache the Y for later
+			float originalY = localPos.y;
+
+			// Put the Y of the particle waay above everything else, so it can raycast downwards onto surfaces that may be above it 
+			localPos.y += _ParticleRaycastAddedHeight;
+
+			// Check if there is a surface beneath the particle
+			if (Physics.Raycast(
+				    localPos,
+				    Vector3.down,
+				    out RaycastHit hitInfo,
+				    _MaxDistance,
+				    _MapMask,
+				    QueryTriggerInteraction.Ignore
+			    ))
+			{
+				localPos.y = hitInfo.point.y + _HeightOffset;
+			}
+			else
+			{
+				// We couldn't find anything, so reset back to the original Y
+				localPos.y = originalY;
+			}
+
+			_Particles[i].transform.position = localPos;
 		}
 	}
 
@@ -290,43 +271,97 @@ public class WhistleController : MonoBehaviour
 		_Source.Stop();
 	}
 
+	IEnumerator IE_Move()
+	{
+		while (enabled)
+		{
+			Vector3 targetReticlePos = _Reticle.position;
+
+			if (!GameManager.IsPaused)
+			{
+				if (!_Reticle.gameObject.activeInHierarchy)
+				{
+					_Reticle.gameObject.SetActive(true);
+				}
+
+				// Check if there is a controller attached
+				if (_PlayerInput.currentControlScheme != "KeyboardAndMouse")
+				{
+					Vector3 directionVector = new(_Movement.x * _MoveSpeed, 0, _Movement.y * _MoveSpeed);
+					//Rotate the input vector into camera space so up is camera's up and right is camera's right
+					directionVector = _MainCamera.transform.rotation * directionVector;
+
+					_OffsetFromPlayer.x += directionVector.x;
+					_OffsetFromPlayer.y += directionVector.z;
+
+					float totalDistanceSquared = _OffsetFromPlayer.sqrMagnitude;
+
+					if (totalDistanceSquared > _MaxDistFromPlayer * _MaxDistFromPlayer)
+					{
+						float totalDistance = _MaxDistFromPlayer / Mathf.Sqrt(totalDistanceSquared);
+						_OffsetFromPlayer.x *= totalDistance;
+						_OffsetFromPlayer.y *= totalDistance;
+					}
+
+					Vector3 currentPosition = new(
+						_PlayerTransform.position.x + _OffsetFromPlayer.x,
+						transform.position.y,
+						_PlayerTransform.position.z + _OffsetFromPlayer.y
+					);
+
+					// Assign our position to the reticles position to the new position!
+					transform.position = targetReticlePos = currentPosition;
+
+					currentPosition.y += _ParticleRaycastAddedHeight;
+
+					if (Physics.Raycast(
+						    currentPosition,
+						    Vector3.down,
+						    out RaycastHit hit,
+						    _MaxDistance,
+						    _MapMask,
+						    QueryTriggerInteraction.Ignore
+					    ))
+					{
+						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
+						transform.position = targetReticlePos = target;
+					}
+				}
+				else
+				{
+					Ray ray = _MainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+					if (Physics.Raycast(ray, out RaycastHit hit, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
+					{
+						Vector3 target = hit.point + hit.normal * _OffsetFromSurface;
+						transform.position = targetReticlePos = target;
+					}
+				}
+			}
+			else
+			{
+				if (_Blowing)
+				{
+					EndBlow();
+				}
+				else if (_Reticle.gameObject.activeInHierarchy)
+				{
+					_Reticle.gameObject.SetActive(false);
+				}
+			}
+
+			_Reticle.position = Vector3.Lerp(_Reticle.position, targetReticlePos, 0.75f);
+			Player._Instance.SetWhistleLine(_Reticle.position);
+
+			yield return null;
+		}
+	}
+
 	void SetParticlesActive(bool isActive)
 	{
 		foreach (GameObject t in _Particles)
 		{
 			t.SetActive(isActive);
-		}
-	}
-
-	/// <summary>
-	/// Assigns the positions of the blow particles
-	/// </summary>
-	void AssignParticlePositions()
-	{
-		Transform cacheTransform = transform;
-		for (int i = 0; i < _ParticleDensity + 1; i++)
-		{
-			Vector3 localPos = MathUtil.XZToXYZ(MathUtil.PositionInUnit(_ParticleDensity, i, _TimeBlowing * _ParticleRotationSpeed)) * cacheTransform.localScale.x;
-			// Offset the local position to be global
-			localPos += cacheTransform.position;
-			//Cache the Y for later
-			float originalY = localPos.y;
-
-			// Put the Y of the particle waay above everything else, so it can raycast downwards onto surfaces that may be above it 
-			localPos.y += _ParticleRaycastAddedHeight;
-
-			// Check if there is a surface beneath the particle
-			if (Physics.Raycast(localPos, Vector3.down, out RaycastHit hitInfo, _MaxDistance, _MapMask, QueryTriggerInteraction.Ignore))
-			{
-				localPos.y = hitInfo.point.y + _HeightOffset;
-			}
-			else
-			{
-				// We couldn't find anything, so reset back to the original Y
-				localPos.y = originalY;
-			}
-
-			_Particles[i].transform.position = localPos;
 		}
 	}
 }

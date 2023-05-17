@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEngine;
 
 public class StateArg
 {
-
 }
 
 public abstract class BasicFSMState<T>
@@ -18,15 +15,16 @@ public abstract class BasicFSMState<T>
 		_Name = name;
 	}
 
-	public abstract void Start(T obj, StateArg arg);
-	public abstract void Execute(T obj);
 	public abstract void Cleanup(T obj);
+	public abstract void Execute(T obj);
+
+	public abstract void Start(T obj, StateArg arg);
 }
 
 public class BasicFSM<T>
 {
-	private List<BasicFSMState<T>> _States;
-	private int _CurrentState;
+	List<BasicFSMState<T>> _States;
+	int _CurrentState;
 
 	public BasicFSM()
 	{
@@ -44,21 +42,9 @@ public class BasicFSM<T>
 		_States[_CurrentState].Execute(obj);
 	}
 
-	public void SetState(int idx, T obj, StateArg arg = null)
+	public BasicFSMState<T> GetCurrentState()
 	{
-		if (idx > _States.Count || idx < 0)
-		{
-			return;
-		}
-
-		_States[_CurrentState].Cleanup(obj);
-		_CurrentState = idx;
-		_States[_CurrentState].Start(obj, arg);
-	}
-
-	public bool IsCurrentStateValid()
-	{
-		return _States != null && _States.Count > 0 && _CurrentState <= _States.Count;
+		return _States[_CurrentState];
 	}
 
 	public bool IsCurrentStateID(int idx)
@@ -71,8 +57,20 @@ public class BasicFSM<T>
 		return GetCurrentState()._Index == idx;
 	}
 
-	public BasicFSMState<T> GetCurrentState()
+	public bool IsCurrentStateValid()
 	{
-		return _States[_CurrentState];
+		return _States != null && _States.Count > 0 && _CurrentState <= _States.Count;
+	}
+
+	public void SetState(int idx, T obj, StateArg arg = null)
+	{
+		if (idx > _States.Count || idx < 0)
+		{
+			return;
+		}
+
+		_States[_CurrentState].Cleanup(obj);
+		_CurrentState = idx;
+		_States[_CurrentState].Start(obj, arg);
 	}
 }

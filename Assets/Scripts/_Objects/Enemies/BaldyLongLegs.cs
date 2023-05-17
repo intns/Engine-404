@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
+using Random = UnityEngine.Random;
 
-[System.Serializable]
+[Serializable]
 public class BLL_Values
 {
 	public float _FootHeightFloorOffset = 0.8f;
@@ -14,13 +16,13 @@ public class BLL_Values
 
 	[Space]
 	public AnimationCurve _LegLiftCurve;
-	public Vector2 _LegLiftTimeRange = new Vector2(1.2f, 1.6f); // X is min bound Y is max bound
+	public Vector2 _LegLiftTimeRange = new(1.2f, 1.6f); // X is min bound Y is max bound
 
 	[Space]
 	public float _StepHeight = 3;
 	public float _DistanceForStep = 2;
 
-	public bool _FlipToes = false;
+	public bool _FlipToes;
 
 	[Space]
 	public LayerMask _MapMask;
@@ -28,29 +30,28 @@ public class BLL_Values
 	public AudioClip _FootStep;
 }
 
-[System.Serializable]
+[Serializable]
 public class BaldyLongLegsFoot
 {
-	GameObject _RaycastObj = null;
-	BaldyLongLegs _Parent = null;
-	Transform _Target = null;
+	CameraFollow _Camera;
 
-	int _LegIdx = 0;
+	int _LegIdx;
 
-	BLL_Values _Values;
-
-	float _LiftTimer = 0;
-	float _RNGTime = 0;
+	float _LiftTimer;
 
 	Vector3 _NewPosition = Vector3.zero;
+
+	List<BaldyLongLegsFoot> _OtherFeet = new();
+	BaldyLongLegs _Parent;
+	GameObject _RaycastObj;
+	float _RNGTime;
+
+	VisualEffect _StompFX;
+	Transform _Target;
 	Vector3 _TargetPosition = Vector3.zero;
+	VisualEffect _TrailFX;
 
-	CameraFollow _Camera = null;
-
-	VisualEffect _StompFX = null;
-	VisualEffect _TrailFX = null;
-
-	List<BaldyLongLegsFoot> _OtherFeet = new List<BaldyLongLegsFoot>();
+	BLL_Values _Values;
 
 	public BaldyLongLegsFoot(BaldyLongLegs parentLegs, Transform target, Collider dColl, int legIdx)
 	{
@@ -75,7 +76,10 @@ public class BaldyLongLegsFoot
 		return x * x + z * z;
 	}
 
-	public bool IsMoving() { return _LiftTimer < _RNGTime; }
+	public bool IsMoving()
+	{
+		return _LiftTimer < _RNGTime;
+	}
 
 	public void Set(List<BaldyLongLegsFoot> otherFeet, BLL_Values values)
 	{
@@ -90,12 +94,20 @@ public class BaldyLongLegsFoot
 		_TargetPosition = _Target.position;
 
 		Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);
-		if (!Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * (_Values._DistanceForStep / 2)), 5, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
+
+		if (!Physics.SphereCast(
+			    _RaycastObj.transform.position + dirToObj * (_Values._DistanceForStep / 2),
+			    5,
+			    Vector3.down,
+			    out RaycastHit hit,
+			    float.PositiveInfinity,
+			    _Values._MapMask
+		    ))
 		{
 			return;
 		}
 
-		_NewPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
+		_NewPosition = hit.point + Vector3.up * _Values._FootHeightFloorOffset;
 		_Target.position = _NewPosition;
 	}
 
@@ -104,7 +116,14 @@ public class BaldyLongLegsFoot
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
 
 		_Target.position = _TargetPosition;
-		Physics.Raycast(_Target.transform.position, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask);
+
+		Physics.Raycast(
+			_Target.transform.position,
+			Vector3.down,
+			out RaycastHit hit,
+			float.PositiveInfinity,
+			_Values._MapMask
+		);
 
 		if (_LiftTimer < _RNGTime)
 		{
@@ -119,6 +138,7 @@ public class BaldyLongLegsFoot
 
 			const float minDist = 0.01f;
 			const float maxDist = 1.0f;
+
 			if (t >= minDist && t <= maxDist)
 			{
 				float normalised = Mathf.InverseLerp(minDist, maxDist, realT);
@@ -128,6 +148,7 @@ public class BaldyLongLegsFoot
 			_Target.rotation = Quaternion.Euler(euler);
 
 			_LiftTimer += Time.deltaTime;
+
 			if (_LiftTimer + 0.1f >= _RNGTime)
 			{
 				_StompFX.Play();
@@ -138,7 +159,12 @@ public class BaldyLongLegsFoot
 					_Camera.Shake(2);
 				}
 
-				Collider[] colls = Physics.OverlapSphere(_Target.position + _Values._FootColliderOffset, _Values._FootColliderSize, _Values._FootStompInteractMask);
+				Collider[] colls = Physics.OverlapSphere(
+					_Target.position + _Values._FootColliderOffset,
+					_Values._FootColliderSize,
+					_Values._FootStompInteractMask
+				);
+
 				foreach (Collider v in colls)
 				{
 					if (v.TryGetComponent(out IInteraction interaction))
@@ -147,7 +173,6 @@ public class BaldyLongLegsFoot
 					}
 				}
 			}
-
 		}
 		else
 		{
@@ -159,8 +184,15 @@ public class BaldyLongLegsFoot
 			Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);
 
 			// If we couldn't hit the map, and the distance isn't big enough
-			if (!Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * (_Values._DistanceForStep / 2)), 5, Vector3.down, out hit, float.PositiveInfinity, _Values._MapMask)
-				|| Vector3.Distance(_NewPosition, hit.point) <= _Values._DistanceForStep)
+			if (!Physics.SphereCast(
+				    _RaycastObj.transform.position + dirToObj * (_Values._DistanceForStep / 2),
+				    5,
+				    Vector3.down,
+				    out hit,
+				    float.PositiveInfinity,
+				    _Values._MapMask
+			    )
+			    || Vector3.Distance(_NewPosition, hit.point) <= _Values._DistanceForStep)
 			{
 				return;
 			}
@@ -169,7 +201,7 @@ public class BaldyLongLegsFoot
 			_RNGTime = Random.Range(_Values._LegLiftTimeRange.x, _Values._LegLiftTimeRange.y);
 			_TrailFX.Play();
 
-			_NewPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
+			_NewPosition = hit.point + Vector3.up * _Values._FootHeightFloorOffset;
 			AudioSource.PlayClipAtPoint(_Values._FootStep, Camera.main.transform.position);
 		}
 	}
@@ -180,9 +212,17 @@ public class BaldyLongLegsFoot
 
 		_RaycastObj.transform.localPosition = _Parent.GetRaycastObjPosition(_LegIdx);
 		Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);
-		if (Physics.SphereCast(_RaycastObj.transform.position + (dirToObj * (_Values._DistanceForStep / 2)), 5, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _Values._MapMask))
+
+		if (Physics.SphereCast(
+			    _RaycastObj.transform.position + dirToObj * (_Values._DistanceForStep / 2),
+			    5,
+			    Vector3.down,
+			    out RaycastHit hit,
+			    float.PositiveInfinity,
+			    _Values._MapMask
+		    ))
 		{
-			_TargetPosition = hit.point + (Vector3.up * _Values._FootHeightFloorOffset);
+			_TargetPosition = hit.point + Vector3.up * _Values._FootHeightFloorOffset;
 			Vector3 euler = Quaternion.FromToRotation(Vector3.down, hit.normal).eulerAngles;
 			_Target.rotation = Quaternion.Euler(euler);
 		}
@@ -200,15 +240,6 @@ public class BaldyLongLegsFoot
 
 public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 {
-	enum States
-	{
-		Spawning,
-		Active,
-		Shake,
-		DeathStart,
-		Death
-	}
-
 	[Header("Components")]
 	[SerializeField] Transform[] _LegTargets;
 	[SerializeField] Collider[] _LegColliders;
@@ -222,21 +253,16 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 	[SerializeField] float _DistanceForSlow = 175;
 	[SerializeField] float _Height = 25;
 	[SerializeField] float _MaxSpeed = 2.5f;
-	[SerializeField] float _Offset = 0;
+	[SerializeField] float _Offset;
 
 	[Header("Debugging")]
 	[SerializeField] States _State = States.Spawning;
-
-	float _MoveSpeed = 0.0f;
-	float _CircleTimer = 0;
-	List<BaldyLongLegsFoot> _Feet = new List<BaldyLongLegsFoot>();
 	/*EnemyDamageScript _DamageScript = null;*/
 	Animator _Animator;
+	float _CircleTimer;
+	List<BaldyLongLegsFoot> _Feet = new();
 
-	public Vector3 GetRaycastObjPosition(int legIdx)
-	{
-		return transform.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_LegTargets.Length, legIdx, _Offset) * _LegDistance, transform.position.y + 50);
-	}
+	float _MoveSpeed;
 
 	void Awake()
 	{
@@ -249,9 +275,11 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 			int currentIdx = 0;
 			float minDist = float.PositiveInfinity;
+
 			for (int j = 0; j < _LegTargets.Length; j++)
 			{
 				float currentDist = MathUtil.DistanceTo(_LegTargets[j].position, currentPos, false);
+
 				if (currentDist < minDist)
 				{
 					minDist = currentDist;
@@ -259,7 +287,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 				}
 			}
 
-			_Feet.Add(new BaldyLongLegsFoot(this, _LegTargets[currentIdx], _LegColliders[currentIdx], currentIdx));
+			_Feet.Add(new(this, _LegTargets[currentIdx], _LegColliders[currentIdx], currentIdx));
 		}
 
 		for (int i = 0; i < _Feet.Count; i++)
@@ -277,20 +305,6 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 			}
 
 			_Feet[i].Set(feet, _Values);
-		}
-	}
-
-	void OnDrawGizmosSelected()
-	{
-		if (_LegTargets.Length == 0)
-		{
-			return;
-		}
-
-
-		foreach (Transform t in _LegTargets)
-		{
-			Gizmos.DrawWireSphere(t.position + _Values._FootColliderOffset, _Values._FootColliderSize);
 		}
 	}
 
@@ -313,6 +327,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 				break;
 			case States.DeathStart:
 				bool finishing = false;
+
 				for (int i = 0; i < _Feet.Count; i++)
 				{
 					if (_Feet[i].IsMoving())
@@ -327,17 +342,17 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 					_State = States.Death;
 					_Animator.Play("Death");
 
-				/*	while (_DamageScript._AttachedPikmin.Count > 0)
-					{
-						PikminAI pik = _DamageScript._AttachedPikmin[0];
-						if (pik == null)
+					/*	while (_DamageScript._AttachedPikmin.Count > 0)
 						{
-							break;
-						}
-
-						pik.ChangeState(PikminStates.Idle);
-						pik._AddedVelocity = MathUtil.DirectionFromTo(transform.position, pik.transform.position) * 5;
-					}*/
+							PikminAI pik = _DamageScript._AttachedPikmin[0];
+							if (pik == null)
+							{
+								break;
+							}
+	
+							pik.ChangeState(PikminStates.Idle);
+							pik._AddedVelocity = MathUtil.DirectionFromTo(transform.position, pik.transform.position) * 5;
+						}*/
 				}
 
 				break;
@@ -355,23 +370,62 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 					pik._AddedVelocity = MathUtil.DirectionFromTo(transform.position, pik.transform.position) * 5;
 				}*/
 				break;
-			default:
-				break;
 		}
+	}
+
+	void OnDrawGizmosSelected()
+	{
+		if (_LegTargets.Length == 0)
+		{
+			return;
+		}
+
+
+		foreach (Transform t in _LegTargets)
+		{
+			Gizmos.DrawWireSphere(t.position + _Values._FootColliderOffset, _Values._FootColliderSize);
+		}
+	}
+
+	public Vector3 GetRaycastObjPosition(int legIdx)
+	{
+		return transform.position
+		       + MathUtil.XZToXYZ(
+			       MathUtil.PositionInUnit(_LegTargets.Length, legIdx, _Offset) * _LegDistance,
+			       transform.position.y + 50
+		       );
+	}
+
+	enum States
+	{
+		Spawning,
+		Active,
+		Shake,
+		DeathStart,
+		Death,
 	}
 
 	#region States
 
-	bool _Spawning = false;
+	bool _Spawning;
 	Vector3 _StartPosition;
 	Vector3 _EndPosition;
-	float _SpawnTimer = 0;
+	float _SpawnTimer;
 	[SerializeField] AnimationCurve _SpawnCurve;
+
 	void HandleSpawning()
 	{
 		if (!_Spawning)
 		{
-			if (Physics.SphereCast(transform.position + Vector3.up * 50, 4, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
+			if (Physics.SphereCast(
+				    transform.position + Vector3.up * 50,
+				    4,
+				    Vector3.down,
+				    out RaycastHit hit,
+				    float.PositiveInfinity,
+				    _MapMask,
+				    QueryTriggerInteraction.Ignore
+			    ))
 			{
 				_StartPosition = transform.position + Vector3.up * 50;
 				_EndPosition = hit.point;
@@ -389,10 +443,20 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 			float spawnTime = 1;
 
 			Vector3 target = Vector3.Lerp(_StartPosition, _EndPosition, _SpawnCurve.Evaluate(_SpawnTimer / spawnTime));
-			if (Physics.SphereCast(transform.position + Vector3.up * 50, 4, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
+
+			if (Physics.SphereCast(
+				    transform.position + Vector3.up * 50,
+				    4,
+				    Vector3.down,
+				    out RaycastHit hit,
+				    float.PositiveInfinity,
+				    _MapMask,
+				    QueryTriggerInteraction.Ignore
+			    ))
 			{
 				target.y += hit.point.y + _Height;
 			}
+
 			transform.position = target;
 
 			_SpawnTimer += Time.deltaTime;
@@ -422,6 +486,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 		Vector3 velocity = Vector3.zero;
 
 		float maxDist = 0;
+
 		for (int i = 0; i < _Feet.Count; i++)
 		{
 			float curDist = _Feet[i].GetDistanceFromParent();
@@ -431,20 +496,32 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 		_MoveSpeed = Mathf.Lerp(_MoveSpeed, maxDist <= _DistanceForSlow ? _MaxSpeed : 0, 1.5f * Time.deltaTime);
 
 		Vector3 target = _Target.position + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CircleTimer / 8) * 12);
-		if (Physics.SphereCast(transform.position + Vector3.up * 50, 4, Vector3.down, out RaycastHit hit, float.PositiveInfinity, _MapMask, QueryTriggerInteraction.Ignore))
+
+		if (Physics.SphereCast(
+			    transform.position + Vector3.up * 50,
+			    4,
+			    Vector3.down,
+			    out RaycastHit hit,
+			    float.PositiveInfinity,
+			    _MapMask,
+			    QueryTriggerInteraction.Ignore
+		    ))
 		{
 			target.y = hit.point.y + _Height;
 		}
 
 		transform.SetPositionAndRotation(
 			Vector3.SmoothDamp(transform.position, target, ref velocity, Time.smoothDeltaTime, _MoveSpeed),
-			Quaternion.AngleAxis(-_Offset * 50, Vector3.up));
+			Quaternion.AngleAxis(-_Offset * 50, Vector3.up)
+		);
 
 		_Offset += Time.deltaTime / 12;
+
 		if (_Offset >= 360)
 		{
 			_Offset -= 360;
 		}
+
 		_CircleTimer += Time.deltaTime;
 	}
 
@@ -462,18 +539,25 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 
 
 	#region Pikmin Attacking Implementation
+
 	public PikminIntention IntentionType => PikminIntention.Attack;
-	bool IPikminAttack.IsAttackAvailable() => true;
+
+	bool IPikminAttack.IsAttackAvailable()
+	{
+		return true;
+	}
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{
 /*		_DamageScript._AttachedPikmin.Remove(pikmin);
-*/	}
+*/
+	}
 
 	public void OnAttackStart(PikminAI pikmin)
 	{
 /*		_DamageScript._AttachedPikmin.Add(pikmin);
-*/	}
+*/
+	}
 
 	public void OnAttackRecieve(float damage, Transform hitPart = default)
 	{
@@ -490,5 +574,6 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 			_State = States.DeathStart;
 		}*/
 	}
+
 	#endregion
 }

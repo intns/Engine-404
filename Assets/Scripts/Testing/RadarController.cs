@@ -7,7 +7,7 @@ public enum RadarObjectType
 	Pikmin,
 	Onion,
 	Ship,
-};
+}
 
 // TODO!
 public class RadarController : MonoBehaviour

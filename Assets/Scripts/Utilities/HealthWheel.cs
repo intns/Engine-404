@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,21 +6,21 @@ public class HealthWheel : MonoBehaviour
 	[Header("Settings")]
 	[SerializeField] float _ChangeSpeed = 7.5f;
 	[SerializeField] float _FadeTime = 0.5f;
-	[SerializeField] Gradient _ColorGradient = null;
+	[SerializeField] Gradient _ColorGradient;
+	Image _BillboardHealth;
+	Canvas _Canvas;
 
-	CanvasGroup _CanvasGroup = null;
-	Image _BillboardHealth = null;
-	Canvas _Canvas = null;
+	CanvasGroup _CanvasGroup;
+
+	float _CurrentHealth;
+	bool _IsFadeIn;
+
+	bool _IsFadeOut;
+	float _MaxHealth;
 
 	Vector3 _Offset = Vector3.up;
-	Transform _Parent = null;
-
-	float _CurrentHealth = 0.0f;
-	float _MaxHealth = 0.0f;
-
-	bool _IsFadeOut = false;
-	bool _IsFadeIn = false;
-	float _Timer = 0.0f;
+	Transform _Parent;
+	float _Timer;
 
 	void Awake()
 	{
@@ -94,6 +93,11 @@ public class HealthWheel : MonoBehaviour
 		}
 	}
 
+	public void SetCurrentHealth(float health)
+	{
+		_CurrentHealth = health;
+	}
+
 	public void Setup(Transform parent, Vector3 offset, Vector3 localScale, float maxHealth)
 	{
 		_Parent = parent;
@@ -101,10 +105,5 @@ public class HealthWheel : MonoBehaviour
 
 		_Offset = offset;
 		_CurrentHealth = _MaxHealth = maxHealth;
-	}
-
-	public void SetCurrentHealth(float health)
-	{
-		_CurrentHealth = health;
 	}
 }

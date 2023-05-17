@@ -9,8 +9,8 @@ using Debug = UnityEngine.Debug;
 [Serializable]
 public class DTM_Audio_Event
 {
-	public int _SecondsTillExecution = 0;
-	public AudioClip _ToPlay = null;
+	public int _SecondsTillExecution;
+	public AudioClip _ToPlay;
 
 	public bool Check(double time)
 	{
@@ -24,38 +24,32 @@ public class DTM_Audio_Event
 }
 
 /// <summary>
-/// TODO: This isn't a manager, this is a day-time controller
-/// TODO: Implement days as savedata in the real daytime manager
+///   TODO: This isn't a manager, this is a day-time controller
+///   TODO: Implement days as savedata in the real daytime manager
 /// </summary>
 public class DayTimeManager : MonoBehaviour
 {
+	public static DayTimeManager _Instance;
 	[Header("Components")]
-	[SerializeField] Transform _SunLight = null;
+	[SerializeField] Transform _SunLight;
 
 	[Header("Settings")]
 	[Tooltip("Time it takes from day start to day end (in seconds)")]
 	[SerializeField] float _TotalDayTime = 1000;
 
-	[SerializeField] AnimationCurve _ShipLiftCurve = null;
+	[SerializeField] AnimationCurve _ShipLiftCurve;
 
 	[Header("Sun Rotation")]
 	[SerializeField] Vector3 _FromRotVec = Vector3.zero;
 	[SerializeField] Vector3 _ToRotVec = Vector3.zero;
-	Quaternion _FromRot = Quaternion.identity;
-	Quaternion _ToRot = Quaternion.identity;
 
 	[Header("Events")]
-	[SerializeField] List<DTM_Audio_Event> _AudioEvents = new List<DTM_Audio_Event>();
-	Stopwatch _TimeElapsed = new Stopwatch();
-	AudioSource _Source = null;
-	bool _StartEndDay = false;
-
-	public static DayTimeManager _Instance = null;
-
-	void OnEnable()
-	{
-		_Instance = this;
-	}
+	[SerializeField] List<DTM_Audio_Event> _AudioEvents = new();
+	Quaternion _FromRot = Quaternion.identity;
+	AudioSource _Source;
+	bool _StartEndDay;
+	Stopwatch _TimeElapsed = new();
+	Quaternion _ToRot = Quaternion.identity;
 
 	void Awake()
 	{
@@ -98,6 +92,11 @@ public class DayTimeManager : MonoBehaviour
 		}
 	}
 
+	void OnEnable()
+	{
+		_Instance = this;
+	}
+
 	public void FinishDay()
 	{
 		StartCoroutine(IE_EODSequence());
@@ -121,12 +120,17 @@ public class DayTimeManager : MonoBehaviour
 		Vector3 shipEndPosition = shipTransform.position + Vector3.up * 150;
 
 		Transform mcTransform = Camera.main.transform;
-		FadeManager._Instance.FadeInOut(1.5f, 1, () =>
-		{
-			mcTransform.GetComponent<CameraFollow>().enabled = false;
-			mcTransform.position = shipTransform.position + fixedPosOffset;
-			mcTransform.LookAt(shipTransform);
-		});
+
+		FadeManager._Instance.FadeInOut(
+			1.5f,
+			1,
+			() =>
+			{
+				mcTransform.GetComponent<CameraFollow>().enabled = false;
+				mcTransform.position = shipTransform.position + fixedPosOffset;
+				mcTransform.LookAt(shipTransform);
+			}
+		);
 
 		yield return new WaitForSeconds(2.5f);
 
@@ -136,19 +140,31 @@ public class DayTimeManager : MonoBehaviour
 
 		while (t < timer)
 		{
-			shipTransform.position = Vector3.Lerp(shipStartPosition, shipEndPosition, _ShipLiftCurve.Evaluate(t / timer) * 35.0f * Time.fixedDeltaTime);
-			mcTransform.position = Vector3.Lerp(mcTransform.position, shipTransform.position + fixedPosOffset, 2.5f * Time.fixedDeltaTime);
+			shipTransform.position = Vector3.Lerp(
+				shipStartPosition,
+				shipEndPosition,
+				_ShipLiftCurve.Evaluate(t / timer) * 35.0f * Time.fixedDeltaTime
+			);
+
+			mcTransform.position = Vector3.Lerp(
+				mcTransform.position,
+				shipTransform.position + fixedPosOffset,
+				2.5f * Time.fixedDeltaTime
+			);
 
 			if (started == false && t > 7.5f)
 			{
-				FadeManager._Instance.FadeOut(2.5f, () =>
-				{
-					PikminStatsManager.ClearSquad();
-					PikminStatsManager.ClearStats();
+				FadeManager._Instance.FadeOut(
+					2.5f,
+					() =>
+					{
+						PikminStatsManager.ClearSquad();
+						PikminStatsManager.ClearStats();
 
-					SceneManager.LoadScene(0);
-					Debug.Log("End of Day, fadeout done");
-				});
+						SceneManager.LoadScene(0);
+						Debug.Log("End of Day, fadeout done");
+					}
+				);
 				started = true;
 			}
 

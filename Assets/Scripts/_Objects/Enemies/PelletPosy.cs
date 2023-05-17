@@ -11,6 +11,7 @@ public class PelletPosy : Entity
 	}
 
 	#region Pikmin Attacking
+
 	public new void OnAttackRecieve(float damage, Transform hitPart)
 	{
 		Debug.Log(hitPart.name);
@@ -23,5 +24,6 @@ public class PelletPosy : Entity
 
 		base.OnAttackRecieve(damage, hitPart);
 	}
+
 	#endregion
 }

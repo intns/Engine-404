@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum PikminSproutState
 {
 	Dropping,
-	Planted
+	Planted,
 }
 
 public class PikminSproutPath
@@ -24,10 +25,17 @@ public class PikminSproutPath
 		width = .5;
 	}
 
+	public Vector3 GetEndPosition()
+	{
+		return endPosition;
+	}
+
 	public Vector3 GetPosition()
 	{
 		position += GetSpeed() * Time.deltaTime;
-		return startPosition + new Vector3((float)position * distance.x, (float)GetYPosition(), (float)position * distance.z);
+
+		return startPosition
+		       + new Vector3((float)position * distance.x, (float)GetYPosition(), (float)position * distance.z);
 	}
 
 	public double GetSpeed()
@@ -35,21 +43,9 @@ public class PikminSproutPath
 		return speed;
 	}
 
-	public Vector3 GetEndPosition()
-	{
-		return endPosition;
-	}
-
 	public bool IsFinished()
 	{
 		return position >= 1.0;
-	}
-
-	double GetYPosition()
-	{
-		double yPosition = GetSquareRoot();
-		if (double.IsNaN(yPosition)) { yPosition = 0; }
-		return yPosition + distance.y * position;
 	}
 
 	double GetSquareRoot()
@@ -57,6 +53,18 @@ public class PikminSproutPath
 		double fraction = Squared(position - width) / Squared(width);
 		double toBeSquareRooted = (1 - fraction) * Squared(height);
 		return Math.Sqrt(toBeSquareRooted);
+	}
+
+	double GetYPosition()
+	{
+		double yPosition = GetSquareRoot();
+
+		if (double.IsNaN(yPosition))
+		{
+			yPosition = 0;
+		}
+
+		return yPosition + distance.y * position;
 	}
 
 	double Squared(double value)
@@ -89,7 +97,7 @@ public class PikminSprout : MonoBehaviour
 	[Space]
 	[SerializeField] Transform _MaturityPlaceholderObj;
 	[Space]
-	[SerializeField] SkinnedMeshRenderer _MeshRenderer = null;
+	[SerializeField] SkinnedMeshRenderer _MeshRenderer;
 
 	[Header("Debug")]
 	[SerializeField] PikminSproutState _CurrentState;
@@ -98,32 +106,9 @@ public class PikminSprout : MonoBehaviour
 	PikminMaturity _Maturity = PikminMaturity.Leaf;
 	GameObject[] _MaturityObjects = new GameObject[3];
 
-	ParticleSystem _ParticleSystem = null;
+	ParticleSystem _ParticleSystem;
 
-	float _Timer = 0;
-
-	void OnEnable()
-	{
-		_CurrentState = PikminSproutState.Dropping;
-
-		_MaturityObjects[0] = Instantiate(_LeafHeadPrefab, _MaturityPlaceholderObj);
-
-		_MaturityObjects[1] = Instantiate(_BudHeadPrefab, _MaturityPlaceholderObj);
-		_MaturityObjects[1].SetActive(false);
-
-		_MaturityObjects[2] = Instantiate(_FlowerHeadPrefab, _MaturityPlaceholderObj);
-		_MaturityObjects[2].SetActive(false);
-
-		foreach (GameObject obj in _MaturityObjects)
-		{
-			obj.transform.localPosition = Vector3.up * 0.35f;
-		}
-
-		_ParticleSystem = GetComponent<ParticleSystem>();
-
-		_TimeNeededForBud += UnityEngine.Random.Range(60, -30);
-		_TimeNeededForFlower += UnityEngine.Random.Range(60, -30);
-	}
+	float _Timer;
 
 	void Update()
 	{
@@ -148,15 +133,43 @@ public class PikminSprout : MonoBehaviour
 				{
 					PromoteMaturity();
 				}
-				break;
-			default:
+
 				break;
 		}
+	}
+
+	void OnEnable()
+	{
+		_CurrentState = PikminSproutState.Dropping;
+
+		_MaturityObjects[0] = Instantiate(_LeafHeadPrefab, _MaturityPlaceholderObj);
+
+		_MaturityObjects[1] = Instantiate(_BudHeadPrefab, _MaturityPlaceholderObj);
+		_MaturityObjects[1].SetActive(false);
+
+		_MaturityObjects[2] = Instantiate(_FlowerHeadPrefab, _MaturityPlaceholderObj);
+		_MaturityObjects[2].SetActive(false);
+
+		foreach (GameObject obj in _MaturityObjects)
+		{
+			obj.transform.localPosition = Vector3.up * 0.35f;
+		}
+
+		_ParticleSystem = GetComponent<ParticleSystem>();
+
+		_TimeNeededForBud += Random.Range(60, -30);
+		_TimeNeededForFlower += Random.Range(60, -30);
+	}
+
+	public bool CanPluck()
+	{
+		return _CurrentState == PikminSproutState.Planted;
 	}
 
 	public PikminAI OnPluck()
 	{
 		GameObject toInstantiate = null;
+
 		switch (_SpawnData._Colour)
 		{
 			case PikminColour.Red:
@@ -171,8 +184,6 @@ public class PikminSprout : MonoBehaviour
 				toInstantiate = _BluePikminPrefab;
 				_MeshRenderer.material.mainTexture = _BluePikminSproutTex;
 				break;
-			default:
-				break;
 		}
 
 		// Remove from on field because we're about to be added
@@ -183,6 +194,45 @@ public class PikminSprout : MonoBehaviour
 		PikminAI ai = newPiki.GetComponent<PikminAI>();
 		ai.SetMaturity(_Maturity);
 		return ai;
+	}
+
+	public void OnSpawn(PikminSpawnData data, bool spawnInFloor = false)
+	{
+		_SpawnData = data;
+
+		switch (data._Colour)
+		{
+			case PikminColour.Red:
+				_MeshRenderer.material.mainTexture = _RedPikminSproutTex;
+				break;
+			case PikminColour.Yellow:
+				_MeshRenderer.material.mainTexture = _YellowPikminSproutTex;
+				break;
+			case PikminColour.Blue:
+				_MeshRenderer.material.mainTexture = _BluePikminSproutTex;
+				break;
+		}
+
+		ParticleSystem.MainModule settings = _ParticleSystem.main;
+		settings.startColor = GameUtil.PikminColorToColor(data._Colour);
+
+		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
+
+		if (!spawnInFloor)
+		{
+			StartCoroutine(IE_DropAnimation());
+		}
+		else
+		{
+			PikminSproutPath path = new(
+				_SpawnData._OriginPosition,
+				_SpawnData._EndPosition,
+				_DropSpeed,
+				_PeakHeight
+			);
+			transform.position = path.GetEndPosition();
+			_CurrentState = PikminSproutState.Planted;
+		}
 	}
 
 	public void PromoteMaturity()
@@ -202,57 +252,21 @@ public class PikminSprout : MonoBehaviour
 		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
 	}
 
-	public void OnSpawn(PikminSpawnData data, bool spawnInFloor = false)
-	{
-		_SpawnData = data;
-
-		switch (data._Colour)
-		{
-			case PikminColour.Red:
-				_MeshRenderer.material.mainTexture = _RedPikminSproutTex;
-				break;
-			case PikminColour.Yellow:
-				_MeshRenderer.material.mainTexture = _YellowPikminSproutTex;
-				break;
-			case PikminColour.Blue:
-				_MeshRenderer.material.mainTexture = _BluePikminSproutTex;
-				break;
-			default:
-				break;
-		}
-
-		ParticleSystem.MainModule settings = _ParticleSystem.main;
-		settings.startColor = GameUtil.PikminColorToColor(data._Colour);
-
-		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
-		if (!spawnInFloor)
-		{
-			StartCoroutine(IE_DropAnimation());
-		}
-		else
-		{
-			PikminSproutPath path = new(_SpawnData._OriginPosition,
-	_SpawnData._EndPosition, _DropSpeed, _PeakHeight);
-			transform.position = path.GetEndPosition();
-			_CurrentState = PikminSproutState.Planted;
-		}
-	}
-
-	public bool CanPluck()
-	{
-		return _CurrentState == PikminSproutState.Planted;
-	}
-
 	// Handles the animation from the onion origin towards the floor placement
 	IEnumerator IE_DropAnimation()
 	{
-		PikminSproutPath path = new(_SpawnData._OriginPosition,
-			_SpawnData._EndPosition, _DropSpeed, _PeakHeight);
+		PikminSproutPath path = new(
+			_SpawnData._OriginPosition,
+			_SpawnData._EndPosition,
+			_DropSpeed,
+			_PeakHeight
+		);
 
 		transform.position = _SpawnData._OriginPosition;
 		_CurrentState = PikminSproutState.Dropping;
 
 		Vector3 nextPosition = _SpawnData._OriginPosition;
+
 		while (!path.IsFinished())
 		{
 			transform.up = transform.position - nextPosition;

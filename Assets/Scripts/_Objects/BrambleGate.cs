@@ -1,5 +1,3 @@
-using UnityEngine;
-
 /*[RequireComponent(typeof(EnemyDamageScript))]
 public class BrambleGate : MonoBehaviour, IPikminAttack
 {
@@ -54,3 +52,6 @@ public class BrambleGate : MonoBehaviour, IPikminAttack
 	#endregion
 }
 */
+
+
+

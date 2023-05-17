@@ -2,58 +2,58 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[System.Serializable]
+[Serializable]
 public class Entity : MonoBehaviour, IPikminAttack, IHealth
 {
 	[Flags]
 	public enum EntityFlags
 	{
 		None = 0,
-		IsHealthEnabled = 1,      // Should we update the health wheel and 'die'?
-		IsDamageAnimEnabled = 2,  // Should we do the wobble animation?
-		IsVulnerable = 4,         // Can we take (subtract health) damage?
-		ToDestroyOnDeath = 8,     // Should we destroy the object on death?
-		IsAttackAvailable = 16,   // Should we allow Pikmin to run towards and latch to attack?
-		RegenerateHealth = 32,    // Should we regenerate health over time?
-		UseFaceDirection = 64,    // Should we use the face direction to rotate?
+		IsHealthEnabled = 1,     // Should we update the health wheel and 'die'?
+		IsDamageAnimEnabled = 2, // Should we do the wobble animation?
+		IsVulnerable = 4,        // Can we take (subtract health) damage?
+		ToDestroyOnDeath = 8,    // Should we destroy the object on death?
+		IsAttackAvailable = 16,  // Should we allow Pikmin to run towards and latch to attack?
+		RegenerateHealth = 32,   // Should we regenerate health over time?
+		UseFaceDirection = 64,   // Should we use the face direction to rotate?
 	}
 
 	[Header("Components")]
-	[SerializeField, Range(0.0f, 0.1f)] float _LifeRegenerationRatio = 0.0f;
+	[SerializeField] [Range(0.0f, 0.1f)] float _LifeRegenerationRatio;
 	[Space]
-	[SerializeField, Range(0.05f, 3.0f)] float _HorizontalDamageAnimFactor = 1.0f;
-	[SerializeField, Range(0.05f, 3.0f)] float _VerticalDamageAnimFactor = 1.0f;
+	[SerializeField] [Range(0.05f, 3.0f)] float _HorizontalDamageAnimFactor = 1.0f;
+	[SerializeField] [Range(0.05f, 3.0f)] float _VerticalDamageAnimFactor = 1.0f;
 
 	[Header("Health Wheel")]
-	[SerializeField] GameObject _HealthWheelPrefab = null;
+	[SerializeField] GameObject _HealthWheelPrefab;
 	[SerializeField] Vector3 _HealthWheelOffset = Vector3.up;
 	[SerializeField] float _HealthWheelScale = 1;
-	[Space()]
+	[Space]
 	[SerializeField] float _MaxHealth = 3500;
 	[SerializeField] Vector3 _DeathObjectOffset = Vector3.zero;
-	[SerializeField] GameObject[] _DeathObjectPrefabs = null;
+	[SerializeField] GameObject[] _DeathObjectPrefabs;
 
 	[Header("Editor")]
-	[SerializeField] bool _PlaceOnFloor = false;
+	[SerializeField] bool _PlaceOnFloor;
 
 	public EntityFlags _Flags = EntityFlags.IsHealthEnabled | EntityFlags.IsVulnerable
-			| EntityFlags.IsDamageAnimEnabled | EntityFlags.ToDestroyOnDeath
-			| EntityFlags.IsAttackAvailable;
-
-	protected float _FaceDirection = 0.0f;
-	protected Vector3 _EulerAngles = Vector3.zero;
-	protected Vector3 _StartSize = Vector3.zero;
+	                                                        | EntityFlags.IsDamageAnimEnabled
+	                                                        | EntityFlags.ToDestroyOnDeath
+	                                                        | EntityFlags.IsAttackAvailable;
 
 	[SerializeField]
-	protected float _CurrentHealth = 0.0f;
-	protected float _DamageAnimationTimer = 0.0f;
-	protected bool _IsTakingDamage = false;
+	protected float _CurrentHealth;
 
 
-	protected List<PikminAI> _AttachedPikmin = new List<PikminAI>();
-	protected HealthWheel _HealthWheelScript = null;
-	protected Transform _Transform = null;
+	protected List<PikminAI> _AttachedPikmin = new();
+	protected float _DamageAnimationTimer;
+	protected Vector3 _EulerAngles = Vector3.zero;
+
+	protected float _FaceDirection;
+	protected HealthWheel _HealthWheelScript;
+	protected bool _IsTakingDamage;
+	protected Vector3 _StartSize = Vector3.zero;
+	protected Transform _Transform;
 
 	public virtual void Awake()
 	{
@@ -63,7 +63,8 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 
 		_FaceDirection = _Transform.eulerAngles.y;
 
-		_HealthWheelScript = Instantiate(_HealthWheelPrefab, transform.position + _HealthWheelOffset, Quaternion.identity).GetComponentInChildren<HealthWheel>();
+		_HealthWheelScript = Instantiate(_HealthWheelPrefab, transform.position + _HealthWheelOffset, Quaternion.identity)
+			.GetComponentInChildren<HealthWheel>();
 		_HealthWheelScript.Setup(_Transform, _HealthWheelOffset, Vector3.one * _HealthWheelScale, _MaxHealth);
 	}
 
@@ -98,10 +99,16 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		if (_Flags.HasFlag(EntityFlags.UseFaceDirection))
 		{
 			float faceDir = GetFaceDirection();
+
 			if (Mathf.DeltaAngle(faceDir, _FaceDirection) > 0.01f)
 			{
 				faceDir = Mathf.Lerp(faceDir, _FaceDirection, 7.5f * Time.fixedDeltaTime);
-				_Transform.rotation = Quaternion.Lerp(_Transform.rotation, Quaternion.Euler(0.0f, faceDir, 0.0f), 7.5f * Time.fixedDeltaTime);
+
+				_Transform.rotation = Quaternion.Lerp(
+					_Transform.rotation,
+					Quaternion.Euler(0.0f, faceDir, 0.0f),
+					7.5f * Time.fixedDeltaTime
+				);
 			}
 		}
 	}
@@ -112,9 +119,11 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		Gizmos.DrawWireSphere(transform.position + _HealthWheelOffset, _HealthWheelScale);
 
 		Gizmos.color = Color.red;
+
 		if (_DeathObjectPrefabs != null && _DeathObjectPrefabs.Length > 0)
 		{
 			int tries = 0;
+
 			for (int i = 0; i < _DeathObjectPrefabs.Length; i++)
 			{
 				if (tries++ > 1000)
@@ -125,6 +134,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 				GameObject obj = _DeathObjectPrefabs[i];
 				MeshFilter filter = obj.GetComponentInChildren<MeshFilter>();
 				Mesh mesh;
+
 				if (filter != null && (mesh = filter.sharedMesh) != null)
 				{
 					Gizmos.DrawWireMesh(mesh, transform.position + _DeathObjectOffset);
@@ -148,7 +158,8 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	}
 
 	#region Private Methods
-	private void ScaleDamageAnimation()
+
+	void ScaleDamageAnimation()
 	{
 		if (_DamageAnimationTimer == 0.0f)
 		{
@@ -166,6 +177,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		_DamageAnimationTimer += Time.deltaTime;
 
 		float horizontalMod = 0.0f;
+
 		if (_DamageAnimationTimer <= scaleDuration)
 		{
 			float t = _DamageAnimationTimer / scaleDuration;
@@ -177,10 +189,10 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		}
 
 		float xzScale = horizontalMod * (_HorizontalDamageAnimFactor * 0.2f);
-		_Transform.localScale = new(_StartSize.x - xzScale, (horizontalMod * 0.25f) + _StartSize.y, _StartSize.z - xzScale);
+		_Transform.localScale = new(_StartSize.x - xzScale, horizontalMod * 0.25f + _StartSize.y, _StartSize.z - xzScale);
 	}
 
-	private void HandleHealth()
+	void HandleHealth()
 	{
 		if (_CurrentHealth > 0)
 		{
@@ -188,6 +200,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		}
 
 		int tries = 0;
+
 		while (_AttachedPikmin.Count > 0)
 		{
 			if (tries > 10000)
@@ -215,13 +228,15 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		}
 	}
 
-	private void RegenerateHealth()
+	void RegenerateHealth()
 	{
 		AddHealth(_MaxHealth * _LifeRegenerationRatio);
 	}
+
 	#endregion
 
 	#region Public Methods
+
 	public float GetFaceDirection()
 	{
 		return _EulerAngles.y;
@@ -253,12 +268,18 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 	}
 
 	#region Attacking
+
 	public PikminIntention IntentionType => PikminIntention.Attack;
-	public bool IsAttackAvailable() => _Flags.HasFlag(EntityFlags.IsAttackAvailable);
+
+	public bool IsAttackAvailable()
+	{
+		return _Flags.HasFlag(EntityFlags.IsAttackAvailable);
+	}
 
 	public void OnAttackEnd(PikminAI pikmin)
 	{
 		_AttachedPikmin.Remove(pikmin);
+
 		if (_AttachedPikmin.Count == 0)
 		{
 			_IsTakingDamage = false;
@@ -280,8 +301,11 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		_IsTakingDamage = true;
 		SubtractHealth(damage);
 	}
+
 	#endregion
+
 	#region IHealth
+
 	public float GetCurrentHealth()
 	{
 		return _CurrentHealth;
@@ -323,6 +347,8 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 
 		_CurrentHealth = set;
 	}
+
 	#endregion
+
 	#endregion
 }

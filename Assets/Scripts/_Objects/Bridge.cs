@@ -22,12 +22,12 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 	[Header("Debugging")]
 	[SerializeField] int _PieceCount;
 
-	List<PikminAI> _AttackingPikmin = new List<PikminAI>();
+	List<PikminAI> _AttackingPikmin = new();
+	float _CurrentHealth;
 	Vector3 _Piece1Position = Vector3.zero;
-	float _CurrentHealth = 0;
-	int _StepIndex = 0;
 
-	AudioSource _Source = null;
+	AudioSource _Source;
+	int _StepIndex;
 
 	void Awake()
 	{
@@ -39,9 +39,6 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 		rotation.y += 180;
 		Instantiate(_EndPiece, transform.position, Quaternion.Euler(rotation));
 	}
-
-	public PikminIntention IntentionType => PikminIntention.Attack;
-	bool IPikminAttack.IsAttackAvailable() => true;
 
 	void OnDrawGizmos()
 	{
@@ -63,11 +60,18 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 
 		for (int i = 0; i < _PieceCount; i++)
 		{
-			Vector3 piecePos = piece1Pos + (_MidToMidOffset * i * transform.forward);
+			Vector3 piecePos = piece1Pos + _MidToMidOffset * i * transform.forward;
 			Gizmos.DrawMesh(midPieceMesh, piecePos, transform.rotation);
 		}
 
 		Gizmos.DrawMesh(endPieceMesh, _EndPosition.position, transform.rotation);
+	}
+
+	public PikminIntention IntentionType => PikminIntention.Attack;
+
+	bool IPikminAttack.IsAttackAvailable()
+	{
+		return true;
 	}
 
 
@@ -107,7 +111,7 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 			}
 			else
 			{
-				Vector3 piecePos = _Piece1Position + (_MidToMidOffset * _StepIndex * transform.forward);
+				Vector3 piecePos = _Piece1Position + _MidToMidOffset * _StepIndex * transform.forward;
 				Instantiate(_MidPiece, piecePos, transform.rotation);
 				_AttackPiece.transform.position = piecePos + transform.forward;
 			}
@@ -128,6 +132,7 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 	{
 		_AttackingPikmin.Remove(detachedPikmin);
 	}
+
 	#endregion
 
 	#region Health Implementation

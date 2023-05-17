@@ -3,21 +3,17 @@ using UnityEngine.VFX;
 
 public class PuffStoolRewrite : Entity
 {
-	#region FSM
-
-	#endregion
-
 	[Header("Components")]
-	[SerializeField] VisualEffect _DeathVFX = null;
+	[SerializeField] VisualEffect _DeathVFX;
 
 	[Header("Settings")]
 	[SerializeField] float _MovementSpeed = 5.0f;
 
 	[Header("Debugging")]
 	[SerializeField] Vector3 _MoveDirection = Vector3.zero;
+	Animator _Animator;
 
-	Rigidbody _Rigidbody = null;
-	Animator _Animator = null;
+	Rigidbody _Rigidbody;
 
 	public new void Awake()
 	{
@@ -27,7 +23,7 @@ public class PuffStoolRewrite : Entity
 		_Rigidbody = GetComponent<Rigidbody>();
 	}
 
-	public void FixedUpdate()
+	public override void FixedUpdate()
 	{
 		if (_MoveDirection != Vector3.zero)
 		{
@@ -35,7 +31,12 @@ public class PuffStoolRewrite : Entity
 		}
 	}
 
+	#region FSM
+
+	#endregion
+
 	#region Pikmin Attacking
+
 	public new void OnAttackEnd(PikminAI pikmin)
 	{
 		base.OnAttackEnd(pikmin);
@@ -50,9 +51,11 @@ public class PuffStoolRewrite : Entity
 
 		base.OnAttackRecieve(damage, hitPart);
 	}
+
 	#endregion
 
 	#region Public Functions
+
 	public void VFX_Death_Start()
 	{
 		_DeathVFX.Play();
@@ -62,5 +65,6 @@ public class PuffStoolRewrite : Entity
 	{
 		_DeathVFX.Stop();
 	}
+
 	#endregion
 }

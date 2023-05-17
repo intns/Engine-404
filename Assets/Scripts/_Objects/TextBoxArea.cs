@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,28 +6,37 @@ using UnityEngine;
 
 public class TextBoxArea : MonoBehaviour
 {
-	[SerializeField] Canvas _Canvas = null;
-	[SerializeField] Animation _PanelAnimationComponent = null;
-	[SerializeField] TextMeshProUGUI _Text = null;
+	[Header("Components")]
+	[SerializeField] Canvas _Canvas;
+	[SerializeField] Animation _PanelAnimationComponent;
+	[SerializeField] TextMeshProUGUI _Text;
 
 	[Header("Settings")]
 	[SerializeField] float _CharacterPressTime = 0.2f;
 	[SerializeField] TextBoxEntry _Entry;
-	int _PageIndex = 0;
+	CanvasGroup _CanvasGroup;
+	bool _Enabled;
+
+	bool _FinishedPageWrite;
 
 	string _GlobalName = "";
-	bool _Enabled = false;
-
-	bool _FinishedPageWrite = false;
+	int _PageIndex;
 
 	#region Unity Functions
+
+	void Awake()
+	{
+		_CanvasGroup = _Canvas.GetComponent<CanvasGroup>();
+	}
+
 	void OnEnable()
 	{
 		_Canvas.gameObject.SetActive(false);
 		Debug.Assert(_Entry != null);
 
 		_GlobalName = gameObject.name + "_" + gameObject.GetInstanceID();
-		if (PlayerPrefs.GetInt(_GlobalName) == 1)
+
+		if (PlayerPrefs.GetInt(_GlobalName, 0) == 1)
 		{
 			return;
 		}
@@ -70,7 +80,7 @@ public class TextBoxArea : MonoBehaviour
 	void OnTriggerStay(Collider other)
 	{
 		if (!other.CompareTag("Player") || PlayerPrefs.GetInt(_GlobalName) == 1
-				|| GameManager.IsPaused)
+		                                || GameManager.IsPaused)
 		{
 			return;
 		}
@@ -85,50 +95,45 @@ public class TextBoxArea : MonoBehaviour
 		_Enabled = true;
 		StartCoroutine(WriteText(_Entry._Pages[0]._Text));
 	}
+
 	#endregion
 
 	#region IEnumerators
+
 	IEnumerator FadeInCanvas()
 	{
-		float t = 0;
-		float time = 0.5f;
-
-		CanvasGroup _CanvasGroup = _Canvas.GetComponent<CanvasGroup>();
+		const float fadeInTime = 0.5f;
 
 		_Canvas.gameObject.SetActive(true);
 		_PanelAnimationComponent.Play();
 
-		while (t <= time)
+		for (float elapsedTime = 0f; elapsedTime < fadeInTime; elapsedTime += Time.deltaTime)
 		{
-			t += Time.deltaTime;
-			_CanvasGroup.alpha = MathUtil.EaseOut3(t / time);
+			_CanvasGroup.alpha = MathUtil.EaseOut3(elapsedTime / fadeInTime);
 			yield return null;
 		}
+
+		_CanvasGroup.alpha = 1f;
 	}
 
 	IEnumerator FadeOutCanvas()
 	{
-		float t = 0;
-		float time = 0.5f;
+		const float fadeInTime = 0.5f;
 
-		CanvasGroup _CanvasGroup = _Canvas.GetComponent<CanvasGroup>();
-
-		while (t <= time)
+		for (float elapsedTime = 0f; elapsedTime < fadeInTime; elapsedTime += Time.deltaTime)
 		{
-			t += Time.deltaTime;
-
-			_CanvasGroup.alpha = 1 - MathUtil.EaseOut3(t / time);
+			_CanvasGroup.alpha = 1.0f - MathUtil.EaseOut3(elapsedTime / fadeInTime);
 			yield return null;
 		}
 
+		_CanvasGroup.alpha = 1.0f;
 		_Canvas.gameObject.SetActive(false);
 	}
 
 	IEnumerator WriteText(string toWrite)
 	{
 		_Text.text = string.Empty;
-
-		WaitForSeconds seconds = new WaitForSeconds(_CharacterPressTime);
+		WaitForSeconds seconds = new(_CharacterPressTime);
 
 		for (int i = 0; i < toWrite.Length; i++)
 		{
@@ -138,10 +143,12 @@ public class TextBoxArea : MonoBehaviour
 			}
 
 			string wholeToken = toWrite[i].ToString();
+
 			if (toWrite[i] == '<' && toWrite.Contains("</"))
 			{
-				int endIdx = toWrite.IndexOf("</", i);
-				int endEndIdx = toWrite.IndexOf(">", endIdx);
+				int endIdx = toWrite.IndexOf("</", i, StringComparison.Ordinal);
+				int endEndIdx = toWrite.IndexOf(">", endIdx, StringComparison.Ordinal);
+
 				if (endIdx == -1 || endEndIdx == -1)
 				{
 					throw new KeyNotFoundException("Text Box Area string doesn't have a closing tag after beginning tag! A < was found with no </ to finish.");
@@ -158,9 +165,9 @@ public class TextBoxArea : MonoBehaviour
 		}
 
 		_Text.text = toWrite;
-
 		_FinishedPageWrite = true;
 		yield return null;
 	}
+
 	#endregion
 }

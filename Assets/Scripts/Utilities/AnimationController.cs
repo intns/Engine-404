@@ -1,14 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Handles Unity Animator and Animations as part of a single "class"
+///   Handles Unity Animator and Animations as part of a single "class"
 /// </summary>
-[System.Serializable]
+[Serializable]
 class AnimationController
 {
+	public Animator _ParentAnimator;
+
+	List<AnimationClip> _Animations = new();
+	int _CurrentState;
+	bool _FinishCurrent;
+
 	/// <summary>
-	/// Adds a state to the list of Animations
+	///   Adds a state to the list of Animations
 	/// </summary>
 	/// <returns></returns>
 	public int AddState(AnimationClip anim)
@@ -19,7 +26,7 @@ class AnimationController
 
 
 	/// <summary>
-	/// Changes the current state of the animator to that of animIdx
+	///   Changes the current state of the animator to that of animIdx
 	/// </summary>
 	public void ChangeState(int animIdx, bool finishAnim = false, bool overRide = false)
 	{
@@ -50,10 +57,4 @@ class AnimationController
 		_CurrentState = animIdx;
 		_ParentAnimator.CrossFade(_Animations[animIdx].name, 0.05f);
 	}
-
-	public Animator _ParentAnimator;
-
-	List<AnimationClip> _Animations = new List<AnimationClip>();
-	int _CurrentState = 0;
-	bool _FinishCurrent = false;
 }

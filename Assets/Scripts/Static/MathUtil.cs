@@ -12,84 +12,27 @@ public static class MathUtil
 {
 	public const float M_TAU = Mathf.PI * 2;
 
-	/// <summary>
-	/// Calculates the position of an angle on a Unit circle
-	/// </summary>
-	/// <param name="angle">The angle on the circle in radians</param>
-	/// <returns>-1 to 1, -1 to 1</returns>
-	public static Vector2 PositionInUnit(float angle)
+	public static float AngleDistance(float angle1, float angle2)
 	{
-		return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-	}
+		float angle = RoundAngle(angle1 - angle2);
 
-	/// <summary>
-	/// Calculates the position of an angle on a Unit circle
-	/// </summary>
-	/// <param name="angle">The angle on the circle in radians</param>
-	/// <param name="radius">The radius of the circle</param>
-	/// <returns>-1 to 1, -1 to 1</returns>
-	public static Vector2 PositionInUnit(float angle, float radius)
-	{
-		return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
-	}
-
-	/// <summary>
-	/// Calculates the position of an index on a Unit circle
-	/// </summary>
-	/// <param name="segments">How many corners there are</param>
-	/// <param name="index">The index of the corner to calculate the position of</param>
-	/// <returns>-1 to 1, -1 to 1</returns>
-	public static Vector2 PositionInUnit(int segments, int index)
-	{
-		float theta = (M_TAU / segments) * index;
-		return new Vector2(Mathf.Cos(theta), Mathf.Sin(theta));
-	}
-
-	/// <summary>
-	/// Calculates the position of an index on a Unit circle with added offset
-	/// </summary>
-	/// <param name="segments">How many corners there are</param>
-	/// <param name="index">The index of the corner to calculate the position of</param>
-	/// <param name="offset">How much to offset the position by</param>
-	/// <returns>-1 to 1, -1 to 1</returns>
-	public static Vector2 PositionInUnit(int segments, int index, float offset)
-	{
-		float theta = (M_TAU / segments) * index;
-		return new Vector2(Mathf.Cos(theta + offset), Mathf.Sin(theta + offset));
-	}
-
-	/// <summary>
-	/// Converts between 2D and 3D on the X and Z axis
-	/// </summary>
-	/// <param name="conv">The vector to convert</param>
-	/// <param name="y"></param>
-	/// <returns>Vector3 with X and Z set to the X and Y of the Vector2</returns>
-	public static Vector3 XZToXYZ(Vector2 conv, float y = 0)
-	{
-		return new Vector3(conv.x, y, conv.y);
-	}
-
-	/// <summary>
-	/// Calculates the distance between two positions, without the SQRT, making it more efficient than Vector3.Distance
-	/// </summary>
-	/// <param name="first">The first position</param>
-	/// <param name="second">The second position</param>
-	/// <param name="useY">Whether or not to use the Y axis in the calculation</param>
-	/// <returns>The squared distance between 'first' and 'second'</returns>
-	public static float DistanceTo(Vector3 first, Vector3 second, bool useY = true)
-	{
-		if (!useY)
+		if (angle >= Mathf.PI)
 		{
-			// Ignore the Y axis if useY is false.
-			first.y = second.y = 0;
+			angle = -RoundAngle(M_TAU - angle);
 		}
 
-		// Use Vector3.SqrMagnitude to calculate the squared distance.
-		return Vector3.SqrMagnitude(first - second);
+		return angle;
+	}
+
+	public static float AngleXZ(Vector3 a, Vector3 b)
+	{
+		float x = a.x - b.x;
+		float z = a.z - b.z;
+		return RoundAngle(Mathf.Atan2(x, z));
 	}
 
 	/// <summary>
-	/// Calculates the normalized direction from a point towards another point
+	///   Calculates the normalized direction from a point towards another point
 	/// </summary>
 	/// <param name="from">The origin</param>
 	/// <param name="to">The destination</param>
@@ -110,7 +53,7 @@ public static class MathUtil
 	}
 
 	/// <summary>
-	/// Calculates the normalized direction from a point towards another point with length
+	///   Calculates the normalized direction from a point towards another point with length
 	/// </summary>
 	/// <param name="from">The origin</param>
 	/// <param name="to">The destination</param>
@@ -133,6 +76,74 @@ public static class MathUtil
 		return Vector3.Normalize(direction);
 	}
 
+	/// <summary>
+	///   Calculates the distance between two positions, without the SQRT, making it more efficient than Vector3.Distance
+	/// </summary>
+	/// <param name="first">The first position</param>
+	/// <param name="second">The second position</param>
+	/// <param name="useY">Whether or not to use the Y axis in the calculation</param>
+	/// <returns>The squared distance between 'first' and 'second'</returns>
+	public static float DistanceTo(Vector3 first, Vector3 second, bool useY = true)
+	{
+		if (!useY)
+		{
+			// Ignore the Y axis if useY is false.
+			first.y = second.y = 0;
+		}
+
+		// Use Vector3.SqrMagnitude to calculate the squared distance.
+		return Vector3.SqrMagnitude(first - second);
+	}
+
+	/// <summary>
+	///   A basic square function to allow for an Ease-In LERP
+	/// </summary>
+	/// <param name="t">The time input to LERP</param>
+	/// <returns>The eased time</returns>
+	public static float EaseIn2(float t)
+	{
+		return t * t;
+	}
+
+	public static float EaseIn3(float t)
+	{
+		return t * t * t;
+	}
+
+	public static float EaseIn4(float t)
+	{
+		return t * t * t * t;
+	}
+
+	public static float EaseOut2(float t)
+	{
+		return Flip(Flip(t) * Flip(t));
+	}
+
+	public static float EaseOut3(float t)
+	{
+		return Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t));
+	}
+
+	public static float EaseOut4(float t)
+	{
+		return Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t));
+	}
+
+	public static Collider GetClosestCollider(Vector3 pos, List<Collider> list, bool useY = true)
+	{
+		if (list == null || list.Count == 0)
+		{
+			return null;
+		}
+
+		// Find the closest collider
+		return list.Find(
+			i =>
+				DistanceTo(pos, i.transform.position, useY) == list.Min(j => DistanceTo(pos, j.transform.position, useY))
+		);
+	}
+
 	public static Transform GetClosestTransform(Vector3 pos, List<Transform> list, out int index, bool useY = true)
 	{
 		if (list == null || list.Count == 0)
@@ -145,33 +156,54 @@ public static class MathUtil
 		return list[index];
 	}
 
-	public static Collider GetClosestCollider(Vector3 pos, List<Collider> list, bool useY = true)
+	/// <summary>
+	///   Calculates the position of an angle on a Unit circle
+	/// </summary>
+	/// <param name="angle">The angle on the circle in radians</param>
+	/// <returns>-1 to 1, -1 to 1</returns>
+	public static Vector2 PositionInUnit(float angle)
 	{
-		if (list == null || list.Count == 0)
-		{
-			return null;
-		}
-
-		// Find the closest collider
-		return list.Find(i => DistanceTo(pos, i.transform.position, useY) == list.Min(j => DistanceTo(pos, j.transform.position, useY)));
+		return new(Mathf.Cos(angle), Mathf.Sin(angle));
 	}
 
 	/// <summary>
-	/// A basic square function to allow for an Ease-In LERP
+	///   Calculates the position of an angle on a Unit circle
 	/// </summary>
-	/// <param name="t">The time input to LERP</param>
-	/// <returns>The eased time</returns>
-	public static float EaseIn2(float t) => t * t;
-	public static float EaseIn3(float t) => t * t * t;
-	public static float EaseIn4(float t) => t * t * t * t;
-
-	static float Flip(float t) => 1 - t;
-	public static float EaseOut2(float t) => Flip(Flip(t) * Flip(t));
-	public static float EaseOut3(float t) => Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t));
-	public static float EaseOut4(float t) => Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t)) * Flip(Flip(t) * Flip(t));
+	/// <param name="angle">The angle on the circle in radians</param>
+	/// <param name="radius">The radius of the circle</param>
+	/// <returns>-1 to 1, -1 to 1</returns>
+	public static Vector2 PositionInUnit(float angle, float radius)
+	{
+		return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+	}
 
 	/// <summary>
-	/// Rounds an angle to 0 - 2PI
+	///   Calculates the position of an index on a Unit circle
+	/// </summary>
+	/// <param name="segments">How many corners there are</param>
+	/// <param name="index">The index of the corner to calculate the position of</param>
+	/// <returns>-1 to 1, -1 to 1</returns>
+	public static Vector2 PositionInUnit(int segments, int index)
+	{
+		float theta = M_TAU / segments * index;
+		return new(Mathf.Cos(theta), Mathf.Sin(theta));
+	}
+
+	/// <summary>
+	///   Calculates the position of an index on a Unit circle with added offset
+	/// </summary>
+	/// <param name="segments">How many corners there are</param>
+	/// <param name="index">The index of the corner to calculate the position of</param>
+	/// <param name="offset">How much to offset the position by</param>
+	/// <returns>-1 to 1, -1 to 1</returns>
+	public static Vector2 PositionInUnit(int segments, int index, float offset)
+	{
+		float theta = M_TAU / segments * index;
+		return new(Mathf.Cos(theta + offset), Mathf.Sin(theta + offset));
+	}
+
+	/// <summary>
+	///   Rounds an angle to 0 - 2PI
 	/// </summary>
 	/// <param name="a"></param>
 	/// <returns></returns>
@@ -190,22 +222,19 @@ public static class MathUtil
 		return a;
 	}
 
-	public static float AngleXZ(Vector3 a, Vector3 b)
+	/// <summary>
+	///   Converts between 2D and 3D on the X and Z axis
+	/// </summary>
+	/// <param name="conv">The vector to convert</param>
+	/// <param name="y"></param>
+	/// <returns>Vector3 with X and Z set to the X and Y of the Vector2</returns>
+	public static Vector3 XZToXYZ(Vector2 conv, float y = 0)
 	{
-		float x = a.x - b.x;
-		float z = a.z - b.z;
-		return RoundAngle(Mathf.Atan2(x, z));
+		return new(conv.x, y, conv.y);
 	}
 
-	public static float AngleDistance(float angle1, float angle2)
+	static float Flip(float t)
 	{
-		float angle = RoundAngle(angle1 - angle2);
-
-		if (angle >= Mathf.PI)
-		{
-			angle = -RoundAngle(MathUtil.M_TAU - angle);
-		}
-
-		return angle;
+		return 1 - t;
 	}
 }

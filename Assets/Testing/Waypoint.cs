@@ -1,7 +1,7 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 public class TEST_Waypoint : MonoBehaviour
 {
@@ -10,18 +10,21 @@ public class TEST_Waypoint : MonoBehaviour
 
 	void OnDrawGizmos()
 	{
-		Handles.Label(transform.position + Vector3.up, name);
-		Gizmos.DrawSphere(transform.position, transform.localScale.magnitude/2.0f);
+		Vector3 position = transform.position;
+		Handles.Label(position + Vector3.up, name);
+		Gizmos.DrawSphere(position, transform.localScale.magnitude / 2.0f);
 
 		if (Selection.Contains(gameObject))
 		{
 			Gizmos.color = Color.green;
+
 			if (_Next != null)
 			{
-				 Gizmos.DrawLine(transform.position, _Next.transform.position);
+				Gizmos.DrawLine(transform.position, _Next.transform.position);
 			}
 
 			int bail = 0;
+
 			for (TEST_Waypoint n = this; n != null && n._Next != null; n = n._Next)
 			{
 				if (bail++ > 50)
@@ -29,7 +32,7 @@ public class TEST_Waypoint : MonoBehaviour
 					break;
 				}
 
-				 Gizmos.DrawLine(n.transform.position, n._Next.transform.position);
+				Gizmos.DrawLine(n.transform.position, n._Next.transform.position);
 			}
 		}
 
@@ -37,22 +40,21 @@ public class TEST_Waypoint : MonoBehaviour
 		{
 			Gizmos.color = Selection.Contains(gameObject) ? Color.red : Color.blue;
 
-			if (!Selection.Contains(marker.gameObject)) {
-				 Gizmos.DrawLine(transform.position + Vector3.up, marker.transform.position + Vector3.up);
+			if (!Selection.Contains(marker.gameObject))
+			{
+				Gizmos.DrawLine(transform.position + Vector3.up, marker.transform.position + Vector3.up);
 			}
 		}
 	}
 
 	public void CalculateClosest()
 	{
-		List<Transform> children = transform.parent.GetComponentsInChildren<Transform>().Where(c => c != transform).ToList();
+		List<Transform> children
+			= transform.parent.GetComponentsInChildren<Transform>().Where(c => c != transform).ToList();
 		Transform closest = MathUtil.GetClosestTransform(transform.position, children, out int index);
 		TEST_Waypoint closestWP = closest.GetComponent<TEST_Waypoint>();
 
-		_Destinations = new(1)
-		{
-			closestWP
-		};
+		_Destinations = new(1) { closestWP };
 		_Next = closestWP;
 
 		EditorUtility.SetDirty(this);

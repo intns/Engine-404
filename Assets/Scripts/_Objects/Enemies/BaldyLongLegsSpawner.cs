@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class BaldyLongLegsSpawner : MonoBehaviour
 {
-	[SerializeField] AnimationCurve _SpawnInCurve;
 	[SerializeField] GameObject _LongLegsObj;
 	[SerializeField] float _SpawnOffsetY = 100;
-	BaldyLongLegs _BLL = null;
-	bool _Spawned = false;
+	BaldyLongLegs _BLL;
+	bool _Spawned;
 	Vector3 _SpawnPosition;
 
 	void Awake()
