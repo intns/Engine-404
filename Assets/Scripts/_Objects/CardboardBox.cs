@@ -71,10 +71,7 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 		for (int i = 0; i < _PikminToPush; i++)
 		{
-			Gizmos.DrawCube(
-				_PushStartPosition.position + _PushStartPosition.right * i * _DistancePerPikmin,
-				Vector3.one * 0.5f
-			);
+			Gizmos.DrawCube(_PushStartPosition.position + _PushStartPosition.right * i * _DistancePerPikmin, Vector3.one * 0.5f);
 		}
 	}
 
@@ -93,30 +90,31 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 		Vector3 firstOrigin = _Transform.position;
 		Vector3 endPosition = _EndPosition.position;
-
-		float timeFrac = 0;
-		float stepSize = 1f / _StepCount;
-		float step = Time.deltaTime / _TimePerPush;
+		float t = 0;
 
 		for (int i = 1; i < _StepCount; i++)
 		{
-			Vector3 target = Vector3.Lerp(firstOrigin, endPosition, i * stepSize);
+			Vector3 target = Vector3.Lerp(firstOrigin, endPosition, (float)i / _StepCount);
 
-			while (timeFrac <= 1f)
+			Vector3 originPosition = _Transform.position;
+
+			while (t <= _TimePerPush)
 			{
-				_Transform.position = Vector3.Lerp(firstOrigin, target, _PushMoveCurve.Evaluate(timeFrac));
-				timeFrac += step;
+				_Transform.position = Vector3.Lerp(originPosition, target, _PushMoveCurve.Evaluate(t / _TimePerPush));
+				t += Time.deltaTime;
 				yield return new WaitForEndOfFrame();
 			}
 
-			timeFrac = 0;
+			t = 0;
 		}
 
-		timeFrac = 0;
-		while (timeFrac <= 1f)
+		firstOrigin = _Transform.position;
+		t = 0;
+
+		while (t <= _TimePerPush)
 		{
-			_Transform.position = Vector3.Lerp(firstOrigin, endPosition, _PushMoveCurve.Evaluate(timeFrac));
-			timeFrac += step;
+			_Transform.position = Vector3.Lerp(firstOrigin, endPosition, _PushMoveCurve.Evaluate(t / _TimePerPush));
+			t += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
 
@@ -177,8 +175,6 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 		_OnPush?.Invoke();
 	}
 
-	// TODO: Fix bug with Pikmin running towards and changing state while running, causing
-	// jittering
 	public Vector3 GetPushPosition(PikminAI ai)
 	{
 		// Check if the AI is already in the pushing list
