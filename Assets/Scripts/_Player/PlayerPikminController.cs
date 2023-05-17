@@ -501,14 +501,7 @@ public class PlayerPikminController : MonoBehaviour
 				}
 			}
 
-			if (PikminStatsManager._BlueStats.GetTotalInSquad() <= 0)
-			{
-				_SelectedThrowPikmin = PikminColour.Size;
-			}
-			else
-			{
-				_SelectedThrowPikmin = colour;
-			}
+			_SelectedThrowPikmin = PikminStatsManager._BlueStats.GetTotalInSquad() <= 0 ? PikminColour.Size : colour;
 		}
 
 		_HoldingPikmin = false;

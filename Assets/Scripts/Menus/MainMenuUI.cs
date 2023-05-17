@@ -226,10 +226,10 @@ public class MainMenuUI : MonoBehaviour
 
 		List<Image> imageComponents = new List<Image>();
 		List<TextMeshProUGUI> textComponents = new List<TextMeshProUGUI>();
-		for (int i = 0; i < objects.Count; i++)
+		foreach (Transform t1 in objects)
 		{
-			imageComponents.Add(objects[i].GetComponent<Image>());
-			textComponents.Add(objects[i].GetComponentInChildren<TextMeshProUGUI>());
+			imageComponents.Add(t1.GetComponent<Image>());
+			textComponents.Add(t1.GetComponentInChildren<TextMeshProUGUI>());
 		}
 
 		float t = 0;

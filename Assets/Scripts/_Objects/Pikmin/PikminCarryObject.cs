@@ -303,7 +303,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 				// Assert that the target onion exists and is active.
 				Debug.Assert(_TargetOnion != null, $"Target Onion ({colour}) not found!");
-				Debug.Assert(_TargetOnion.OnionActive == true, $"Target Onion ({colour}) not active!");
+				Debug.Assert(_TargetOnion.OnionActive, $"Target Onion ({colour}) not active!");
 			}
 
 			// Set the current waypoint and target position for this object, then update the speed.

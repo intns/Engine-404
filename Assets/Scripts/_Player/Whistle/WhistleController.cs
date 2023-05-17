@@ -292,9 +292,9 @@ public class WhistleController : MonoBehaviour
 
 	void SetParticlesActive(bool isActive)
 	{
-		for (int i = 0; i < _Particles.Length; i++)
+		foreach (GameObject t in _Particles)
 		{
-			_Particles[i].SetActive(isActive);
+			t.SetActive(isActive);
 		}
 	}
 

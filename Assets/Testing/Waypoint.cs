@@ -35,10 +35,7 @@ public class TEST_Waypoint : MonoBehaviour
 
 		foreach (TEST_Waypoint marker in _Destinations)
 		{
-			if (Selection.Contains(gameObject))
-				Gizmos.color = Color.red;
-			else
-				Gizmos.color = Color.blue;
+			Gizmos.color = Selection.Contains(gameObject) ? Color.red : Color.blue;
 
 			if (!Selection.Contains(marker.gameObject)) {
 				 Gizmos.DrawLine(transform.position + Vector3.up, marker.transform.position + Vector3.up);

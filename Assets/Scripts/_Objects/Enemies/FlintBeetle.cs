@@ -153,14 +153,9 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 		{
 			FlintBeetle obj = (FlintBeetle)ent;
 
-			if (Random.Range(0.0f, 1.0f) < 0.5f)
-			{
-				obj._Animator.Play("Armature_FlipForwardsAnimation");
-			}
-			else
-			{
-				obj._Animator.Play("Armature_FlipBackwardsAnimation");
-			}
+			obj._Animator.Play(Random.Range(0.0f, 1.0f) < 0.5f
+				? "Armature_FlipForwardsAnimation"
+				: "Armature_FlipBackwardsAnimation");
 		}
 
 		public override void Execute(Entity ent)

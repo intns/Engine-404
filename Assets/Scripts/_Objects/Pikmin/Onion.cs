@@ -110,65 +110,51 @@ public class Onion : MonoBehaviour
 	void Update()
 	{
 		// Handle in-menu input processing
-		if (_InMenu)
+		if (!_InMenu)
 		{
-			if (_InputTimer <= 0)
-			{
-				switch (_UpDownAxis)
-				{
-					// Up on the stick / W
-					case > 0.25f:
-						if (_ResultAmount._InSquad > 0)
-						{
-							if (_UpDownAxis > 0.8f)
-							{
-								_InputTimer = 0.05f;
-							}
-							else
-							{
-								_InputTimer = 0.1f;
-							}
-
-							_ResultAmount._InSquad = Mathf.Max(_ResultAmount._InSquad - 1, 0);
-							_ResultAmount._InOnion++;
-						}
-						break;
-					// Down on the stick / S
-					case < -0.25f:
-						if (_ResultAmount._InOnion > 0)
-						{
-							if (_UpDownAxis < -0.8f)
-							{
-								_InputTimer = 0.05f;
-							}
-							else
-							{
-								_InputTimer = 0.1f;
-							}
-
-							int amount = (_ResultAmount._InSquad + 1) - _OriginalAmount._InSquad;
-							int toSpawn = Mathf.Abs(amount);
-							if (amount < 0 ||
-								PikminStatsManager.GetTotalOnField() + toSpawn <= PikminStatsManager._MaxOnField)
-							{
-								_ResultAmount._InOnion = Mathf.Max(_ResultAmount._InOnion - 1, 0);
-								_ResultAmount._InSquad++;
-							}
-						}
-						break;
-					default:
-						break;
-				}
-			}
-			else
-			{
-				_InputTimer -= Time.deltaTime;
-			}
-
-			_InOnionText.text = $"{_ResultAmount._InOnion}";
-			_InSquadText.text = $"{_ResultAmount._InSquad}";
-			_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
+			return;
 		}
+
+		if (_InputTimer <= 0)
+		{
+			switch (_UpDownAxis)
+			{
+				// Up on the stick / W
+				case > 0.25f:
+					if (_ResultAmount._InSquad > 0)
+					{
+						_InputTimer = _UpDownAxis > 0.8f ? 0.05f : 0.1f;
+
+						_ResultAmount._InSquad = Mathf.Max(_ResultAmount._InSquad - 1, 0);
+						_ResultAmount._InOnion++;
+					}
+					break;
+				// Down on the stick / S
+				case < -0.25f:
+					if (_ResultAmount._InOnion > 0)
+					{
+						_InputTimer = _UpDownAxis < -0.8f ? 0.05f : 0.1f;
+
+						int amount = (_ResultAmount._InSquad + 1) - _OriginalAmount._InSquad;
+						int toSpawn = Mathf.Abs(amount);
+						if (amount < 0 ||
+								PikminStatsManager.GetTotalOnField() + toSpawn <= PikminStatsManager._MaxOnField)
+						{
+							_ResultAmount._InOnion = Mathf.Max(_ResultAmount._InOnion - 1, 0);
+							_ResultAmount._InSquad++;
+						}
+					}
+					break;
+			}
+		}
+		else
+		{
+			_InputTimer -= Time.deltaTime;
+		}
+
+		_InOnionText.text = $"{_ResultAmount._InOnion}";
+		_InSquadText.text = $"{_ResultAmount._InSquad}";
+		_InFieldText.text = $"{PikminStatsManager.GetTotalOnField()}";
 	}
 
 	public void OnMovement(InputAction.CallbackContext context)
@@ -193,64 +179,66 @@ public class Onion : MonoBehaviour
 
 	public void OnPrimaryAction(InputAction.CallbackContext context)
 	{
-		if (context.started && _CanUse)
+		if (!context.started || !_CanUse)
 		{
-			if (!_InMenu)
+			return;
+		}
+
+		if (!_InMenu)
+		{
+			Player._Instance.Pause(PauseType.Paused);
+			StartCoroutine(FadeInCanvas());
+			FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 			{
-				Player._Instance.Pause(PauseType.Paused);
-				StartCoroutine(FadeInCanvas());
-				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
+				_OnionCanvas.gameObject.SetActive(true);
+
+				_OriginalAmount = new PikminAmount
 				{
-					_OnionCanvas.gameObject.SetActive(true);
+					_InOnion = PikminStatsManager.GetTotalInOnion(_Colour),
+					_InSquad = PikminStatsManager.GetTotalInSquad(_Colour)
+				};
 
-					_OriginalAmount = new()
-					{
-						_InOnion = PikminStatsManager.GetTotalInOnion(_Colour),
-						_InSquad = PikminStatsManager.GetTotalInSquad(_Colour)
-					};
+				_ResultAmount = _OriginalAmount;
 
-					_ResultAmount = _OriginalAmount;
-
-					_InMenu = true;
-				}));
-			}
-			else if (_ResultAmount._InSquad != _OriginalAmount._InSquad && _ResultAmount._InOnion != _OriginalAmount._InOnion)
+				_InMenu = true;
+			}));
+		}
+		else if (_ResultAmount._InSquad != _OriginalAmount._InSquad && _ResultAmount._InOnion != _OriginalAmount._InOnion)
+		{
+			StartCoroutine(FadeOutCanvas());
+			FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
 			{
-				StartCoroutine(FadeOutCanvas());
-				FadeManager._Instance.FadeInOut(0.25f, 0.5f, new Action(() =>
+				_OnionCanvas.gameObject.SetActive(false);
+				Player._Instance.Pause(PauseType.Unpaused);
+				_InMenu = false;
+
+				// 10 - 5 == 5 pikmin coming out
+				// 5 - 10 == 5 pikmin going in
+				int fieldDifference = _ResultAmount._InSquad - _OriginalAmount._InSquad;
+				bool isSpawning = fieldDifference > 0;
+				bool isTaking = fieldDifference < 0;
+
+				if (isSpawning)
 				{
-					_OnionCanvas.gameObject.SetActive(false);
-					Player._Instance.Pause(PauseType.Unpaused);
-					_InMenu = false;
+					StartCoroutine(IE_SpawnPikmin(fieldDifference));
+				}
+				else if (isTaking)
+				{
+					List<PikminAI> pikmin = PikminStatsManager._InSquad.Where(x => x.GetColour() == _Colour).ToList();
+					int amount = Mathf.Abs(fieldDifference);
 
-					// 10 - 5 == 5 pikmin coming out
-					// 5 - 10 == 5 pikmin going in
-					int fieldDifference = _ResultAmount._InSquad - _OriginalAmount._InSquad;
-					bool isSpawning = fieldDifference > 0;
-					bool isTaking = fieldDifference < 0;
+					Debug.Assert(amount <= pikmin.Count, "Pikmin squad doesn't have as many Pikmin as the Onion wants to take");
 
-					if (isSpawning)
+					for (int i = 0; i < amount; i++)
 					{
-						StartCoroutine(IE_SpawnPikmin(fieldDifference));
+						PikminAI ai = pikmin[i].GetComponent<PikminAI>();
+						ai.RemoveFromSquad();
+						PikminStatsManager.Add(ai._Data._PikminColour, ai._CurrentMaturity, PikminStatSpecifier.InOnion);
+						PikminStatsManager.Remove(ai._Data._PikminColour, ai._CurrentMaturity, PikminStatSpecifier.OnField);
+						Destroy(ai.gameObject);
 					}
-					else if (isTaking)
-					{
-						List<PikminAI> pikmin = PikminStatsManager._InSquad.Where(x => x.GetColour() == _Colour).ToList();
-						int amount = Mathf.Abs(fieldDifference);
-
-						Debug.Assert(amount <= pikmin.Count, "Pikmin squad doesn't have as many Pikmin as the Onion wants to take");
-
-						for (int i = 0; i < amount; i++)
-						{
-							PikminAI ai = pikmin[i].GetComponent<PikminAI>();
-							ai.RemoveFromSquad();
-							PikminStatsManager.Add(ai._Data._PikminColour, ai._CurrentMaturity, PikminStatSpecifier.InOnion);
-							PikminStatsManager.Remove(ai._Data._PikminColour, ai._CurrentMaturity, PikminStatSpecifier.OnField);
-							Destroy(ai.gameObject);
-						}
-					}
-				}));
-			}
+				}
+			}));
 		}
 	}
 
@@ -370,7 +358,6 @@ public class Onion : MonoBehaviour
 	/// </summary>
 	/// <param name="toSuck">The Game Object to suck up</param>
 	/// <param name="toProduce">The amount of Pikmin it will produce</param>
-	/// <param name="colour">The colour of the Pikmin it will produce</param>
 	public void StartSuction(GameObject toSuck, int toProduce)
 	{
 		StartCoroutine(IE_SuctionAnimation(toSuck, toProduce));

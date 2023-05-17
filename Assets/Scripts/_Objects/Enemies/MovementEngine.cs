@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class MovementEngine : MonoBehaviour
 {
-	[Header("Components")]
-	Transform _Transform = null;
 	Rigidbody _Rigidbody = null;
 
 	public Vector3 SmoothVelocity
@@ -32,7 +30,6 @@ public class MovementEngine : MonoBehaviour
 	#region Unity Functions
 	void Awake()
 	{
-		_Transform = transform;
 		_Rigidbody = GetComponent<Rigidbody>();
 	}
 

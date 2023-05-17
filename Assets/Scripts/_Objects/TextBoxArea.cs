@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class TextBoxArea : MonoBehaviour
 {
-	[Header("Components")]
-	Transform _Transform = null;
 	[SerializeField] Canvas _Canvas = null;
 	[SerializeField] Animation _PanelAnimationComponent = null;
 	[SerializeField] TextMeshProUGUI _Text = null;
@@ -34,11 +32,6 @@ public class TextBoxArea : MonoBehaviour
 		}
 
 		PlayerPrefs.SetInt(_GlobalName, 0);
-	}
-
-	void Awake()
-	{
-		_Transform = transform;
 	}
 
 	public void AButton()

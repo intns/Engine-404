@@ -11,12 +11,7 @@ public static class OnionManager
 	{
 		Onion o = _OnionsInScene.FirstOrDefault(onion => onion.Colour == colour);;
 
-		if (o != null)
-		{
-			return o;
-		}
-
-		return _OnionsInScene.FirstOrDefault(x => x.OnionActive);
+		return o != null ? o : _OnionsInScene.FirstOrDefault(x => x.OnionActive);
 	}
 
 	public static class SaveData

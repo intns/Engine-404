@@ -62,6 +62,7 @@ public static class MathUtil
 	/// Converts between 2D and 3D on the X and Z axis
 	/// </summary>
 	/// <param name="conv">The vector to convert</param>
+	/// <param name="y"></param>
 	/// <returns>Vector3 with X and Z set to the X and Y of the Vector2</returns>
 	public static Vector3 XZToXYZ(Vector2 conv, float y = 0)
 	{
@@ -113,6 +114,7 @@ public static class MathUtil
 	/// </summary>
 	/// <param name="from">The origin</param>
 	/// <param name="to">The destination</param>
+	/// <param name="length"></param>
 	/// <param name="useY">If we should use the Y axis vector</param>
 	/// <returns>A normalized direction around a unit circle</returns>
 	public static Vector3 DirectionFromTo(Vector3 from, Vector3 to, out float length, bool useY = false)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -150,12 +151,9 @@ public class BaldyLongLegsFoot
 		}
 		else
 		{
-			for (int i = 0; i < _OtherFeet.Count; i++)
+			if (_OtherFeet.Any(t => t.IsMoving()))
 			{
-				if (_OtherFeet[i].IsMoving())
-				{
-					return;
-				}
+				return;
 			}
 
 			Vector3 dirToObj = MathUtil.DirectionFromTo(_RaycastObj.transform.position, _Parent._Target.position);

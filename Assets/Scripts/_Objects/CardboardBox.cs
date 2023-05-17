@@ -51,10 +51,15 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 		for (int i = 0; i < _PikminToPush; i++)
 		{
-			GameObject obj = new GameObject("push_point_" + i);
-			obj.transform.parent = _PushStartPosition;
-			obj.transform.position = _PushStartPosition.position + _DistancePerPikmin * i * _PushStartPosition.right;
-			_PushPoints.Add(new(obj.transform, null));
+			GameObject obj = new GameObject("push_point_" + i)
+			{
+				transform =
+				{
+					parent = _PushStartPosition,
+					position = _PushStartPosition.position + _DistancePerPikmin * i * _PushStartPosition.right
+				}
+			};
+			_PushPoints.Add(new PushPoint(obj.transform, null));
 		}
 	}
 

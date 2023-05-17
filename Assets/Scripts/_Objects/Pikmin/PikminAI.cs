@@ -483,9 +483,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		Collider closestCol = null;
 		float curClosestDist = float.PositiveInfinity;
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, _Data._SearchRadius, _InteractableMask | _RunTowardsMask);
-		foreach (Collider collider in objects)
+		foreach (Collider col in objects)
 		{
-			IPikminInteractable interactableComponent = collider.GetComponentInParent<IPikminInteractable>();
+			IPikminInteractable interactableComponent = col.GetComponentInParent<IPikminInteractable>();
 			if (interactableComponent == null)
 			{
 				continue;
@@ -496,23 +496,23 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			// If we've found an attackable object, but there is no attack avaiable
 			// (Usually because of death or inactivation), ignore it
 			if (currentIntention == PikminIntention.Attack &&
-				!collider.GetComponentInParent<IPikminAttack>().IsAttackAvailable())
+				!col.GetComponentInParent<IPikminAttack>().IsAttackAvailable())
 			{
 				continue;
 			}
 
 			// Determine if we can see the item
-			Vector3 direction = MathUtil.DirectionFromTo(_Transform.position, collider.ClosestPoint(_Transform.position));
+			Vector3 direction = MathUtil.DirectionFromTo(_Transform.position, col.ClosestPoint(_Transform.position));
 			if (!Physics.Raycast(_Transform.position, direction, out RaycastHit hit, _Data._SearchRadius, _AllMask, QueryTriggerInteraction.Ignore)
-					|| hit.collider != collider)
+					|| hit.collider != col)
 			{
 				// Fall back to global origin
-				direction = MathUtil.DirectionFromTo(_Transform.position, collider.transform.position);
+				direction = MathUtil.DirectionFromTo(_Transform.position, col.transform.position);
 				if (!Physics.Raycast(_Transform.position, direction, out hit, _Data._SearchRadius, _AllMask, QueryTriggerInteraction.Ignore)
-						|| hit.collider != collider)
+						|| hit.collider != col)
 				{
 					// Check if the object is too high up
-					if (Mathf.Abs(_Transform.position.y - collider.transform.position.y) > 1.5f)
+					if (Mathf.Abs(_Transform.position.y - col.transform.position.y) > 1.5f)
 					{
 						continue;
 					}
@@ -523,7 +523,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			{
 				case PikminIntention.Push:
 					{
-						IPikminPush toPush = collider.GetComponentInParent<IPikminPush>();
+						IPikminPush toPush = col.GetComponentInParent<IPikminPush>();
 
 						if (!toPush.IsPikminSpotAvailable())
 						{
@@ -536,7 +536,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 				case PikminIntention.Carry:
 					{
-						IPikminCarry toCarry = collider.GetComponentInParent<IPikminCarry>();
+						IPikminCarry toCarry = col.GetComponentInParent<IPikminCarry>();
 
 						if (!toCarry.IsPikminSpotAvailable())
 						{
@@ -548,10 +548,10 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 					}
 			}
 
-			float distance = MathUtil.DistanceTo(_Transform.position, collider.transform.position);
+			float distance = MathUtil.DistanceTo(_Transform.position, col.transform.position);
 			if (distance < curClosestDist)
 			{
-				closestCol = collider;
+				closestCol = col;
 				curClosestDist = distance;
 				_Intention = currentIntention;
 			}
@@ -777,14 +777,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		if (delta != Vector3.zero && rotateTowards)
 		{
 			// Look at the player
-			if (_InSquad)
-			{
-				_FaceDirectionAngle = Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _PlayerTransform.position)).eulerAngles.y;
-			}
-			else
-			{
-				_FaceDirectionAngle = Quaternion.LookRotation(delta).eulerAngles.y;
-			}
+			_FaceDirectionAngle = _InSquad ? Quaternion.LookRotation(MathUtil.DirectionFromTo(_Transform.position, _PlayerTransform.position)).eulerAngles.y : Quaternion.LookRotation(delta).eulerAngles.y;
 		}
 
 		if (stopEarly && MathUtil.DistanceTo(_Transform.position, position, false) < _StoppingDistance)
@@ -826,11 +819,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 	void RepelPikminAndPlayers()
 	{
 		Collider[] objects = Physics.OverlapSphere(_Transform.position, _AvoidSphereSize, _PlayerAndPikminLayer);
-		foreach (Collider collider in objects)
+		foreach (Collider col in objects)
 		{
-			if (collider.CompareTag("Pikmin"))
+			if (col.CompareTag("Pikmin"))
 			{
-				Vector3 direction = MathUtil.DirectionFromTo(collider.transform.position, _Transform.position);
+				Vector3 direction = MathUtil.DirectionFromTo(col.transform.position, _Transform.position);
 				if (direction.sqrMagnitude <= 0.01f)
 				{
 					direction.x += Random.Range(-0.025f, 0.025f);
@@ -838,9 +831,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				}
 				_AddedVelocity += _PikminPushScale * Time.fixedDeltaTime * direction;
 			}
-			else if (collider.CompareTag("Player"))
+			else if (col.CompareTag("Player"))
 			{
-				Vector3 direction = MathUtil.DirectionFromTo(collider.transform.position, _Transform.position);
+				Vector3 direction = MathUtil.DirectionFromTo(col.transform.position, _Transform.position);
 				_AddedVelocity += _PlayerPushScale * Time.fixedDeltaTime * direction;
 
 				AddToSquad();
@@ -855,18 +848,18 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 			return;
 		}
 
-		Collider collider = collision.collider;
+		Collider col = collision.collider;
 
 		if (_CurrentState == PikminStates.Thrown)
 		{
 			// Just landed from a throw, check if we're on something we interact with
-			if (collider.CompareTag("PikminInteract"))
+			if (col.CompareTag("PikminInteract"))
 			{
 				// Handle squishing
-				IPikminSquish squish = collider.GetComponentInParent<IPikminSquish>();
+				IPikminSquish squish = col.GetComponentInParent<IPikminSquish>();
 				if (squish != null)
 				{
-					Vector3 closestPoint = collider.ClosestPoint(_Transform.position);
+					Vector3 closestPoint = col.ClosestPoint(_Transform.position);
 
 					float spot = Vector3.Dot(Vector3.up, MathUtil.DirectionFromTo(_Transform.position, closestPoint, true));
 					if (spot <= -0.65f)
@@ -879,12 +872,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 				else
 				{
 					_TargetObject = collision.transform;
-					_TargetObjectCollider = collider;
-					_Intention = collider.GetComponentInParent<IPikminInteractable>().IntentionType;
+					_TargetObjectCollider = col;
+					_Intention = col.GetComponentInParent<IPikminInteractable>().IntentionType;
 					CarryoutIntention();
 				}
 			}
-			else if (!collider.CompareTag("Pikmin") && !collider.CompareTag("Player"))
+			else if (!col.CompareTag("Pikmin") && !col.CompareTag("Player"))
 			{
 				ChangeState(PikminStates.Idle);
 			}
@@ -893,14 +886,14 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		{
 			// If we've been running towards something, we've touched it and now we
 			// can carryout our intention
-			if (_TargetObjectCollider != null && _TargetObjectCollider == collider
+			if (_TargetObjectCollider != null && _TargetObjectCollider == col
 				&& _TargetObjectCollider.gameObject.layer != _RunTowardsMask)
 			{
 				_Intention = _TargetObjectCollider.GetComponentInParent<IPikminInteractable>().IntentionType;
 				CarryoutIntention();
 			}
 		}
-		else if (collider.CompareTag("Player")
+		else if (col.CompareTag("Player")
 			&& (_CurrentState == PikminStates.Idle
 			|| _CurrentState == PikminStates.RunTowards))
 		{
@@ -908,20 +901,20 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		}
 	}
 
-	Vector3 ClosestPointOnTarget(Transform target, Collider collider = null, float maxDistance = float.PositiveInfinity)
+	Vector3 ClosestPointOnTarget(Transform target, Collider col = null, float maxDistance = float.PositiveInfinity)
 	{
 		// Check if there is a collider for the target object we're running to
-		if (collider == null)
+		if (col == null)
 		{
 			return target.position;
 		}
 
-		Vector3 closestPoint = collider.ClosestPoint(_Transform.position);
+		Vector3 closestPoint = col.ClosestPoint(_Transform.position);
 		Vector3 direction = MathUtil.DirectionFromTo(_Transform.position, closestPoint);
 
 		// If we can hit the target and it's in our straight-on eye line
 		if (Physics.Raycast(_Transform.position, direction, out RaycastHit hit, maxDistance, _AllMask, QueryTriggerInteraction.Ignore)
-			&& hit.collider == collider)
+			&& hit.collider == col)
 		{
 			return hit.point;
 		}
@@ -979,11 +972,13 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 		// Sort by selected Pikmin colour first.
 		PikminColour selectedColour = Player._Instance._PikminController._SelectedThrowPikmin;
+		Debug.Assert(other != null, nameof(other) + " != null");
 		if (GetColour() == selectedColour && other.GetColour() != selectedColour)
 		{
 			return 1;
 		}
-		else if (GetColour() != selectedColour && other.GetColour() == selectedColour)
+
+		if (GetColour() != selectedColour && other.GetColour() == selectedColour)
 		{
 			return -1;
 		}
