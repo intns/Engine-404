@@ -1,4 +1,5 @@
 using System.Collections;
+using _Demo;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,18 +25,16 @@ public class PlayerUIController : MonoBehaviour
 
 	void Awake()
 	{
-		// TODO: Settings manager!!!
-		if (!PlayerPrefs.HasKey("day"))
-		{
-			PlayerPrefs.SetInt("day", 0);
-		}
-
-		_DayText.text = string.Empty;
 		_SquadText.text = string.Empty;
 		_AreaText.text = string.Empty;
 
 		_CurrentPikminImage.color = Color.clear;
 		_PikminImageAnimation = _CurrentPikminImage.GetComponent<Animation>();
+	}
+
+	void Start()
+	{
+		_DayText.text = SaveData._CurrentData._Day.ToString();
 	}
 
 	void Update()
@@ -134,7 +133,7 @@ public class PlayerUIController : MonoBehaviour
 
 		_SquadText.text = _InSquadAmount.ToString();
 		_AreaText.text = _InFieldAmount.ToString();
-		_DayText.text = PlayerPrefs.GetInt("day").ToString();
+		_DayText.text = SaveData._CurrentData._Day.ToString();
 
 		PikminColour colour = Player._Instance._PikminController._SelectedThrowPikmin;
 

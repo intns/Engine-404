@@ -5,13 +5,10 @@ using UnityEngine;
 public class WayPointManager : MonoBehaviour
 {
 	public static WayPointManager _Instance;
-	public TEST_Waypoint _Home;
 	public LayerMask _MapMask;
 
 	[Header("Debugging")]
 	[SerializeField] List<TEST_Waypoint> _Network;
-
-	Dictionary<(TEST_Waypoint, TEST_Waypoint), float> _WaypointDistancesCache;
 
 	void Awake()
 	{
@@ -25,22 +22,18 @@ public class WayPointManager : MonoBehaviour
 
 	public void CalculateDistances(bool clear)
 	{
-		_WaypointDistancesCache = new();
-		Vector3 homePosition = _Home.transform.position;
-
 		foreach (TEST_Waypoint waypoint in _Network)
 		{
-			if (clear || waypoint == _Home)
+			if (clear)
 			{
 				waypoint._Next = null;
 				continue;
 			}
 
-			TEST_Waypoint bestDestination = FindBestDestination(waypoint, homePosition);
-			waypoint._Next = bestDestination;
+			Queue<TEST_Waypoint> bestPath = FindBestDestination(waypoint, WaypointType.Path);
+			waypoint._Next = bestPath.Count > 0 ? bestPath.Peek() : null;
 		}
 	}
-
 
 	public TEST_Waypoint GetClosestWaypoint(Vector3 currentPosition, HashSet<TEST_Waypoint> excludedWaypoints = null)
 	{
@@ -51,30 +44,90 @@ public class WayPointManager : MonoBehaviour
 		               .FirstOrDefault();
 	}
 
-	float CalculateFScore(TEST_Waypoint waypoint, TEST_Waypoint destination, Vector3 homePosition)
+	public Queue<TEST_Waypoint> FindBestDestination(TEST_Waypoint startWaypoint, TEST_Waypoint destinationWaypoint, WaypointType type)
 	{
-		float g = GetDistanceBetweenWaypoints(waypoint, destination);
-		float h = Vector3.Distance(destination.transform.position, homePosition);
-		return g + h;
-	}
+		var visited = new HashSet<TEST_Waypoint>();
+		var queue = new Queue<TEST_Waypoint>();
+		var parentMap = new Dictionary<TEST_Waypoint, TEST_Waypoint>();
 
-	TEST_Waypoint FindBestDestination(TEST_Waypoint waypoint, Vector3 homePosition)
-	{
-		return waypoint._Destinations
-		               .Select(destination => (destination, CalculateFScore(waypoint, destination, homePosition)))
-		               .OrderBy(pair => pair.Item2)
-		               .FirstOrDefault().destination;
-	}
+		queue.Enqueue(startWaypoint);
+		visited.Add(startWaypoint);
 
-	float GetDistanceBetweenWaypoints(TEST_Waypoint waypoint1, TEST_Waypoint waypoint2)
-	{
-		if (!_WaypointDistancesCache.TryGetValue((waypoint1, waypoint2), out float distance))
+		while (queue.Count > 0)
 		{
-			distance = Vector3.Distance(waypoint1.transform.position, waypoint2.transform.position);
-			_WaypointDistancesCache[(waypoint1, waypoint2)] = distance;
-			_WaypointDistancesCache[(waypoint2, waypoint1)] = distance;
+			TEST_Waypoint current = queue.Dequeue();
+
+			if (current == destinationWaypoint)
+			{
+				return ReconstructPath(current, parentMap);
+			}
+
+			foreach (TEST_Waypoint neighbor in current._Destinations.Where(neighbor => visited.Add(neighbor)))
+			{
+				queue.Enqueue(neighbor);
+				parentMap[neighbor] = current;
+			}
+
+			if (current._Next == null || !visited.Add(current._Next))
+			{
+				continue;
+			}
+
+			queue.Enqueue(current._Next);
+			parentMap[current._Next] = current;
 		}
 
-		return distance;
+		return null;
+	}
+
+
+	public Queue<TEST_Waypoint> FindBestDestination(TEST_Waypoint waypoint, WaypointType type)
+	{
+		var visited = new HashSet<TEST_Waypoint>();
+		var queue = new Queue<TEST_Waypoint>();
+		var parentMap = new Dictionary<TEST_Waypoint, TEST_Waypoint>();
+
+		queue.Enqueue(waypoint);
+
+		while (queue.Count > 0)
+		{
+			TEST_Waypoint current = queue.Dequeue();
+
+			if ((current._Type & type) != 0)
+			{
+				return ReconstructPath(current, parentMap);
+			}
+
+			foreach (TEST_Waypoint neighbor in current._Destinations.Where(neighbor => visited.Add(neighbor)))
+			{
+				queue.Enqueue(neighbor);
+				parentMap[neighbor] = current;
+			}
+
+			if (current._Next == null || !visited.Add(current._Next))
+			{
+				continue;
+			}
+
+			queue.Enqueue(current._Next);
+			parentMap[current._Next] = current;
+		}
+
+		return null;
+	}
+
+
+	Queue<TEST_Waypoint> ReconstructPath(TEST_Waypoint destination, Dictionary<TEST_Waypoint, TEST_Waypoint> parentMap)
+	{
+		var waypoints = new List<TEST_Waypoint>();
+		TEST_Waypoint waypointToAdd = destination;
+
+		while (waypointToAdd != null)
+		{
+			waypoints.Insert(0, waypointToAdd);
+			waypointToAdd = parentMap.GetValueOrDefault(waypointToAdd);
+		}
+
+		return new(waypoints);
 	}
 }

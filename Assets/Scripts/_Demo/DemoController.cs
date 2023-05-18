@@ -1,4 +1,5 @@
 using System.Collections;
+using _Demo;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -12,7 +13,7 @@ public static class DemoSettings
 
 public class DemoController : MonoBehaviour
 {
-	[SerializeField] bool _ResetPrefs;
+	[SerializeField] bool _ClearSave;
 	[Space]
 	[SerializeField] Volume _MainVP;
 	[SerializeField] DayTimeManager _DayTimeManager;
@@ -29,6 +30,8 @@ public class DemoController : MonoBehaviour
 
 	void Awake()
 	{
+		SaveData.LoadData();
+
 		_Text.text = "";
 
 		if (!_MainVP.profile.TryGet(out Fog fog))
@@ -69,19 +72,19 @@ public class DemoController : MonoBehaviour
 
 	void Update()
 	{
-		if (_ResetPrefs)
+		if (_ClearSave)
 		{
-			PlayerPrefs.DeleteAll();
-			_ResetPrefs = false;
+			SaveData.ResetData();
+			_ClearSave = false;
 		}
 	}
 
 	void OnDrawGizmos()
 	{
-		if (_ResetPrefs)
+		if (_ClearSave)
 		{
-			PlayerPrefs.DeleteAll();
-			_ResetPrefs = false;
+			SaveData.ResetData();
+			_ClearSave = false;
 		}
 	}
 

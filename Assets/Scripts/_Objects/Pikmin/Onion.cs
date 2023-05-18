@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Demo;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,7 +23,7 @@ public class PikminSpawnData
 	public PikminColour _Colour = PikminColour.Red;
 }
 
-public class Onion : MonoBehaviour
+public class Onion : MonoBehaviour, ICarryObjectSuck
 {
 	[Header("References")]
 	[SerializeField] GameObject _PikminSprout;
@@ -106,7 +107,7 @@ public class Onion : MonoBehaviour
 			_SpawnedSprouts.Add(i, null);
 		}
 
-		/*if (OnionManager.SaveData.IsOnionDiscovered(_Colour))*/
+		if (SaveData._CurrentData._DiscoveredOnions.TryGetValue(_Colour, out bool isOnionDiscovered) && isOnionDiscovered)
 		{
 			_DiscoverObject.SetActive(false);
 			OnionActive = true;
@@ -117,7 +118,7 @@ public class Onion : MonoBehaviour
 		}
 
 		// Onion is not found, so we'll set it as such
-		OnionManager.SaveData.SetOnionDiscovered(_Colour, false);
+		SaveData._CurrentData._DiscoveredOnions[_Colour] = false;
 
 		GetComponent<MeshRenderer>().enabled = false;
 		GetComponent<Collider>().enabled = false;
@@ -243,8 +244,6 @@ public class Onion : MonoBehaviour
 					Player._Instance.Pause(PauseType.Unpaused);
 					_InMenu = false;
 
-					// 10 - 5 == 5 pikmin coming out
-					// 5 - 10 == 5 pikmin going in
 					int fieldDifference = _ResultAmount._InSquad - _OriginalAmount._InSquad;
 					bool isSpawning = fieldDifference > 0;
 					bool isTaking = fieldDifference < 0;
@@ -392,8 +391,6 @@ public class Onion : MonoBehaviour
 				throw new NotImplementedException();
 		}
 
-		;
-
 		_Animator.SetBool("Spitting", true);
 	}
 
@@ -403,9 +400,9 @@ public class Onion : MonoBehaviour
 	/// </summary>
 	/// <param name="toSuck">The Game Object to suck up</param>
 	/// <param name="toProduce">The amount of Pikmin it will produce</param>
-	public void StartSuction(GameObject toSuck, int toProduce)
+	public void StartSuck(PikminCarryObject obj) // (GameObject toSuck, int toProduce)
 	{
-		StartCoroutine(IE_SuctionAnimation(toSuck, toProduce));
+		StartCoroutine(IE_SuctionAnimation(obj.gameObject, obj.GetPikminSpawnAmount()));
 	}
 
 	#endregion
@@ -561,41 +558,25 @@ public class Onion : MonoBehaviour
 			return;
 		}
 
-		int pos = Random.Range(0, PikminStatsManager._MaxPikminOnField + 1);
-
-		// Get offset on a circle, converted to 3d coords
-		Vector3 basePos = GetRandomBaseSpawnPosition(pos);
+		Vector3 basePos = GetRandomBaseSpawnPosition(Random.Range(0, PikminStatsManager._MaxPikminOnField + 1));
 		Vector3 endPos = hit.point + basePos * _DisperseRadius;
 
-		// Spawn the sprout just above the onion
 		GameObject pikmin = Instantiate(_PikminSprout, endPos, Quaternion.identity);
 		PikminSprout sproutData = pikmin.GetComponent<PikminSprout>();
 
 		PikminSpawnData data = new() { _OriginPosition = pikmin.transform.position, _EndPosition = endPos, _Colour = colour };
-
 		sproutData.OnSpawn(data);
 
-		if (maturity == PikminMaturity.Bud)
+		for (int i = 0; i < (int)maturity; i++)
 		{
-			sproutData.PromoteMaturity();
-		}
-		else if (maturity == PikminMaturity.Flower)
-		{
-			sproutData.PromoteMaturity();
-			sproutData.PromoteMaturity();
+			sproutData.AdvanceMaturity();
 		}
 
 		PikminAI ai = sproutData.OnPluck();
 		Destroy(sproutData.gameObject);
 
-		if (Physics.Raycast(endPos + Vector3.up * 50, Vector3.down, out RaycastHit info, float.PositiveInfinity, _MapMask))
-		{
-			ai.transform.position = info.point + Vector3.up * 1.5f;
-		}
-		else
-		{
-			ai.transform.position = endPos + Vector3.up * 5.0f;
-		}
+		bool hitFloor = Physics.Raycast(endPos + Vector3.up * 50, Vector3.down, out RaycastHit hitInfo, float.PositiveInfinity, _MapMask);
+		ai.transform.position = hitFloor ? hitInfo.point + Vector3.up * 1.5f : endPos + Vector3.up * 5.0f;
 	}
 
 

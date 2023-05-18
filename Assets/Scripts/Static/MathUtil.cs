@@ -152,7 +152,7 @@ public static class MathUtil
 			return null;
 		}
 
-		index = list.FindIndex(i => DistanceTo(pos, i.position, useY) == list.Min(i => DistanceTo(pos, i.position, useY)));
+		index = list.FindIndex(i => DistanceTo(pos, i.position, useY) == list.Min(i2 => DistanceTo(pos, i2.position, useY)));
 		return list[index];
 	}
 

@@ -137,6 +137,7 @@ MonoBehaviour:
   _CarryMinMax: {x: 10, y: 20}
   _DistanceToNextPosition: 5
   _InvulnTimeAfterSpawn: 1
+  _ObjectType: 0
   _CarryCircleRadius: 2.34
   _CarryCircleOffset: {x: -0.06, y: -0.95, z: 0.06}
   _AccelerationSpeed: 8
@@ -148,7 +149,7 @@ MonoBehaviour:
   _PikminToProduceNonMatchColour: 6
   _MapMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 8704
   _CurrentMoveSpeed: 0
   _MoveVector: {x: 0, y: 0, z: 0}
   _TargetPosition: {x: 0, y: 0, z: 0}

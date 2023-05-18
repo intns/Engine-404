@@ -19,13 +19,8 @@ public static class GameUtil
 		 */
 		var colorCounts = new Dictionary<PikminColour, int> { { PikminColour.Red, 0 }, { PikminColour.Yellow, 0 }, { PikminColour.Blue, 0 } };
 
-		foreach (PikminAI p in pikmin)
+		foreach (PikminAI p in pikmin.Where(p => p != null))
 		{
-			if (p == null)
-			{
-				continue;
-			}
-
 			colorCounts[p._Data._PikminColour]++;
 		}
 

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using _Demo;
+using Demo;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
@@ -160,6 +162,11 @@ public class DayTimeManager : MonoBehaviour
 					{
 						PikminStatsManager.ClearSquad();
 						PikminStatsManager.ClearStats();
+
+						SaveData._CurrentData._Day++;
+						ShipManager._Instance.UpdateSaveData();
+						SaveData.UpdateData();
+						SaveData.WriteData();
 
 						SceneManager.LoadScene(0);
 						Debug.Log("End of Day, fadeout done");

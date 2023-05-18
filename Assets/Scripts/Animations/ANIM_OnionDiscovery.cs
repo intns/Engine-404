@@ -122,7 +122,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			}
 		);
 
-		OnionManager.SaveData.SetOnionDiscovered(_Onion.Colour, true);
+		// OnionManager.SaveData.SetOnionDiscovered(_Onion.Colour, true);
 		_Onion.ANIM_EndDiscovery();
 
 		gameObject.SetActive(false);

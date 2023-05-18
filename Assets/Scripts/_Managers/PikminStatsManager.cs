@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public enum PikminStatSpecifier
 {
 	InSquad = 0,
@@ -11,6 +12,7 @@ public enum PikminStatSpecifier
 }
 
 // Specific information about a maturity of Pikmin
+[Serializable]
 public class PikminMaturityStats
 {
 	public PikminMaturity _Maturity;
@@ -74,6 +76,7 @@ public class PikminMaturityStats
 }
 
 // Specific information about the type of Pikmin (Colour, and maturity)
+[Serializable]
 public class PikminTypeStats
 {
 	public PikminColour _Colour;

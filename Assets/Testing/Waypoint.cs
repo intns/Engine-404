@@ -1,10 +1,23 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+[Flags]
+public enum WaypointType
+{
+	Path = 1 << 0,
+	Onion = 1 << 1,
+	Ship = 1 << 2,
+}
+
 public class TEST_Waypoint : MonoBehaviour
 {
+	[Header("Settings")]
+	public WaypointType _Type = WaypointType.Path;
+
+	[Header("Components")]
 	public List<TEST_Waypoint> _Destinations;
 	public TEST_Waypoint _Next;
 

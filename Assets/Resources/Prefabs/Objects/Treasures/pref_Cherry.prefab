@@ -41,10 +41,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7596287541871072742}
   - component: {fileID: 7596287541871072739}
-  - component: {fileID: 7596287541871072738}
   - component: {fileID: 7596287541871072737}
   - component: {fileID: 7596287541871072736}
-  - component: {fileID: 7596287541871072743}
   - component: {fileID: -5781693376238507830}
   m_Layer: 13
   m_Name: pref_Cherry
@@ -61,8 +59,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999794700902250289}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -48.17435, y: 4.18, z: 23.515614}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3005, y: 1.3005, z: 1.3005}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4730110026595809460}
@@ -79,40 +77,20 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999794700902250289}
   m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7136623456018819829, guid: 0c6e65b7cd08a084ebf8734d6daee90c, type: 3}
---- !u!114 &7596287541871072738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 999794700902250289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 0
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: -1
 --- !u!54 &7596287541871072737
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -120,14 +98,25 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999794700902250289}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 5000
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 32
   m_CollisionDetection: 0
 --- !u!114 &7596287541871072736
 MonoBehaviour:
@@ -143,11 +132,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
     type: 3}
-  _CarryNoiseClip: {fileID: 0}
+  _CarryNoiseClip: {fileID: 8300000, guid: 82f0bada0276e0845b8d9ef9b6cb33d5, type: 3}
   _CarryMinMax: {x: 1, y: 2}
   _DistanceToNextPosition: 0.5
-  _CarryCircleRadius: 0.55
-  _CarryCircleOffset: {x: 0, y: -1.29, z: 0}
+  _InvulnTimeAfterSpawn: 1
+  _ObjectType: 1
+  _CarryCircleRadius: 0.7
+  _CarryCircleOffset: {x: -0.03, y: -1.57, z: 0}
   _AccelerationSpeed: 5
   _BaseSpeed: 3
   _SpeedAddedPerPikmin: 1
@@ -155,32 +146,12 @@ MonoBehaviour:
   _ColourToGenerateFor: 0
   _PikminToProduceMatchColour: 2
   _PikminToProduceNonMatchColour: 1
+  _MapMask:
+    serializedVersion: 2
+    m_Bits: 512
   _CurrentMoveSpeed: 0
   _MoveVector: {x: 0, y: 0, z: 0}
-  _NextDestination: {x: 0, y: 0, z: 0}
   _TargetPosition: {x: 0, y: 0, z: 0}
---- !u!114 &7596287541871072743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 999794700902250289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  smoothType: 0
-  subdivisions: 2
-  iterations: 2
-  strength: 0.5
-  uniformLength: 1
-  maxSegmentLength: 2
-  bezierTangentLength: 0.4
-  offset: 0.2
-  factor: 0.1
 --- !u!82 &-5781693376238507830
 AudioSource:
   m_ObjectHideFlags: 0
@@ -331,7 +302,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4066643057743261452}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: -0.74912995, z: 0.06705}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

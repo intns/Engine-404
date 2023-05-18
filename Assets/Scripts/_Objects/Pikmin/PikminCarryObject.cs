@@ -1,6 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CarryObjectType
+{
+	Normal,
+	Treasure,
+}
+
 [RequireComponent(typeof(Rigidbody))]
 public class PikminCarryObject : MonoBehaviour, IPikminCarry
 {
@@ -9,14 +15,21 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] AudioClip _CarryNoiseClip;
 
 	[Header("Settings")]
-	[SerializeField] [Tooltip("Minimum / Maximum carrying capacity")]
+	[SerializeField]
+	[Tooltip("Minimum / Maximum carrying capacity")]
 	Vector2Int _CarryMinMax = new(1, 2);
 
-	[SerializeField] [Tooltip("How close we have to be to the position to move onto the next position")]
+	[SerializeField]
+	[Tooltip("How close we have to be to the position to move onto the next position")]
 	float _DistanceToNextPosition = 0.5f;
 
-	[SerializeField] [Tooltip("How long does it take for the object to be carried after spawn?")]
+	[SerializeField]
+	[Tooltip("How long does it take for the object to be carried after spawn?")]
 	float _InvulnTimeAfterSpawn = 1.0f;
+
+	[SerializeField]
+	[Tooltip("What type of object is this? (Normal -> Onion | Treasure -> Ship)")]
+	CarryObjectType _ObjectType = CarryObjectType.Normal;
 
 	[SerializeField] float _CarryCircleRadius = 1;
 	[SerializeField] Vector3 _CarryCircleOffset = Vector3.zero;
@@ -41,18 +54,18 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] Vector3 _TargetPosition;
 
 	List<PikminAI> _CarryingPikmin = new();
+	ICarryObjectSuck _CarryTarget;
 
 	CarryText _CarryText;
 
 	float _CurrentSpeedTarget;
-	TEST_Waypoint _CurrentWaypoint;
 	bool _IsBeingCarried;
+	bool _IsDestroyReady;
+	Queue<TEST_Waypoint> _JourneyWaypoints = new();
 	Rigidbody _Rigidbody;
-	bool _ShutdownInProgress;
 	AudioSource _Source;
 
 	float _SpawnInvulnTimer;
-	Onion _TargetOnion;
 
 	void Awake()
 	{
@@ -65,8 +78,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		GameObject carryText = Instantiate(_CarryTextPrefab, transform.position, Quaternion.identity);
 		_CarryText = carryText.GetComponent<CarryText>();
 		_CarryText._FollowTarget = transform;
-
-		_MapMask.value |= 1 << gameObject.layer;
 	}
 
 	void Update()
@@ -98,11 +109,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
-		if (!OnionManager.IsAnyOnionActiveInScene)
-		{
-			return;
-		}
-
 		if (!_Source.isPlaying)
 		{
 			_Source.Play();
@@ -110,34 +116,25 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		MoveTowards(_TargetPosition);
 
-		if (_CurrentWaypoint._Next == null)
+		if (_JourneyWaypoints.Peek()._Next == null)
 		{
-			if (MathUtil.DistanceTo(transform.position, _CurrentWaypoint.transform.position, false) < _DistanceToNextPosition)
+			if (MathUtil.DistanceTo(transform.position, _JourneyWaypoints.Peek().transform.position, false) >= _DistanceToNextPosition)
 			{
-				OnionSuckProcedure();
+				return;
 			}
+
+			SuckCarryObject();
 		}
 		else
 		{
-			float distToWp = MathUtil.DistanceTo(transform.position, _CurrentWaypoint.transform.position, false);
+			float distToWp = MathUtil.DistanceTo(transform.position, _JourneyWaypoints.Peek().transform.position, false);
 
-			const float K_MIN_SMOOTH_DIST = 10.0f;
-
-			if (distToWp <= K_MIN_SMOOTH_DIST)
+			if (distToWp >= 25.0f)
 			{
-				_CurrentWaypoint = _CurrentWaypoint._Next;
-				_TargetPosition = _CurrentWaypoint.transform.position;
+				return;
 			}
 
-			/*
-			const float K_MAX_SMOOTH_DIST = 25;
-			else if (distToWp <= K_MAX_SMOOTH_DIST)
-			{
-				float t = Mathf.InverseLerp(K_MIN_SMOOTH_DIST, K_MAX_SMOOTH_DIST, distToWp);
-				Debug.Log(t);
-
-				_TargetPosition = Vector3.Lerp(_CurrentWaypoint.transform.position, _CurrentWaypoint._Next.transform.position, t);
-			}*/
+			MoveToNextWaypoint();
 		}
 	}
 
@@ -179,39 +176,26 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		return _IsBeingCarried;
 	}
 
-	Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)
+	void MoveToNextWaypoint()
 	{
-		return transform.position + _CarryCircleOffset
-		                          + MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx)) * _CarryCircleRadius;
+		_JourneyWaypoints.Dequeue();
+
+		if (_JourneyWaypoints.Count > 0)
+		{
+			_TargetPosition = _JourneyWaypoints.Peek().transform.position;
+		}
 	}
 
-	void MoveTowards(Vector3 position)
+	void SuckCarryObject()
 	{
-		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
+		_IsDestroyReady = true;
 
-		Vector3 newVelocity = MathUtil.DirectionFromTo(transform.position, position) * _CurrentMoveSpeed;
-		newVelocity.y = _Rigidbody.velocity.y;
-		_MoveVector = newVelocity;
-	}
+		_CarryTarget.StartSuck(this);
 
-	void OnionSuckProcedure()
-	{
-		_ShutdownInProgress = true;
-		PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
 
 		while (_CarryingPikmin.Count > 0)
 		{
 			_CarryingPikmin[0].ChangeState(PikminStates.Idle);
-		}
-
-		if (targetColour == _ColourToGenerateFor
-		    || _ColourToGenerateFor == PikminColour.Size)
-		{
-			_TargetOnion.StartSuction(gameObject, _PikminToProduceMatchColour);
-		}
-		else
-		{
-			_TargetOnion.StartSuction(gameObject, _PikminToProduceNonMatchColour);
 		}
 
 		if (_CarryText != null && _CarryText.gameObject != null)
@@ -229,6 +213,30 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 
 		enabled = false;
+	}
+
+	public int GetPikminSpawnAmount()
+	{
+		PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
+
+		return targetColour == _ColourToGenerateFor && _ColourToGenerateFor == PikminColour.Size
+			? _PikminToProduceMatchColour
+			: _PikminToProduceNonMatchColour;
+	}
+
+	Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)
+	{
+		return transform.position + _CarryCircleOffset
+		                          + MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx)) * _CarryCircleRadius;
+	}
+
+	void MoveTowards(Vector3 position)
+	{
+		_CurrentMoveSpeed = Mathf.SmoothStep(_CurrentMoveSpeed, _CurrentSpeedTarget, _AccelerationSpeed * Time.deltaTime);
+
+		Vector3 newVelocity = MathUtil.DirectionFromTo(transform.position, position) * _CurrentMoveSpeed;
+		newVelocity.y = _Rigidbody.velocity.y;
+		_MoveVector = newVelocity;
 	}
 
 	void RotateUpwards()
@@ -251,17 +259,16 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		// Calculate the dot product of the current up direction and the desired up direction.
 		float dotProduct = Vector3.Dot(transform.up, desiredUpDirection);
 
-		// If the dot product is close to 1, the object is already upright.
-		if (dotProduct > 0.99f)
+		switch (dotProduct)
 		{
-			return;
-		}
+			// If the dot product is close to 1, the object is already upright.
+			case > 0.99f: return;
 
-		// If the dot product is close to -1, the object is upside down and needs to be rotated.
-		if (dotProduct < -0.9f)
-		{
-			// Invert the desired up direction to mirror according to the polygon normal.
-			desiredUpDirection = Vector3.ProjectOnPlane(-transform.up, hit.normal).normalized;
+			// If the dot product is close to -1, the object is upside down and needs to be rotated.
+			case < -0.9f:
+				// Invert the desired up direction to mirror according to the polygon normal.
+				desiredUpDirection = Vector3.ProjectOnPlane(-transform.up, hit.normal).normalized;
+				break;
 		}
 
 		Vector3 torqueDirection = Vector3.Cross(transform.up, desiredUpDirection);
@@ -278,7 +285,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	void UpdateUI()
 	{
 		// If we're about to delete the object, no point in updating it
-		if (_ShutdownInProgress)
+		if (_IsDestroyReady)
 		{
 			return;
 		}
@@ -318,24 +325,51 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		if (_CarryingPikmin.Count >= _CarryMinMax.x && !_IsBeingCarried)
 		{
-			// Set the target onion based on the colour of the Pikmin carrying.
-			if (OnionManager.IsAnyOnionActiveInScene)
-			{
-				PikminColour colour = GameUtil.GetMajorityColour(_CarryingPikmin);
-				_TargetOnion = OnionManager.GetOnionOfColour(colour);
+			CarryObjectType carryObjectType = _ObjectType;
+			WaypointType destinationType;
+			Vector3 destinationPosition;
 
-				// Assert that the target onion exists and is active.
-				Debug.Assert(_TargetOnion != null, $"Target Onion ({colour}) not found!");
-				Debug.Assert(_TargetOnion.OnionActive, $"Target Onion ({colour}) not active!");
+			switch (carryObjectType)
+			{
+				case CarryObjectType.Normal when OnionManager.IsAnyOnionActiveInScene:
+				{
+					Onion onion = OnionManager.GetOnionOfColour(GameUtil.GetMajorityColour(_CarryingPikmin));
+					_CarryTarget = onion;
+
+					destinationType = WaypointType.Onion;
+					destinationPosition = onion.transform.position;
+					break;
+				}
+
+				case CarryObjectType.Treasure:
+					_CarryTarget = Ship._Instance;
+
+					destinationType = WaypointType.Ship;
+					destinationPosition = Ship._Instance.GetSuctionPosition();
+					break;
+
+				case CarryObjectType.Normal:
+				default:
+					Debug.LogError("No destination found!");
+					return;
 			}
 
-			// Set the current waypoint and target position for this object, then update the speed.
-			_CurrentWaypoint = WayPointManager._Instance.GetClosestWaypoint(transform.position);
-			_TargetPosition = _CurrentWaypoint.transform.position;
+			TEST_Waypoint start = WayPointManager._Instance.GetClosestWaypoint(transform.position);
+			TEST_Waypoint destination = WayPointManager._Instance.GetClosestWaypoint(destinationPosition);
 
-			_IsBeingCarried = true;
+			_JourneyWaypoints = WayPointManager._Instance.FindBestDestination(start, destination, destinationType);
 
-			_CurrentSpeedTarget = Mathf.Min(_CurrentSpeedTarget + _SpeedAddedPerPikmin, _MaxSpeed);
+			if (_JourneyWaypoints.Count > 0)
+			{
+				_TargetPosition = _JourneyWaypoints.Peek().transform.position;
+				_IsBeingCarried = true;
+				_CurrentSpeedTarget = Mathf.Min(_CurrentSpeedTarget + _SpeedAddedPerPikmin, _MaxSpeed);
+			}
+			else
+			{
+				Debug.LogError("No waypoints found for the journey!");
+				return;
+			}
 		}
 
 		UpdateUI();

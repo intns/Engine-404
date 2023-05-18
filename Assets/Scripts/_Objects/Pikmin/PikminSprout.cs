@@ -127,11 +127,11 @@ public class PikminSprout : MonoBehaviour
 
 				if (_Timer >= _TimeNeededForBud && _Maturity == PikminMaturity.Leaf)
 				{
-					PromoteMaturity();
+					AdvanceMaturity();
 				}
 				else if (_Timer >= _TimeNeededForFlower && _Maturity == PikminMaturity.Bud)
 				{
-					PromoteMaturity();
+					AdvanceMaturity();
 				}
 
 				break;
@@ -200,29 +200,20 @@ public class PikminSprout : MonoBehaviour
 	{
 		_SpawnData = data;
 
-		switch (data._Colour)
+		_MeshRenderer.material.mainTexture = data._Colour switch
 		{
-			case PikminColour.Red:
-				_MeshRenderer.material.mainTexture = _RedPikminSproutTex;
-				break;
-			case PikminColour.Yellow:
-				_MeshRenderer.material.mainTexture = _YellowPikminSproutTex;
-				break;
-			case PikminColour.Blue:
-				_MeshRenderer.material.mainTexture = _BluePikminSproutTex;
-				break;
-		}
+			PikminColour.Red    => _RedPikminSproutTex,
+			PikminColour.Yellow => _YellowPikminSproutTex,
+			PikminColour.Blue   => _BluePikminSproutTex,
+			_                   => _MeshRenderer.material.mainTexture,
+		};
 
 		ParticleSystem.MainModule settings = _ParticleSystem.main;
 		settings.startColor = GameUtil.PikminColorToColor(data._Colour);
 
 		PikminStatsManager.Add(_SpawnData._Colour, _Maturity, PikminStatSpecifier.OnField);
 
-		if (!spawnInFloor)
-		{
-			StartCoroutine(IE_DropAnimation());
-		}
-		else
+		if (spawnInFloor)
 		{
 			PikminSproutPath path = new(
 				_SpawnData._OriginPosition,
@@ -233,9 +224,13 @@ public class PikminSprout : MonoBehaviour
 			transform.position = path.GetEndPosition();
 			_CurrentState = PikminSproutState.Planted;
 		}
+		else
+		{
+			StartCoroutine(IE_DropAnimation());
+		}
 	}
 
-	public void PromoteMaturity()
+	public void AdvanceMaturity()
 	{
 		// Cap at 3
 		if (_Maturity == PikminMaturity.Flower)

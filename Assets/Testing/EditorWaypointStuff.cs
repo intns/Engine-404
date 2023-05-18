@@ -9,6 +9,7 @@ public class EditorWaypointManager : Editor
 		DrawDefaultInspector();
 		WayPointManager way = (WayPointManager)target;
 
+		/*
 		if (GUILayout.Button("Calculate Distance"))
 		{
 			way.CalculateDistances(false);
@@ -18,6 +19,7 @@ public class EditorWaypointManager : Editor
 		{
 			way.CalculateDistances(true);
 		}
+		*/
 
 		if (GUILayout.Button("Generate IDs"))
 		{
@@ -25,12 +27,6 @@ public class EditorWaypointManager : Editor
 
 			foreach (TEST_Waypoint wp in wps)
 			{
-				if (way._Home == wp)
-				{
-					wp.name = "WP_HOME";
-					continue;
-				}
-
 				wp.GenerateID();
 			}
 		}
@@ -59,6 +55,7 @@ public class EditorWaypointManager : Editor
 }
 
 [CustomEditor(typeof(TEST_Waypoint))]
+[CanEditMultipleObjects]
 public class EditorWaypoint : Editor
 {
 	public override void OnInspectorGUI()
