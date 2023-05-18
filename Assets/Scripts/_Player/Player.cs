@@ -167,12 +167,14 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 
 		IHealth c = info.transform.GetComponentInParent<IHealth>();
 
-		if (c != null)
+		if (c == null)
 		{
-			c.SubtractHealth(_AttackDamage);
-
-			_AttackTimer = _AttackCooldown;
+			return;
 		}
+
+		c.SubtractHealth(_AttackDamage);
+
+		_AttackTimer = _AttackCooldown;
 	}
 
 	// When start key is pressed
@@ -246,10 +248,6 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		public const int Idle = 3;
 		public const int Attack = 4;
 	}
-
-	#region Animation Callbacks
-
-	#endregion
 
 	#region Health Implementation
 

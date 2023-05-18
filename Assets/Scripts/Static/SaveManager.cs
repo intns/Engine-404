@@ -43,7 +43,7 @@ public static class SaveManager
 		try
 		{
 			// Convert the data to JSON format
-			string jsonData = JsonUtility.ToJson(data);
+			string jsonData = JsonUtility.ToJson(data, true);
 
 			// Write the JSON data to the save file
 			using (StreamWriter writer = new(savePath))

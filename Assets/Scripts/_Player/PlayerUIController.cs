@@ -1,14 +1,16 @@
 using System.Collections;
-using _Demo;
+using Demo;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerUIController : MonoBehaviour
 {
+	[Header("Components")]
 	[SerializeField] TextMeshProUGUI _DayText;
 	[SerializeField] TextMeshProUGUI _SquadText;
 	[SerializeField] TextMeshProUGUI _AreaText;
+	[SerializeField] TextMeshProUGUI _TotalText;
 	[SerializeField] Image _HealthWheel;
 	[SerializeField] Gradient _ColorGradient;
 
@@ -18,18 +20,32 @@ public class PlayerUIController : MonoBehaviour
 	[SerializeField] CanvasGroup _CanvasGroup;
 
 	[SerializeField] bool _DisplayValues;
+	Animation _AreaTextAnimation;
+	Animation _DayTextAnimation;
+
 	int _InFieldAmount = -1;
 	int _InSquadAmount = -1;
+
 	Animation _PikminImageAnimation;
+
+	Animation _SquadTextAnimation;
 	float _TickTimer;
+	int _TotalAmount = -1;
+	Animation _TotalTextAnimation;
 
 	void Awake()
 	{
-		_SquadText.text = string.Empty;
-		_AreaText.text = string.Empty;
+		_SquadText.text = "000";
+		_AreaText.text = "000";
+		_TotalText.text = "0000";
 
 		_CurrentPikminImage.color = Color.clear;
 		_PikminImageAnimation = _CurrentPikminImage.GetComponent<Animation>();
+
+		_SquadTextAnimation = _SquadText.GetComponent<Animation>();
+		_AreaTextAnimation = _AreaText.GetComponent<Animation>();
+		_TotalTextAnimation = _TotalText.GetComponent<Animation>();
+		_DayTextAnimation = _DayText.GetComponent<Animation>();
 	}
 
 	void Start()
@@ -46,7 +62,7 @@ public class PlayerUIController : MonoBehaviour
 
 		_TickTimer += Time.deltaTime;
 
-		if (_TickTimer > 0.2f)
+		if (_TickTimer > 0.05f)
 		{
 			UpdateUI();
 			_TickTimer = 0.0f;
@@ -115,24 +131,33 @@ public class PlayerUIController : MonoBehaviour
 	{
 		int newInSquad = PikminStatsManager.GetTotalPikminInSquad();
 		int newOnField = PikminStatsManager.GetTotalPikminOnField();
+		int newTotal = PikminStatsManager.GetTotalPikminInAllOnions() + newOnField;
 
 		if (_InSquadAmount != newInSquad)
 		{
-			_SquadText.GetComponent<Animation>().Stop();
-			_SquadText.GetComponent<Animation>().Play();
+			_SquadTextAnimation.Stop();
+			_SquadTextAnimation.Play();
 		}
 
 		if (_InFieldAmount != newOnField)
 		{
-			_AreaText.GetComponent<Animation>().Stop();
-			_AreaText.GetComponent<Animation>().Play();
+			_AreaTextAnimation.Stop();
+			_AreaTextAnimation.Play();
+		}
+
+		if (_TotalAmount != newTotal)
+		{
+			_TotalTextAnimation.Stop();
+			_TotalTextAnimation.Play();
 		}
 
 		_InSquadAmount = newInSquad;
 		_InFieldAmount = newOnField;
+		_TotalAmount = newTotal;
 
-		_SquadText.text = _InSquadAmount.ToString();
-		_AreaText.text = _InFieldAmount.ToString();
+		_SquadText.text = _InSquadAmount.ToString("D3");
+		_AreaText.text = _InFieldAmount.ToString("D3");
+		_TotalText.text = _TotalAmount.ToString("D4");
 		_DayText.text = SaveData._CurrentData._Day.ToString();
 
 		PikminColour colour = Player._Instance._PikminController._SelectedThrowPikmin;
@@ -153,7 +178,7 @@ public class PlayerUIController : MonoBehaviour
 		UpdateUI();
 
 		_PikminImageAnimation.Play();
-		_DayText.GetComponent<Animation>().Play();
+		_DayTextAnimation.Play();
 	}
 
 	#endregion

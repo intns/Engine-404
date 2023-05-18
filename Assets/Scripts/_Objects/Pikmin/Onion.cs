@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using _Demo;
+using Demo;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -118,7 +118,7 @@ public class Onion : MonoBehaviour, ICarryObjectSuck
 		}
 
 		// Onion is not found, so we'll set it as such
-		SaveData._CurrentData._DiscoveredOnions[_Colour] = false;
+		SaveData._CurrentData._DiscoveredOnions.TryAdd(_Colour, false);
 
 		GetComponent<MeshRenderer>().enabled = false;
 		GetComponent<Collider>().enabled = false;
@@ -211,28 +211,13 @@ public class Onion : MonoBehaviour, ICarryObjectSuck
 			return;
 		}
 
-		if (!_InMenu)
+		if (_InMenu)
 		{
-			Player._Instance.Pause(PauseType.Paused);
-			StartCoroutine(FadeInCanvas());
+			if (_ResultAmount._InSquad == _OriginalAmount._InSquad || _ResultAmount._InOnion == _OriginalAmount._InOnion)
+			{
+				return;
+			}
 
-			FadeManager._Instance.FadeInOut(
-				0.25f,
-				0.5f,
-				() =>
-				{
-					_OnionCanvas.gameObject.SetActive(true);
-
-					_OriginalAmount = new() { _InOnion = PikminStatsManager.GetTotalPikminInOnion(_Colour), _InSquad = PikminStatsManager.GetTotalPikminInSquad(_Colour) };
-
-					_ResultAmount = _OriginalAmount;
-
-					_InMenu = true;
-				}
-			);
-		}
-		else if (_ResultAmount._InSquad != _OriginalAmount._InSquad && _ResultAmount._InOnion != _OriginalAmount._InOnion)
-		{
 			StartCoroutine(FadeOutCanvas());
 
 			FadeManager._Instance.FadeInOut(
@@ -270,7 +255,27 @@ public class Onion : MonoBehaviour, ICarryObjectSuck
 					}
 				}
 			);
+
+			return;
 		}
+
+		Player._Instance.Pause(PauseType.Paused);
+			StartCoroutine(FadeInCanvas());
+
+			FadeManager._Instance.FadeInOut(
+				0.25f,
+				0.5f,
+				() =>
+				{
+					_OnionCanvas.gameObject.SetActive(true);
+
+					_OriginalAmount = new() { _InOnion = PikminStatsManager.GetTotalPikminInOnion(_Colour), _InSquad = PikminStatsManager.GetTotalPikminInSquad(_Colour) };
+
+					_ResultAmount = _OriginalAmount;
+
+					_InMenu = true;
+				}
+			);
 	}
 
 
@@ -364,7 +369,7 @@ public class Onion : MonoBehaviour, ICarryObjectSuck
 		GetComponent<MeshRenderer>().enabled = true;
 		GetComponent<Collider>().enabled = true;
 		OnionActive = true;
-		DemoSettings._DiscoveredOnionCutsceneDone = true;
+		/*DemoSettings._DiscoveredOnionCutsceneDone = true;*/
 	}
 
 	/// <summary>

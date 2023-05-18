@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class WayPointManager : MonoBehaviour
+public class WaypointManager : MonoBehaviour
 {
-	public static WayPointManager _Instance;
+	public static WaypointManager _Instance;
 	public LayerMask _MapMask;
 
 	[Header("Debugging")]
@@ -12,12 +12,9 @@ public class WayPointManager : MonoBehaviour
 
 	void Awake()
 	{
-		_Network = GetComponentsInChildren<Waypoint>().ToList();
-	}
-
-	void OnEnable()
-	{
 		_Instance = this;
+
+		_Network = GetComponentsInChildren<Waypoint>().ToList();
 	}
 
 	public void CalculateDistances(bool clear)

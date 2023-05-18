@@ -264,7 +264,6 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 
 	public void SetupRadarObject()
 	{
-		RadarController._Instance._RadarObjects.Add(this);
 	}
 
 	#region Attacking

@@ -2,13 +2,13 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(WayPointManager))]
+[CustomEditor(typeof(WaypointManager))]
 public class WaypointManagerEditor : Editor
 {
 	public override void OnInspectorGUI()
 	{
 		DrawDefaultInspector();
-		WayPointManager way = (WayPointManager)target;
+		WaypointManager way = (WaypointManager)target;
 
 		if (GUILayout.Button("Generate IDs"))
 		{
@@ -21,6 +21,7 @@ public class WaypointManagerEditor : Editor
 			}
 
 			Array.Sort(wps, (wp1, wp2) => string.Compare(wp1.name, wp2.name, StringComparison.Ordinal));
+
 			for (int i = 0; i < wps.Length; i++)
 			{
 				wps[i].transform.SetSiblingIndex(i);
@@ -38,7 +39,7 @@ public class WaypointManagerEditor : Editor
 
 			foreach (Waypoint wp in wps)
 			{
-				if (Physics.Raycast(
+				if (!Physics.Raycast(
 					    wp.transform.position + Vector3.up * 1000.0f,
 					    Vector3.down,
 					    out RaycastHit info,
@@ -47,32 +48,12 @@ public class WaypointManagerEditor : Editor
 					    QueryTriggerInteraction.Ignore
 				    ))
 				{
-					wp.transform.position = info.point + Vector3.up * 2.5f;
-					EditorUtility.SetDirty(wp.transform);
+					continue;
 				}
+
+				wp.transform.position = info.point + Vector3.up * 2.5f;
+				EditorUtility.SetDirty(wp.transform);
 			}
-		}
-	}
-}
-
-[CustomEditor(typeof(Waypoint))]
-[CanEditMultipleObjects]
-public class EditorWaypoint : Editor
-{
-	public override void OnInspectorGUI()
-	{
-		DrawDefaultInspector();
-
-		Waypoint way = (Waypoint)target;
-
-		if (GUILayout.Button("Calculate Closest Node"))
-		{
-			way.CalculateClosest();
-		}
-
-		if (GUILayout.Button("Generate ID"))
-		{
-			way.GenerateID();
 		}
 	}
 }

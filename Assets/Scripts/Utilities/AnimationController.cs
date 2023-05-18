@@ -30,7 +30,7 @@ class AnimationController
 	/// </summary>
 	public void ChangeState(int animIdx, bool finishAnim = false, bool overRide = false)
 	{
-		if (_CurrentState == animIdx)
+		if (_CurrentState == animIdx && !overRide)
 		{
 			return;
 		}
@@ -41,7 +41,7 @@ class AnimationController
 			// Check the animator has finished the clip
 			AnimatorStateInfo stateInfo = _ParentAnimator.GetCurrentAnimatorStateInfo(0);
 
-			if (stateInfo.normalizedTime < 1)
+			if (stateInfo.IsName(_Animations[animIdx].name))
 			{
 				// It hasn't finished the clip yet, so we return and wait
 				return;

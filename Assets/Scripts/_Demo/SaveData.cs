@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Demo;
+using UnityEngine;
 
-namespace _Demo
+namespace Demo
 {
 	public enum Scene
 	{
@@ -20,7 +20,7 @@ namespace _Demo
 		static SaveData _currentData;
 
 		// Day Settings
-		public int _Day;
+		public int _Day = 1;
 
 		// Ship Settings
 		public SerializableDictionary<ShipPartType, ShipPartData> _ShipPartData = new();
@@ -46,13 +46,27 @@ namespace _Demo
 
 			foreach (PikminColour colour in Enum.GetValues(typeof(PikminColour)))
 			{
-				PikminTypeStats loadedStats = _CurrentData._InOnionPikmin[colour];
-				PikminTypeStats currentStats = PikminStatsManager.GetPikminStats(colour);
+				if (_CurrentData._InOnionPikmin.TryGetValue(colour, out PikminTypeStats loadedStats))
+				{
+					PikminTypeStats currentStats = PikminStatsManager.GetPikminStats(colour);
 
-				// Update the stats for each maturity level
-				currentStats._Leaf._InOnion = loadedStats._Leaf._InOnion;
-				currentStats._Bud._InOnion = loadedStats._Bud._InOnion;
-				currentStats._Flower._InOnion = loadedStats._Flower._InOnion;
+					// Update the stats for each maturity level
+					currentStats._Leaf._InOnion = loadedStats._Leaf._InOnion;
+					currentStats._Bud._InOnion = loadedStats._Bud._InOnion;
+					currentStats._Flower._InOnion = loadedStats._Flower._InOnion;
+				}
+				else
+				{
+					// Handle missing key by providing default values or custom logic
+					PikminTypeStats currentStats = PikminStatsManager.GetPikminStats(colour);
+
+					// Set default values for the stats
+					currentStats._Leaf._InOnion = 0;
+					currentStats._Bud._InOnion = 0;
+					currentStats._Flower._InOnion = 0;
+
+					Debug.LogWarning("Key not found in dictionary: " + colour);
+				}
 			}
 		}
 

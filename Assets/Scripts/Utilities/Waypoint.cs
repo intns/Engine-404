@@ -51,6 +51,11 @@ public class Waypoint : MonoBehaviour
 			}
 		}
 
+		if (_Connections.TrueForAll(x => x == null))
+		{
+			_Connections.Clear();
+		}
+
 		foreach (Waypoint marker in _Connections)
 		{
 			Gizmos.color = Selection.Contains(gameObject) ? Color.red : Color.blue;

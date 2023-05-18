@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using _Demo;
 using Demo;
 using UnityEngine;
 using UnityEngine.SceneManagement;

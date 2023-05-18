@@ -219,7 +219,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	{
 		PikminColour targetColour = GameUtil.GetMajorityColour(_CarryingPikmin);
 
-		return targetColour == _ColourToGenerateFor && _ColourToGenerateFor == PikminColour.Size
+		return targetColour == _ColourToGenerateFor && _ColourToGenerateFor != PikminColour.Size
 			? _PikminToProduceMatchColour
 			: _PikminToProduceNonMatchColour;
 	}
@@ -354,10 +354,10 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 					return;
 			}
 
-			Waypoint start = WayPointManager._Instance.GetClosestWaypoint(transform.position);
-			Waypoint destination = WayPointManager._Instance.GetClosestWaypoint(destinationPosition);
+			Waypoint start = WaypointManager._Instance.GetClosestWaypoint(transform.position);
+			Waypoint destination = WaypointManager._Instance.GetClosestWaypoint(destinationPosition);
 
-			_JourneyWaypoints = WayPointManager._Instance.FindBestDestination(start, destination, destinationType);
+			_JourneyWaypoints = WaypointManager._Instance.FindBestDestination(start, destination, destinationType);
 
 			if (_JourneyWaypoints.Count > 0)
 			{

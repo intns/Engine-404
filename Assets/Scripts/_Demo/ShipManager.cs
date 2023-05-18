@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Demo;
 using UnityEngine;
 
 namespace Demo

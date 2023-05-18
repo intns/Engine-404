@@ -1,4 +1,5 @@
 using System.Collections;
+using Demo;
 using UnityEngine;
 
 public class ANIM_OnionDiscovery : MonoBehaviour
@@ -122,7 +123,8 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			}
 		);
 
-		// OnionManager.SaveData.SetOnionDiscovered(_Onion.Colour, true);
+		SaveData._CurrentData._DiscoveredOnions[_Onion.Colour] = true;
+
 		_Onion.ANIM_EndDiscovery();
 
 		gameObject.SetActive(false);
