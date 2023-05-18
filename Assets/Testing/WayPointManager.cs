@@ -8,11 +8,11 @@ public class WayPointManager : MonoBehaviour
 	public LayerMask _MapMask;
 
 	[Header("Debugging")]
-	[SerializeField] List<TEST_Waypoint> _Network;
+	[SerializeField] List<Waypoint> _Network;
 
 	void Awake()
 	{
-		_Network = GetComponentsInChildren<TEST_Waypoint>().ToList();
+		_Network = GetComponentsInChildren<Waypoint>().ToList();
 	}
 
 	void OnEnable()
@@ -22,7 +22,7 @@ public class WayPointManager : MonoBehaviour
 
 	public void CalculateDistances(bool clear)
 	{
-		foreach (TEST_Waypoint waypoint in _Network)
+		foreach (Waypoint waypoint in _Network)
 		{
 			if (clear)
 			{
@@ -30,12 +30,12 @@ public class WayPointManager : MonoBehaviour
 				continue;
 			}
 
-			Queue<TEST_Waypoint> bestPath = FindBestDestination(waypoint, WaypointType.Path);
+			Queue<Waypoint> bestPath = FindBestDestination(waypoint, WaypointType.Path);
 			waypoint._Next = bestPath.Count > 0 ? bestPath.Peek() : null;
 		}
 	}
 
-	public TEST_Waypoint GetClosestWaypoint(Vector3 currentPosition, HashSet<TEST_Waypoint> excludedWaypoints = null)
+	public Waypoint GetClosestWaypoint(Vector3 currentPosition, HashSet<Waypoint> excludedWaypoints = null)
 	{
 		excludedWaypoints ??= new();
 
@@ -44,25 +44,25 @@ public class WayPointManager : MonoBehaviour
 		               .FirstOrDefault();
 	}
 
-	public Queue<TEST_Waypoint> FindBestDestination(TEST_Waypoint startWaypoint, TEST_Waypoint destinationWaypoint, WaypointType type)
+	public Queue<Waypoint> FindBestDestination(Waypoint startWaypoint, Waypoint destinationWaypoint, WaypointType type)
 	{
-		var visited = new HashSet<TEST_Waypoint>();
-		var queue = new Queue<TEST_Waypoint>();
-		var parentMap = new Dictionary<TEST_Waypoint, TEST_Waypoint>();
+		var visited = new HashSet<Waypoint>();
+		var queue = new Queue<Waypoint>();
+		var parentMap = new Dictionary<Waypoint, Waypoint>();
 
 		queue.Enqueue(startWaypoint);
 		visited.Add(startWaypoint);
 
 		while (queue.Count > 0)
 		{
-			TEST_Waypoint current = queue.Dequeue();
+			Waypoint current = queue.Dequeue();
 
 			if (current == destinationWaypoint)
 			{
 				return ReconstructPath(current, parentMap);
 			}
 
-			foreach (TEST_Waypoint neighbor in current._Destinations.Where(neighbor => visited.Add(neighbor)))
+			foreach (Waypoint neighbor in current._Connections.Where(neighbor => visited.Add(neighbor)))
 			{
 				queue.Enqueue(neighbor);
 				parentMap[neighbor] = current;
@@ -81,24 +81,24 @@ public class WayPointManager : MonoBehaviour
 	}
 
 
-	public Queue<TEST_Waypoint> FindBestDestination(TEST_Waypoint waypoint, WaypointType type)
+	public Queue<Waypoint> FindBestDestination(Waypoint waypoint, WaypointType type)
 	{
-		var visited = new HashSet<TEST_Waypoint>();
-		var queue = new Queue<TEST_Waypoint>();
-		var parentMap = new Dictionary<TEST_Waypoint, TEST_Waypoint>();
+		var visited = new HashSet<Waypoint>();
+		var queue = new Queue<Waypoint>();
+		var parentMap = new Dictionary<Waypoint, Waypoint>();
 
 		queue.Enqueue(waypoint);
 
 		while (queue.Count > 0)
 		{
-			TEST_Waypoint current = queue.Dequeue();
+			Waypoint current = queue.Dequeue();
 
 			if ((current._Type & type) != 0)
 			{
 				return ReconstructPath(current, parentMap);
 			}
 
-			foreach (TEST_Waypoint neighbor in current._Destinations.Where(neighbor => visited.Add(neighbor)))
+			foreach (Waypoint neighbor in current._Connections.Where(neighbor => visited.Add(neighbor)))
 			{
 				queue.Enqueue(neighbor);
 				parentMap[neighbor] = current;
@@ -117,10 +117,10 @@ public class WayPointManager : MonoBehaviour
 	}
 
 
-	Queue<TEST_Waypoint> ReconstructPath(TEST_Waypoint destination, Dictionary<TEST_Waypoint, TEST_Waypoint> parentMap)
+	Queue<Waypoint> ReconstructPath(Waypoint destination, Dictionary<Waypoint, Waypoint> parentMap)
 	{
-		var waypoints = new List<TEST_Waypoint>();
-		TEST_Waypoint waypointToAdd = destination;
+		var waypoints = new List<Waypoint>();
+		Waypoint waypointToAdd = destination;
 
 		while (waypointToAdd != null)
 		{

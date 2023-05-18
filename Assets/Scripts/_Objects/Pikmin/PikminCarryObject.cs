@@ -61,7 +61,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	float _CurrentSpeedTarget;
 	bool _IsBeingCarried;
 	bool _IsDestroyReady;
-	Queue<TEST_Waypoint> _JourneyWaypoints = new();
+	Queue<Waypoint> _JourneyWaypoints = new();
 	Rigidbody _Rigidbody;
 	AudioSource _Source;
 
@@ -354,8 +354,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 					return;
 			}
 
-			TEST_Waypoint start = WayPointManager._Instance.GetClosestWaypoint(transform.position);
-			TEST_Waypoint destination = WayPointManager._Instance.GetClosestWaypoint(destinationPosition);
+			Waypoint start = WayPointManager._Instance.GetClosestWaypoint(transform.position);
+			Waypoint destination = WayPointManager._Instance.GetClosestWaypoint(destinationPosition);
 
 			_JourneyWaypoints = WayPointManager._Instance.FindBestDestination(start, destination, destinationType);
 

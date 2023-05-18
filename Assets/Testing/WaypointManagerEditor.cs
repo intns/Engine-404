@@ -1,31 +1,32 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(WayPointManager))]
-public class EditorWaypointManager : Editor
+public class WaypointManagerEditor : Editor
 {
 	public override void OnInspectorGUI()
 	{
 		DrawDefaultInspector();
 		WayPointManager way = (WayPointManager)target;
 
-		/*
-		if (GUILayout.Button("Calculate Distance"))
-		{
-			way.CalculateDistances(false);
-		}
-
-		if (GUILayout.Button("Clear Paths"))
-		{
-			way.CalculateDistances(true);
-		}
-		*/
-
 		if (GUILayout.Button("Generate IDs"))
 		{
-			TEST_Waypoint[] wps = way.GetComponentsInChildren<TEST_Waypoint>();
+			Waypoint[] wps = way.GetComponentsInChildren<Waypoint>();
 
-			foreach (TEST_Waypoint wp in wps)
+			// Reorder the waypoints in the hierarchy
+			foreach (Waypoint wp in wps)
+			{
+				wp.GenerateID();
+			}
+
+			Array.Sort(wps, (wp1, wp2) => string.Compare(wp1.name, wp2.name, StringComparison.Ordinal));
+			for (int i = 0; i < wps.Length; i++)
+			{
+				wps[i].transform.SetSiblingIndex(i);
+			}
+
+			foreach (Waypoint wp in wps)
 			{
 				wp.GenerateID();
 			}
@@ -33,9 +34,9 @@ public class EditorWaypointManager : Editor
 
 		if (GUILayout.Button("Place On Map"))
 		{
-			TEST_Waypoint[] wps = way.GetComponentsInChildren<TEST_Waypoint>();
+			Waypoint[] wps = way.GetComponentsInChildren<Waypoint>();
 
-			foreach (TEST_Waypoint wp in wps)
+			foreach (Waypoint wp in wps)
 			{
 				if (Physics.Raycast(
 					    wp.transform.position + Vector3.up * 1000.0f,
@@ -54,7 +55,7 @@ public class EditorWaypointManager : Editor
 	}
 }
 
-[CustomEditor(typeof(TEST_Waypoint))]
+[CustomEditor(typeof(Waypoint))]
 [CanEditMultipleObjects]
 public class EditorWaypoint : Editor
 {
@@ -62,7 +63,7 @@ public class EditorWaypoint : Editor
 	{
 		DrawDefaultInspector();
 
-		TEST_Waypoint way = (TEST_Waypoint)target;
+		Waypoint way = (Waypoint)target;
 
 		if (GUILayout.Button("Calculate Closest Node"))
 		{
