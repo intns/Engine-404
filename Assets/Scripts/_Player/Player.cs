@@ -1,15 +1,7 @@
-/*
- * Player.cs
- * Created by: Ambrosia
- * Created on: 8/2/2020 (dd/mm/yy)
- * Last update by : Senka
- * Last update on : 9/7/2022
- * Created for: having a generalised manager for the seperate Player scripts
- */
-
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
 [RequireComponent(
@@ -20,10 +12,13 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour, IHealth, IInteraction
 {
 	public static Player _Instance;
+
 	public PlayerMovementController _MovementController;
 	public PlayerPikminController _PikminController;
 	public PlayerUIController _UIController;
 	public WhistleController _WhistleController;
+	public PlayerInput _InputController;
+
 	public GameObject _ModelObject;
 
 	[Header("Components")]
@@ -57,6 +52,12 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	{
 		_MovementController = GetComponent<PlayerMovementController>();
 		_PikminController = GetComponent<PlayerPikminController>();
+
+		Assert.IsNotNull(_MovementController);
+		Assert.IsNotNull(_PikminController);
+		Assert.IsNotNull(_UIController);
+		Assert.IsNotNull(_WhistleController);
+		Assert.IsNull(_InputController);
 
 		Debug.Assert(PlayerAnimation.Walk == _AnimController.AddState(_WalkAnimation));
 		Debug.Assert(PlayerAnimation.Die == _AnimController.AddState(_DieAnimation));
@@ -143,14 +144,14 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	{
 		// If NOT paralyzed AND NOT paused AND IS moving any direction
 		_Walking = !_MovementController._Paralysed && !GameManager.IsPaused
-		                                           && (context.ReadValue<Vector2>().x != 0
-		                                               || context.ReadValue<Vector2>().y != 0);
+																							 && (context.ReadValue<Vector2>().x != 0
+																									 || context.ReadValue<Vector2>().y != 0);
 	}
 
 	public void OnPrimaryAction(InputAction.CallbackContext context)
 	{
 		if (!context.started || GameManager.IsPaused || _CurrentHealth <= 0 || _MovementController._Paralysed
-		    || !_PikminController._CanPlayerAttack || _AttackTimer > 0)
+				|| !_PikminController._CanPlayerAttack || _AttackTimer > 0)
 		{
 			return;
 		}
@@ -160,7 +161,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 
 		// Attack!
 		if (!Physics.SphereCast(transform.position, _AttackSphereRadius, transform.forward, out RaycastHit info)
-		    || info.transform.CompareTag("Player") || info.transform.CompareTag("Pikmin"))
+				|| info.transform.CompareTag("Player") || info.transform.CompareTag("Pikmin"))
 		{
 			return;
 		}

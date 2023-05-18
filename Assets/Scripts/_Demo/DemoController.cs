@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -35,23 +33,27 @@ namespace Demo
 
 			_Text.text = "";
 
-			if (!_MainVP.profile.TryGet(out Fog fog))
+			if (_MainVP.profile.TryGet(out Fog fog))
 			{
-				return;
+				bool editFog = Random.Range(0, 5) < 2.5f;
+
+				// We're going to randomise the VP a bit
+				if (editFog)
+				{
+					fog.meanFreePath.value = Random.Range(50.0f, 250.0f);
+					fog.baseHeight.value = Random.Range(-1.0f, 13.0f);
+					fog.albedo.value = Color.Lerp(new(1, 0.95f, 0.815f), new(1, 0.578f, 0.306f), Random.Range(0.2f, 0.8f));
+				}
+				else
+				{
+					fog.enabled.value = false;
+				}
 			}
 
-			bool editFog = Random.Range(0, 5) < 2.5f;
-
-			// We're going to randomise the VP a bit
-			if (editFog)
+			// FIRST DAY, LOAD DEMO!
+			if (SaveData._CurrentData._Day == 1)
 			{
-				fog.meanFreePath.value = Random.Range(50.0f, 250.0f);
-				fog.baseHeight.value = Random.Range(-1.0f, 13.0f);
-				fog.albedo.value = Color.Lerp(new(1, 0.95f, 0.815f), new(1, 0.578f, 0.306f), Random.Range(0.2f, 0.8f));
-			}
-			else
-			{
-				fog.enabled.value = false;
+				_DoSequence = true;
 			}
 		}
 

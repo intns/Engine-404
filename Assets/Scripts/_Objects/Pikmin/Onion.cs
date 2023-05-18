@@ -23,7 +23,7 @@ public class PikminSpawnData
 	public PikminColour _Colour = PikminColour.Red;
 }
 
-public class Onion : MonoBehaviour, ICarryObjectSuck
+public class Onion : MonoBehaviour, ICarryObjectAbsorb
 {
 	[Header("References")]
 	[SerializeField] GameObject _PikminSprout;
@@ -405,7 +405,7 @@ public class Onion : MonoBehaviour, ICarryObjectSuck
 	/// </summary>
 	/// <param name="toSuck">The Game Object to suck up</param>
 	/// <param name="toProduce">The amount of Pikmin it will produce</param>
-	public void StartSuck(PikminCarryObject obj) // (GameObject toSuck, int toProduce)
+	public void StartAbsorb(PikminCarryObject obj) // (GameObject toSuck, int toProduce)
 	{
 		StartCoroutine(IE_SuctionAnimation(obj.gameObject, obj.GetPikminSpawnAmount()));
 	}

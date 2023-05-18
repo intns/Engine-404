@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem.XInput;
 
 public class TextBoxArea : MonoBehaviour
 {
@@ -18,9 +21,9 @@ public class TextBoxArea : MonoBehaviour
 	bool _Enabled;
 
 	bool _FinishedPageWrite;
-
-	string _GlobalName = "";
 	int _PageIndex;
+
+	bool _IsFadingOut = false;
 
 	#region Unity Functions
 
@@ -33,15 +36,6 @@ public class TextBoxArea : MonoBehaviour
 	{
 		_Canvas.gameObject.SetActive(false);
 		Debug.Assert(_Entry != null);
-
-		_GlobalName = gameObject.name + "_" + gameObject.GetInstanceID();
-
-		if (PlayerPrefs.GetInt(_GlobalName, 0) == 1)
-		{
-			return;
-		}
-
-		PlayerPrefs.SetInt(_GlobalName, 0);
 	}
 
 	public void AButton()
@@ -54,7 +48,6 @@ public class TextBoxArea : MonoBehaviour
 		if (_PageIndex == _Entry._Pages.Count - 1)
 		{
 			_Enabled = false;
-			PlayerPrefs.SetInt(_GlobalName, 1);
 			Player._Instance.Pause(PauseType.Unpaused);
 			Player._Instance._UIController.FadeInUI(true);
 			StartCoroutine(FadeOutCanvas());
@@ -79,8 +72,7 @@ public class TextBoxArea : MonoBehaviour
 
 	void OnTriggerStay(Collider other)
 	{
-		if (!other.CompareTag("Player") || PlayerPrefs.GetInt(_GlobalName) == 1
-		                                || GameManager.IsPaused)
+		if (!other.CompareTag("Player") || GameManager.IsPaused || _IsFadingOut)
 		{
 			return;
 		}
@@ -119,6 +111,7 @@ public class TextBoxArea : MonoBehaviour
 	IEnumerator FadeOutCanvas()
 	{
 		const float fadeInTime = 0.5f;
+		_IsFadingOut = true;
 
 		for (float elapsedTime = 0f; elapsedTime < fadeInTime; elapsedTime += Time.deltaTime)
 		{
@@ -128,6 +121,8 @@ public class TextBoxArea : MonoBehaviour
 
 		_CanvasGroup.alpha = 1.0f;
 		_Canvas.gameObject.SetActive(false);
+
+		Destroy(gameObject);
 	}
 
 	IEnumerator WriteText(string toWrite)

@@ -132,7 +132,7 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 	public bool OnPikminAdded(PikminAI p)
 	{
-		if (_AttachedPiki.Count >= _PikminToPush)
+		if (_AttachedPiki.Count >= _PikminToPush || _Pushed)
 		{
 			return false;
 		}
@@ -161,6 +161,12 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 
 	public void OnPikminReady(PikminAI p)
 	{
+		if (_Pushed)
+		{
+			p.ChangeState(PikminStates.Idle);
+			return;
+		}
+
 		_AttachedPiki.Add(p);
 
 		_CarryText.UpdateColor(_AttachedPiki);

@@ -41,7 +41,7 @@ public class GenerationManager : MonoBehaviour
 					Debug.LogError("Invalid range format: " + child.name);
 				}
 			}
-			else if (TryParseDay(child.name, out int day))
+			else if (TryParseDay(childNameParts[1], out int day))
 			{
 				minDay = Mathf.Min(minDay, day);
 				maxDay = Mathf.Max(maxDay, day);

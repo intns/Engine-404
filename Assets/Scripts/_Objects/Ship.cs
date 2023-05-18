@@ -3,7 +3,7 @@ using Demo;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class Ship : MonoBehaviour, ICarryObjectSuck
+public class Ship : MonoBehaviour, ICarryObjectAbsorb
 {
 	public static Ship _Instance;
 
@@ -40,7 +40,7 @@ public class Ship : MonoBehaviour, ICarryObjectSuck
 		}
 	}
 
-	public void StartSuck(PikminCarryObject obj)
+	public void StartAbsorb(PikminCarryObject obj)
 	{
 		StartCoroutine(IE_SuctionAnimation(obj.gameObject));
 	}

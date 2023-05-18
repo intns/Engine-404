@@ -54,7 +54,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[SerializeField] Vector3 _TargetPosition;
 
 	List<PikminAI> _CarryingPikmin = new();
-	ICarryObjectSuck _CarryTarget;
+	ICarryObjectAbsorb _CarryTarget;
 
 	CarryText _CarryText;
 
@@ -116,18 +116,19 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		MoveTowards(_TargetPosition);
 
-		if (_JourneyWaypoints.Peek()._Next == null)
+		Waypoint waypoint = _JourneyWaypoints.Peek();
+		if (waypoint._Next == null)
 		{
-			if (MathUtil.DistanceTo(transform.position, _JourneyWaypoints.Peek().transform.position, false) >= _DistanceToNextPosition)
+			if (MathUtil.DistanceTo(transform.position, waypoint.transform.position, false) >= _DistanceToNextPosition)
 			{
 				return;
 			}
 
-			SuckCarryObject();
+			AbsorbCarryObject();
 		}
 		else
 		{
-			float distToWp = MathUtil.DistanceTo(transform.position, _JourneyWaypoints.Peek().transform.position, false);
+			float distToWp = MathUtil.DistanceTo(transform.position, waypoint.transform.position, false);
 
 			if (distToWp >= 25.0f)
 			{
@@ -186,12 +187,11 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 	}
 
-	void SuckCarryObject()
+	void AbsorbCarryObject()
 	{
 		_IsDestroyReady = true;
 
-		_CarryTarget.StartSuck(this);
-
+		_CarryTarget.StartAbsorb(this);
 
 		while (_CarryingPikmin.Count > 0)
 		{
@@ -279,7 +279,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
-		_Rigidbody.AddTorque(torqueMagnitude * torqueDirection.normalized);
+		Quaternion targetRotation = Quaternion.FromToRotation(transform.up, desiredUpDirection) * transform.rotation;
+		_Rigidbody.MoveRotation(Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 6.5f));
 	}
 
 	void UpdateUI()
