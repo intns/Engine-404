@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -66,9 +67,9 @@ public class Waypoint : MonoBehaviour
 		List<Transform> children
 			= transform.parent.GetComponentsInChildren<Transform>().Where(c => c != transform).ToList();
 		Transform closest = MathUtil.GetClosestTransform(transform.position, children, out int index);
-		TEST_Waypoint closestWP = closest.GetComponent<TEST_Waypoint>();
+		Waypoint closestWP = closest.GetComponent<Waypoint>();
 
-		_Destinations = new(1) { closestWP };
+		_Connections = new(1) { closestWP };
 		_Next = closestWP;
 
 		EditorUtility.SetDirty(this);
