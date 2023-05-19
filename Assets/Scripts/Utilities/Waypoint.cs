@@ -51,16 +51,17 @@ public class Waypoint : MonoBehaviour
 			}
 		}
 
-		if (_Connections.TrueForAll(x => x == null))
+		for (int index = _Connections.Count - 1; index >= 0; index--)
 		{
-			_Connections.Clear();
-		}
+			Waypoint marker = _Connections[index];
+			if (marker == null)
+			{
+				_Connections.RemoveAt(index);
+				continue;
+			}
 
-		foreach (Waypoint marker in _Connections)
-		{
 			Gizmos.color = Selection.Contains(gameObject) ? Color.red : Color.blue;
-
-			if (!Selection.Contains(marker.gameObject))
+			if (Selection.Contains(marker.gameObject))
 			{
 				Gizmos.DrawLine(transform.position + Vector3.up, marker.transform.position + Vector3.up);
 			}

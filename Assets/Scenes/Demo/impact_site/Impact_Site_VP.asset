@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953beb541740ddc499d005ee80c9ff29, type: 3}
   m_Name: Fog
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   quality:
     m_OverrideState: 0
     m_Value: 1
@@ -116,169 +116,6 @@ MonoBehaviour:
   directionalLightsOnly:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &-6286955920308214602
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e88178bb13f64a54f90d6cd6ef7aa9a1, type: 3}
-  m_Name: CloudLayer
-  m_EditorClassIdentifier: 
-  active: 1
-  opacity:
-    m_OverrideState: 1
-    m_Value: 0.05
-  upperHemisphereOnly:
-    m_OverrideState: 0
-    m_Value: 1
-  layers:
-    m_OverrideState: 0
-    m_Value: 0
-  resolution:
-    m_OverrideState: 0
-    m_Value: 1024
-  shadowMultiplier:
-    m_OverrideState: 1
-    m_Value: 21.62
-  shadowTint:
-    m_OverrideState: 1
-    m_Value: {r: 0.262, g: 0.262, b: 0.262, a: 1}
-  shadowResolution:
-    m_OverrideState: 0
-    m_Value: 256
-  shadowSize:
-    m_OverrideState: 1
-    m_Value: 326
-  layerA:
-    cloudMap:
-      m_OverrideState: 1
-      m_Value: {fileID: 2800000, guid: 81a6f2ed0a92b1b42be4ff25e5b3c867, type: 3}
-    opacityR:
-      m_OverrideState: 1
-      m_Value: 0.176
-    opacityG:
-      m_OverrideState: 1
-      m_Value: 0
-    opacityB:
-      m_OverrideState: 1
-      m_Value: 0.275
-    opacityA:
-      m_OverrideState: 1
-      m_Value: 0
-    altitude:
-      m_OverrideState: 1
-      m_Value: 904.84
-    rotation:
-      m_OverrideState: 1
-      m_Value: 196
-    tint:
-      m_OverrideState: 0
-      m_Value: {r: 1, g: 1, b: 1, a: 1}
-    exposure:
-      m_OverrideState: 1
-      m_Value: 3
-    distortionMode:
-      m_OverrideState: 1
-      m_Value: 1
-    scrollOrientation:
-      m_OverrideState: 1
-      m_Value:
-        mode: 0
-        customValue: 203
-        additiveValue: 0
-        multiplyValue: 1
-    scrollSpeed:
-      m_OverrideState: 1
-      m_Value:
-        mode: 0
-        customValue: 35
-        additiveValue: 0
-        multiplyValue: 1
-    flowmap:
-      m_OverrideState: 1
-      m_Value: {fileID: 0}
-    lighting:
-      m_OverrideState: 0
-      m_Value: 0
-    steps:
-      m_OverrideState: 0
-      m_Value: 2
-    thickness:
-      m_OverrideState: 0
-      m_Value: 0.484
-    ambientProbeDimmer:
-      m_OverrideState: 0
-      m_Value: 1
-    castShadows:
-      m_OverrideState: 1
-      m_Value: 1
-  layerB:
-    cloudMap:
-      m_OverrideState: 0
-      m_Value: {fileID: 2800000, guid: 57a33fc2476a01644865bfde5f06e2f4, type: 3}
-    opacityR:
-      m_OverrideState: 0
-      m_Value: 1
-    opacityG:
-      m_OverrideState: 0
-      m_Value: 0
-    opacityB:
-      m_OverrideState: 0
-      m_Value: 0
-    opacityA:
-      m_OverrideState: 0
-      m_Value: 0
-    altitude:
-      m_OverrideState: 0
-      m_Value: 2000
-    rotation:
-      m_OverrideState: 0
-      m_Value: 0
-    tint:
-      m_OverrideState: 0
-      m_Value: {r: 1, g: 1, b: 1, a: 1}
-    exposure:
-      m_OverrideState: 0
-      m_Value: 0
-    distortionMode:
-      m_OverrideState: 0
-      m_Value: 0
-    scrollOrientation:
-      m_OverrideState: 0
-      m_Value:
-        mode: 1
-        customValue: 0
-        additiveValue: 0
-        multiplyValue: 1
-    scrollSpeed:
-      m_OverrideState: 0
-      m_Value:
-        mode: 1
-        customValue: 100
-        additiveValue: 0
-        multiplyValue: 1
-    flowmap:
-      m_OverrideState: 0
-      m_Value: {fileID: 0}
-    lighting:
-      m_OverrideState: 0
-      m_Value: 1
-    steps:
-      m_OverrideState: 0
-      m_Value: 6
-    thickness:
-      m_OverrideState: 0
-      m_Value: 0.5
-    ambientProbeDimmer:
-      m_OverrideState: 0
-      m_Value: 1
-    castShadows:
-      m_OverrideState: 0
-      m_Value: 0
 --- !u!114 &-6087556460457542441
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -367,10 +204,10 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   cloudType:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   skyAmbientMode:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   windOrientation:
     m_OverrideState: 0
@@ -506,7 +343,6 @@ MonoBehaviour:
   - {fileID: -4330457237725942017}
   - {fileID: -2793868460617962105}
   - {fileID: -9114987855451014345}
-  - {fileID: -6286955920308214602}
   - {fileID: -1639496262638460285}
   - {fileID: -6087556460457542441}
   - {fileID: -7044260507524473318}
@@ -531,7 +367,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.49
   multiplier:
     m_OverrideState: 0
     m_Value: 1

@@ -46,6 +46,11 @@ namespace Demo
 
 			foreach (PikminColour colour in Enum.GetValues(typeof(PikminColour)))
 			{
+				if (colour == PikminColour.Size)
+				{
+					continue;
+				}
+
 				if (_CurrentData._InOnionPikmin.TryGetValue(colour, out PikminTypeStats loadedStats))
 				{
 					PikminTypeStats currentStats = PikminStatsManager.GetPikminStats(colour);

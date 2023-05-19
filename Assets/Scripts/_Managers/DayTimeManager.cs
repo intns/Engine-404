@@ -100,6 +100,11 @@ public class DayTimeManager : MonoBehaviour
 
 	public void FinishDay()
 	{
+		SaveData._CurrentData._Day++;
+		ShipManager._Instance.UpdateSaveData();
+		SaveData.UpdateData();
+		SaveData.WriteData();
+
 		StartCoroutine(IE_EODSequence());
 	}
 
@@ -161,11 +166,6 @@ public class DayTimeManager : MonoBehaviour
 					{
 						PikminStatsManager.ClearSquad();
 						PikminStatsManager.ClearStats();
-
-						SaveData._CurrentData._Day++;
-						ShipManager._Instance.UpdateSaveData();
-						SaveData.UpdateData();
-						SaveData.WriteData();
 
 						SceneManager.LoadScene(0);
 						Debug.Log("End of Day, fadeout done");
