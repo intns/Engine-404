@@ -117,6 +117,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		MoveTowards(_TargetPosition);
 
 		Waypoint waypoint = _JourneyWaypoints.Peek();
+
 		if (waypoint._Next == null)
 		{
 			if (MathUtil.DistanceTo(transform.position, waypoint.transform.position, false) >= _DistanceToNextPosition)

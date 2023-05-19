@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
 
 public class TextBoxArea : MonoBehaviour
 {
@@ -21,9 +18,9 @@ public class TextBoxArea : MonoBehaviour
 	bool _Enabled;
 
 	bool _FinishedPageWrite;
-	int _PageIndex;
 
-	bool _IsFadingOut = false;
+	bool _IsFadingOut;
+	int _PageIndex;
 
 	#region Unity Functions
 

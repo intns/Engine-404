@@ -54,6 +54,7 @@ public class Waypoint : MonoBehaviour
 		for (int index = _Connections.Count - 1; index >= 0; index--)
 		{
 			Waypoint marker = _Connections[index];
+
 			if (marker == null)
 			{
 				_Connections.RemoveAt(index);
@@ -61,6 +62,7 @@ public class Waypoint : MonoBehaviour
 			}
 
 			Gizmos.color = Selection.Contains(gameObject) ? Color.red : Color.blue;
+
 			if (Selection.Contains(marker.gameObject))
 			{
 				Gizmos.DrawLine(transform.position + Vector3.up, marker.transform.position + Vector3.up);

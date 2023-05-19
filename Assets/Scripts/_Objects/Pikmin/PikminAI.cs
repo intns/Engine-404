@@ -910,6 +910,13 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 				AddToSquad();
 			}
+			else if (col.CompareTag("PikminInteract")
+			         && col.TryGetComponent(out IPikminCarry carry)
+			         && carry.IntentionType == PikminIntention.Carry)
+			{
+				Vector3 direction = MathUtil.DirectionFromTo(col.transform.position, _Transform.position) * 2.0f;
+				_AddedVelocity += _PlayerPushScale * Time.fixedDeltaTime * direction;
+			}
 		}
 	}
 

@@ -260,22 +260,22 @@ public class Onion : MonoBehaviour, ICarryObjectAbsorb
 		}
 
 		Player._Instance.Pause(PauseType.Paused);
-			StartCoroutine(FadeInCanvas());
+		StartCoroutine(FadeInCanvas());
 
-			FadeManager._Instance.FadeInOut(
-				0.25f,
-				0.5f,
-				() =>
-				{
-					_OnionCanvas.gameObject.SetActive(true);
+		FadeManager._Instance.FadeInOut(
+			0.25f,
+			0.5f,
+			() =>
+			{
+				_OnionCanvas.gameObject.SetActive(true);
 
-					_OriginalAmount = new() { _InOnion = PikminStatsManager.GetTotalPikminInOnion(_Colour), _InSquad = PikminStatsManager.GetTotalPikminInSquad(_Colour) };
+				_OriginalAmount = new() { _InOnion = PikminStatsManager.GetTotalPikminInOnion(_Colour), _InSquad = PikminStatsManager.GetTotalPikminInSquad(_Colour) };
 
-					_ResultAmount = _OriginalAmount;
+				_ResultAmount = _OriginalAmount;
 
-					_InMenu = true;
-				}
-			);
+				_InMenu = true;
+			}
+		);
 	}
 
 

@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace Demo
 {
@@ -81,68 +80,6 @@ namespace Demo
 				_ClearSave = false;
 			}
 		}
-
-#if DEBUG
-		static Texture2D CreateTexture(int width, int height, Color color)
-		{
-			Texture2D texture = new(width, height);
-			var pixels = new Color[width * height];
-
-			for (int i = 0; i < pixels.Length; i++)
-			{
-				pixels[i] = color;
-			}
-
-			texture?.SetPixels(pixels);
-			texture.Apply();
-
-			return texture;
-		}
-
-		void OnGUI()
-		{
-			GUIStyle style = new(GUI.skin.label);
-			style.normal.textColor = Color.white;
-			style.fontSize = 20;
-			style.border = new(2, 2, 2, 2);
-			style.padding = new(5, 5, 5, 5);
-
-			Vector2 position = new(25, 25);
-
-			StringBuilder debugTextBuilder = new();
-
-			debugTextBuilder.AppendLine($"Save File:\t{SaveData._SaveFile}");
-			debugTextBuilder.AppendLine($"Day: {SaveData._CurrentData._Day}");
-
-			debugTextBuilder.AppendLine();
-			debugTextBuilder.AppendLine("Ship Part Data:");
-
-			foreach (KeyValuePair<ShipPartType, ShipPartData> kvp in SaveData._CurrentData._ShipPartData)
-			{
-				debugTextBuilder.AppendLine($"- {kvp.Key}, isCollected({kvp.Value._Collected}), isDiscovered({kvp.Value._Discovered})");
-			}
-
-			debugTextBuilder.AppendLine();
-			debugTextBuilder.AppendLine("In Onion Pikmin:");
-
-			foreach (KeyValuePair<PikminColour, PikminTypeStats> kvp in SaveData._CurrentData._InOnionPikmin)
-			{
-				debugTextBuilder.AppendLine(kvp.Value.ToString());
-			}
-
-			debugTextBuilder.AppendLine();
-			debugTextBuilder.AppendLine("Discovered Onions:");
-
-			foreach (KeyValuePair<PikminColour, bool> kvp in SaveData._CurrentData._DiscoveredOnions)
-			{
-				debugTextBuilder.AppendLine($"- Onion Colour: {kvp.Key}, Discovered: {kvp.Value}");
-			}
-
-			GUIContent guiContent = new(debugTextBuilder.ToString());
-
-			GUI.Label(new(position.x, position.y, Screen.width, Screen.height), guiContent, style);
-		}
-		#endif
 
 		void OnDrawGizmos()
 		{
@@ -259,5 +196,67 @@ namespace Demo
 				}
 			);
 		}
+
+#if DEBUG
+		static Texture2D CreateTexture(int width, int height, Color color)
+		{
+			Texture2D texture = new(width, height);
+			var pixels = new Color[width * height];
+
+			for (int i = 0; i < pixels.Length; i++)
+			{
+				pixels[i] = color;
+			}
+
+			texture?.SetPixels(pixels);
+			texture.Apply();
+
+			return texture;
+		}
+
+		void OnGUI()
+		{
+			GUIStyle style = new(GUI.skin.label);
+			style.normal.textColor = Color.white;
+			style.fontSize = 20;
+			style.border = new(2, 2, 2, 2);
+			style.padding = new(5, 5, 5, 5);
+
+			Vector2 position = new(25, 25);
+
+			StringBuilder debugTextBuilder = new();
+
+			debugTextBuilder.AppendLine($"Save File:\t{SaveData._SaveFile}");
+			debugTextBuilder.AppendLine($"Day: {SaveData._CurrentData._Day}");
+
+			debugTextBuilder.AppendLine();
+			debugTextBuilder.AppendLine("Ship Part Data:");
+
+			foreach (KeyValuePair<ShipPartType, ShipPartData> kvp in SaveData._CurrentData._ShipPartData)
+			{
+				debugTextBuilder.AppendLine($"- {kvp.Key}, isCollected({kvp.Value._Collected}), isDiscovered({kvp.Value._Discovered})");
+			}
+
+			debugTextBuilder.AppendLine();
+			debugTextBuilder.AppendLine("In Onion Pikmin:");
+
+			foreach (KeyValuePair<PikminColour, PikminTypeStats> kvp in SaveData._CurrentData._InOnionPikmin)
+			{
+				debugTextBuilder.AppendLine(kvp.Value.ToString());
+			}
+
+			debugTextBuilder.AppendLine();
+			debugTextBuilder.AppendLine("Discovered Onions:");
+
+			foreach (KeyValuePair<PikminColour, bool> kvp in SaveData._CurrentData._DiscoveredOnions)
+			{
+				debugTextBuilder.AppendLine($"- Onion Colour: {kvp.Key}, Discovered: {kvp.Value}");
+			}
+
+			GUIContent guiContent = new(debugTextBuilder.ToString());
+
+			GUI.Label(new(position.x, position.y, Screen.width, Screen.height), guiContent, style);
+		}
+#endif
 	}
 }
