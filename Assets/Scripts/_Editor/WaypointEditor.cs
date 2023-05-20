@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Waypoint))]
 [CanEditMultipleObjects]
 public class WaypointEditor : Editor
@@ -36,3 +37,4 @@ public class WaypointEditor : Editor
 		}
 	}
 }
+#endif

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.AssetImporters;
-using UnityEngine;
 
 // SMD file format importer
 // Following specs at https://developer.valvesoftware.com/wiki/Studiomdl_Data
@@ -286,3 +288,4 @@ namespace SilentTools
 		}
 	}
 } // namespace SilentTools
+#endif

@@ -108,6 +108,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 		OnCollisionHandle(collision);
 	}
 
+	#if UNITY_EDITOR
 	public new void OnDrawGizmosSelected()
 	{
 		base.OnDrawGizmosSelected();
@@ -124,6 +125,7 @@ public class FlintBeetle : Entity, IPikminSquish, IInteraction
 			Handles.Label(_Transform.position + Vector3.up * 2.0f, _Flags.ToString());
 		}
 	}
+	#endif
 
 	void ApplyScaling()
 	{

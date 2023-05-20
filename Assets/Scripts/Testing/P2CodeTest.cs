@@ -21,6 +21,7 @@ public class P2CodeTest : Entity
 		LookTowards(Player._Instance.transform.position);
 	}
 
+	#if UNITY_EDITOR
 	public override void OnDrawGizmosSelected()
 	{
 		base.OnDrawGizmosSelected();
@@ -30,6 +31,7 @@ public class P2CodeTest : Entity
 			Handles.Label(_Transform.position + Vector3.up * 5.0f, _FSM.GetCurrentState()._Name);
 		}
 	}
+	#endif
 
 	enum FSMStates
 	{

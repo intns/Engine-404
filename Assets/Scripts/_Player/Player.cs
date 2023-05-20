@@ -121,6 +121,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		_Instance = this;
 	}
 
+	#if UNITY_EDITOR
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere(transform.position + transform.forward, _AttackSphereRadius);
@@ -130,6 +131,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 			$"Attack Damage: {_AttackDamage}"
 		);
 	}
+	#endif
 
 	public void SetModelVisibility(bool isVisible)
 	{
