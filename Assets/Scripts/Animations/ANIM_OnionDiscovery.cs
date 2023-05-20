@@ -87,7 +87,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			_Camera.fieldOfView = Mathf.Lerp(minFov, maxFov, MathUtil.EaseOut4(t / length));
 			_BodyRenderer.material.color = Color.Lerp(fadedColor, Color.white, MathUtil.EaseOut4(t / length));
 			t += Time.deltaTime;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 
 		_Onion.AddSproutsToSpit(1, _Onion.Colour);
@@ -110,7 +110,7 @@ public class ANIM_OnionDiscovery : MonoBehaviour
 			);
 
 			t += Time.deltaTime;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 
 		FadeManager._Instance.FadeInOut(

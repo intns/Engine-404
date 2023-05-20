@@ -290,7 +290,7 @@ public class Entity : MonoBehaviour, IPikminAttack, IHealth
 		_AttachedPikmin.Add(pikmin);
 	}
 
-	public void OnAttackRecieve(float damage, Transform hitPart)
+	public void OnAttackRecieve(float damage, Transform hitCollider)
 	{
 		if (this == null)
 		{

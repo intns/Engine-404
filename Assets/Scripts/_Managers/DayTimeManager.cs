@@ -26,7 +26,6 @@ public class DTM_Audio_Event
 
 /// <summary>
 ///   TODO: This isn't a manager, this is a day-time controller
-///   TODO: Implement days as savedata in the real daytime manager
 /// </summary>
 public class DayTimeManager : MonoBehaviour
 {
@@ -68,6 +67,13 @@ public class DayTimeManager : MonoBehaviour
 
 	void Update()
 	{
+		if (SaveData._CurrentData._Day == 1)
+		{
+			// Trap at mid-day
+			_SunLight.rotation = Quaternion.Slerp(_FromRot, _ToRot, _TotalDayTime / 2 / _TotalDayTime);
+			return;
+		}
+
 		if (_StartEndDay)
 		{
 			return;
@@ -175,7 +181,7 @@ public class DayTimeManager : MonoBehaviour
 			}
 
 			t += Time.deltaTime;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 	}
 }

@@ -10,11 +10,15 @@ using UnityEngine;
  */
 public class GenerationManager : MonoBehaviour
 {
+	public static GenerationManager _Instance;
+
 	[Header("Components")]
 	[SerializeField] Transform _PersistentData;
 
 	void Awake()
 	{
+		_Instance = this;
+
 		foreach (Transform child in transform)
 		{
 			// Ignore persistent data
@@ -52,7 +56,9 @@ public class GenerationManager : MonoBehaviour
 						foreach (Transform otherChild in transform)
 						{
 							if (otherChild == child || otherChild == _PersistentData)
+							{
 								continue;
+							}
 
 							string otherRangeString = otherChild.name;
 							string[] otherSplitStr = otherRangeString.Split(' ');

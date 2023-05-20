@@ -20,16 +20,11 @@ public class WaypointManagerEditor : Editor
 				wp.GenerateID();
 			}
 
-			Array.Sort(wps, (wp1, wp2) => string.Compare(wp1.name, wp2.name, StringComparison.Ordinal));
+			Array.Sort(wps, (wp2, wp1) => string.Compare(wp1.name, wp2.name, StringComparison.Ordinal));
 
 			for (int i = 0; i < wps.Length; i++)
 			{
 				wps[i].transform.SetSiblingIndex(i);
-			}
-
-			foreach (Waypoint wp in wps)
-			{
-				wp.GenerateID();
 			}
 		}
 

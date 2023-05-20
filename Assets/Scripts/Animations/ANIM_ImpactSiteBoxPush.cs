@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 {
-	[SerializeField] CardboardBox _Box;
 	[Header("Components")]
-	Transform _Transform;
+	[SerializeField] CardboardBox _Box;
 
 	void Awake()
 	{
-		_Transform = transform;
 		_Box._OnPush += () => { StartCoroutine(ANIM_Overlook()); };
 	}
 
@@ -40,7 +38,7 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 		float t = 0;
 		float length = 15f;
 
-		float startingOffs = Mathf.Atan2(_Transform.position.z, _Transform.position.x) - Mathf.Atan2(_Box.transform.position.z, _Box.transform.position.x);
+		float startingOffs = Mathf.Atan2(transform.position.z, transform.position.x) - Mathf.Atan2(_Box.transform.position.z, _Box.transform.position.x);
 
 		while (t <= length)
 		{
@@ -82,7 +80,7 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 			}
 
 			t += Time.deltaTime;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 
 		FadeManager._Instance.FadeInOut(

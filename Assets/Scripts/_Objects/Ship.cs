@@ -71,6 +71,11 @@ public class Ship : MonoBehaviour, ICarryObjectAbsorb
 		if (scenePart != null)
 		{
 			scenePart._Data._Collected = true;
+
+			if (SaveData._CurrentData._Day == 1 && scenePart._Data._PartType == ShipPartType.MainEngine)
+			{
+				DayTimeManager._Instance.FinishDay();
+			}
 		}
 		else
 		{
@@ -79,7 +84,7 @@ public class Ship : MonoBehaviour, ICarryObjectAbsorb
 
 		Destroy(obj);
 
-		yield return new WaitForEndOfFrame();
+		yield return null;
 	}
 
 	#endregion

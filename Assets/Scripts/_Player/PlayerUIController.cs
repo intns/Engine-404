@@ -76,28 +76,34 @@ public class PlayerUIController : MonoBehaviour
 		_HealthWheel.color = _ColorGradient.Evaluate(ratio);
 	}
 
-	public void FadeInUI(bool shouldUpdateOnFinish = false)
+	public void FadeInUI(bool shouldUpdateOnFinish = false, float totalTime = 1.0f)
 	{
-		StartCoroutine(FadeInCanvas(shouldUpdateOnFinish));
+		StartCoroutine(FadeInCanvas(shouldUpdateOnFinish, totalTime));
 	}
 
-	public void FadeOutUI()
+	public void FadeOutUI(float totalTime = 1.0f)
 	{
-		StartCoroutine(FadeOutCanvas());
+		if (totalTime == 0.0f)
+		{
+			_CanvasGroup.alpha = 0.0f;
+			_DisplayValues = false;
+			return;
+		}
+
+		StartCoroutine(FadeOutCanvas(totalTime));
 	}
 
 
-	IEnumerator FadeInCanvas(bool shouldUpdateOnFinish)
+	IEnumerator FadeInCanvas(bool shouldUpdateOnFinish, float totalTime = 1.0f)
 	{
 		float t = 0;
-		float time = 1;
 		_DisplayValues = false;
 
-		while (t <= time)
+		while (t <= totalTime)
 		{
 			t += Time.deltaTime;
 
-			_CanvasGroup.alpha = MathUtil.EaseIn4(t / time);
+			_CanvasGroup.alpha = MathUtil.EaseIn4(t / totalTime);
 			yield return null;
 		}
 
@@ -109,16 +115,15 @@ public class PlayerUIController : MonoBehaviour
 		}
 	}
 
-	IEnumerator FadeOutCanvas()
+	IEnumerator FadeOutCanvas(float totalTime)
 	{
 		float t = 0;
-		float time = 1;
 		_DisplayValues = true;
 
-		while (t <= time)
+		while (t <= totalTime)
 		{
 			t += Time.deltaTime;
-			_CanvasGroup.alpha = 1 - MathUtil.EaseIn4(t / time);
+			_CanvasGroup.alpha = 1 - MathUtil.EaseIn4(t / totalTime);
 			yield return null;
 		}
 

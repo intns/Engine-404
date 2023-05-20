@@ -1023,10 +1023,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5257897585866200241}
-  - component: {fileID: 5426693198016655668}
   - component: {fileID: 384720796}
   - component: {fileID: 384720792}
   - component: {fileID: 384720793}
+  - component: {fileID: 5649737102975448323}
   m_Layer: 0
   m_Name: Onion_Script_Trigger
   m_TagString: Untagged
@@ -1051,28 +1051,6 @@ Transform:
   m_Father: {fileID: 8067516413408633971}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &5426693198016655668
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2594405993889969416}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3613567641014311022, guid: 2a4ceeb827f016f4fb01887031bea8c1, type: 3}
 --- !u!114 &384720796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1156,6 +1134,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2594405993889969416}
   m_Mesh: {fileID: 3613567641014311022, guid: 2a4ceeb827f016f4fb01887031bea8c1, type: 3}
+--- !u!135 &5649737102975448323
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2594405993889969416}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.7
+  m_Center: {x: -0.0000000036124028, y: -1, z: 0.060605623}
 --- !u!1 &2710146886505654655
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,6 +2154,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2536,6 +2536,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1850546758
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -559,7 +559,7 @@ public class BaldyLongLegs : MonoBehaviour, IPikminAttack
 */
 	}
 
-	public void OnAttackRecieve(float damage, Transform hitPart = default)
+	public void OnAttackRecieve(float damage, Transform hitCollider = default)
 	{
 /*		if (this == null || _DamageScript == null)
 		{

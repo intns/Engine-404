@@ -97,7 +97,6 @@ public class Waypoint : MonoBehaviour
 		}
 
 		string typeName = _Type.ToString();
-		string index = transform.GetSiblingIndex().ToString();
-		name = $"{prefix}_{typeName}_{index}";
+		name = $"{prefix}_{typeName}";
 	}
 }

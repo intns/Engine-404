@@ -116,6 +116,12 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 		MoveTowards(_TargetPosition);
 
+		if (_JourneyWaypoints.Count == 0)
+		{
+			Debug.LogError("No pathfinding journey found!");
+			return;
+		}
+
 		Waypoint waypoint = _JourneyWaypoints.Peek();
 
 		if (waypoint._Next == null)

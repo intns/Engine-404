@@ -17,12 +17,10 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	public PlayerPikminController _PikminController;
 	public PlayerUIController _UIController;
 	public WhistleController _WhistleController;
-	public PlayerInput _InputController;
-
-	public GameObject _ModelObject;
 
 	[Header("Components")]
 	[SerializeField] LineRenderer _WhistleLine;
+	[SerializeField] GameObject _ModelObject;
 
 	[Header("Settings")]
 	[SerializeField] float _MaxHealth = 100;
@@ -57,7 +55,6 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		Assert.IsNotNull(_PikminController);
 		Assert.IsNotNull(_UIController);
 		Assert.IsNotNull(_WhistleController);
-		Assert.IsNull(_InputController);
 
 		Debug.Assert(PlayerAnimation.Walk == _AnimController.AddState(_WalkAnimation));
 		Debug.Assert(PlayerAnimation.Die == _AnimController.AddState(_DieAnimation));
@@ -134,6 +131,11 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		);
 	}
 
+	public void SetModelVisibility(bool isVisible)
+	{
+		_ModelObject.SetActive(isVisible);
+	}
+
 	public void Die()
 	{
 		DayTimeManager._Instance.FinishDay();
@@ -184,18 +186,26 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		Die();
 	}
 
-	public void Pause(PauseType type)
+	public void Pause(PauseType type, bool fadeUI = true)
 	{
 		_AnimController.ChangeState(PlayerAnimation.Idle);
 
 		if (type == PauseType.Unpaused)
 		{
-			_UIController.FadeInUI(true);
+			if (fadeUI)
+			{
+				_UIController.FadeInUI(true);
+			}
+
 			_WhistleLine.enabled = true;
 		}
 		else
 		{
-			_UIController.FadeOutUI();
+			if (fadeUI)
+			{
+				_UIController.FadeInUI();
+			}
+
 			_WhistleLine.enabled = false;
 		}
 

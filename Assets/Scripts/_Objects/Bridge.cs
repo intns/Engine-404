@@ -77,7 +77,7 @@ public class Bridge : MonoBehaviour, IPikminAttack, IHealth
 
 	#region Pikmin Attacking Implementation
 
-	public void OnAttackRecieve(float damage, Transform hitPart = default)
+	public void OnAttackRecieve(float damage, Transform hitCollider = default)
 	{
 		SubtractHealth(damage);
 

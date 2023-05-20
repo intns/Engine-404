@@ -26,6 +26,8 @@ namespace Demo
 		[SerializeField] bool _DoSequence;
 		[SerializeField] Animator _CeresAnimator;
 
+		bool _IsTutorialDay;
+
 		void Awake()
 		{
 			SaveData.LoadData();
@@ -49,8 +51,11 @@ namespace Demo
 				}
 			}
 
-			// FIRST DAY, LOAD DEMO!
 			if (SaveData._CurrentData._Day == 1)
+			{
+				_IsTutorialDay = true;
+			}
+			else
 			{
 				_DoSequence = true;
 			}
@@ -60,11 +65,29 @@ namespace Demo
 		{
 			if (_DoSequence)
 			{
-				Player._Instance.Pause(PauseType.Paused);
-				Player._Instance._UIController.FadeOutUI();
-				Player._Instance._ModelObject.SetActive(false);
+				Player._Instance.Pause(PauseType.Paused, false);
+				Player._Instance._UIController.FadeOutUI(0.0f);
+				Player._Instance.SetModelVisibility(false);
 
 				StartCoroutine(IE_StartScene());
+			}
+			else if (_IsTutorialDay)
+			{
+				Player._Instance.Pause(PauseType.Paused, false);
+				Player._Instance._UIController.FadeOutUI(0.0f);
+
+				foreach (Transform t in GenerationManager._Instance.transform)
+				{
+					ANIM_ImpactSiteOlimarDazed a = t.GetComponentInChildren<ANIM_ImpactSiteOlimarDazed>();
+
+					if (a == null)
+					{
+						continue;
+					}
+
+					a.StartAnimation();
+					break;
+				}
 			}
 			else
 			{
@@ -79,6 +102,55 @@ namespace Demo
 				SaveData.ResetData();
 				_ClearSave = false;
 			}
+		}
+
+		void OnGUI()
+		{
+			if (!SaveData._CurrentData._IsDebug)
+			{
+				return;
+			}
+
+			GUIStyle style = new(GUI.skin.label);
+			style.normal.textColor = Color.white;
+			style.fontSize = 20;
+			style.border = new(2, 2, 2, 2);
+			style.padding = new(5, 5, 5, 5);
+
+			Vector2 position = new(25, 25);
+
+			StringBuilder debugTextBuilder = new();
+
+			debugTextBuilder.AppendLine($"Save File:\t{SaveData._SaveFile}");
+			debugTextBuilder.AppendLine($"Day: {SaveData._CurrentData._Day}");
+
+			debugTextBuilder.AppendLine();
+			debugTextBuilder.AppendLine("Ship Part Data:");
+
+			foreach (KeyValuePair<ShipPartType, ShipPartData> kvp in SaveData._CurrentData._ShipPartData)
+			{
+				debugTextBuilder.AppendLine($"- {kvp.Key}, isCollected({kvp.Value._Collected}), isDiscovered({kvp.Value._Discovered})");
+			}
+
+			debugTextBuilder.AppendLine();
+			debugTextBuilder.AppendLine("In Onion Pikmin:");
+
+			foreach (KeyValuePair<PikminColour, PikminTypeStats> kvp in SaveData._CurrentData._InOnionPikmin)
+			{
+				debugTextBuilder.AppendLine(kvp.Value.ToString());
+			}
+
+			debugTextBuilder.AppendLine();
+			debugTextBuilder.AppendLine("Discovered Onions:");
+
+			foreach (KeyValuePair<PikminColour, bool> kvp in SaveData._CurrentData._DiscoveredOnions)
+			{
+				debugTextBuilder.AppendLine($"- Onion Colour: {kvp.Key}, Discovered: {kvp.Value}");
+			}
+
+			GUIContent guiContent = new(debugTextBuilder.ToString());
+
+			GUI.Label(new(position.x, position.y, Screen.width, Screen.height), guiContent, style);
 		}
 
 		void OnDrawGizmos()
@@ -151,7 +223,7 @@ namespace Demo
 			{
 				t += Time.deltaTime;
 				_Text.color = Color.Lerp(Color.clear, Color.white, MathUtil.EaseIn3(t / 2.0f));
-				yield return new WaitForEndOfFrame();
+				yield return null;
 			}
 
 			yield return new WaitForSeconds(1.25f);
@@ -164,7 +236,7 @@ namespace Demo
 			{
 				t += Time.deltaTime;
 				_Text.color = Color.Lerp(Color.white, Color.clear, MathUtil.EaseIn2(t / 2.0f));
-				yield return new WaitForEndOfFrame();
+				yield return null;
 			}
 
 			t = 0;
@@ -173,7 +245,7 @@ namespace Demo
 			{
 				t += Time.deltaTime;
 				_CanvasGroup.alpha = 1 - MathUtil.EaseIn3(t / 1.25f);
-				yield return new WaitForEndOfFrame();
+				yield return null;
 			}
 
 			_Text.enabled = false;
@@ -190,73 +262,11 @@ namespace Demo
 				2.0f,
 				() =>
 				{
-					Player._Instance._ModelObject.SetActive(true);
+					Player._Instance.SetModelVisibility(true);
 					Player._Instance.Pause(PauseType.Unpaused);
 					_DayTimeManager.enabled = true;
 				}
 			);
 		}
-
-#if DEBUG
-		static Texture2D CreateTexture(int width, int height, Color color)
-		{
-			Texture2D texture = new(width, height);
-			var pixels = new Color[width * height];
-
-			for (int i = 0; i < pixels.Length; i++)
-			{
-				pixels[i] = color;
-			}
-
-			texture?.SetPixels(pixels);
-			texture.Apply();
-
-			return texture;
-		}
-
-		void OnGUI()
-		{
-			GUIStyle style = new(GUI.skin.label);
-			style.normal.textColor = Color.white;
-			style.fontSize = 20;
-			style.border = new(2, 2, 2, 2);
-			style.padding = new(5, 5, 5, 5);
-
-			Vector2 position = new(25, 25);
-
-			StringBuilder debugTextBuilder = new();
-
-			debugTextBuilder.AppendLine($"Save File:\t{SaveData._SaveFile}");
-			debugTextBuilder.AppendLine($"Day: {SaveData._CurrentData._Day}");
-
-			debugTextBuilder.AppendLine();
-			debugTextBuilder.AppendLine("Ship Part Data:");
-
-			foreach (KeyValuePair<ShipPartType, ShipPartData> kvp in SaveData._CurrentData._ShipPartData)
-			{
-				debugTextBuilder.AppendLine($"- {kvp.Key}, isCollected({kvp.Value._Collected}), isDiscovered({kvp.Value._Discovered})");
-			}
-
-			debugTextBuilder.AppendLine();
-			debugTextBuilder.AppendLine("In Onion Pikmin:");
-
-			foreach (KeyValuePair<PikminColour, PikminTypeStats> kvp in SaveData._CurrentData._InOnionPikmin)
-			{
-				debugTextBuilder.AppendLine(kvp.Value.ToString());
-			}
-
-			debugTextBuilder.AppendLine();
-			debugTextBuilder.AppendLine("Discovered Onions:");
-
-			foreach (KeyValuePair<PikminColour, bool> kvp in SaveData._CurrentData._DiscoveredOnions)
-			{
-				debugTextBuilder.AppendLine($"- Onion Colour: {kvp.Key}, Discovered: {kvp.Value}");
-			}
-
-			GUIContent guiContent = new(debugTextBuilder.ToString());
-
-			GUI.Label(new(position.x, position.y, Screen.width, Screen.height), guiContent, style);
-		}
-#endif
 	}
 }

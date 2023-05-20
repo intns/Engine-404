@@ -485,7 +485,7 @@ public class Onion : MonoBehaviour, ICarryObjectAbsorb
 
 		AddSproutsToSpit(toProduce, _Colour);
 
-		yield return new WaitForEndOfFrame();
+		yield return null;
 		_Animator.SetBool("SuctionHit", false);
 	}
 

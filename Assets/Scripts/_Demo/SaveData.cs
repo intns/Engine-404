@@ -19,6 +19,9 @@ namespace Demo
 
 		static SaveData _currentData;
 
+		// Debug Settings
+		public bool _IsDebug;
+
 		// Day Settings
 		public int _Day = 1;
 

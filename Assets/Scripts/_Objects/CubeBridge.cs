@@ -202,7 +202,7 @@ public class CubeBridge : MonoBehaviour, IPikminAttack, IHealth
 		return true;
 	}
 
-	public void OnAttackRecieve(float damage, Transform hitPart = default)
+	public void OnAttackRecieve(float damage, Transform hitCollider = default)
 	{
 		SubtractHealth(damage);
 	}

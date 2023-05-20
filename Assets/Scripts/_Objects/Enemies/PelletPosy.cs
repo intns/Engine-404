@@ -1,29 +1,15 @@
 using UnityEngine;
 
-public class PelletPosy : Entity
+public class PelletPosy : Entity, IPikminAttack
 {
-	[Header("Settings")]
-	public float _TimeToSprout = 2.5f;
-
-	public new void Awake()
+	public new void OnAttackRecieve(float damage, Transform hitCollider)
 	{
-		base.Awake();
-	}
-
-	#region Pikmin Attacking
-
-	public new void OnAttackRecieve(float damage, Transform hitPart)
-	{
-		Debug.Log(hitPart.name);
-
-		if (hitPart.name == "pellet_base_collider")
+		if (hitCollider.name == "pellet_base_collider")
 		{
-			base.OnAttackRecieve(_CurrentHealth, hitPart);
+			base.OnAttackRecieve(_CurrentHealth, hitCollider);
 			return;
 		}
 
-		base.OnAttackRecieve(damage, hitPart);
+		base.OnAttackRecieve(damage, hitCollider);
 	}
-
-	#endregion
 }

@@ -102,7 +102,7 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 			{
 				_Transform.position = Vector3.Lerp(originPosition, target, _PushMoveCurve.Evaluate(t / _TimePerPush));
 				t += Time.deltaTime;
-				yield return new WaitForEndOfFrame();
+				yield return null;
 			}
 
 			t = 0;
@@ -115,7 +115,7 @@ public class CardboardBox : MonoBehaviour, IPikminPush
 		{
 			_Transform.position = Vector3.Lerp(firstOrigin, endPosition, _PushMoveCurve.Evaluate(t / _TimePerPush));
 			t += Time.deltaTime;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 		}
 
 		while (_AttachedPiki.Count != 0)

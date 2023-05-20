@@ -580,7 +580,7 @@ public class PuffStool : MonoBehaviour, IPikminAttack, IHealth
 		_AttachedPikmin.Add(pikmin);
 	}
 
-	public void OnAttackRecieve(float damage, Transform hitPart = default)
+	public void OnAttackRecieve(float damage, Transform hitCollider = default)
 	{
 		if (this == null || _Animator == null)
 		{

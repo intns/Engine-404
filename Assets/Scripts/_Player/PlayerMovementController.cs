@@ -11,28 +11,36 @@ public class PlayerMovementController : MonoBehaviour
 	[SerializeField] float _RotationSpeed = 3;
 	[SerializeField] float _MovementDeadzone = 0.1f;
 
-	[SerializeField] [Tooltip("The time the player has to be idle before looking at the whistle.")]
+	[SerializeField]
+	[Tooltip("The time the player has to be idle before looking at the whistle.")]
 	float _LookAtWhistleTime = 2.5f;
 
 	[SerializeField] float _Weight = 0.01f;
-	[SerializeField] LayerMask _MapMask;
 
 	[Header("Sliding Settings")]
-	[SerializeField] [Tooltip("The speed at which the player slides.")]
+	[SerializeField]
+	[Tooltip("The speed at which the player slides.")]
 	float _SlideSpeed = 2;
 
-	[SerializeField] [Tooltip("The maximum speed at which the player can slide.")]
+	[SerializeField]
+	[Tooltip("The maximum speed at which the player can slide.")]
 	float _MaxSlideSpeed = 10;
 
-	[SerializeField] [Range(1.0f, 180.0f)] [Tooltip("The minimum slope angle at which the player can slide.")]
+	[SerializeField]
+	[Range(1.0f, 180.0f)]
+	[Tooltip("The minimum slope angle at which the player can slide.")]
 	float _MinSlopeAngle = 25;
 
-	[SerializeField] [Range(0.01f, 1.0f)] [Tooltip("The friction applied to the player when sliding.")]
+	[SerializeField]
+	[Range(0.01f, 1.0f)]
+	[Tooltip("The friction applied to the player when sliding.")]
 	float _SlideFriction = 0.15f;
 
 	[HideInInspector] public Quaternion _RotationBeforeIdle = Quaternion.identity;
 	[HideInInspector] public bool _Paralysed;
 	CharacterController _Controller;
+
+	Vector3 _FinalMovement = Vector3.zero;
 	Vector3 _HitNormal;
 
 	float _IdleTimer;
@@ -59,11 +67,31 @@ public class PlayerMovementController : MonoBehaviour
 		ApplyGravity();
 		ApplySlide();
 		UpdateMovement();
+
+		if (_FinalMovement != Vector3.zero)
+		{
+			_Controller.Move(_FinalMovement);
+		}
 	}
 
 	void OnControllerColliderHit(ControllerColliderHit hit)
 	{
 		_HitNormal = hit.normal;
+
+		Rigidbody otherRigidbody = hit.collider.attachedRigidbody;
+
+		if (otherRigidbody != null)
+		{
+			// Check if the collided object should be ignored based on its tag
+			if (hit.collider.CompareTag("PikminInteract"))
+			{
+				// Apply an opposite force to cancel the pushing effect
+				Vector3 pushDirection = -hit.moveDirection;
+				otherRigidbody.AddForce(pushDirection * hit.moveLength, ForceMode.Impulse);
+
+				_Controller.Move(MathUtil.DirectionFromTo(hit.collider.ClosestPoint(transform.position), transform.position) / 2.0f);
+			}
+		}
 	}
 
 	// Happens whenever the movement joystick/buttons change values

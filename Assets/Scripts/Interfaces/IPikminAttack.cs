@@ -15,7 +15,7 @@ public interface IPikminAttack : IPikminInteractable
 	void OnAttackEnd(PikminAI pikmin);
 
 	// Called when the Pikmin hits the object
-	void OnAttackRecieve(float damage, Transform hitPart);
+	void OnAttackRecieve(float damage, Transform hitCollider);
 
 	// Called when the Pikmin starts attacking the object, like when latched
 	void OnAttackStart(PikminAI pikmin);

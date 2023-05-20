@@ -1210,6 +1210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2381724785643727145}
+  - component: {fileID: 7683341600101251416}
   - component: {fileID: 2972575735973305767}
   - component: {fileID: 2776239851525362335}
   - component: {fileID: 2776239851525362334}
@@ -1231,13 +1232,33 @@ Transform:
   m_GameObject: {fileID: 3046199980956709779}
   m_LocalRotation: {x: 0, y: -0.9997015, z: 0, w: 0.024432283}
   m_LocalPosition: {x: -83.67882, y: 4.29, z: 64.915184}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.78787, y: 0.78787, z: 0.78787}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4542203570047516327}
+  - {fileID: 2302009304564585755}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -177.2, z: 0}
+--- !u!114 &7683341600101251416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3046199980956709779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ccf9bee334f914595927ab4dd00d27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _SceneParts:
+  - _Data:
+      _PartType: 1
+      _Location: {x: 0, y: 0, z: 0}
+      _Collected: 0
+      _Discovered: 0
+    _Object: {fileID: 0}
 --- !u!114 &2972575735973305767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,6 +1272,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _FireVFX: {fileID: 2776239852797905287}
+  _SuctionEndPosition: {fileID: 2302009304564585755}
+  _SuctionDuration: 1.5
   _Transform: {fileID: 0}
 --- !u!136 &2776239851525362335
 CapsuleCollider:
@@ -1318,6 +1341,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &2776239851525362332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1655,6 +1679,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4198799114698590172, guid: fddaf117e8d6937479972b5596242d36, type: 3}
+--- !u!1 &3472785028424800841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2302009304564585755}
+  m_Layer: 0
+  m_Name: Suction Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2302009304564585755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3472785028424800841}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.5, y: 8.5, z: -1.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2381724785643727145}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3659261291225012785
 GameObject:
   m_ObjectHideFlags: 0
