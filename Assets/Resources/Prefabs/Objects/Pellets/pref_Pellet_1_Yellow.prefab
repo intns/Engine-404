@@ -60,13 +60,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
+      propertyPath: _MaxSpeed
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
+        type: 3}
+      propertyPath: _BaseSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
+        type: 3}
       propertyPath: _CarryNoiseClip
       value: 
       objectReference: {fileID: 8300000, guid: 82f0bada0276e0845b8d9ef9b6cb33d5, type: 3}
     - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
+      propertyPath: _AccelerationSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
+        type: 3}
       propertyPath: _CarryCircleRadius
-      value: 0.82
+      value: 0.79
       objectReference: {fileID: 0}
     - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}

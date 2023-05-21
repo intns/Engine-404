@@ -38,6 +38,7 @@ public class PlayerMovementController : MonoBehaviour
 
 	[HideInInspector] public Quaternion _RotationBeforeIdle = Quaternion.identity;
 	[HideInInspector] public bool _Paralysed;
+	[HideInInspector] public Vector3 _ImpulseVelocity;
 	CharacterController _Controller;
 
 	Vector3 _FinalMovement = Vector3.zero;
@@ -72,24 +73,17 @@ public class PlayerMovementController : MonoBehaviour
 		{
 			_Controller.Move(_FinalMovement);
 		}
+
+		if (_ImpulseVelocity != Vector3.zero)
+		{
+			_ImpulseVelocity = Vector3.Lerp(_ImpulseVelocity, Vector3.zero, 10.0f * Time.deltaTime);
+			_Controller.Move(_ImpulseVelocity);
+		}
 	}
 
 	void OnControllerColliderHit(ControllerColliderHit hit)
 	{
 		_HitNormal = hit.normal;
-
-		Rigidbody otherRigidbody = hit.collider.attachedRigidbody;
-
-		if (otherRigidbody != null)
-		{
-			// Check if the collided object should be ignored based on its tag
-			if (hit.collider.CompareTag("PikminInteract"))
-			{
-				// Apply an opposite force to cancel the pushing effect
-				Vector3 pushDirection = -hit.moveDirection;
-				otherRigidbody.AddForce(pushDirection * hit.moveLength, ForceMode.Impulse);
-			}
-		}
 	}
 
 	// Happens whenever the movement joystick/buttons change values

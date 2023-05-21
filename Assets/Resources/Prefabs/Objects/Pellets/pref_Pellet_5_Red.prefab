@@ -140,10 +140,9 @@ MonoBehaviour:
   _ObjectType: 0
   _CarryCircleRadius: 1.18
   _CarryCircleOffset: {x: 0, y: -0.25, z: 0}
-  _AccelerationSpeed: 8
-  _BaseSpeed: 4
-  _SpeedAddedPerPikmin: 0.5
-  _MaxSpeed: 8
+  _AccelerationSpeed: 5
+  _BaseSpeed: 1.5
+  _MaxSpeed: 3.5
   _ColourToGenerateFor: 0
   _PikminToProduceMatchColour: 5
   _PikminToProduceNonMatchColour: 3
@@ -173,7 +172,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0

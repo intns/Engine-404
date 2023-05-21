@@ -37,7 +37,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	[Space]
 	[SerializeField] float _AccelerationSpeed = 2;
 	[SerializeField] float _BaseSpeed = 2;
-	[SerializeField] float _SpeedAddedPerPikmin = 0.5f;
 	[SerializeField] float _MaxSpeed = 3;
 
 	[Space]
@@ -66,6 +65,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 	AudioSource _Source;
 
 	float _SpawnInvulnTimer;
+	float _SpeedAddedPerPikmin;
 
 	void Awake()
 	{
@@ -78,6 +78,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		GameObject carryText = Instantiate(_CarryTextPrefab, transform.position, Quaternion.identity);
 		_CarryText = carryText.GetComponent<CarryText>();
 		_CarryText._FollowTarget = transform;
+
+		_SpeedAddedPerPikmin = (_MaxSpeed - _BaseSpeed) / (_CarryMinMax.y - _CarryMinMax.x);
 	}
 
 	void Update()
@@ -99,6 +101,11 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
+		for (int i = 0; i < _CarryingPikmin.Count; i++)
+		{
+			_CarryingPikmin[i].Latch_SetOffset(GetPikminPosition(_CarryMinMax.y, i));
+		}
+
 		if (!_IsBeingCarried)
 		{
 			if (_Source.isPlaying)
@@ -115,6 +122,12 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		}
 
 		MoveTowards(_TargetPosition);
+
+		if (_MoveVector != Vector3.zero)
+		{
+			Quaternion targetRotation = Quaternion.LookRotation(_MoveVector.normalized, Vector3.up);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.5f * Time.deltaTime);
+		}
 
 		if (_JourneyWaypoints.Count == 0)
 		{
@@ -162,20 +175,31 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		_MoveVector = new(0, storedY, 0);
 	}
 
+	void OnCollisionStay(Collision other)
+	{
+		if (other.transform.CompareTag("Player"))
+		{
+			Vector3 toOther = other.transform.position - transform.position;
+			Vector3 perpendicularOffset = new(-toOther.z, 0f, toOther.x);
+
+			Player._Instance._MovementController._ImpulseVelocity = (toOther + perpendicularOffset).normalized * 0.1f;
+		}
+	}
+
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
 
 		for (int i = 0; i < _CarryMinMax.x; i++)
 		{
-			Gizmos.DrawWireSphere(GetPikminPosition(_CarryMinMax.x, i), 0.1f);
+			Gizmos.DrawWireSphere(transform.position + GetPikminPosition(_CarryMinMax.x, i), 0.1f);
 		}
 
 		Gizmos.color = Color.blue;
 
 		for (int i = 0; i < _CarryMinMax.y; i++)
 		{
-			Gizmos.DrawWireSphere(GetPikminPosition(_CarryMinMax.y, i), 0.15f);
+			Gizmos.DrawWireSphere(transform.position + GetPikminPosition(_CarryMinMax.y, i), 0.15f);
 		}
 	}
 
@@ -233,8 +257,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)
 	{
-		return transform.position + _CarryCircleOffset
-		                          + MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx)) * _CarryCircleRadius;
+		return _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx, -transform.eulerAngles.y * Mathf.Deg2Rad)) * _CarryCircleRadius;
 	}
 
 	void MoveTowards(Vector3 position)
@@ -260,10 +283,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 			return;
 		}
 
-		// Determine the desired up direction based on the surface normal.
 		Vector3 desiredUpDirection = hit.normal;
-
-		// Calculate the dot product of the current up direction and the desired up direction.
 		float dotProduct = Vector3.Dot(transform.up, desiredUpDirection);
 
 		switch (dotProduct)
@@ -323,14 +343,6 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		p.ChangeState(PikminStates.Carry);
 		_CarryingPikmin.Add(p);
 
-		for (int i = 0; i < _CarryingPikmin.Count; i++)
-		{
-			// Calculate the offset for the Pikmin based on its position in the carrying circle.
-			Vector3 offset = _CarryCircleOffset
-			                 + MathUtil.XZToXYZ(MathUtil.PositionInUnit(_CarryingPikmin.Count, i)) * _CarryCircleRadius;
-			_CarryingPikmin[i].Latch_SetOffset(offset);
-		}
-
 		if (_CarryingPikmin.Count >= _CarryMinMax.x && !_IsBeingCarried)
 		{
 			CarryObjectType carryObjectType = _ObjectType;
@@ -357,6 +369,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 					break;
 
 				case CarryObjectType.Normal:
+					Debug.LogError("No Onion is active in scene!");
+					return;
 				default:
 					Debug.LogError("No destination found!");
 					return;

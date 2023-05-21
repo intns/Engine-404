@@ -26,6 +26,7 @@ public class ANIM_ImpactSiteOlimarDazed : MonoBehaviour
 		cameraFollow.enabled = false;
 
 		Player _Player = Player._Instance;
+		_Player.transform.rotation = Quaternion.Euler(0.0f, _Player.transform.eulerAngles.y, 0.0f);
 
 		_Camera.transform.position = _Player.transform.right * 5.0f + Vector3.up * 10.0f;
 		_Camera.transform.LookAt(_Player.transform.position);
@@ -54,7 +55,7 @@ public class ANIM_ImpactSiteOlimarDazed : MonoBehaviour
 			{
 				float amount = Mathf.Lerp(0.0f, 2.0f, _LookupCurve.Evaluate((tPercentage - 0.7f) / 0.18f));
 
-				Vector3 dest = _Player.transform.position + _Player.transform.forward * 8.5f;
+				Vector3 dest = _Player.transform.position + _Player.transform.forward * 10.0f;
 
 				if (Physics.Raycast(dest + Vector3.up * 5.0f, Vector3.down, out RaycastHit hit))
 				{

@@ -50,6 +50,7 @@ public class CameraFollow : MonoBehaviour
 	[SerializeField] [Tooltip("How long it takes for the reset sequence to complete")]
 	float _ResetLength = 1;
 	AudioSource _AudioSource;
+	Camera _Camera;
 	/*[SerializeField] */
 	float _ControllerTriggerState; // State of controller triggers for reset
 
@@ -67,7 +68,6 @@ public class CameraFollow : MonoBehaviour
 	bool _IsTopView; // Is top view or not
 	/*[SerializeField] */
 	Vector3 _LookatPosition; // The position we're looking at
-	Camera _Camera;
 
 	//[Header("Debugging")]
 	/*[SerializeField] */

@@ -188,7 +188,7 @@ Transform:
   - {fileID: 6208068524847770851}
   - {fileID: 3604087723300391386}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6700862876713022893
 MonoBehaviour:
@@ -436,9 +436,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TextBoxArea, Assembly-CSharp
-        m_MethodName: AButton
-        m_Mode: 1
+        m_TargetAssemblyTypeName: Onion, Assembly-CSharp
+        m_MethodName: OnPrimaryAction
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -448,9 +448,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Onion, Assembly-CSharp
-        m_MethodName: OnPrimaryAction
-        m_Mode: 0
+        m_TargetAssemblyTypeName: TextBoxArea, Assembly-CSharp
+        m_MethodName: AButton
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -511,6 +511,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Onion, Assembly-CSharp
         m_MethodName: OnWhistle
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TextBoxArea, Assembly-CSharp
+        m_MethodName: BButton
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2201,8 +2213,8 @@ MonoBehaviour:
   _PikminController: {fileID: 4246387085006627566}
   _UIController: {fileID: 4380049253293421809}
   _WhistleController: {fileID: 4246387085443966846}
-  _ModelObject: {fileID: 6700862877741665655}
   _WhistleLine: {fileID: 7035921970023993910}
+  _ModelObject: {fileID: 6700862877741665655}
   _MaxHealth: 100
   _CurrentHealth: 100
   _AttackSphereRadius: 0.5
@@ -2238,12 +2250,9 @@ MonoBehaviour:
   _MovementDeadzone: 0.1
   _LookAtWhistleTime: 2.5
   _Weight: 0.01
-  _MapMask:
-    serializedVersion: 2
-    m_Bits: 512
   _SlideSpeed: 3
   _MaxSlideSpeed: 10
-  _MinSlopeAngle: 32.5
+  _MinSlopeAngle: 37.9
   _SlideFriction: 0.1
   _RotationBeforeIdle: {x: 0, y: 0, z: 0, w: 0}
   _Paralysed: 0
@@ -2566,7 +2575,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4246387086140531182}
   m_LocalRotation: {x: -0.35179964, y: 0.06159483, z: -0.023204742, w: -0.9337583}
-  m_LocalPosition: {x: 1.6278875, y: 13.21534, z: -8.448052}
+  m_LocalPosition: {x: 1.6278875, y: 6, z: -8.448052}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2774,13 +2783,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _DefaultData:
-  - _FOV: 18
+  - _FOV: 17.5
     _Offset: {x: 36, y: 14}
-  - _FOV: 20
+  - _FOV: 22
     _Offset: {x: 40, y: 16}
   - _FOV: 26
     _Offset: {x: 42.5, y: 18}
-  - _FOV: 28
+  - _FOV: 32
     _Offset: {x: 45, y: 20}
   _UseTopView: 0
   _TopViewData:
@@ -3369,18 +3378,18 @@ RectTransform:
   m_GameObject: {fileID: 5640731296837083680}
   m_LocalRotation: {x: 9.3132235e-10, y: -0.00000005960463, z: -0.000000005587934,
     w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00018423193}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5916089572499888468}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 53.49951, y: -434.9658}
-  m_SizeDelta: {x: 100, y: 80.4592}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -790, y: 25}
+  m_SizeDelta: {x: 100, y: 80.45923}
+  m_Pivot: {x: 1, y: 0}
 --- !u!222 &3896941550749279601
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3921,7 +3930,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30.000183, y: 0}
+  m_AnchoredPosition: {x: 30.000244, y: 0}
   m_SizeDelta: {x: 135, y: 125}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &6700862877291943408
@@ -4485,7 +4494,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.00012207031, y: 33.792908}
+  m_AnchoredPosition: {x: 0.00024414062, y: 33.79297}
   m_SizeDelta: {x: 275, y: 67.0975}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &9084424526911506667

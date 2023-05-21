@@ -149,14 +149,14 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 	{
 		// If NOT paralyzed AND NOT paused AND IS moving any direction
 		_Walking = !_MovementController._Paralysed && !GameManager.IsPaused
-																							 && (context.ReadValue<Vector2>().x != 0
-																									 || context.ReadValue<Vector2>().y != 0);
+		                                           && (context.ReadValue<Vector2>().x != 0
+		                                               || context.ReadValue<Vector2>().y != 0);
 	}
 
 	public void OnPrimaryAction(InputAction.CallbackContext context)
 	{
 		if (!context.started || GameManager.IsPaused || _CurrentHealth <= 0 || _MovementController._Paralysed
-				|| !_PikminController._CanPlayerAttack || _AttackTimer > 0)
+		    || !_PikminController._CanPlayerAttack || _AttackTimer > 0)
 		{
 			return;
 		}
@@ -166,7 +166,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 
 		// Attack!
 		if (!Physics.SphereCast(transform.position, _AttackSphereRadius, transform.forward, out RaycastHit info)
-				|| info.transform.CompareTag("Player") || info.transform.CompareTag("Pikmin"))
+		    || info.transform.CompareTag("Player") || info.transform.CompareTag("Pikmin"))
 		{
 			return;
 		}

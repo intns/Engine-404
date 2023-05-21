@@ -39,7 +39,7 @@ public class FireGeyser : Entity
 		_FSM.ExecuteState(this);
 	}
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 	public override void OnDrawGizmosSelected()
 	{
 		base.OnDrawGizmosSelected();
@@ -54,7 +54,7 @@ public class FireGeyser : Entity
 			Handles.Label(_Transform.position + Vector3.up * 4.0f, _Flags.ToString());
 		}
 	}
-	#endif
+#endif
 
 	public class AttackState : BasicFSMState<Entity>
 	{

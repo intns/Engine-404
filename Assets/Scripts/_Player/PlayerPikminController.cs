@@ -556,28 +556,21 @@ public class PlayerPikminController : MonoBehaviour
 
 		Vector3 whistleTransform = _WhistleTransform.position;
 
-		if (whistleTransform.y > _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight)
-		{
-			whistleTransform.y = _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight;
-		}
+		float maxWhistleHeight = _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight;
+		float clampedWhistleY = Mathf.Clamp(whistleTransform.y, _PikminInHand.transform.position.y, maxWhistleHeight);
 
-		Vector3 offs = whistleTransform - transform.position;
+		Vector3 offs = new(whistleTransform.x - transform.position.x, clampedWhistleY - transform.position.y, whistleTransform.z - transform.position.z);
 		Vector2 clamped = Vector2.ClampMagnitude(new(offs.x, offs.z), _PikminThrowRadius);
 		Vector3 destination = transform.position + MathUtil.XZToXYZ(clamped);
 
-		destination.y = Mathf.Clamp(
-			whistleTransform.y,
-			transform.position.y,
-			_PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight
-		);
+		destination.y = clampedWhistleY;
 		float vd = destination.y - transform.position.y;
 
-		_ThrownVelocity = CalculateVelocity(destination, vd);
+		Vector3 newVel = CalculateVelocity(destination, vd);
 
-		if (float.IsNaN(_ThrownVelocity.x))
+		if (!float.IsNaN(newVel.y))
 		{
-			_ThrownVelocity = Vector3.forward * 10 + Vector3.up * 10;
-			return;
+			_ThrownVelocity = newVel;
 		}
 
 		Vector3 velocity = _ThrownVelocity;

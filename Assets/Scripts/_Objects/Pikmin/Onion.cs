@@ -63,11 +63,7 @@ public class Onion : MonoBehaviour, ICarryObjectAbsorb
 	Dictionary<int, GameObject> _SpawnedSprouts = new();
 	float _UpDownAxis;
 
-	public PikminColour Colour
-	{
-		get => _Colour;
-		private set { }
-	}
+	public PikminColour Colour => _Colour;
 
 	public bool OnionActive { get; set; }
 

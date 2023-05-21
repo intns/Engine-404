@@ -23,7 +23,7 @@ public class Waypoint : MonoBehaviour
 	public List<Waypoint> _Connections;
 	public Waypoint _Next;
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
 		Vector3 position = transform.position;
@@ -70,7 +70,7 @@ public class Waypoint : MonoBehaviour
 			}
 		}
 	}
-	#endif
+#endif
 
 	public void CalculateClosest()
 	{
@@ -82,9 +82,9 @@ public class Waypoint : MonoBehaviour
 		_Connections = new(1) { closestWP };
 		_Next = closestWP;
 
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 		EditorUtility.SetDirty(this);
-		#endif
+#endif
 	}
 
 	public void GenerateID()
