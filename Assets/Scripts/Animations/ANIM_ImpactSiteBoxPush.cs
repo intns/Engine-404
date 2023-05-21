@@ -17,69 +17,59 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 	{
 		yield return null;
 
-		Camera _Camera = Camera.main;
-		Player _Player = Player._Instance;
+		Camera camera = Camera.main;
+		Player player = Player._Instance;
+		CameraFollow cameraController = camera.GetComponent<CameraFollow>();
 
-		// Pause the game
-		_Player.Pause(PauseType.OnlyPikminActive);
-		_Camera.GetComponent<CameraFollow>().enabled = false;
+		player.Pause(PauseType.OnlyPikminActive);
+		cameraController.enabled = false;
 
-		float maxFov = 55;
-		float minFov = 30;
+		const float MAX_FOV = 65;
+		const float MIN_FOV = 45;
 
-		Color fadedColor = new(0.4078f, 0.4078f, 0.4078f);
+		Vector3 startPosition = _Box.transform.position
+		                        + _Box.transform.forward * 17.5f
+		                        + Vector3.up * 11.5f;
 
-		Vector3 originCameraPos = _Camera.transform.position;
+		bool startAnimation = false;
 
-		_Camera.transform.position = _Player.transform.position - -_Box.transform.forward * 12.5f + Vector3.up * 15;
-		_Camera.transform.LookAt(_Box.transform.position);
-		_Camera.fieldOfView = minFov;
+		FadeManager._Instance.FadeInOut(
+			0.75f,
+			0.75f,
+			() =>
+			{
+				camera.transform.position = startPosition;
+				camera.transform.LookAt(_Box.transform.position);
 
-		float t = 0;
-		float length = 15f;
+				camera.fieldOfView = MIN_FOV;
+				startAnimation = true;
+			}
+		);
 
-		float startingOffs = Mathf.Atan2(transform.position.z, transform.position.x) - Mathf.Atan2(_Box.transform.position.z, _Box.transform.position.x);
-
-		while (t <= length)
+		while (startAnimation == false)
 		{
-			Vector3 pos = _Box.transform.position;
+			yield return null;
+		}
+
+		for (float t = 0; t < 15; t += Time.deltaTime)
+		{
+			camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, MAX_FOV, 0.1f * Time.deltaTime);
 
 			if (t <= 11.5f)
 			{
-				pos += MathUtil.XZToXYZ(MathUtil.PositionInUnit(startingOffs + t / MathUtil.M_TAU, 20), 15);
-				_Camera.fieldOfView = Mathf.Lerp(minFov, maxFov, t / length);
-
-				_Camera.transform.SetPositionAndRotation(
-					// Position
-					Vector3.Lerp(_Camera.transform.position, pos, 3 * Time.deltaTime),
-					Quaternion.Lerp(
-						_Camera.transform.rotation,
-						// Rotation
-						Quaternion.LookRotation(MathUtil.DirectionFromTo(_Camera.transform.position, _Box.transform.position, true)),
-						3 * Time.deltaTime
-					)
-				);
+				camera.transform.RotateAround(_Box.transform.position, Vector3.up, -7.0f * Time.deltaTime);
 			}
 			else
 			{
-				_Camera.fieldOfView = Mathf.Lerp(_Camera.fieldOfView, 72.5f, 0.1f * Time.deltaTime);
-				pos -= _Box.transform.right * 20;
-				pos -= _Box.transform.forward * 3.5f;
-				pos.y += 20;
+				camera.transform.position = Vector3.Lerp(camera.transform.position, camera.transform.position + Vector3.down * 2.0f, 0.25f * Time.deltaTime);
 
-				_Camera.transform.SetPositionAndRotation(
-					// Position
-					Vector3.Lerp(_Camera.transform.position, pos, Time.deltaTime),
-					// Rotation
-					Quaternion.Lerp(
-						_Camera.transform.rotation,
-						Quaternion.LookRotation(MathUtil.DirectionFromTo(_Camera.transform.position, _Box.transform.position + Vector3.up * 4.5f, true)),
-						0.25f * Time.deltaTime
-					)
+				camera.transform.rotation = Quaternion.Lerp(
+					camera.transform.rotation,
+					Quaternion.LookRotation(MathUtil.DirectionFromTo(camera.transform.position, _Box.transform.position + Vector3.up * 4.5f, true)),
+					0.6f * Time.deltaTime
 				);
 			}
 
-			t += Time.deltaTime;
 			yield return null;
 		}
 
@@ -88,10 +78,10 @@ public class ANIM_ImpactSiteBoxPush : MonoBehaviour
 			0.75f,
 			() =>
 			{
-				_Camera.transform.position = originCameraPos;
-				_Camera.transform.LookAt(_Player.transform.position);
-				_Player.Pause(PauseType.Unpaused);
-				_Camera.GetComponent<CameraFollow>().enabled = true;
+				player.Pause(PauseType.Unpaused);
+
+				camera.transform.LookAt(player.transform.position);
+				cameraController.enabled = true;
 			}
 		);
 	}

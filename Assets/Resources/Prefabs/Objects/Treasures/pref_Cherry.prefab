@@ -40,10 +40,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7596287541871072742}
-  - component: {fileID: 7596287541871072739}
   - component: {fileID: 7596287541871072737}
   - component: {fileID: 7596287541871072736}
   - component: {fileID: -5781693376238507830}
+  - component: {fileID: 4533598398038273894}
   m_Layer: 13
   m_Name: pref_Cherry
   m_TagString: PikminInteract
@@ -60,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 999794700902250289}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3005, y: 1.3005, z: 1.3005}
+  m_LocalScale: {x: 2.5189385, y: 2.5189385, z: 2.5189385}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4730110026595809460}
@@ -69,28 +69,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &7596287541871072739
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 999794700902250289}
-  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7136623456018819829, guid: 0c6e65b7cd08a084ebf8734d6daee90c, type: 3}
 --- !u!54 &7596287541871072737
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -100,8 +78,8 @@ Rigidbody:
   m_GameObject: {fileID: 999794700902250289}
   serializedVersion: 4
   m_Mass: 5000
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 5
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -111,13 +89,13 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 32
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &7596287541871072736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,19 +111,18 @@ MonoBehaviour:
   _CarryTextPrefab: {fileID: 8793508802836785277, guid: 4da31e09798500147af033c81d3f4f57,
     type: 3}
   _CarryNoiseClip: {fileID: 8300000, guid: 82f0bada0276e0845b8d9ef9b6cb33d5, type: 3}
-  _CarryMinMax: {x: 1, y: 2}
+  _CarryMinMax: {x: 20, y: 40}
   _DistanceToNextPosition: 0.5
   _InvulnTimeAfterSpawn: 1
   _ObjectType: 1
-  _CarryCircleRadius: 0.7
-  _CarryCircleOffset: {x: -0.03, y: -1.57, z: 0}
+  _CarryCircleRadius: 1.26
+  _CarryCircleOffset: {x: 0, y: -3.03, z: 0.16}
   _AccelerationSpeed: 5
-  _BaseSpeed: 3
-  _SpeedAddedPerPikmin: 1
+  _BaseSpeed: 2
   _MaxSpeed: 4
-  _ColourToGenerateFor: 0
-  _PikminToProduceMatchColour: 2
-  _PikminToProduceNonMatchColour: 1
+  _ColourToGenerateFor: 3
+  _PikminToProduceMatchColour: 0
+  _PikminToProduceNonMatchColour: 0
   _MapMask:
     serializedVersion: 2
     m_Bits: 512
@@ -248,6 +225,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!135 &4533598398038273894
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999794700902250289}
+  m_Material: {fileID: 13400000, guid: a71cf642583baa14c9a01a55f59b5d9c, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: -0.8, z: 0}
 --- !u!1 &1264235416257708792
 GameObject:
   m_ObjectHideFlags: 0

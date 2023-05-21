@@ -126,7 +126,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 		if (_MoveVector != Vector3.zero)
 		{
 			Quaternion targetRotation = Quaternion.LookRotation(_MoveVector.normalized, Vector3.up);
-			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.5f * Time.deltaTime);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1.0f * Time.deltaTime);
 		}
 
 		if (_JourneyWaypoints.Count == 0)
@@ -257,7 +257,8 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 
 	Vector3 GetPikminPosition(int maxPikmin, int pikminIdx)
 	{
-		return _CarryCircleOffset + MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx, -transform.eulerAngles.y * Mathf.Deg2Rad)) * _CarryCircleRadius;
+		return _CarryCircleOffset
+		       + MathUtil.XZToXYZ(MathUtil.PositionInUnit(maxPikmin, pikminIdx, -transform.eulerAngles.y * Mathf.Deg2Rad)) * _CarryCircleRadius;
 	}
 
 	void MoveTowards(Vector3 position)
@@ -369,7 +370,7 @@ public class PikminCarryObject : MonoBehaviour, IPikminCarry
 					break;
 
 				case CarryObjectType.Normal:
-					Debug.LogError("No Onion is active in scene!");
+					// TODO: No destination is found! Find nearest waypoint and circle it until path becomes available
 					return;
 				default:
 					Debug.LogError("No destination found!");

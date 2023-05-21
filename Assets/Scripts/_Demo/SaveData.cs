@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using UnityEngine;
 
 namespace Demo
 {
@@ -54,26 +53,19 @@ namespace Demo
 					continue;
 				}
 
+				PikminTypeStats currentStats = PikminStatsManager.GetPikminStats(colour);
+
 				if (_CurrentData._InOnionPikmin.TryGetValue(colour, out PikminTypeStats loadedStats))
 				{
-					PikminTypeStats currentStats = PikminStatsManager.GetPikminStats(colour);
-
-					// Update the stats for each maturity level
 					currentStats._Leaf._InOnion = loadedStats._Leaf._InOnion;
 					currentStats._Bud._InOnion = loadedStats._Bud._InOnion;
 					currentStats._Flower._InOnion = loadedStats._Flower._InOnion;
 				}
 				else
 				{
-					// Handle missing key by providing default values or custom logic
-					PikminTypeStats currentStats = PikminStatsManager.GetPikminStats(colour);
-
-					// Set default values for the stats
 					currentStats._Leaf._InOnion = 0;
 					currentStats._Bud._InOnion = 0;
 					currentStats._Flower._InOnion = 0;
-
-					Debug.LogWarning("Key not found in dictionary: " + colour);
 				}
 			}
 		}
@@ -91,6 +83,13 @@ namespace Demo
 
 		public static void UpdateData()
 		{
+			// Move all Pikmin in squad into onions
+			foreach (PikminAI pikmin in PikminStatsManager._InSquad)
+			{
+				PikminStatsManager.Add(pikmin.GetColour(), pikmin._CurrentMaturity, PikminStatSpecifier.InOnion);
+			}
+
+			// Save the onion data
 			foreach (PikminColour colour in Enum.GetValues(typeof(PikminColour)))
 			{
 				PikminTypeStats typeStats = PikminStatsManager._TypeStats[colour];
@@ -99,10 +98,20 @@ namespace Demo
 				_CurrentData._InOnionPikmin[colour] = inOnionStats;
 			}
 
+			// Set the discovered onions
 			foreach (Onion onion in OnionManager._OnionsInScene.Where(onion => !_CurrentData._DiscoveredOnions.TryAdd(onion.Colour, onion.OnionActive)))
 			{
 				_CurrentData._DiscoveredOnions[onion.Colour] = onion.OnionActive;
 			}
+		}
+
+		public static void EndOfDaySave()
+		{
+			_CurrentData._Day++;
+			ShipManager._Instance.UpdateSaveData();
+
+			UpdateData();
+			WriteData();
 		}
 	}
 }

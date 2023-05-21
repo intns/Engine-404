@@ -21,6 +21,7 @@ public class CameraPositionData
 public class CameraFollow : MonoBehaviour
 {
 	public static CameraFollow _Instance;
+
 	[Header("Components")]
 	[SerializeField] CameraPositionData[] _DefaultData;
 	[SerializeField] bool _UseTopView = true;
@@ -90,6 +91,8 @@ public class CameraFollow : MonoBehaviour
 			Debug.LogError("Top View holders must have the same length as default holders!");
 			Debug.Break();
 		}
+
+		TryAssumeStartPosition();
 	}
 
 	void Update()
@@ -157,8 +160,18 @@ public class CameraFollow : MonoBehaviour
 			_Camera = Camera.main;
 		}
 
+		TryAssumeStartPosition();
+	}
+
+	void TryAssumeStartPosition()
+	{
 		if (_PlayerTransform == null)
 		{
+			if (Player._Instance == null)
+			{
+				return;
+			}
+
 			_PlayerTransform = Player._Instance.transform;
 		}
 

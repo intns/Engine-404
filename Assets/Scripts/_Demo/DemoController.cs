@@ -30,6 +30,8 @@ namespace Demo
 
 		void Awake()
 		{
+			_ClearSave = false;
+
 			SaveData.LoadData();
 
 			_Text.text = "";
@@ -95,15 +97,6 @@ namespace Demo
 			}
 		}
 
-		void Update()
-		{
-			if (_ClearSave)
-			{
-				SaveData.ResetData();
-				_ClearSave = false;
-			}
-		}
-
 		void OnGUI()
 		{
 			if (!SaveData._CurrentData._IsDebug)
@@ -153,12 +146,12 @@ namespace Demo
 			GUI.Label(new(position.x, position.y, Screen.width, Screen.height), guiContent, style);
 		}
 
-		void OnDrawGizmos()
+		void OnDrawGizmosSelected()
 		{
 			if (_ClearSave)
 			{
 				SaveData.ResetData();
-				_ClearSave = false;
+				// _ClearSave = false;
 			}
 		}
 
@@ -181,10 +174,15 @@ namespace Demo
 			);
 
 			float t = 0;
-			float length = 8.0f;
+			const float length = 10;
 
 			while (t <= length)
 			{
+				if (t >= 8.0f)
+				{
+					Ship._Instance.SetEngineFlamesVFX(false);
+				}
+
 				// Rotate the camera to look at the Player
 				position = Vector3.Lerp(
 					position,
@@ -205,7 +203,6 @@ namespace Demo
 			}
 
 			cameraFollow.enabled = true;
-			Ship._Instance.SetEngineFlamesVFX(false);
 		}
 
 		IEnumerator IE_StartScene()

@@ -55,13 +55,14 @@ public class ANIM_ImpactSiteOlimarDazed : MonoBehaviour
 			{
 				float amount = Mathf.Lerp(0.0f, 2.0f, _LookupCurve.Evaluate((tPercentage - 0.7f) / 0.18f));
 
-				Vector3 dest = _Player.transform.position + _Player.transform.forward * 10.0f;
+				Vector3 dest = _Player.transform.position + _Player.transform.forward * 12.5f;
 
 				if (Physics.Raycast(dest + Vector3.up * 5.0f, Vector3.down, out RaycastHit hit))
 				{
 					dest = hit.point + Vector3.up * 1.5f;
 				}
 
+				_Camera.fieldOfView = 35.0f;
 				_Camera.transform.position = dest;
 				_Camera.transform.LookAt(_Player.transform.position + Vector3.up * amount);
 			}
@@ -70,16 +71,27 @@ public class ANIM_ImpactSiteOlimarDazed : MonoBehaviour
 			yield return null;
 		}
 
-		_Player.transform.eulerAngles += Vector3.up * 90;
-
 		if (_TextBoxArea != null)
 		{
 			_TextBoxArea.Activate();
+
+			bool isDone = false;
+
+			while (isDone == false)
+			{
+				isDone = !_TextBoxArea.IsActivated();
+				yield return null;
+			}
+
+			_Player.transform.eulerAngles += Vector3.up * 90;
+
+			_Camera.transform.position = _Player.transform.position + -_Player.transform.forward * 10.0f + Vector3.up * 7.5f;
+			cameraFollow.enabled = true;
+			yield break;
 		}
-		else
-		{
-			_Player.Pause(PauseType.Unpaused);
-		}
+
+		_Player.Pause(PauseType.Unpaused);
+		_Player.transform.eulerAngles += Vector3.up * 90;
 
 		_Camera.transform.position = _Player.transform.position + -_Player.transform.forward * 10.0f + Vector3.up * 7.5f;
 		cameraFollow.enabled = true;

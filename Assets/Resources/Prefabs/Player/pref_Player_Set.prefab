@@ -2256,6 +2256,7 @@ MonoBehaviour:
   _SlideFriction: 0.1
   _RotationBeforeIdle: {x: 0, y: 0, z: 0, w: 0}
   _Paralysed: 0
+  _ImpulseVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &4246387085006627566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2277,6 +2278,7 @@ MonoBehaviour:
   _PikminPluckLayer:
     serializedVersion: 2
     m_Bits: 16384
+  _TimeBetweenThrow: 0.07
   _PikminThrowRadius: 20
   _AllMask:
     serializedVersion: 2

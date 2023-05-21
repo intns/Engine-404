@@ -4,11 +4,6 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
-[RequireComponent(
-	typeof(PlayerPikminController),
-	typeof(AnimationController),
-	typeof(PlayerMovementController)
-)]
 public class Player : MonoBehaviour, IHealth, IInteraction
 {
 	public static Player _Instance;
@@ -48,6 +43,8 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 
 	void Awake()
 	{
+		_Instance = this;
+
 		_MovementController = GetComponent<PlayerMovementController>();
 		_PikminController = GetComponent<PlayerPikminController>();
 
@@ -114,11 +111,6 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		{
 			_AttackTimer -= Time.deltaTime;
 		}
-	}
-
-	void OnEnable()
-	{
-		_Instance = this;
 	}
 
 #if UNITY_EDITOR

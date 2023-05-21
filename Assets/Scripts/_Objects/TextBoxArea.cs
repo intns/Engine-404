@@ -46,7 +46,6 @@ public class TextBoxArea : MonoBehaviour
 		{
 			_Enabled = false;
 			Player._Instance.Pause(PauseType.Unpaused);
-			Player._Instance._UIController.FadeInUI(true);
 			StartCoroutine(FadeOutCanvas());
 		}
 		else
@@ -88,6 +87,11 @@ public class TextBoxArea : MonoBehaviour
 
 		_Enabled = true;
 		StartCoroutine(WriteText(_Entry._Pages[0]._Text));
+	}
+
+	public bool IsActivated()
+	{
+		return _Enabled;
 	}
 
 	#endregion

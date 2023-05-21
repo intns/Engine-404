@@ -779,9 +779,9 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
 	void HandleBeingHeld()
 	{
-		if (_HeldAudioTimer >= 0.5f)
+		if (_HeldAudioTimer >= 1.5f)
 		{
-			_AudioSource.pitch = Random.Range(0.75f, 1.25f);
+			_AudioSource.pitch = Random.Range(0.95f, 1.25f);
 			PlaySound(_Data._HeldNoise, Random.Range(0, 0.15f));
 			_HeldAudioTimer = 0;
 		}

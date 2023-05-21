@@ -27,6 +27,7 @@ public class Onion : MonoBehaviour, ICarryObjectAbsorb
 {
 	[Header("References")]
 	[SerializeField] GameObject _PikminSprout;
+	[SerializeField] Light _OnionLight;
 	[Space]
 	[SerializeField] Animator _Animator;
 	[SerializeField] SkinnedMeshRenderer _BodyRenderer;
@@ -93,6 +94,7 @@ public class Onion : MonoBehaviour, ICarryObjectAbsorb
 	void Awake()
 	{
 		_OnionCanvas.gameObject.SetActive(false);
+		_OnionLight.enabled = false;
 
 		_CurrentSeedIdx = Random.Range(0, PikminStatsManager._MaxPikminOnField);
 
@@ -107,6 +109,7 @@ public class Onion : MonoBehaviour, ICarryObjectAbsorb
 		{
 			_DiscoverObject.SetActive(false);
 			OnionActive = true;
+			_OnionLight.enabled = true;
 
 			_Animator.SetTrigger("EmptyIdle");
 			_BodyRenderer.material.color = Color.white;
@@ -364,7 +367,9 @@ public class Onion : MonoBehaviour, ICarryObjectAbsorb
 		Debug.Log("End Discovery");
 		GetComponent<MeshRenderer>().enabled = true;
 		GetComponent<Collider>().enabled = true;
+		_OnionLight.enabled = true;
 		OnionActive = true;
+
 		/*DemoSettings._DiscoveredOnionCutsceneDone = true;*/
 	}
 

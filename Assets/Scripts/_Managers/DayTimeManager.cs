@@ -46,6 +46,8 @@ public class DayTimeManager : MonoBehaviour
 	[Header("Events")]
 	[SerializeField] List<DTM_Audio_Event> _AudioEvents = new();
 	Quaternion _FromRot = Quaternion.identity;
+
+	bool _IsFinishingDay;
 	AudioSource _Source;
 	bool _StartEndDay;
 	Stopwatch _TimeElapsed = new();
@@ -106,10 +108,12 @@ public class DayTimeManager : MonoBehaviour
 
 	public void FinishDay()
 	{
-		SaveData._CurrentData._Day++;
-		ShipManager._Instance.UpdateSaveData();
-		SaveData.UpdateData();
-		SaveData.WriteData();
+		if (_IsFinishingDay)
+		{
+			return;
+		}
+
+		_IsFinishingDay = true;
 
 		StartCoroutine(IE_EODSequence());
 	}
@@ -170,6 +174,8 @@ public class DayTimeManager : MonoBehaviour
 					2.5f,
 					() =>
 					{
+						SaveData.EndOfDaySave();
+
 						PikminStatsManager.ClearSquad();
 						PikminStatsManager.ClearStats();
 

@@ -92,9 +92,17 @@ namespace Demo
 					continue;
 				}
 
-				savedPart._Location = scenePart._Object.transform.position;
-				savedPart._Collected = scenePart._Data._Collected;
-				savedPart._Discovered = scenePart._Data._Discovered;
+				if (!scenePart._Data._Collected)
+				{
+					savedPart._Location = scenePart._Object.transform.position;
+					savedPart._Collected = false;
+					savedPart._Discovered = scenePart._Data._Discovered;
+				}
+				else
+				{
+					savedPart._Collected = true;
+					savedPart._Discovered = true;
+				}
 			}
 		}
 	}

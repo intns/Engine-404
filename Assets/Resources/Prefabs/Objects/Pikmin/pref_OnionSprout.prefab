@@ -155,6 +155,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6590575618959406867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,7 +319,7 @@ Transform:
   m_GameObject: {fileID: 6760881568670542062}
   m_LocalRotation: {x: 0.000000059604634, y: 0.7071066, z: 0.000000029802337, w: 0.70710695}
   m_LocalPosition: {x: 0, y: -1.0963957, z: 0}
-  m_LocalScale: {x: 2.8571432, y: 2.8571434, z: 2.8571432}
+  m_LocalScale: {x: 2.7, y: 2.7, z: 2.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7622038919180263279}
@@ -442,7 +443,7 @@ Transform:
   m_GameObject: {fileID: 7424206076050754538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4264332691777397491}

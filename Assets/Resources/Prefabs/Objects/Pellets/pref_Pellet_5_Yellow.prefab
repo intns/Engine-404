@@ -26,7 +26,7 @@ PrefabInstance:
     - target: {fileID: 5214387976797067357, guid: 80e619207e546854786da5f1faafa140,
         type: 3}
       propertyPath: _BaseSpeed
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5214387976797067357, guid: 80e619207e546854786da5f1faafa140,
         type: 3}
@@ -42,6 +42,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _AccelerationSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214387976797067357, guid: 80e619207e546854786da5f1faafa140,
+        type: 3}
+      propertyPath: _CarryCircleOffset.y
+      value: -0.35
       objectReference: {fileID: 0}
     - target: {fileID: 5214387976797067357, guid: 80e619207e546854786da5f1faafa140,
         type: 3}

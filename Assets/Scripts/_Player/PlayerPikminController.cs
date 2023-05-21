@@ -21,6 +21,7 @@ public class PlayerPikminController : MonoBehaviour
 	[SerializeField] LayerMask _PikminPluckLayer;
 
 	[Header("Throwing")]
+	[SerializeField] float _TimeBetweenThrow = 0.07f;
 	[SerializeField] float _PikminThrowRadius = 17.5f;
 	[SerializeField] LayerMask _AllMask;
 
@@ -48,10 +49,11 @@ public class PlayerPikminController : MonoBehaviour
 	PikminSprout _ClosestSprout;
 	bool _ControlFormation;
 	bool _HoldingPikmin;
-
 	Vector3[] _LinePositions = new Vector3[50];
 	bool _Plucking;
 	Vector3 _ThrownVelocity = Vector3.zero;
+
+	float _ThrowTimer;
 
 	void Awake()
 	{
@@ -75,6 +77,8 @@ public class PlayerPikminController : MonoBehaviour
 			PikminStatsManager.ReassignFormation();
 			return;
 		}
+
+		_ThrowTimer = Mathf.Max(_ThrowTimer - Time.deltaTime, 0.0f);
 
 		if (PikminStatsManager.GetTotalPikminInSquad() > 0)
 		{
@@ -265,15 +269,11 @@ public class PlayerPikminController : MonoBehaviour
 				}
 			}
 
-			// Check if we've got more than 0 Pikmin in
-			// our squad and we press the Throw key (currently Space)
-
 			else if (_CanThrowPikmin && PikminStatsManager.GetTotalPikminOnField() > 0 && _PikminInHand == null)
 			{
 				GameObject closestPikmin = GetClosestPikmin();
 
-				// Check if we've even gotten a Pikmin
-				if (closestPikmin != null)
+				if (closestPikmin != null && _ThrowTimer <= 0.0f)
 				{
 					_PikminInHand = closestPikmin.GetComponent<PikminAI>();
 
@@ -368,7 +368,7 @@ public class PlayerPikminController : MonoBehaviour
 		_SelectedThrowPikmin = SelectValidPikminType(false);
 	}
 
-	Vector3 CalculateVelocity(Vector3 destination, float vd)
+	Vector3 CalculateVelocity(Vector3 destination, float heightDiff)
 	{
 		float gravity = Physics.gravity.y - 9.81f;
 
@@ -382,7 +382,7 @@ public class PlayerPikminController : MonoBehaviour
 		float throwHeight = _PikminInHand._Data._ThrowingHeight;
 
 		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + throwHeight) / gravity)
-		             + Mathf.Sqrt(2 * (vd - throwHeight) / gravity);
+		             + Mathf.Sqrt(2 * (heightDiff - throwHeight) / gravity);
 
 		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * throwHeight);
 		Vector3 velocityXZ = displacementXZ / time * 1.01f;
@@ -410,6 +410,7 @@ public class PlayerPikminController : MonoBehaviour
 			_SelectedThrowPikmin = PikminStatsManager.GetTotalPikminInSquad(colour) <= 0 ? PikminColour.Size : colour;
 		}
 
+		_ThrowTimer = _TimeBetweenThrow;
 		_HoldingPikmin = false;
 		_PikminInHand.EndThrowHold();
 		_PikminInHand = null;
