@@ -88,8 +88,6 @@ public class PlayerMovementController : MonoBehaviour
 				// Apply an opposite force to cancel the pushing effect
 				Vector3 pushDirection = -hit.moveDirection;
 				otherRigidbody.AddForce(pushDirection * hit.moveLength, ForceMode.Impulse);
-
-				_Controller.Move(MathUtil.DirectionFromTo(hit.collider.ClosestPoint(transform.position), transform.position) / 2.0f);
 			}
 		}
 	}
