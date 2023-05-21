@@ -190,6 +190,12 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 
 	public void Pause(PauseType type, bool fadeUI = true)
 	{
+		// Already in that state, why do it again?
+		if (type == GameManager.PauseType)
+		{
+			return;
+		}
+
 		_AnimController.ChangeState(PlayerAnimation.Idle);
 
 		if (type == PauseType.Unpaused)
@@ -205,7 +211,7 @@ public class Player : MonoBehaviour, IHealth, IInteraction
 		{
 			if (fadeUI)
 			{
-				_UIController.FadeInUI();
+				_UIController.FadeOutUI();
 			}
 
 			_WhistleLine.enabled = false;

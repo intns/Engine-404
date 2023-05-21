@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Demo;
 using TMPro;
@@ -78,11 +79,34 @@ public class PlayerUIController : MonoBehaviour
 
 	public void FadeInUI(bool shouldUpdateOnFinish = false, float totalTime = 1.0f)
 	{
+		if (Math.Abs(_CanvasGroup.alpha - 1.0f) < 0.001f)
+		{
+			return;
+		}
+
+		if (totalTime == 0.0f)
+		{
+			_CanvasGroup.alpha = 1.0f;
+			_DisplayValues = true;
+
+			if (shouldUpdateOnFinish)
+			{
+				UpdateFullUI();
+			}
+
+			return;
+		}
+
 		StartCoroutine(FadeInCanvas(shouldUpdateOnFinish, totalTime));
 	}
 
 	public void FadeOutUI(float totalTime = 1.0f)
 	{
+		if (_CanvasGroup.alpha == 0.0f)
+		{
+			return;
+		}
+
 		if (totalTime == 0.0f)
 		{
 			_CanvasGroup.alpha = 0.0f;

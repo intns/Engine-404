@@ -54,7 +54,7 @@ public class CameraFollow : MonoBehaviour
 	float _ControllerTriggerState; // State of controller triggers for reset
 
 	// Misc. data
-	CameraPositionData _CurrentHolder;
+	CameraPositionData _CurrentPosData;
 	/*[Space()]*/
 	/*[SerializeField] */
 	float _CurrentRotation; // Current rotation in degrees
@@ -67,12 +67,12 @@ public class CameraFollow : MonoBehaviour
 	bool _IsTopView; // Is top view or not
 	/*[SerializeField] */
 	Vector3 _LookatPosition; // The position we're looking at
-	Camera _MainCamera;
+	Camera _Camera;
 
 	//[Header("Debugging")]
 	/*[SerializeField] */
 	float _OrbitRadius; // How far away to orbit
-	Transform _PlayerPosition;
+	Transform _PlayerTransform;
 	/*[Space()]*/
 	/*[SerializeField] */
 	float _ResetTimer; // Rotation reset timer
@@ -81,8 +81,8 @@ public class CameraFollow : MonoBehaviour
 
 	void Start()
 	{
-		_MainCamera = Camera.main;
-		_PlayerPosition = Player._Instance.transform;
+		_Camera = Camera.main;
+		_PlayerTransform = Player._Instance.transform;
 		_AudioSource = GetComponent<AudioSource>();
 
 		if (_DefaultData.Length != _TopViewData.Length)
@@ -90,18 +90,6 @@ public class CameraFollow : MonoBehaviour
 			Debug.LogError("Top View holders must have the same length as default holders!");
 			Debug.Break();
 		}
-
-		_HolderIndex = 0;
-		_CurrentHolder = _DefaultData[_HolderIndex];
-
-		_MainCamera.fieldOfView = _CurrentHolder._FOV;
-		_OrbitRadius = _CurrentHolder._Offset.x;
-		_GroundOffset = _CurrentHolder._Offset.y + _PlayerPosition.position.y;
-
-		_TargetRotation = _CurrentRotation = 270 - _PlayerPosition.eulerAngles.y;
-
-		_LookatPosition = _PlayerPosition.position;
-		transform.LookAt(_LookatPosition);
 	}
 
 	void Update()
@@ -111,11 +99,11 @@ public class CameraFollow : MonoBehaviour
 			return;
 		}
 
-		float groundOffset = _CurrentHolder._Offset.y + _PlayerPosition.position.y;
-		float orbitRadius = _CurrentHolder._Offset.x;
+		float groundOffset = _CurrentPosData._Offset.y + _PlayerTransform.position.y;
+		float orbitRadius = _CurrentPosData._Offset.x;
 
-		_MainCamera.fieldOfView
-			= Mathf.Lerp(_MainCamera.fieldOfView, _CurrentHolder._FOV, _FOVChangeSpeed * Time.deltaTime);
+		_Camera.fieldOfView
+			= Mathf.Lerp(_Camera.fieldOfView, _CurrentPosData._FOV, _FOVChangeSpeed * Time.deltaTime);
 		_OrbitRadius = Mathf.Lerp(_OrbitRadius, orbitRadius, _OrbitChangeSpeed * Time.deltaTime);
 		_GroundOffset = Mathf.Lerp(_GroundOffset, groundOffset, _HeightChangeSpeed * Time.deltaTime);
 
@@ -140,7 +128,7 @@ public class CameraFollow : MonoBehaviour
 		}
 
 		_CurrentRotation = Mathf.LerpAngle(_CurrentRotation, _TargetRotation, factor * Time.deltaTime);
-		_LookatPosition = Vector3.Lerp(_LookatPosition, _PlayerPosition.position, _LookatFollowSpeed * Time.deltaTime);
+		_LookatPosition = Vector3.Lerp(_LookatPosition, _PlayerTransform.position, _LookatFollowSpeed * Time.deltaTime);
 
 		float xAngle = Quaternion
 		               .LookRotation(MathUtil.DirectionFromTo(transform.position, _LookatPosition + Vector3.up * 2.5f, true))
@@ -163,6 +151,28 @@ public class CameraFollow : MonoBehaviour
 	void OnEnable()
 	{
 		_Instance = this;
+
+		if (_Camera == null)
+		{
+			_Camera = Camera.main;
+		}
+
+		if (_PlayerTransform == null)
+		{
+			_PlayerTransform = Player._Instance.transform;
+		}
+
+		_HolderIndex = 0;
+		_CurrentPosData = _DefaultData[_HolderIndex];
+
+		_Camera.fieldOfView = _CurrentPosData._FOV;
+		_OrbitRadius = _CurrentPosData._Offset.x;
+		_GroundOffset = _CurrentPosData._Offset.y + _PlayerTransform.position.y;
+
+		_TargetRotation = _CurrentRotation = 270 - _PlayerTransform.eulerAngles.y;
+
+		_LookatPosition = _PlayerTransform.position;
+		transform.LookAt(_LookatPosition);
 	}
 
 	public void OnResetCamera(InputAction.CallbackContext context)
@@ -175,7 +185,7 @@ public class CameraFollow : MonoBehaviour
 		if (context.started && _ControllerTriggerState == 0.0f)
 		{
 			_ResetTimer = _ResetLength;
-			_TargetRotation = 270 - _PlayerPosition.eulerAngles.y;
+			_TargetRotation = 270 - _PlayerTransform.eulerAngles.y;
 		}
 	}
 
@@ -239,6 +249,6 @@ public class CameraFollow : MonoBehaviour
 			_HolderIndex = 0;
 		}
 
-		_CurrentHolder = currentHolder[_HolderIndex];
+		_CurrentPosData = currentHolder[_HolderIndex];
 	}
 }

@@ -74,6 +74,11 @@ public class TextBoxArea : MonoBehaviour
 			return;
 		}
 
+		Activate();
+	}
+
+	public void Activate()
+	{
 		// Pause the game and the Player
 		Player._Instance.Pause(PauseType.Paused);
 
