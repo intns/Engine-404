@@ -208,4 +208,9 @@ public class PlayerMovementController : MonoBehaviour
 		// Move the controller
 		_Controller.Move(_MovementSpeed * Time.deltaTime * movementDirection);
 	}
+
+	public Vector3 GetVelocity()
+	{
+		return _Movement;
+	}
 }

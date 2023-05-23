@@ -1069,6 +1069,11 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 		return _Data._PikminColour;
 	}
 
+	public void SetFaceDirection(float x)
+	{
+		_FaceDirectionAngle = x;
+	}
+
 	public int CompareTo(object obj)
 	{
 		PikminAI other = obj as PikminAI;

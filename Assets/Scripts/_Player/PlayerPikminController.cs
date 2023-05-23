@@ -121,9 +121,40 @@ public class PlayerPikminController : MonoBehaviour
 		{
 			// Move the Pikmin's model to in front of the player
 			_PikminInHand.transform.position = transform.position
-			                                   + transform.right / 1.75f
-			                                   + transform.forward / 4f
-			                                   + Vector3.up / 3.5f;
+																				 + transform.right / 1.75f
+																				 + transform.forward / 4f
+																				 + Vector3.up / 3.5f;
+
+			transform.LookAt(new Vector3(_WhistleTransform.position.x, transform.position.y, _WhistleTransform.position.z));
+
+			_PikminInHand.transform.LookAt(
+				new Vector3(
+					_WhistleTransform.position.x,
+					_PikminInHand.transform.position.y,
+					_WhistleTransform.position.z
+				)
+			);
+
+			Vector3 whistleTransform = _WhistleTransform.position;
+
+			float maxHeight = transform.position.y + _PikminInHand._Data._ThrowingHeight;
+			if (whistleTransform.y > maxHeight)
+			{
+				whistleTransform.y = maxHeight;
+			}
+
+			Vector2 whistleDistance = new Vector2(whistleTransform.x - transform.position.x, whistleTransform.z - transform.position.z);
+			if (whistleDistance.magnitude >= _PikminThrowRadius)
+			{
+				whistleDistance = whistleDistance.normalized * _PikminThrowRadius;
+
+				whistleTransform.x = transform.position.x + whistleDistance.x;
+				whistleTransform.z = transform.position.z + whistleDistance.y;
+
+				whistleTransform.y = transform.position.y;
+			}
+
+			_ThrownVelocity = CalculateVelocity(whistleTransform);
 
 			SetLineRenderer();
 
@@ -380,14 +411,51 @@ public class PlayerPikminController : MonoBehaviour
 		);
 
 		float throwHeight = _PikminInHand._Data._ThrowingHeight;
+		heightDiff = Mathf.Clamp(heightDiff, 0.0f, throwHeight - 0.01f);
 
 		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + throwHeight) / gravity)
-		             + Mathf.Sqrt(2 * (heightDiff - throwHeight) / gravity);
+								 + Mathf.Sqrt(2 * (heightDiff - throwHeight) / gravity);
 
 		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * throwHeight);
 		Vector3 velocityXZ = displacementXZ / time * 1.01f;
 
 		return velocityXZ + velocityY * -Mathf.Sign(gravity);
+	}
+
+	// Gives the direction/unit vector in the direction of vector v's projection on the xz plane.
+	Vector3 NormalizeXZ(Vector3 v)
+	{
+		float magnitude = Mathf.Sqrt(v.x * v.x + v.z * v.z);
+		Vector3 result;
+
+		result.x = v.x / magnitude;
+		result.y = 0.0f;
+		result.z = v.z / magnitude;
+
+		return result;
+	}
+
+	Vector3 CalculateVelocity(Vector3 target)
+	{
+		Vector3 targetDir = target - _PikminInHand.transform.position;
+		Vector3 uIT = NormalizeXZ(targetDir) * 1.025f;
+
+		float gravity = Physics.gravity.y;
+		float throwHeight = _PikminInHand._Data._ThrowingHeight;
+
+		float vy = Mathf.Sqrt(-2 * gravity * throwHeight);
+
+		float t = (-vy - Mathf.Sqrt(vy * vy + 2 * gravity * targetDir.y)) / gravity;
+
+		// math to get initial horizontal velocity
+		float vx = Mathf.Sqrt(targetDir.x * targetDir.x + targetDir.z * targetDir.z) / t;
+
+		return new()
+		{
+			x = uIT.x * vx,
+			y = vy,
+			z = uIT.z * vx,
+		};
 	}
 
 	void EndThrow()
@@ -398,10 +466,10 @@ public class PlayerPikminController : MonoBehaviour
 		if (reassign)
 		{
 			foreach (PikminColour unused in from kvp in PikminStatsManager._TypeStats
-			                                let currentColor = kvp.Key
-			                                let currentStats = kvp.Value
-			                                where PikminStatsManager.GetTotalPikminInSquad(currentColor) > 0
-			                                select currentColor)
+																			let currentColor = kvp.Key
+																			let currentStats = kvp.Value
+																			where PikminStatsManager.GetTotalPikminInSquad(currentColor) > 0
+																			select currentColor)
 			{
 				// Handle the case when at least one Pikmin of the current color is in the squad
 				break;
@@ -545,35 +613,6 @@ public class PlayerPikminController : MonoBehaviour
 
 	void SetLineRenderer()
 	{
-		transform.LookAt(new Vector3(_WhistleTransform.position.x, transform.position.y, _WhistleTransform.position.z));
-
-		_PikminInHand.transform.LookAt(
-			new Vector3(
-				_WhistleTransform.position.x,
-				_PikminInHand.transform.position.y,
-				_WhistleTransform.position.z
-			)
-		);
-
-		Vector3 whistleTransform = _WhistleTransform.position;
-
-		float maxWhistleHeight = _PikminInHand.transform.position.y + _PikminInHand._Data._ThrowingHeight;
-		float clampedWhistleY = Mathf.Clamp(whistleTransform.y, _PikminInHand.transform.position.y, maxWhistleHeight);
-
-		Vector3 offs = new(whistleTransform.x - transform.position.x, clampedWhistleY - transform.position.y, whistleTransform.z - transform.position.z);
-		Vector2 clamped = Vector2.ClampMagnitude(new(offs.x, offs.z), _PikminThrowRadius);
-		Vector3 destination = transform.position + MathUtil.XZToXYZ(clamped);
-
-		destination.y = clampedWhistleY;
-		float vd = destination.y - transform.position.y;
-
-		Vector3 newVel = CalculateVelocity(destination, vd);
-
-		if (!float.IsNaN(newVel.y))
-		{
-			_ThrownVelocity = newVel;
-		}
-
 		Vector3 velocity = _ThrownVelocity;
 		Vector3 pos = _PikminInHand.transform.position;
 		Vector3 oldPos = pos;
