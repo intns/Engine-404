@@ -121,9 +121,9 @@ public class PlayerPikminController : MonoBehaviour
 		{
 			// Move the Pikmin's model to in front of the player
 			_PikminInHand.transform.position = transform.position
-																				 + transform.right / 1.75f
-																				 + transform.forward / 4f
-																				 + Vector3.up / 3.5f;
+			                                   + transform.right / 1.75f
+			                                   + transform.forward / 4f
+			                                   + Vector3.up / 3.5f;
 
 			transform.LookAt(new Vector3(_WhistleTransform.position.x, transform.position.y, _WhistleTransform.position.z));
 
@@ -138,12 +138,14 @@ public class PlayerPikminController : MonoBehaviour
 			Vector3 whistleTransform = _WhistleTransform.position;
 
 			float maxHeight = transform.position.y + _PikminInHand._Data._ThrowingHeight;
+
 			if (whistleTransform.y > maxHeight)
 			{
 				whistleTransform.y = maxHeight;
 			}
 
-			Vector2 whistleDistance = new Vector2(whistleTransform.x - transform.position.x, whistleTransform.z - transform.position.z);
+			Vector2 whistleDistance = new(whistleTransform.x - transform.position.x, whistleTransform.z - transform.position.z);
+
 			if (whistleDistance.magnitude >= _PikminThrowRadius)
 			{
 				whistleDistance = whistleDistance.normalized * _PikminThrowRadius;
@@ -414,7 +416,7 @@ public class PlayerPikminController : MonoBehaviour
 		heightDiff = Mathf.Clamp(heightDiff, 0.0f, throwHeight - 0.01f);
 
 		float time = Mathf.Sqrt(-2 * (_PikminInHand.transform.position.y + throwHeight) / gravity)
-								 + Mathf.Sqrt(2 * (heightDiff - throwHeight) / gravity);
+		             + Mathf.Sqrt(2 * (heightDiff - throwHeight) / gravity);
 
 		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * throwHeight);
 		Vector3 velocityXZ = displacementXZ / time * 1.01f;
@@ -437,25 +439,20 @@ public class PlayerPikminController : MonoBehaviour
 
 	Vector3 CalculateVelocity(Vector3 target)
 	{
-		Vector3 targetDir = target - _PikminInHand.transform.position;
-		Vector3 uIT = NormalizeXZ(targetDir) * 1.025f;
+		Vector3 dirTowardTarget = target - _PikminInHand.transform.position;
+		Vector3 velDirection = NormalizeXZ(dirTowardTarget) * 1.025f;
 
 		float gravity = Physics.gravity.y;
 		float throwHeight = _PikminInHand._Data._ThrowingHeight;
 
-		float vy = Mathf.Sqrt(-2 * gravity * throwHeight);
+		float velY = Mathf.Sqrt(-2 * gravity * throwHeight);
 
-		float t = (-vy - Mathf.Sqrt(vy * vy + 2 * gravity * targetDir.y)) / gravity;
+		float t = (-velY - Mathf.Sqrt(velY * velY + 2 * gravity * dirTowardTarget.y)) / gravity;
 
 		// math to get initial horizontal velocity
-		float vx = Mathf.Sqrt(targetDir.x * targetDir.x + targetDir.z * targetDir.z) / t;
+		float velX = Mathf.Sqrt(dirTowardTarget.x * dirTowardTarget.x + dirTowardTarget.z * dirTowardTarget.z) / t;
 
-		return new()
-		{
-			x = uIT.x * vx,
-			y = vy,
-			z = uIT.z * vx,
-		};
+		return new() { x = velDirection.x * velX, y = velY, z = velDirection.z * velX };
 	}
 
 	void EndThrow()
@@ -466,10 +463,10 @@ public class PlayerPikminController : MonoBehaviour
 		if (reassign)
 		{
 			foreach (PikminColour unused in from kvp in PikminStatsManager._TypeStats
-																			let currentColor = kvp.Key
-																			let currentStats = kvp.Value
-																			where PikminStatsManager.GetTotalPikminInSquad(currentColor) > 0
-																			select currentColor)
+			                                let currentColor = kvp.Key
+			                                let currentStats = kvp.Value
+			                                where PikminStatsManager.GetTotalPikminInSquad(currentColor) > 0
+			                                select currentColor)
 			{
 				// Handle the case when at least one Pikmin of the current color is in the squad
 				break;
