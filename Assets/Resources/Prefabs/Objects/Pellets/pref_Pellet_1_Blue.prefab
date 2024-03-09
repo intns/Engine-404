@@ -16,6 +16,11 @@ PrefabInstance:
       propertyPath: m_CollisionDetection
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1239600993707992667, guid: ae524c549db4f3d448d6e364307f6b63,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2b4e937e9c0a9b34388f6a51dfc78bb5, type: 2}
     - target: {fileID: 2605067543600766223, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: _MaxSpeed
@@ -69,22 +74,22 @@ PrefabInstance:
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -43.188404
       objectReference: {fileID: 0}
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 15.883161
       objectReference: {fileID: 0}
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 89.525055
       objectReference: {fileID: 0}
     - target: {fileID: 8431524403549130377, guid: ae524c549db4f3d448d6e364307f6b63,
         type: 3}
