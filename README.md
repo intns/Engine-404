@@ -5,17 +5,23 @@
 
 ---
 
-### Engine 404: Implementing Pikmin Game Elements in Unity
+### Brief Overview
+
+Engine 404 is a project that replicates Pikmin gameplay in the Unity game engine. This repository also aims to serve as a valuable resource for developers interested in implementing Pikmin-like gameplay mechanics into their own projects.
+
+The official [Engine 404 YouTube channel](https://www.youtube.com/@engine404) showcases and previews features as they develop.
+
+This project is no longer in active development for the foreseeable future.
+
+### Installation
+
+1) Make sure you have Unity 2023.2.13f1 installed on your computer.  
+   - A direct download from the official Unity website can be found [here](https://unity.com/releases/editor/whats-new/2023.2.13).
+  
+2) Load the project and enjoy!
+
+---
 
 ```diff
--[DISCLAIMER]
--This project is intended for free and fair use, and does not aim to infringe upon any copyright laws.
+- This project is intended for free and fair use, and does not aim to infringe upon any copyright laws.
 ```
-
-Engine 404 is a project that replicates elements from Pikmin games within the Unity game engine. This repository serves as a valuable resource for developers interested in exploring and implementing Pikmin-inspired gameplay mechanics into their own projects.
-
-### Step 1: Install Unity 2022.2.19f1
-
-Make sure you have Unity 2022.2.19f1 installed on your computer. You can download it directly from the official Unity website [here](https://unity.com/releases/editor/whats-new/2022.2.19).
-
-### Step 1: Enjoy!
