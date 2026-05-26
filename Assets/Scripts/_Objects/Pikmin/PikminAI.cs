@@ -212,6 +212,12 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
     [SerializeField]
     float _HeldAudioTimer;
 
+    // How long after launch the thrown Pikmin's collider grows back from ~0 to its full size
+    // (see HandleThrown). The same window doubles as a grace period during which ground/scenery
+    // contacts are ignored, so a Pikmin thrown from near the ground isn't cancelled by a contact
+    // on its very first physics step before it has had a chance to travel.
+    const float THROW_COLLIDER_GROWTH_TIME = 0.2f;
+
     [SerializeField]
     float _ColliderTimer;
 
@@ -892,9 +898,7 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
 
     void HandleThrown()
     {
-        const float GROWTH_TIMER = 0.2f;
-
-        if (_ColliderTimer >= GROWTH_TIMER)
+        if (_ColliderTimer >= THROW_COLLIDER_GROWTH_TIME)
         {
             _Collider.radius = _ColliderOriginRadius;
             _Collider.height = _ColliderOriginHeight;
@@ -902,8 +906,8 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
         }
 
         _ColliderTimer += Time.deltaTime;
-        _Collider.radius = Mathf.Lerp(0.001f, _ColliderOriginRadius, _ColliderTimer / GROWTH_TIMER);
-        _Collider.height = Mathf.Lerp(0.001f, _ColliderOriginHeight, _ColliderTimer / GROWTH_TIMER);
+        _Collider.radius = Mathf.Lerp(0.001f, _ColliderOriginRadius, _ColliderTimer / THROW_COLLIDER_GROWTH_TIME);
+        _Collider.height = Mathf.Lerp(0.001f, _ColliderOriginHeight, _ColliderTimer / THROW_COLLIDER_GROWTH_TIME);
     }
 
     void HandleOnFire()
@@ -1093,6 +1097,19 @@ public class PikminAI : MonoBehaviour, IHealth, IComparable, IInteraction
             }
             case PikminStates.Thrown:
             {
+                // Ignore ground/scenery contacts during the brief post-launch grace window.
+                // A Pikmin is thrown from roughly hand height, just above the surface the player
+                // is standing on, so without this guard a contact on the very first physics step
+                // demotes it to Idle before it travels; FixedUpdate then overwrites its launch
+                // velocity and the throw "drops" straight down instead of arcing. The window
+                // matches the collider regrowth in HandleThrown, and the Pikmin still lands and
+                // goes Idle as normal once it has cleared the launch point. Object hits
+                // (PikminInteract) are handled by the case above and are intentionally unaffected.
+                if (_ColliderTimer < THROW_COLLIDER_GROWTH_TIME)
+                {
+                    break;
+                }
+
                 if (!col.CompareTag("Pikmin") && !col.CompareTag("Player"))
                 {
                     ChangeState(PikminStates.Idle);
